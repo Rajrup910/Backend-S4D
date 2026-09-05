@@ -1,0 +1,73 @@
+{
+  "session": "S16",
+  "workstream": "E2b_pad_age_rule_deployed_map",
+  "role": "directional probe, not a pre-registered endpoint; no Holm family",
+  "test_read": false,
+  "cohort": "PAD-UFES-20, all 2106 images, no weights retrained",
+  "panel": "6-CNN uniform soft-vote over the frozen HAM-only checkpoints (no TTA)",
+  "rule": "argmax_c ( p_c + lambda_band * 1[c escalates] )",
+  "lambda_by_band": {
+    "40-59": 0.74,
+    "60+": 0.33,
+    "<40": 0.26,
+    "unknown": 0.65,
+    "pooled": 0.65
+  },
+  "rule_implementations_agree": true,
+  "deployed_map": "research/selective/results_oof/fit_state.json",
+  "superseded_map": "research/calibration/results_oof/fit_state.json",
+  "max_abs_probability_difference_between_maps": 0.096707,
+  "deployed": {
+    "raw_soft_vote": {
+      "macro_f1": 0.1669,
+      "balanced_accuracy": 0.3097,
+      "accuracy": 0.2626,
+      "escalation_sens": 0.3565,
+      "mel_recall": 0.1154,
+      "missed_serious": 1047
+    },
+    "dirichlet": {
+      "macro_f1": 0.1303,
+      "balanced_accuracy": 0.2931,
+      "accuracy": 0.2137,
+      "escalation_sens": 0.2207,
+      "mel_recall": 0.1154,
+      "missed_serious": 1268
+    },
+    "dirichlet_plus_age_rule": {
+      "macro_f1": 0.1723,
+      "balanced_accuracy": 0.3423,
+      "accuracy": 0.2754,
+      "escalation_sens": 0.5679,
+      "mel_recall": 0.3269,
+      "missed_serious": 703
+    }
+  },
+  "superseded_s8b": {
+    "raw_soft_vote": {
+      "macro_f1": 0.1669,
+      "balanced_accuracy": 0.3097,
+      "accuracy": 0.2626,
+      "escalation_sens": 0.3565,
+      "mel_recall": 0.1154,
+      "missed_serious": 1047
+    },
+    "dirichlet": {
+      "macro_f1": 0.1325,
+      "balanced_accuracy": 0.2961,
+      "accuracy": 0.217,
+      "escalation_sens": 0.2231,
+      "mel_recall": 0.1154,
+      "missed_serious": 1264
+    },
+    "dirichlet_plus_age_rule": {
+      "macro_f1": 0.177,
+      "balanced_accuracy": 0.347,
+      "accuracy": 0.284,
+      "escalation_sens": 0.5851,
+      "mel_recall": 0.3269,
+      "missed_serious": 675
+    }
+  },
+  "reading": "the probe's direction is unchanged by the calibrator: the frozen rule still raises escalation sensitivity and melanoma recall on PAD at the cost of specificity. It remains a directional probe and not a replication, because PAD's escalating prevalence is the inverse of HAM10000's, so a constant escalating-class bonus must help mechanically under this prior regardless of whether the under-40 mechanism is what fires. The same-modality evidence is Workstream E1."
+}
