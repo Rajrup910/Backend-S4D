@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 from pathlib import Path
 
 import matplotlib
@@ -29,6 +30,8 @@ def plot_class_coverage(
     codes = [c.code for c in mapping.classes if c.code in next(iter(variants.values())).per_class]
     escalating = {c.code for c in mapping.classes if c.needs_escalation}
 
+    _write_coverage_csv(variants, codes, escalating, target, output_path)
+
     x = np.arange(len(codes))
     width = 0.8 / max(1, len(variants))
 
@@ -50,3 +53,28 @@ def plot_class_coverage(
     ax.legend(loc="lower right", fontsize=9)
     fig.tight_layout()
     return _save(fig, output_path)
+
+
+def _write_coverage_csv(variants, codes, escalating, target, output_path):
+    """Write the numbers the bars encode, next to the figure.
+
+    Hard Rule 4: every number in the paper resolves to a file in results/. The per-class
+    marginal coverage in Fig. 5 was drawn straight from memory and never written down, so
+    six of its seven bars could not be reconstructed without re-running the conformal fit.
+    This shares the caller's `variants` and `codes`, so the table and the figure cannot
+    disagree.
+    """
+    path = Path(output_path).with_suffix(".csv")
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(["variant", "class_code", "escalating", "n",
+                         "coverage", "mean_set_size", "target", "meets_target"])
+        for name, metrics in variants.items():
+            for code in codes:
+                cell = metrics.per_class[code]
+                writer.writerow([
+                    name, code, "yes" if code in escalating else "no", cell["n"],
+                    f"{cell['coverage']:.6f}", f"{cell['mean_set_size']:.6f}",
+                    f"{target:.4f}", "yes" if cell["coverage"] >= target else "no",
+                ])
+    return path

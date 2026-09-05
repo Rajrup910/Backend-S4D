@@ -1,0 +1,15 @@
+variant,class_code,escalating,n,coverage,mean_set_size,target,meets_target
+APS marginal,akiec,yes,53,0.905660,1.943396,0.9000,yes
+APS marginal,bcc,yes,82,0.902439,1.365854,0.9000,yes
+APS marginal,bkl,no,160,0.868750,1.731250,0.9000,no
+APS marginal,df,no,24,0.750000,1.916667,0.9000,no
+APS marginal,mel,yes,173,0.838150,1.745665,0.9000,no
+APS marginal,nv,no,1018,0.940079,1.137525,0.9000,yes
+APS marginal,vasc,no,22,0.909091,1.500000,0.9000,yes
+APS class-conditional,akiec,yes,53,0.981132,2.622642,0.9000,yes
+APS class-conditional,bcc,yes,82,0.987805,1.695122,0.9000,yes
+APS class-conditional,bkl,no,160,0.918750,2.556250,0.9000,yes
+APS class-conditional,df,no,24,0.958333,2.791667,0.9000,yes
+APS class-conditional,mel,yes,173,0.901734,2.248555,0.9000,yes
+APS class-conditional,nv,no,1018,0.917485,1.834971,0.9000,yes
+APS class-conditional,vasc,no,22,1.000000,2.045455,0.9000,yes

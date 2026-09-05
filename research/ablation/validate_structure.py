@@ -211,9 +211,46 @@ else:
     problems.append("paper/supplementary.tex missing "
                     "-- run python -m research.ablation.build_supplementary")
 
+# ---- orphan / intermediate inventory
+# Informational, not a failure: six external tables are still generated per workstream but
+# were collapsed into the two composite floats in S16, and two figures are build inputs
+# rather than paper content. The point is that the state is VISIBLE -- a table that silently
+# stops being \input (a renamed label, a dropped section) should be noticeable here rather
+# than discovered when a reviewer asks where a number went.
+#
+# BUILD_INPUTS are read by research/ablation/assemble_figures.py to build figure4_selective;
+# they are deliberately not included by either document. Do not delete them.
+BUILD_INPUTS = {"figure4_risk_coverage.png", "figure6_abstention_tradeoff.png"}
+
+_used_tables, _used_figs = set(), set()
+for _doc in (s, sup if os.path.isfile(SUPP) else ""):
+    _body = re.sub(r"(?m)^%.*$", "", _doc)
+    _used_tables |= {os.path.basename(m) for m in re.findall(r"\\input\{([^}]+)\}", _body)}
+    _used_figs |= {os.path.basename(m) for m in
+                   re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", _body)}
+
+_tdir, _fdir = os.path.join(ROOT, "tables"), os.path.join(ROOT, "figures")
+_orphan_tables = sorted(f for f in os.listdir(_tdir)
+                        if f.endswith(".tex") and f not in _used_tables) \
+    if os.path.isdir(_tdir) else []
+_orphan_figs = sorted(f for f in os.listdir(_fdir)
+                      if f.lower().endswith((".png", ".pdf", ".jpg"))
+                      and f not in _used_figs and f not in BUILD_INPUTS) \
+    if os.path.isdir(_fdir) else []
+
+inventory = "\n  orphans: %d table(s), %d figure(s) not included by either document" % (
+    len(_orphan_tables), len(_orphan_figs))
+if _orphan_tables:
+    inventory += "\n    tables: " + ", ".join(_orphan_tables)
+if _orphan_figs:
+    inventory += "\n    figures: " + ", ".join(_orphan_figs)
+inventory += "\n  (build inputs held back from this list: %s)" % ", ".join(sorted(BUILD_INPUTS))
+supp_stats += inventory
+
 print("cites=%d bibitems=%d labels=%d refs=%d figures=%d inputs=%d"
       % (len(cited), len(bibitems), len(labels), len(refs), len(gpaths), len(inputs))
       + supp_stats)
+
 if problems:
     print("\nPROBLEMS (%d):" % len(problems))
     for p in problems:
