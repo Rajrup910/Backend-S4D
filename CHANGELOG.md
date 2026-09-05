@@ -1763,6 +1763,561 @@ guarantee and this is what that costs.
   2026-09-05), closing audit item A7 ahead of S13.
 
 
+### S13 — external inference engine, run (2026-09-05)
+
+Run by the user on their own GPU after the S12 build. `extract_external_predictions.py` scored
+**11,982 BCN-20000** and **2,903 MSKCC** images with the six frozen HAM-only CNN checkpoints under
+24-view TTA, writing 12 per-architecture matrices to `results/external/predictions/`. Pre-flight
+`--stage pre_s13` passed 27/27 at the end of the run (`results/external/s13_run_20260905_073529.log`).
+BCN is 11,982 and not the manifest's 12,413 because the pre-registered `scc` exclusion drops 431
+images; the S13 acceptance criterion is met against the *adapted* manifest, which is what the
+checkpoints can actually score.
+
+**One S13 deliverable was still a stub when S14 opened**: `assemble_external_ensemble.py` printed a
+plan and wrote nothing, so no ensemble existed to analyse. S14 implemented it (below) rather than
+leaving the gap unrecorded.
+
+
+### S14 — three-centre dose-response replication, Workstream E1 (2026-09-05)
+
+**No test read.** `results/test_pass_receipt.json` still records `n_executions: 2` and no rerun
+reason. The HAM arm is the OOF panel (`research/predictions_oof_tta`, 6,981 rows), as in S12.
+
+**Built.**
+
+- `research/external/assemble_external_ensemble.py` (was a 534-byte stub). Uniform 6-arch
+  soft-vote, then the deployed HAM-OOF Dirichlet map from `frozen_params.load_dirichlet()` --
+  zero target-domain fitting. Writes `results/external/predictions/ensemble_dirichlet_{cohort}.csv`.
+  It does **not** reuse `research.ensembling.data.load_split_matrix`, whose `_lesion_lookup()` reads
+  the HAM split file and would return missing or colliding lesion IDs on an external cohort; the S13
+  CSVs already carry `lesion_id`/`age_approx` and alignment is done against those. Nulls are not
+  imputed: MSKCC populates `lesion_id` for only ~28% of rows, and the pre-registration's
+  `lesion_grouping` rule makes each null its own singleton cluster (`effective_lesion_id`), so
+  BCN resolves to 3,454 lesions and MSKCC to 2,885. `--check` re-validates without rewriting.
+- `research/external/eval_age_rule_transfer.py` (was a 791-byte stub). Claim A, Claim B, the
+  melanoma-only mix control, the zero-shot frozen-lambda operating point, the descriptive lambda
+  sweep, the dose-response ordering and the one confirmatory test. Intervals come from
+  `research/stats/intervals.py` (exact Clopper-Pearson below 30 events, lesion-grouped bootstrap
+  above) and are never re-invented.
+
+**Cohort descriptives reproduce the pre-registered skew table**, computed not restated:
+BCN `<40` **114** escalating lesions / 618 (18.4%) against the plan's 115 / 18.6% -- the missing one
+is the single under-40 `scc`; MSKCC **36** / 756 (4.8%), all melanoma. Pooled under-40 escalating
+lesions **150**, not 151, after the SCC exclusion -- still a formally powered primary endpoint.
+Skew ratios (60+ over `<40`, lesion level): BCN **3.83x**, MSKCC **6.54x**, HAM **8.45x**. HAM's is
+larger than the plan's 7.33 because it is computed lesion-level on the OOF panel being scored rather
+than image-level on the training prior; the ordering is identical either way.
+
+**Claim A FAILS.** Under-40 escalation-mass AUC is **0.895** [0.837, 0.944] on HAM, **0.791**
+[0.726, 0.843] on BCN and **0.790** [0.703, 0.867] on MSKCC -- a spread of **0.105**, not the
+predicted flatness. The ranking signal does *not* survive the move to another centre intact.
+
+**The within-cohort reading is a different claim, and it is worth separating.** Inside each centre
+the under-40 band is not uniformly the weakest: HAM `<40` 0.895 vs 60+ 0.934 (worst, as S5 found),
+BCN 0.791 vs 0.795 (flat), MSKCC 0.790 vs 0.694 -- **under-40 is MSKCC's *best*-ranked band**. So
+"under-40 has the weakest escalation ranking", already weakened on test in S9, does not replicate
+externally at all.
+
+**Claim B FAILS AND REVERSES.** Predicted BCN > MSKCC ~ HAM. Observed: HAM **0.547** [0.391, 0.708]
+> MSKCC **0.333** [0.186, 0.510] > BCN **0.279** [0.179, 0.382] -- the exact reverse, with HAM's and
+BCN's intervals not overlapping. Spearman(skew, sensitivity) = **+1.00** against a predicted
+negative (n = 3, descriptive, no p-value computed or implied). The within-cohort age gap
+(`<40` minus 60+) is BCN **-0.131**, MSKCC **+0.078**, HAM **-0.191** -- **non-monotonic in skew**.
+
+**The class-mix confound does not explain it.** Melanoma-only under-40 sensitivity -- the
+pre-registered mix-controlled primary -- gives HAM 0.490, MSKCC 0.333, BCN 0.274: the same reversed
+ordering. Nor does the analysis unit: at lesion level (mean probability per lesion, declared as a
+robustness check before it was computed) the reversal widens to HAM 0.500, MSKCC 0.333, **BCN 0.211**.
+
+**Contingency fired**, from the four the v2 plan enumerated before the data: *A fails and the
+ordering is non-monotonic -- report the three point estimates with intervals, drop the trend
+language, offer no post-hoc explanation.* The report says so in
+`verdict.preregistered_contingency_fired`, and the table caption and both figure subtitles are
+generated from the computed values, so no float can end up asserting a result the numbers do not
+support.
+
+⚠️ **a design limitation, stated as a limitation and not as a rescue.** The dose variable is
+entangled with cohort-level transfer quality: BCN has the lowest skew *and* is the centre the frozen
+ensemble transfers to worst (all-ages Macro-F1 **0.402** against HAM's 0.784), so its under-40
+sensitivity is not a clean read of the skew mechanism. This is recorded in
+`verdict.design_limitation` explicitly as something that makes the test non-decisive -- it is
+**not** grounds for keeping the hypothesis, and S16 must not write it up as one.
+
+**What does transfer: the operating point.** The frozen per-band lambda, applied zero-shot with
+nothing fitted on target data, raises under-40 escalation sensitivity in all three centres -- HAM
+0.547 -> **0.625**, BCN 0.279 -> **0.352**, MSKCC 0.333 -> **0.389** -- at a referral-rate cost of
++0.024 / +0.027 / +0.019 and 5 / 27 / 2 cases rescued. On BCN the under-40 Macro-F1 also rises
+(0.358 -> 0.384). This is the first *same-modality* evidence for the rule; S8b's PAD probe was
+confounded by an inverted prior, and this is not.
+
+⚠️ **the pre-registered confirmatory test is structurally one-sided, and the report says so.**
+`E1_under40_sens_frozen_lambda_vs_argmax` on BCN gives exact McNemar p = **1.49e-08**, Holm upper
+bound over the 5-member family **7.45e-08** (E0 withdrawn at p = 1.0, denominator held at 5 -- the
+bound is `min(1, 5p)`, which holds whatever E2/E3/E4 turn out to be, since none of them has a
+computed p-value yet). But adding lambda >= 0 to the escalating classes can only move a prediction
+*toward* them, so `only_argmax_caught` is structurally **0** in all three cohorts and the exact p
+reduces to 2*0.5^b in the number of rescues b. It certifies that cases were rescued, not that the
+rule is worth deploying. The deployable claim is the sensitivity/referral trade above, and the
+manuscript must argue from that.
+
+**Descriptive lambda sweep** (target-fitted, therefore not a transfer result). The cost-minimising
+lambda in the under-40 band is 0.24 on HAM -- reassuringly close to the frozen 0.26, which is a
+sanity check on the sweep -- but 0.12 on MSKCC and 0.91 on BCN. In the older bands under extreme
+prior shift it saturates at or near the grid ceiling (BCN 0.98 / 1.00, MSKCC 0.97 / 0.99), i.e. the
+target-optimal operating point lies outside the range HAM's fit ever explored. Another way of seeing
+that the operating point, unlike the direction of the intervention, does not transfer.
+
+**Bugs found and fixed while building this.**
+1. **Silent key collision in the merged result rows.** `research/stats/intervals.Proportion.as_dict()`
+   emits `n_lesions` for the *conditioning* set (escalating cases only); spread beside the band-level
+   prevalence dict it overwrote the band lesion count, so `claim_b` reported HAM `<40` as 34 lesions
+   instead of 907. Renamed to `n_lesions_positive` at the source of the collision. Prevalences and
+   skew ratios are computed from separate keys and were never affected.
+2. **Ledger p-value rounded to zero.** `round(p, 6)` wrote the 1.49e-08 exact McNemar p into
+   `research/experiments.csv` as `0.0`. Now formatted with `:.6g`.
+3. **LaTeX that would not compile.** `\texttt{E1_under40_...}` -- `\texttt` does not make `_`
+   literal -- and `$p = 1.49e-08$`, which renders as an italic *e* in math mode. Both fixed;
+   `_p_tex()` now formats every p-value as `1.49 \times 10^{-8}`.
+4. **Figure captions asserting a refuted claim.** The first draft titled panel (a) "decision rule
+   tracks skew" and drew a trend line through three points whose ordering had just reversed --
+   exactly the caption/figure mismatch class S10's post-compile pass caught. Both subtitles are now
+   generated from the computed values and the connecting line is gone, the non-monotonic contingency
+   forbidding trend language.
+
+**Idempotence.** `write_ledger` prunes its own prior `E1_*` rows before writing, so re-running the
+analysis replaces its 38 `session_post_s11` rows rather than duplicating them
+(`research/experiments.csv` stays at 311 lines across re-runs). Same motivation as
+`run_part_a.py --comparisons-only`.
+
+**Outputs.** `results/external/age_rule_transfer_report.json`, four CSVs
+(`e1_claim_a_escalation_mass_auc`, `e1_claim_b_argmax_sensitivity`, `e1_lambda_transfer`,
+`e1_lambda_sweep_descriptive`), `paper/tables/external_table_bcn_age_replication.tex`,
+`paper/figures/external_figure_dose_response.png`, 38 ledger rows.
+Regression-checked at session end: `audit_manuscript.py` **300/300 still pass**,
+`frozen_params --selftest` 6/6, `preflight --stage pre_s13` 27/27, test receipt still at 2 executions.
+
+⚠️ **left for later sessions.** The external family is declared in
+`results/external/analysis_plan_post_s11_v2.json` but **not** in `research/stats/families.py`,
+whose declaration file is a frozen artifact -- adding it there is S17's job, not a change to make
+mid-analysis. E2/E3/E4 still have no computed p-values, which is why S14 reports a Holm *bound*
+rather than the adjusted p; if S15-S17 want the exact adjustment, those three members need
+p-values first.
+
+
+### S15 — PAD-UFES-20 prior shift decoupling, Workstream E2 (2026-09-05)
+
+**No test read.** `results/test_pass_receipt.json` still records `n_executions: 2`. The HAM arm
+uses non-TTA OOF predictions (`research/predictions_oof/`, matching the non-TTA PAD predictions
+in `research/predictions_pad/`). The PAD cohort is all 2,106 images scored by the 6 frozen
+HAM-only checkpoints, unmodified (same matrices S8b produced).
+
+**Bug fixed first:** `eval_pad_prior_decoupling.py` imported `load_dirichlet` from
+`research/xdomain/run_session8b.py`, which loads the **wrong** Dirichlet map
+(`research/calibration/results_oof/fit_state.json`, max|dW|=0.18 vs the deployed map). S12 built
+`research/external/frozen_params.py` as "the only loader for any frozen transfer parameter"
+specifically to stop this class of bug, but this E2 script pre-dated S12 and bypassed it entirely.
+Fixed to use `fp.calibrate()` (deployed map from `research/selective/results_oof/fit_state.json`).
+Also added experiment logging (6 rows) and the confirmatory McNemar test for the Holm family
+member `E2_em_macro_f1_vs_raw`.
+
+**Implicit source prior** estimated from the mean predicted distribution of the 6-model
+non-TTA OOF soft-vote on HAM (6,981 rows): `nv` 0.510, `mel` 0.100, `bcc` 0.069, `akiec` 0.066
+— the model's belief about HAM class frequencies. Oracle PAD target prior: `bcc` 0.401,
+`akiec` 0.347, `nv` 0.116, `mel` 0.025, `df` 0.0, `vasc` 0.0 — essentially the inverse of HAM's
+`nv`-dominated distribution.
+
+**Results** (`results/external/pad_prior_decoupling_report.json`,
+`paper/tables/external_table_pad_prior_shift.tex`):
+
+| Variant | Deployable | Macro-F1 | Esc. Sens | Mel. Recall | Missed |
+|---|---|---|---|---|---|
+| Raw Soft-Vote | Yes | **0.167** | 0.357 | 0.115 | 1,047 |
+| Raw Dirichlet (deployed) | Yes | 0.130 | 0.221 | 0.115 | 1,268 |
+| Saerens EM Prior | Yes (deployable) | 0.102 | 0.416 | 0.000 | 951 |
+| Oracle Prior Correction | No (ceiling) | **0.253** | 0.895 | 0.058 | 171 |
+| Dirichlet then EM | Yes | 0.124 | 0.122 | 0.000 | 1,428 |
+
+**The deployable EM correction fails catastrophically.** Saerens EM converges (109 iterations)
+but to a wildly wrong target prior: `df` **0.481** (truth 0.0%), `bcc` 0.125 (truth 40.1%),
+`mel` ≈ 0.0 (truth 2.5%), `nv` ≈ 0.0 (truth 11.6%). The EM assumption — that the model's
+class-conditional likelihoods P(x|y) are preserved under domain shift — is violated: dermoscopy
+→ smartphone transfer changes the features themselves (optical collapse), not just the class
+frequencies. The EM therefore converges to a fixed point that is internally consistent with the
+model's beliefs but externally wrong.
+
+**The oracle ceiling tells the decomposition story.** With the true PAD class frequencies,
+Macro-F1 rises from 0.167 to **0.253** — a 52% relative improvement, proving prior shift is a
+real component of the collapse. But 0.253 is still catastrophically low, confirming that
+**optical feature collapse accounts for the majority of the transfer gap.** The Dirichlet map
+makes things worse (0.167 → 0.130) because it was fitted to push HAM's under-confident soft-vote
+upward; on PAD's inverted prior the same push amplifies the wrong classes.
+
+⚠️ **Confirmatory member `E2_em_macro_f1_vs_raw`: significant in the WRONG direction.**
+McNemar χ² = 98.73, p = **2.89e-23**, Holm bound 1.45e-22 (5-member family, E0 at p=1.0).
+Only-raw-correct = **321**, only-EM-correct = **113**. The EM correction significantly
+*worsens* classification. This enters the Holm family as a significant negative result, not
+as evidence for the hypothesis.
+
+⚠️ **Two constraints for S16's write-up:**
+1. The dose variable is entangled with transfer quality. BCN has the lowest skew and is the
+   centre the ensemble transfers to worst (all-ages Macro-F1 0.402 vs HAM 0.784), so its
+   under-40 sensitivity isn't a clean read of the mechanism. That's in `verdict.design_limitation`
+   as a reason the test is non-decisive — not as grounds to keep the hypothesis. Writing it up
+   as a rescue would be the mistake.
+2. The E1 confirmatory member is structurally one-sided. λ ≥ 0 can only add escalating
+   predictions, so `only_argmax_caught` is structurally 0 and p reduces to 2·0.5^b in the
+   rescue count. It certifies rescues happened, not that the rule is worth deploying. Argue
+   from the sensitivity/referral trade instead: the operating point does transfer (HAM 0.547→0.625,
+   BCN 0.279→0.352, MSKCC 0.333→0.389 at +0.024/+0.027/+0.019 referral). First same-modality
+   evidence; S8b's PAD probe had an inverted prior.
+
+
+### S16 — table/figure consolidation and manuscript integration (2026-09-05)
+
+**No test read.** `results/test_pass_receipt.json` still records `n_executions: 2`, no rerun
+reason. This session ran the outstanding half of the plan's S15 (consolidation, which the
+session logged as "S15" had replaced with Workstream E2) and then S16 proper.
+
+**A9 is closed.** `scripts/external/preflight.py --stage pre_s17` now **passes 34/34**; it
+failed on exactly three items at session start (the two composite tables, and "manuscript
+cites no external table or figure").
+
+#### Consolidation (the plan's S15)
+
+- **`research/external/render_composite_tables.py`** is the single renderer the plan asked
+  for. It reads the six frozen external JSON reports and emits two `table*` floats with
+  `\multicolumn` panel headers, replacing six separate floats (six captions, six notes
+  blocks, six page-break gaps):
+  - `paper/tables/external_table_validity_battery.tex` — (A) three-centre dose--response
+    (E1), (B) PAD prior decoupling (E2), (C) three-tier triage (E3), (D) decision-curve net
+    benefit (E6). 9 columns, `\scriptsize`, `\tabcolsep` 3.2pt.
+  - `paper/tables/external_table_safety_nets.tex` — (A) Mahalanobis detector + conformal set
+    widening (E4), (B) Fitzpatrick strata (E5). 9 columns, `\footnotesize`.
+  - Filenames are **not** free: `preflight.py:S17_TABLES` names both, and it was written
+    before either existed.
+  - The renderer computes nothing, reads no split and writes no ledger row — the standing of
+    `run_part_a.py --table-only`. `--check` re-renders in memory and fails on drift.
+  - It carries its own **column-count audit** (`_column_audit`), which counts `\multicolumn`
+    spans and refuses to write a table whose rows do not sum to the declared width. It caught
+    six malformed rows on the first run; there is no LaTeX compiler here to catch them later.
+- **Two rendering corrections against the superseded per-analysis tables:**
+  1. `eval_fitzpatrick_fairness.py` sets Tier-1 sensitivity, point-FRR and set-FRR to `0.0`
+     when a stratum has no Tier-1 lesion, then suppresses only the hardcoded groups `V` and
+     `VI`. The **unlabelled stratum has `n_tier1 = 0`** and so was printed as
+     `0.000 [0.00, 0.00]` — a fabricated value for a quantity that does not exist. The
+     composite drives suppression off the data (`powered`, `n_tier1`) and off the gates
+     imported from `research/selective/fairness.py`, and names *which* gate failed.
+  2. E1's panel A is transposed to one row per centre ordered by ascending prior skew, which
+     is the axis the dose--response hypothesis is about.
+- **Figures 9 → 7 while adding two external ones.** `figure4_risk_coverage` +
+  `figure6_abstention_tradeoff` merged into `paper/figures/figure4_selective.png`
+  (`assemble_figures.build_figure4_selective`, 2086×784, panels (a)/(b));
+  `figure3_decision_curve_analysis` **replaced** by `external_figure_decision_curve.png`, its
+  superseding corrected curve. Final main-text set: architecture, reliability, external DCA,
+  selective (merged), conformal coverage, dose--response, Grad-CAM.
+  - **Deviation from the plan:** the plan predates S14 and assumed two external figures.
+    There are three. `external_figure_dose_response.png` carries the E1 headline and is in the
+    main text; `external_figure_case_atlas.png` is qualitative and moved to the supplement.
+    Count still lands on 7.
+  - **Deviation:** the plan's summary line said "10 → 5 tables". The manuscript's ten existing
+    floats are not duplicative in the way figures 4 and 6 were, and the plan's own S16 step 1
+    says to leave the existing structure alone so the audit holds. Main text is therefore
+    **12 tables**: the ten that were there, plus the two composites that replaced what would
+    otherwise have been seven orphaned external floats.
+
+#### Manuscript integration (S16)
+
+- **New Results subsection IV-K, "Three centres: the operating point transfers, the mechanism
+  does not"** (`sec:results-battery`), inserted after the external-PAD subsection so IV-A…IV-J
+  are untouched. Carries the E1 dose--response, the decision curves and the triage read.
+  Written against the two constraints S15 recorded: the dose variable's entanglement with
+  transfer quality is stated as a **design limitation, not a rescue**, and the confirmatory
+  McNemar is explicitly **not** leaned on (λ ≥ 0 makes it one-sided by construction) — the
+  argument is the sensitivity/referral trade instead.
+- **Methods `sec:external-data` extended** to describe BCN-20000 and MSKCC: the lesion-grouped
+  14,885-row split, the pre-registered `scc` exclusion (431 images, hence 11,982 not 12,413),
+  MSKCC's three-class label space, and the pre-registration itself including deviation D2 (v1
+  named the wrong OOF Dirichlet fit). One new reference, `combalia2019bcn20000`.
+- **New Discussion subsection, "What exports is the intervention, not the explanation."** The
+  transportability paragraph the plan asked for, written the way S14 said it had to be: the
+  operating point transports, the mechanism does not, and the deployment corollary is that a
+  site inherits the rule's *form* and re-fits its scalar locally (target-fitted optima 0.12
+  and 0.91 against 0.26 frozen).
+- **PAD prior-shift decomposition** added to IV-J from E2: oracle prior lifts Macro-F1
+  0.167 → 0.253 (prior shift is real), but 0.253 is still a collapse (optics dominate), and
+  the deployable label-free EM correction is significant **in the wrong direction**.
+- **Related Work 6 subsections + a trailing paragraph → 4 run-in paragraphs.** All 36
+  citation keys preserved (checked programmatically before the swap; a dropped key would
+  leave a dangling bibitem).
+- **Limitations 10 items → 5 grouped ones**, adding the external ones (MSKCC label space,
+  BCN as worst-transfer centre, non-decisive dose test, locally wrong λ magnitude) and
+  **correcting a claim that S14 had already falsified**: the old text listed "a same-modality
+  replication of the age effect" as future work.
+- **Abstract** gains the three-centre sentence; **Contributions** gains an item for the
+  pre-registered replication and one clause for the prior/optics decomposition.
+- **Checklists and the atlas moved to the supplement.** `build_supplementary.py` now emits
+  S1 CLAIM (44 items), S2 the TRIPOD+AI 23-domain cross-walk, S3 the case atlas. One new
+  reference, `collins2024tripodai`; the manuscript states both checklists are pointer indices
+  rather than results, which is why they are supplementary.
+- **All three `TODO` markers resolved.** Author block completed for a single-author
+  submission; repository URL set to the actual git remote
+  (`https://github.com/Rajrup910/Backend-S4D-`); acknowledgements written from repository
+  facts (dataset attributions, and the 8 GB laptop GPU with the design choices it forced).
+  ⚠️ **The author must confirm the repository is public and carries the artifacts before
+  submission** — the URL is real but its visibility is not something this session can check.
+- `\usepackage{balance}` + `\balance` before the bibliography, per the plan's compression step.
+
+#### Bugs found and fixed
+
+1. ⚠️ **`scripts/external/backfill_ledger.py` truncated `research/experiments.csv` to its
+   header.** `_drop_previous_backfill` opened the ledger `"w"` (truncating) and *then* threw
+   inside `writerows`, because the ledger's header cell is literally `﻿"timestamp"` — a
+   BOM baked **inside** the quoted field by an earlier round-trip, which `utf-8` decoding
+   turns into a `DictReader` key that is not in `EXPERIMENT_FIELDS`. Restored from `HEAD`
+   (272 rows) and rebuilt: `write_ledger()` from the frozen E1 report regenerated its 38 rows
+   with no recomputation, and `eval_pad_prior_decoupling.py` was re-run and reproduced
+   `pad_prior_decoupling_report.json` and its table **byte-identically** (sha256
+   `e3b882b0…`, `c3226e4f…`). Now **69** `session_post_s11` rows.
+   - Fixes: read with `utf-8-sig`; validate the column set *before* opening for write; stage
+     the rewrite through a temp file and `replace()` it into place, so a failure anywhere
+     leaves the original intact. The corrupt header was repaired once, in place.
+2. ⚠️ **The backfill was writing a stale duplicate of E2.** S15 gave
+   `eval_pad_prior_decoupling.py` its own logging, but the S12 backfill still wrote its own
+   copy — from the report as it stood *before* that script was repointed to the deployed
+   Dirichlet map. The ledger held `E2_prior_decoupling[Raw Dirichlet Calibrated]` at 0.1325 /
+   1264 beside `E2_prior_shift[...]` at 0.1303 / 1268. The E2 arm is retired; `BACKFILL_PREFIXES`
+   is now the exact set of prefixes the script itself writes, so it can never again delete a
+   row another script logged at run time.
+3. ⚠️ **The manuscript's PAD paragraph was computed under the wrong Dirichlet map.** S8b loads
+   `research/calibration/results_oof/fit_state.json`; the deployed map is
+   `research/selective/results_oof/fit_state.json` (DATASET_REFINING §2a). Tolerable while
+   those numbers stood alone — not tolerable once the composite table put the same quantities
+   under the deployed map on the same page. New module
+   **`research/external/eval_pad_age_rule_deployed.py`** recomputes the probe under the
+   deployed map, records the superseded arm beside it, and **cross-checks that
+   `frozen_params.apply_age_rule` and `run_session8b.apply_age_rule` produce identical
+   predictions** (they do). `results/external/pad_age_rule_deployed.json`, 6 ledger rows, no
+   test read. The maps differ by up to **0.0967** in calibrated probability on PAD.
+   | quantity | superseded (S8b map) | deployed map |
+   |---|---|---|
+   | Dirichlet Macro-F1 | 0.1325 | **0.1303** |
+   | Dirichlet escalation sens. | 0.2231 | **0.2207** |
+   | Dirichlet missed serious | 1,264 | **1,268** |
+   | + age rule Macro-F1 | 0.1770 | **0.1723** |
+   | + age rule escalation sens. | 0.5851 | **0.5679** |
+   | + age rule missed serious | 675 | **703** |
+   Prose and Limitations updated to the deployed column; `audit_manuscript.py` repointed to
+   the new artifact and now asserts the two maps still differ (so the fix cannot silently
+   become moot) and that the rule still trades referrals for sensitivity.
+4. **`validate_structure.py` could not parse a `@{}`-delimited column spec.** Its
+   `\begin{tabular}\{([^}]*)\}` stopped at the `}` inside `@{}`, so every row of both
+   composite tables was reported as "spec says 0". The capture now allows one level of
+   nesting.
+5. **`validate_structure.py` flagged underscores inside `\input`/`\includegraphics`.**
+   Filenames are not typeset; the check now strips those arguments before looking.
+6. **A literal `0x08` byte reached `paper/manuscript.tex`** — `"\balance"` written from a
+   script without a raw-string prefix. Only the supplementary was screened for stray bytes;
+   the manuscript is now screened for control characters too, which is how this class of bug
+   gets caught next time rather than at compile.
+7. **`build_overleaf_bundle.py` shipped the supplement without its dependencies.** It scanned
+   only the manuscript, so the TRIPOD table and the case-atlas figure the supplement gained
+   this session would have been missing from the upload. It now scans both documents and
+   de-duplicates. Bundle: **16 files, 5.70 MB** (was 12 / 3.44 MB).
+8. **A rounding slip inherited from the S14 changelog entry.** BCN's under-40 referral cost is
+   **+0.026**, not the +0.027 recorded there (`delta_referral_rate = 0.0264765784`); the
+   dependent "2.7 additional referrals per hundred" became 2.6. Both are now asserted.
+
+#### Verification at session end
+
+| check | result |
+|---|---|
+| `research.ablation.audit_manuscript` | **345 checks, all pass** (300 → 345) |
+| `research.ablation.validate_structure` | PASSED — 49 cites / 49 bibitems, 40 labels / 40 refs, 7 figures, 5 inputs |
+| `scripts/external/preflight.py --stage pre_s17` | **34 checks, PASSED** (3 failures at session start) |
+| `research.external.render_composite_tables --check` | both tables up to date |
+| `research.external.frozen_params --selftest` | 6 checks, reproduces `val_macro_f1_rule = 0.7713320988516693` |
+| `research.ablation.build_overleaf_bundle` | 16 files, 5,701,553 B uncompressed |
+| test receipt | `n_executions: 2`, no rerun reason — unchanged |
+
+The audit gained **45 checks**: the two composite tables joined `_TABLES`, and a new external
+block asserts E1/E2/E3/E4/E5/E6 literals plus **13 directional claims** — Claim A still fails,
+the Claim B ordering is still reversed, the melanoma-only control still does not change the
+conclusion, under-40 is still the *best*-ranked band within MSKCC, `only_argmax_caught` is
+still structurally 0, BCN still transfers worse than HAM, the all-ages net-benefit gain still
+excludes zero while the under-40 one still straddles it and still turns negative by
+$p_t = 0.20$, the oracle prior still beats raw while label-free EM still hurts, PAD still costs
+more biopsies per malignancy, conformal sets still widen under shift while serious coverage
+still degrades, Fitzpatrick I–IV is still non-monotonic, and the unlabelled stratum still holds
+no Tier-1 lesion. Negative-tested: perturbing one manuscript literal (`0.402` → `0.412`) makes
+the audit fail with the right message.
+
+#### Page budget: measured, and the target is not reachable by compression
+
+`research/ablation/estimate_pages.py` (new) estimates the compiled length from IEEEtran
+geometry, because there is still no LaTeX toolchain here and every compression decision so
+far has been taken blind. It converts everything to *column-lines* (one page =
+`2 x TEXT_HEIGHT / BASELINE`), measures prose after stripping markup, takes figure heights
+from the real PNG aspect ratios and table heights from row counts at each table's own font
+size, and reports a sensitivity band over the two constants it is most exposed to (average
+glyph width, leading). It is a geometry model, not a compile: no page breaks, no float
+stranding. Treat it as +/- 1 page and prefer the breakdown to the total.
+
+**Result: ~24 pages, band 22-26, against a plan target of 11.**
+
+| | column-lines | pages |
+|---|---|---|
+| title block | 34 | 0.28 |
+| prose | 1,965 | 16.2 |
+| floats (19) | 737 | 6.1 |
+| bibliography (49) | 171 | 1.4 |
+| **total** | **2,906** | **24.0** |
+
+**The decisive number: delete every float in the paper and it is still ~18 pages.** The
+length is prose, not furniture, so the plan's route to 11 --- consolidate floats, tighten
+Related Work, group Limitations --- cannot get there. All of it was done this session and it
+is worth roughly two pages in total. Six figure widths were trimmed on top of that
+(architecture 0.92 -> 0.74, reliability 0.88 -> 0.72, selective 0.94 -> 0.86, Grad-CAM
+1.0 -> 0.90, dose-response 0.92 -> 0.82, decision curve 0.98 -> 0.94), worth 0.25 pages.
+
+⚠️ **Reaching 11 pages now means removing findings, which is a scope decision and is not
+taken here.** The costed menu, from `--verbose` (prose only; each candidate's floats are
+extra):
+
+| candidate | prose | its floats | total |
+|---|---|---|---|
+| External evaluation (PAD, IV-J) | 1.03 | 0.50 (`tab:external_safety`) | 1.53 |
+| Statistical protocol and frozen artifacts (III-J) | 0.95 | --- | 0.95 |
+| Subgroup analysis (IV-G) | 0.85 | 0.28 (`tab:agegap`) | 1.13 |
+| Three centres (IV-K) | 0.83 | 0.80 + 0.44 + 0.36 | 2.43 |
+| Conformal prediction (IV-F) | 0.77 | 0.22 + 0.19 + 0.14 | 1.32 |
+| Contributions list (I-A) | 0.74 | --- | 0.74 |
+| Explainability (IV-I) | 0.32 | 0.40 (`fig:gradcam`) | 0.72 |
+| Intersectional slices (IV-H) | 0.24 | --- | 0.24 |
+| Out-of-fold protocol (III-B) | 0.49 | 0.37 (`tab:oof_vs_val`) | 0.86 |
+
+Migrating the four genuinely supporting items --- Explainability, Intersectional, the
+conformal method comparison and the out-of-fold protocol detail --- buys about 3 pages and
+lands near 21. The gap to 11 is structural: the manuscript currently carries an
+ablation/calibration methods paper and a subgroup-failure/mitigation/replication paper in one
+document. Splitting them, or targeting a venue without a ten-page limit, is the decision to
+take; MedIA has no hard limit, TMI charges over ten pages whatever we do.
+
+⚠️ Note for whoever acts on this: migrating a Results subsection into `supplementary.tex`
+requires extending `audit_manuscript.py`'s `FULL` haystack to include the supplement, or every
+`present()` check on a literal that moves will fail.
+
+#### Left for S17
+
+- Extend `audit_manuscript.py` further if desired; the composite tables are already in
+  `_TABLES`, so `present()` and `row()` can see them.
+- Regenerate `results/frozen_artifacts.json` via `build_paper_artifacts.py` and **verify the
+  `analysis_plan` sibling key survives** (the bug that nearly deleted it once).
+- Rewrite §2 and §5 of `DATASET_REFINING.md` to measured reality.
+- ⚠️ **Still never compiled here.** Upload `paper/manuscript_overleaf.zip` and compile both
+  documents. Page count remains unknown; if it overruns, the cleanest split is the supplement
+  already created plus the Intersectional and Explainability subsections.
+- ⚠️ `research/xdomain/run_session8b.py` still loads the calibration map. The manuscript no
+  longer depends on it for any calibrated quantity — only the per-member raw Macro-F1 values,
+  which no calibrator touches — but the script itself is still wrong and its report still
+  carries the superseded figures.
+
+
+### S17 — close-out (2026-09-05)
+
+**No test read.** `results/test_pass_receipt.json` still records `n_executions: 2`, no rerun
+reason, and `build_post_s11_artifacts.py` now fails loudly if either ever changes.
+
+#### The last stub is implemented
+
+`research/external/build_post_s11_artifacts.py` was the fifth of the five printf stubs audit
+finding A5 identified, and the only one still outstanding. It now does the job
+`results/frozen_artifacts.json` does for the in-distribution work, which the external battery
+had no equivalent of — its reports, both pre-registration files, its composite tables and its
+14 external prediction matrices were traceable only by reading this changelog.
+
+Two outputs, both derived, neither hand-edited:
+
+- **`results/external/post_s11_artifacts.json`** — SHA-256 over **35 artifacts** in six groups
+  (3 pre-registration, 9 reports, 4 CSV tables, 14 prediction matrices, 2 paper tables, 3
+  paper figures), plus a verification of both plan hashes against `post_s11_provenance.json`
+  and a per-workstream ledger count.
+- **`results/external/reviewer_defense_package.md`** — the account a reviewer would otherwise
+  have to assemble from six JSON reports: pre-registration version and its seven deviations,
+  test-read discipline, per-workstream ledger coverage, and the verdicts.
+
+The verdicts are read from the reports' own `verdict` fields rather than paraphrased, so the
+package states that E1 Claim A failed (spread 0.105), that Claim B failed with its ordering
+reversed, and that E2's confirmatory member was significant in the wrong direction. A
+close-out artifact that could only report success would be worthless.
+
+`--check` re-verifies hashes, receipt and coverage without writing anything, so it can gate a
+build.
+
+**Ledger coverage (A10), re-verified:** **75** `session_post_s11` rows — E0 ×1 (withdrawal),
+E1 ×38, E2 ×6, E2b ×6, E3 ×5, E4 ×9, E5 ×7, E6 ×3. **E7 has none, by design**: the case atlas
+selects exemplars and computes no metric, so there is no row to log. That is declared in
+`NO_LEDGER_BY_DESIGN` and printed in the package, rather than left looking like a gap — the
+script fails only on a workstream that has neither rows nor a stated reason.
+
+#### Frozen artifacts regenerated, and the key that nearly died survived
+
+`build_paper_artifacts.py` was re-run and the result diffed against a snapshot taken first.
+The `analysis_plan` sibling key S9 wrote — the one the S11 bug would have deleted — **is
+present and byte-identical**, all **34** prediction hashes are unchanged, and no file was
+added or removed. This was the specific check the runbook told S17 to make.
+
+#### `results/README.md` covered the paper but not the battery
+
+The canonical index listed 13 artifacts and **not one of them was external**, even though
+`results/external/` now backs two composite tables, three figures and two Results
+subsections. Six rows added (the v2 plan, the provenance record, the eval reports, the
+external prediction matrices, the new manifest and the defence package), and the closing
+paragraph now names all four scripts that read the directory rather than write it —
+`audit_manuscript`, `validate_structure`, `preflight --stage pre_s17` and
+`build_post_s11_artifacts --check` — plus `estimate_pages` for the length question.
+
+#### `DATASET_REFINING.md` §2 and §5 rewritten to measured reality
+
+- **A5** closed: no stubs remain in the repository.
+- **A8** closed: the run took the re-costed GPU budget, not the original estimate.
+- **A10** updated from "30 rows" to the measured 75, with the per-workstream split and a note
+  that the backfill's E2 arm was retired in S16 after it was found writing a stale duplicate.
+- **§5** replaced with a planned-versus-actual table, the close-out verification commands, and
+  three open items nobody in the plan owns.
+
+The header no longer says "remaining work is S12–S17"; it says what is actually left, which is
+a compile this machine cannot perform.
+
+#### Verification at close-out
+
+| check | result |
+|---|---|
+| `research.ablation.audit_manuscript` | **348 checks, all pass** |
+| `research.ablation.validate_structure` | PASSED — 49 cites / 49 bibitems, 40 labels / 40 refs, 7 figures, 5 inputs |
+| `scripts/external/preflight.py --stage pre_s17` | **34 checks, PASSED** |
+| `research.external.build_post_s11_artifacts` | 35 artifacts, both plan hashes verified, 75 ledger rows |
+| `research.external.render_composite_tables --check` | both composite tables up to date |
+| `research.external.frozen_params --selftest` | 6 checks, reproduces `val_macro_f1_rule = 0.7713320988516693` |
+| `research.ablation.build_paper_artifacts` | 34/34 hashes unchanged, `analysis_plan` key intact |
+| `research.ablation.build_overleaf_bundle` | 16 files, 5.70 MB |
+| `research.ablation.estimate_pages` | ~24 pages against an ≈11-page target — see §S16 |
+| test receipt | `n_executions: 2`, no rerun reason |
+
+#### What remains, and who owns it
+
+1. ⚠️ **Compile the bundle.** `paper/manuscript_overleaf.zip` has never been compiled — there
+   is no LaTeX toolchain here. Both `manuscript.tex` and `supplementary.tex` need to build.
+   The page estimate is geometry, not a compile.
+2. ⚠️ **The page budget is unresolved and cannot be resolved by compression** (§S16). The
+   decision — split the paper, or target a venue without a ten-page limit — is a scope call,
+   not a technical one.
+3. ⚠️ **The repository URL** in the author block is the real git remote, but no script here
+   can check that it is public or that it carries the artifacts the thanks-note promises.
+4. ⚠️ **`research/xdomain/run_session8b.py` still loads the calibration Dirichlet map.** No
+   manuscript number depends on it since S16 repointed them all, but the script and its report
+   are still wrong and will mislead the next reader.
+
+
 ## 11. Known findings that constrain later work
 
 - **The soft-vote ensemble is under-confident, not over-confident.** Mean confidence 0.7048 vs.
@@ -1813,6 +2368,7 @@ guarantee and this is what that costs.
 | Stability bootstrapped for bands that never used the fitted value | `unknown` band printed a bootstrap mean of 0.00 beside an applied (pooled fallback) lambda of 0.59 | Bootstrap only bands that cleared the positives gate | `research/run_session5_agerule.py`, session 6 S5 |
 | Applied-rule ledger row logged `escalation_sens` as `nan` | Wrong metric key — `compute_metrics` nests it at `clinical.binary_sensitivity` | Correct key; pre-fix ledger rows pruned before the final run | `research/run_session5_agerule.py`, session 6 S5 |
 | A val *fit-only* run would have inherited the published ledger session | Rows with no test split behind them, labelled `session2`/`session4` and indistinguishable from published ones | `resolve_fit` refuses the published session for any non-published run; fit-only val arms log as `session2_valfit`/`session4_valfit` | `research/fitsplit.py`, session 6 S4 |
+| E2 Dirichlet map imported from the wrong module | `eval_pad_prior_decoupling.py` used `run_session8b.load_dirichlet()`, loading the calibration-module map (max\|dW\|=0.18 vs deployed) instead of the deployed map `frozen_params` provides | Replaced import with `frozen_params.calibrate()` | `research/external/eval_pad_prior_decoupling.py`, session 15 |
 
 Three latent bugs identified but not yet triggered (session 6 plan, item A.0 — fix-first before any
 K-fold training run):
@@ -1862,6 +2418,8 @@ K-fold training run):
 | Conformal coverage, false reassurance | `research/conformal/results/session4_conformal_report.md` |
 | Consolidated per-phase reports | `results/reports/` |
 | Age-band lambda rule, diagnosis, stability, held-out check | `research/agerule/results_oof/session5_agerule_report.md`, `age_rule_lambda.json` |
+| E1 dose-response replication (claims A, B, λ transfer) | `results/external/age_rule_transfer_report.json`, `e1_*.csv` |
+| E2 PAD prior shift decoupling (raw / EM / oracle) | `results/external/pad_prior_decoupling_report.json` |
 
 **Correction made alongside this document**: CLAUDE.md's session-4 conformal line previously read
 "Mondrian 89.3%/24, RAPS+Mondrian best 92.4%/12" — that predates the L1 Dirichlet-half-split fix
