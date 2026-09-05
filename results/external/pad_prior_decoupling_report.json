@@ -27,6 +27,7 @@
     "vasc": 9.06942805451523e-06
   },
   "em_iterations": 109,
+  "dirichlet_map": "research/selective/results_oof/fit_state.json",
   "results": [
     {
       "variant": "Raw Ensemble (Soft-Vote)",
@@ -93,32 +94,32 @@
     {
       "variant": "Raw Dirichlet Calibrated",
       "deployable": "Yes",
-      "macro_f1": 0.1325,
-      "balanced_accuracy": 0.2961,
-      "accuracy": 0.217,
-      "escalation_sens": 0.2231,
+      "macro_f1": 0.1303,
+      "balanced_accuracy": 0.2931,
+      "accuracy": 0.2137,
+      "escalation_sens": 0.2207,
       "mel_recall": 0.1154,
-      "missed_serious": 1264,
+      "missed_serious": 1268,
       "notes": "Dirichlet map in shifted prior regime",
       "per_class": {
         "akiec": {
-          "precision": 0.2517985611510791,
-          "recall": 0.04794520547945205,
-          "f1": 0.0805523590333717,
+          "precision": 0.24615384615384617,
+          "recall": 0.043835616438356165,
+          "f1": 0.07441860465116279,
           "support": 730,
           "malignancy": "premalignant"
         },
         "bcc": {
-          "precision": 0.8343558282208589,
-          "recall": 0.16094674556213018,
-          "f1": 0.2698412698412698,
+          "precision": 0.8375,
+          "recall": 0.15857988165680473,
+          "f1": 0.26666666666666666,
           "support": 845,
           "malignancy": "malignant"
         },
         "bkl": {
-          "precision": 0.13466334164588528,
+          "precision": 0.13636363636363635,
           "recall": 0.2297872340425532,
-          "f1": 0.16981132075471697,
+          "f1": 0.17115689381933438,
           "support": 235,
           "malignancy": "benign"
         },
@@ -130,16 +131,16 @@
           "malignancy": "benign"
         },
         "mel": {
-          "precision": 0.08571428571428572,
+          "precision": 0.0759493670886076,
           "recall": 0.11538461538461539,
-          "f1": 0.09836065573770492,
+          "f1": 0.0916030534351145,
           "support": 52,
           "malignancy": "malignant"
         },
         "nv": {
-          "precision": 0.18539786710418377,
-          "recall": 0.9262295081967213,
-          "f1": 0.3089542036910458,
+          "precision": 0.18543046357615894,
+          "recall": 0.9180327868852459,
+          "f1": 0.3085399449035813,
           "support": 244,
           "malignancy": "benign"
         },
@@ -279,32 +280,32 @@
     {
       "variant": "Ordering: Dirichlet -> EM Prior",
       "deployable": "Yes",
-      "macro_f1": 0.1266,
-      "balanced_accuracy": 0.3106,
-      "accuracy": 0.2227,
-      "escalation_sens": 0.1309,
+      "macro_f1": 0.1239,
+      "balanced_accuracy": 0.3079,
+      "accuracy": 0.2203,
+      "escalation_sens": 0.1223,
       "mel_recall": 0.0,
-      "missed_serious": 1414,
+      "missed_serious": 1428,
       "notes": "Apply frozen Dirichlet first, then EM",
       "per_class": {
         "akiec": {
-          "precision": 0.19230769230769232,
-          "recall": 0.02054794520547945,
-          "f1": 0.03712871287128713,
+          "precision": 0.15517241379310345,
+          "recall": 0.012328767123287671,
+          "f1": 0.02284263959390863,
           "support": 730,
           "malignancy": "premalignant"
         },
         "bcc": {
-          "precision": 0.8571428571428571,
-          "recall": 0.14201183431952663,
-          "f1": 0.2436548223350254,
+          "precision": 0.8541666666666666,
+          "recall": 0.1455621301775148,
+          "f1": 0.2487360970677452,
           "support": 845,
           "malignancy": "malignant"
         },
         "bkl": {
-          "precision": 0.12288512911843277,
-          "recall": 0.5872340425531914,
-          "f1": 0.203240058910162,
+          "precision": 0.12465116279069767,
+          "recall": 0.5702127659574469,
+          "f1": 0.20458015267175572,
           "support": 235,
           "malignancy": "benign"
         },
@@ -323,9 +324,9 @@
           "malignancy": "malignant"
         },
         "nv": {
-          "precision": 0.26812585499316005,
-          "recall": 0.8032786885245902,
-          "f1": 0.40205128205128204,
+          "precision": 0.2574772431729519,
+          "recall": 0.8114754098360656,
+          "f1": 0.39091806515301086,
           "support": 244,
           "malignancy": "benign"
         },
@@ -338,5 +339,19 @@
         }
       }
     }
-  ]
+  ],
+  "confirmatory": {
+    "family_member": "E2_em_macro_f1_vs_raw",
+    "raw_macro_f1": 0.1669,
+    "em_macro_f1": 0.1018,
+    "macro_f1_delta": -0.0651,
+    "mcnemar_statistic": 98.73041474654377,
+    "p_value": 2.893242373582704e-23,
+    "only_raw_correct": 321,
+    "only_em_correct": 113,
+    "holm_family": "external_replication_family",
+    "holm_family_size": 5,
+    "p_holm_upper_bound": 1.446621186791352e-22,
+    "significant_at_holm_bound": true
+  }
 }

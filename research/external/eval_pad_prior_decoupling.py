@@ -18,8 +18,17 @@ import pandas as pd
 
 from ml.evaluation.metrics import compute_metrics
 from ml.paths import load_class_mapping, resolve
-from research.calibration.methods import apply_calibration
-from research.xdomain.run_session8b import ARCHS, CLASS_CODES, load_dirichlet, load_pad_matrix
+from research.ensembling.data import ARCHS
+from research.ensembling.stats import mcnemar_test
+from research.experiment_log import log_experiment
+from research.external import frozen_params as fp
+from research.xdomain.run_session8b import CLASS_CODES, load_pad_matrix
+
+SESSION = "session_post_s11"
+WORKSTREAM = "E2_prior_shift_decoupling"
+FAMILY_MEMBER = "E2_em_macro_f1_vs_raw"
+FAMILY_SIZE = 5
+ALPHA = 0.05
 
 OUT_DIR = Path("results/external")
 TABLE_DIR = Path("paper/tables")
@@ -113,9 +122,8 @@ def main():
     # 1. Variant (a): No correction (raw unadjusted soft-vote)
     var_a_softvote = evaluate_variant(y_true, ensemble_softvote, "Raw Ensemble (Soft-Vote)", "Yes", "Baseline raw transfer collapse")
     
-    # Also evaluate raw Dirichlet calibrated
-    dirichlet = load_dirichlet()
-    cal_dirichlet = apply_calibration(dirichlet, np.log(np.clip(ensemble_softvote, 1e-12, None)))
+    # Also evaluate raw Dirichlet calibrated (deployed map, not the calibration-module map)
+    cal_dirichlet = fp.calibrate(ensemble_softvote)
     var_a_dirichlet = evaluate_variant(y_true, cal_dirichlet, "Raw Dirichlet Calibrated", "Yes", "Dirichlet map in shifted prior regime")
     
     # 2. Variant (b): Oracle Prior Adjustment
@@ -136,21 +144,48 @@ def main():
     var_order_dir_then_prior = evaluate_variant(y_true, em_on_dirichlet, "Ordering: Dirichlet -> EM Prior", "Yes", "Apply frozen Dirichlet first, then EM")
     
     results = [var_a_softvote, var_a_dirichlet, var_c_em, var_b_oracle, var_order_dir_then_prior]
-    
+
+    # ----- confirmatory test: E2_em_macro_f1_vs_raw (McNemar on correctness) -----
+    pred_raw = ensemble_softvote.argmax(axis=1)
+    pred_em = em_weights.argmax(axis=1)
+    mc = mcnemar_test(y_true, pred_raw, pred_em)
+    holm_bound = min(1.0, FAMILY_SIZE * mc["p_value"])
+    confirmatory = {
+        "family_member": FAMILY_MEMBER,
+        "raw_macro_f1": var_a_softvote["macro_f1"],
+        "em_macro_f1": var_c_em["macro_f1"],
+        "macro_f1_delta": round(var_c_em["macro_f1"] - var_a_softvote["macro_f1"], 4),
+        "mcnemar_statistic": mc["statistic"],
+        "p_value": mc["p_value"],
+        "only_raw_correct": mc["only_a_correct"],
+        "only_em_correct": mc["only_b_correct"],
+        "holm_family": "external_replication_family",
+        "holm_family_size": FAMILY_SIZE,
+        "p_holm_upper_bound": holm_bound,
+        "significant_at_holm_bound": holm_bound < ALPHA,
+    }
+    print(f"\n--- Confirmatory: {FAMILY_MEMBER} ---")
+    print(f"  Raw Macro-F1: {var_a_softvote['macro_f1']:.4f}  ->  EM Macro-F1: {var_c_em['macro_f1']:.4f}  "
+          f"(delta {confirmatory['macro_f1_delta']:+.4f})")
+    print(f"  McNemar: only_raw={mc['only_a_correct']}, only_em={mc['only_b_correct']}, "
+          f"p={mc['p_value']:.6g}, Holm bound={holm_bound:.6g}")
+
     # Print comparison table
     df_res = pd.DataFrame(results)[["variant", "deployable", "macro_f1", "balanced_accuracy", "accuracy", "escalation_sens", "mel_recall", "missed_serious", "notes"]]
     print("\n" + df_res.to_string(index=False))
-    
+
     # Save JSON report
     report_data = {
         "implicit_source_prior_pi_s": dict(zip(CLASS_CODES, pi_s.tolist())),
         "oracle_target_prior_pi_t": dict(zip(CLASS_CODES, pi_oracle.tolist())),
         "em_estimated_prior_pi_t": dict(zip(CLASS_CODES, pi_em.tolist())),
         "em_iterations": iters,
-        "results": results
+        "dirichlet_map": fp.DIRICHLET_STATE,
+        "results": results,
+        "confirmatory": confirmatory,
     }
     (OUT_DIR / "pad_prior_decoupling_report.json").write_text(json.dumps(report_data, indent=2), encoding="utf-8")
-    
+
     # Build LaTeX table
     tex = [
         r"\begin{table}[t]",
@@ -175,11 +210,47 @@ def main():
         r"\vspace{1mm}",
         r"\parbox{\linewidth}{\raggedright \emph{Notes}: Evaluated on all $N=2{,}106$ PAD-UFES-20 images without retraining any weights. "
         r"Implicit source prior $\hat\pi_s$ is estimated from held-out HAM OOF predictions. "
-        r"EM prior estimation uses Saerens et al. (2002) without access to target labels.}",
+        r"EM prior estimation uses Saerens et al.\ (2002) without access to target labels. "
+        r"Dirichlet map: \texttt{selective/results\_oof/fit\_state.json} (deployed, HAM-OOF-fitted). "
+        rf"Confirmatory: McNemar $p = {mc['p_value']:.4g}$, "
+        rf"Holm bound $= {holm_bound:.4g}$ (5-member family, E0 at $p=1.0$).}}",
         r"\end{table}"
     ])
     (TABLE_DIR / "external_table_pad_prior_shift.tex").write_text("\n".join(tex), encoding="utf-8")
     print(f"\nLaTeX table written to {TABLE_DIR / 'external_table_pad_prior_shift.tex'}")
+
+    # ----- experiment log -----
+    for r in results:
+        log_experiment({
+            "session": SESSION,
+            "method": f"E2_prior_shift[{r['variant']}]",
+            "split": "pad",
+            "macro_f1": r["macro_f1"],
+            "accuracy": r["accuracy"],
+            "balanced_accuracy": r["balanced_accuracy"],
+            "escalation_sens": r["escalation_sens"],
+            "missed_serious": r["missed_serious"],
+            "notes": (
+                f"{WORKSTREAM}; {r['notes']}; mel_recall={r['mel_recall']:.4f}; "
+                f"deployable={r['deployable']}; "
+                f"dirichlet_map={fp.DIRICHLET_STATE}"
+            ),
+        })
+    log_experiment({
+        "session": SESSION,
+        "method": FAMILY_MEMBER,
+        "split": "pad",
+        "macro_f1": var_c_em["macro_f1"],
+        "p_value_vs_baseline": mc["p_value"],
+        "notes": (
+            f"{WORKSTREAM} confirmatory; raw Macro-F1 {var_a_softvote['macro_f1']:.4f} -> "
+            f"EM Macro-F1 {var_c_em['macro_f1']:.4f}, McNemar chi2={mc['statistic']:.4f}, "
+            f"only_raw={mc['only_a_correct']}, only_em={mc['only_b_correct']}; "
+            f"Holm upper bound over the 5-member external_replication_family = {holm_bound:.6g} "
+            f"(E0 withdrawn at p=1.0, denominator held at 5)"
+        ),
+    })
+    print(f"\n{len(results) + 1} rows logged to research/experiments.csv")
 
 
 if __name__ == "__main__":
