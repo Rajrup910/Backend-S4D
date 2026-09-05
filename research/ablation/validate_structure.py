@@ -85,14 +85,26 @@ for ch in body:
 if depth != 0:
     problems.append("unbalanced braces in manuscript.tex: net %d" % depth)
 
-# ---- control characters
+# ---- control characters and stray bytes
 # A `"\balance"` written from a script that forgot its raw-string prefix leaves a literal
-# backspace (0x08) in the file, followed by `alance`. It is invisible in an editor, LaTeX
-# reports it far from the cause, and only the supplementary was screened for stray bytes.
-_control = sorted({c for c in s if ord(c) < 32 and c not in "\n\t"})
-if _control:
-    problems.append("manuscript.tex holds control characters: %s"
-                    % [hex(ord(c)) for c in _control])
+# backspace (0x08) in the file, followed by `alance`. It is invisible in an editor and LaTeX
+# reports it far from the cause.
+#
+# Until 2026-09-06 each document got only half of this screen: the manuscript was checked for
+# control bytes (< 32) and the supplementary for unmapped non-ascii (> 127). NUL is a control
+# byte, so two of them sat in supplementary.tex for item 23 -- `file` called the document
+# "data" rather than LaTeX -- and nothing caught it. Both documents now get both screens.
+def _stray_bytes(name, text):
+    control = sorted({c for c in text if ord(c) < 32 and c not in "\n\t"})
+    if control:
+        problems.append("%s holds control characters: %s"
+                        % (name, [hex(ord(c)) for c in control]))
+    high = sorted({c for c in text if ord(c) > 127})
+    if high:
+        problems.append("%s holds unmapped non-ascii: %s" % (name, high))
+
+
+_stray_bytes("manuscript.tex", s)
 
 # ---- tabular column counts
 # The column spec may itself contain braces -- `@{}lccc@{}`, `p{0.3\textwidth}` -- so the
@@ -152,10 +164,9 @@ if os.path.isfile(SUPP):
         problems.append("supplementary net brace depth %d" % sdepth)
 
     # The generator maps every unicode character the checklist uses; anything left is a
-    # character it does not know about, which pdflatex would reject.
-    stray = sorted({c for c in sup if ord(c) > 127})
-    if stray:
-        problems.append("supplementary unmapped non-ascii: %s" % stray)
+    # character it does not know about, which pdflatex would reject. Control bytes are
+    # screened here too -- see the note on _stray_bytes above.
+    _stray_bytes("supplementary.tex", sup)
 
     # unescaped LaTeX specials outside comments
     for lineno, line in enumerate(sup.split("\n"), 1):
