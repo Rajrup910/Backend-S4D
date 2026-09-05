@@ -2318,6 +2318,44 @@ a compile this machine cannot perform.
    are still wrong and will mislead the next reader.
 
 
+### S18 — repository hygiene: S12–S17 committed (2026-09-05)
+
+No test read, no new number, no artifact regenerated. `results/test_pass_receipt.json` still
+records `n_executions: 2` with no rerun reason.
+
+**Why this was needed.** The entire S12–S17 body of work — 36 paths, 28 MB — was sitting
+uncommitted against a repository with a single commit (`c552052`). Every frozen artifact the
+manuscript resolves to, including the 14 external prediction matrices S13 produced over 5 h of
+GPU, existed only in the working tree. That is the largest single risk the project carried.
+
+**What was done.** Branched `s12-s17-external-replication` off `main` and committed in five
+workstream chunks, each message recording the finding it closes rather than the files it moves:
+
+| commit | scope | closes |
+|---|---|---|
+| `cb86e00` | S13/S14 external inference + three-centre dose–response (E1); 14 prediction matrices | — |
+| `5896ec8` | S15 PAD-UFES-20 prior-shift decoupling (E2) | — |
+| `21ee090` | S16 table/figure consolidation + manuscript integration | A9 |
+| `530afae` | S17 close-out: audit 348 checks, frozen artifacts, reviewer defence | A5 |
+| `86e3463` | ledger (75 `session_post_s11` rows) + CHANGELOG §S12–§S17 | A10 |
+
+**Verified after committing**, working tree clean: `audit_manuscript` 348 checks pass,
+`preflight --stage pre_s17` 34 checks pass, test receipt unchanged.
+
+**Two files are deliberately outside git** and stay that way — `.gitignore:210` excludes
+`DATASET_REFINING.md` and the ignore rules also cover `CLAUDE.md`. Both are project-internal
+planning documents. Anyone cloning this repository gets the code and the artifacts but neither
+runbook; that is a choice, not an oversight, but it is worth knowing before relying on the clone.
+
+⚠️ `paper/manuscript_overleaf.zip` is **not committed** — `.gitignore:97` excludes `*.zip`.
+It is regenerable (`$py -m research.ablation.build_overleaf_bundle`, 16 files, 5.70 MB), so this
+is defensible, but the upload deliverable does not survive a fresh clone without that command.
+
+⚠️ The branch is **not merged and not pushed.** `git merge --ff-only s12-s17-external-replication`
+from `main` puts it on the default branch; `git push -u origin main` publishes it. Neither was
+done here — publishing to a remote is the owner's call.
+
+
 ## 11. Known findings that constrain later work
 
 - **The soft-vote ensemble is under-confident, not over-confident.** Mean confidence 0.7048 vs.
