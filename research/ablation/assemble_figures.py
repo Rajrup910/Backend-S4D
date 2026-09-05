@@ -161,8 +161,18 @@ def build_figure7_gradcam() -> None:
           f"{len(tiles)} panels)")
 
 
+# figure3_decision_curve_analysis.png was dropped from this map on 2026-09-06 (S20). It was
+# the session-2 HAM-only decision curve; S16 replaced it in the paper with
+# external_figure_decision_curve.png, after which nothing read it and neither document
+# included it -- it was being copied into paper/figures/ on every run purely out of habit.
+# The source, research/dca/results/decision_curve.png, is untouched, so restoring it is a
+# one-line change here.
+#
+# risk_coverage and abstention_tradeoff look equally unused: neither is included by any
+# document either. They are NOT orphans -- build_figure4_selective() reads both from
+# paper/figures/ as the two panels it merges, which is why copy_existing_figures() has to
+# run first. Do not "tidy" them away.
 COPY_MAP = {
-    "research/dca/results/decision_curve.png": "paper/figures/figure3_decision_curve_analysis.png",
     "research/selective/results/risk_coverage.png": "paper/figures/figure4_risk_coverage.png",
     "research/selective/results/abstention_tradeoff.png": "paper/figures/figure6_abstention_tradeoff.png",
     "research/conformal/results/class_conditional_coverage.png": "paper/figures/figure5_conformal_coverage.png",
