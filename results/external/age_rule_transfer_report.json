@@ -1,0 +1,1949 @@
+{
+  "workstream": "E1_age_rule_replication",
+  "session": "S14",
+  "status": "pre-registered in analysis_plan_post_s11_v2.json (E1 + E1_dose_response_skew_ordering)",
+  "panel": "6-CNN uniform soft-vote, 24-view TTA, frozen HAM-OOF Dirichlet map",
+  "calibration": "research/selective/results_oof/fit_state.json",
+  "lambda_state": "research/agerule/results_oof/age_rule_lambda.json",
+  "rule": "argmax_c ( p_c + lambda_band * 1[c escalates] )",
+  "test_read": false,
+  "units": {
+    "point_estimates": "image-level (matches every published HAM number)",
+    "intervals": "lesion-grouped bootstrap; exact Clopper-Pearson below 30 events",
+    "skew_and_prevalence": "lesion-level (matches the pre-registered skew table)",
+    "lesion_level_sensitivity": "robustness check only, declared before it was computed"
+  },
+  "claim_a": [
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "<40",
+      "n_images": 1319,
+      "n_escalating_images": 64,
+      "prevalence_image": 0.04852160727824109,
+      "n_lesions": 907,
+      "n_escalating_lesions": 34,
+      "prevalence_lesion": 0.037486218302094816,
+      "auc": 0.8953187250996015,
+      "ci_low": 0.8368850876381317,
+      "ci_high": 0.9437393845545029,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "40-59",
+      "n_images": 3112,
+      "n_escalating_images": 397,
+      "prevalence_image": 0.1275706940874036,
+      "n_lesions": 2522,
+      "n_escalating_lesions": 224,
+      "prevalence_lesion": 0.08881839809674862,
+      "auc": 0.954677577225137,
+      "ci_low": 0.9417230589216317,
+      "ci_high": 0.9668237244981387,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "60+",
+      "n_images": 2512,
+      "n_escalating_images": 893,
+      "prevalence_image": 0.3554936305732484,
+      "n_lesions": 1765,
+      "n_escalating_lesions": 559,
+      "prevalence_lesion": 0.31671388101983,
+      "auc": 0.9344839106163028,
+      "ci_low": 0.9220159245416366,
+      "ci_high": 0.9454258349583421,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "ALL",
+      "n_images": 6943,
+      "n_escalating_images": 1354,
+      "prevalence_image": 0.1950165634451966,
+      "n_lesions": 5194,
+      "n_escalating_lesions": 817,
+      "prevalence_lesion": 0.15729688101655756,
+      "auc": 0.9499889395528726,
+      "ci_low": 0.9421099188012841,
+      "ci_high": 0.9575075333402943,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "<40",
+      "n_images": 1964,
+      "n_escalating_images": 369,
+      "prevalence_image": 0.1878818737270876,
+      "n_lesions": 618,
+      "n_escalating_lesions": 114,
+      "prevalence_lesion": 0.18446601941747573,
+      "auc": 0.7914264597191427,
+      "ci_low": 0.7264309568585302,
+      "ci_high": 0.8430306973186532,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "40-59",
+      "n_images": 4138,
+      "n_escalating_images": 1805,
+      "prevalence_image": 0.4362010633156114,
+      "n_lesions": 1150,
+      "n_escalating_lesions": 445,
+      "prevalence_lesion": 0.3869565217391304,
+      "auc": 0.8263360931260856,
+      "ci_low": 0.8000821030623784,
+      "ci_high": 0.8506085076612587,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "60+",
+      "n_images": 5806,
+      "n_escalating_images": 4207,
+      "prevalence_image": 0.7245952462969342,
+      "n_lesions": 1663,
+      "n_escalating_lesions": 1175,
+      "prevalence_lesion": 0.7065544197233915,
+      "auc": 0.7945171044477078,
+      "ci_low": 0.770509722654307,
+      "ci_high": 0.8183620667200262,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "ALL",
+      "n_images": 11908,
+      "n_escalating_images": 6381,
+      "prevalence_image": 0.5358582465569365,
+      "n_lesions": 3427,
+      "n_escalating_lesions": 1733,
+      "prevalence_lesion": 0.5056901079661511,
+      "auc": 0.8388135751188472,
+      "ci_low": 0.8248675170275614,
+      "ci_high": 0.8514171472581059,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "<40",
+      "n_images": 756,
+      "n_escalating_images": 36,
+      "prevalence_image": 0.047619047619047616,
+      "n_lesions": 756,
+      "n_escalating_lesions": 36,
+      "prevalence_lesion": 0.047619047619047616,
+      "auc": 0.7902777777777777,
+      "ci_low": 0.7030300940474954,
+      "ci_high": 0.8671759692862304,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "40-59",
+      "n_images": 827,
+      "n_escalating_images": 123,
+      "prevalence_image": 0.1487303506650544,
+      "n_lesions": 826,
+      "n_escalating_lesions": 122,
+      "prevalence_lesion": 0.14769975786924938,
+      "auc": 0.6930432372505542,
+      "ci_low": 0.639005619717816,
+      "ci_high": 0.7459265865748854,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "60+",
+      "n_images": 1010,
+      "n_escalating_images": 321,
+      "prevalence_image": 0.3178217821782178,
+      "n_lesions": 995,
+      "n_escalating_lesions": 310,
+      "prevalence_lesion": 0.31155778894472363,
+      "auc": 0.6937816782641328,
+      "ci_low": 0.6574273700832827,
+      "ci_high": 0.7291262258350713,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "ALL",
+      "n_images": 2593,
+      "n_escalating_images": 480,
+      "prevalence_image": 0.18511376783648284,
+      "n_lesions": 2575,
+      "n_escalating_lesions": 466,
+      "prevalence_lesion": 0.18097087378640778,
+      "auc": 0.7346278987221959,
+      "ci_low": 0.7096862075278623,
+      "ci_high": 0.7625322800557806,
+      "n_boot_used": 1000,
+      "n_boot_degenerate": 0
+    }
+  ],
+  "claim_b": [
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "<40",
+      "n_images": 1319,
+      "n_escalating_images": 64,
+      "prevalence_image": 0.04852160727824109,
+      "n_lesions": 907,
+      "n_escalating_lesions": 34,
+      "prevalence_lesion": 0.037486218302094816,
+      "rule": "argmax",
+      "label": "ham_oof <40 argmax",
+      "numerator": 35,
+      "denominator": 64,
+      "point": 0.546875,
+      "clopper_pearson_95": [
+        0.4174763153160475,
+        0.6717928854962819
+      ],
+      "grouped_bootstrap_95": [
+        0.390625,
+        0.7083786231884056
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 34,
+      "interval": [
+        0.390625,
+        0.7083786231884056
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9752988047808765,
+      "specificity_interval": [
+        0.9638927984987098,
+        0.9857032225121979
+      ],
+      "referral_rate": 0.050037907505686124,
+      "missed_serious": 29,
+      "nnb_pi_03": 2.46,
+      "macro_f1": 0.7866656600267002,
+      "lesion_level": {
+        "label": "lesion-level <40",
+        "numerator": 17,
+        "denominator": 34,
+        "n_lesions": 34,
+        "point": 0.5,
+        "clopper_pearson_95": [
+          0.32426927002132094,
+          0.675730729978679
+        ],
+        "grouped_bootstrap_95": [
+          0.35294117647058826,
+          0.6764705882352942
+        ],
+        "primary_interval": "clopper_pearson",
+        "interval": [
+          0.32426927002132094,
+          0.675730729978679
+        ]
+      },
+      "melanoma_only": {
+        "label": "HAM10000 OOF (N=6,981) <40 melanoma-only",
+        "numerator": 25,
+        "denominator": 51,
+        "n_lesions": 28,
+        "point": 0.49019607843137253,
+        "clopper_pearson_95": [
+          0.3475279629951143,
+          0.634042860329036
+        ],
+        "grouped_bootstrap_95": [
+          0.3,
+          0.6808510638297872
+        ],
+        "primary_interval": "clopper_pearson",
+        "interval": [
+          0.3475279629951143,
+          0.634042860329036
+        ],
+        "interval_method": "CP"
+      },
+      "escalating_class_mix": {
+        "akiec": 1,
+        "bcc": 12,
+        "mel": 51
+      }
+    },
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "40-59",
+      "n_images": 3112,
+      "n_escalating_images": 397,
+      "prevalence_image": 0.1275706940874036,
+      "n_lesions": 2522,
+      "n_escalating_lesions": 224,
+      "prevalence_lesion": 0.08881839809674862,
+      "rule": "argmax",
+      "label": "ham_oof 40-59 argmax",
+      "numerator": 243,
+      "denominator": 397,
+      "point": 0.6120906801007556,
+      "clopper_pearson_95": [
+        0.5622079062214773,
+        0.6602891154697658
+      ],
+      "grouped_bootstrap_95": [
+        0.5452141472868217,
+        0.6745438320209973
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 224,
+      "interval": [
+        0.5452141472868217,
+        0.6745438320209973
+      ],
+      "interval_method": "boot",
+      "specificity": 0.972744014732965,
+      "specificity_interval": [
+        0.9646885303734919,
+        0.980046447076548
+      ],
+      "referral_rate": 0.1018637532133676,
+      "missed_serious": 154,
+      "nnb_pi_03": 2.44,
+      "macro_f1": 0.7953785355621766,
+      "lesion_level": {
+        "label": "lesion-level 40-59",
+        "numerator": 149,
+        "denominator": 224,
+        "n_lesions": 224,
+        "point": 0.6651785714285714,
+        "clopper_pearson_95": [
+          0.5992646693784419,
+          0.7266527468506169
+        ],
+        "grouped_bootstrap_95": [
+          0.6026785714285714,
+          0.7232142857142857
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.6026785714285714,
+          0.7232142857142857
+        ]
+      },
+      "melanoma_only": {
+        "label": "HAM10000 OOF (N=6,981) 40-59 melanoma-only",
+        "numerator": 137,
+        "denominator": 280,
+        "n_lesions": 144,
+        "point": 0.48928571428571427,
+        "clopper_pearson_95": [
+          0.4293335713931557,
+          0.549466972431555
+        ],
+        "grouped_bootstrap_95": [
+          0.4075310755961441,
+          0.5663113767952478
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.4075310755961441,
+          0.5663113767952478
+        ],
+        "interval_method": "boot"
+      },
+      "escalating_class_mix": {
+        "akiec": 43,
+        "bcc": 74,
+        "mel": 280
+      }
+    },
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "60+",
+      "n_images": 2512,
+      "n_escalating_images": 893,
+      "prevalence_image": 0.3554936305732484,
+      "n_lesions": 1765,
+      "n_escalating_lesions": 559,
+      "prevalence_lesion": 0.31671388101983,
+      "rule": "argmax",
+      "label": "ham_oof 60+ argmax",
+      "numerator": 659,
+      "denominator": 893,
+      "point": 0.7379619260918253,
+      "clopper_pearson_95": [
+        0.707805388951449,
+        0.7665392031093345
+      ],
+      "grouped_bootstrap_95": [
+        0.7005495672793365,
+        0.7734838056807397
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 559,
+      "interval": [
+        0.7005495672793365,
+        0.7734838056807397
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9141445336627548,
+      "specificity_interval": [
+        0.8984750804852728,
+        0.9301188881586063
+      ],
+      "referral_rate": 0.3176751592356688,
+      "missed_serious": 234,
+      "nnb_pi_03": 4.76,
+      "macro_f1": 0.7723500315044761,
+      "lesion_level": {
+        "label": "lesion-level 60+",
+        "numerator": 422,
+        "denominator": 559,
+        "n_lesions": 559,
+        "point": 0.7549194991055456,
+        "clopper_pearson_95": [
+          0.7170754680535878,
+          0.7900442330224484
+        ],
+        "grouped_bootstrap_95": [
+          0.7191413237924866,
+          0.7906976744186046
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.7191413237924866,
+          0.7906976744186046
+        ]
+      },
+      "melanoma_only": {
+        "label": "HAM10000 OOF (N=6,981) 60+ melanoma-only",
+        "numerator": 281,
+        "denominator": 440,
+        "n_lesions": 257,
+        "point": 0.6386363636363637,
+        "clopper_pearson_95": [
+          0.5917991647554239,
+          0.6835954915104069
+        ],
+        "grouped_bootstrap_95": [
+          0.5803435194500336,
+          0.6961604780801209
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.5803435194500336,
+          0.6961604780801209
+        ],
+        "interval_method": "boot"
+      },
+      "escalating_class_mix": {
+        "akiec": 178,
+        "bcc": 275,
+        "mel": 440
+      }
+    },
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "ALL",
+      "n_images": 6943,
+      "n_escalating_images": 1354,
+      "prevalence_image": 0.1950165634451966,
+      "n_lesions": 5194,
+      "n_escalating_lesions": 817,
+      "prevalence_lesion": 0.15729688101655756,
+      "rule": "argmax",
+      "label": "ham_oof ALL argmax",
+      "numerator": 937,
+      "denominator": 1354,
+      "point": 0.6920236336779911,
+      "clopper_pearson_95": [
+        0.6666669786052734,
+        0.7165440183243778
+      ],
+      "grouped_bootstrap_95": [
+        0.659429910901633,
+        0.7243483899035364
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 817,
+      "interval": [
+        0.659429910901633,
+        0.7243483899035364
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9563428162461979,
+      "specificity_interval": [
+        0.9495616100296154,
+        0.9631003155306808
+      ],
+      "referral_rate": 0.1700993806711796,
+      "missed_serious": 417,
+      "nnb_pi_03": 3.04,
+      "macro_f1": 0.7843541969443419,
+      "lesion_level": {
+        "label": "lesion-level ALL",
+        "numerator": 588,
+        "denominator": 817,
+        "n_lesions": 817,
+        "point": 0.7197062423500612,
+        "clopper_pearson_95": [
+          0.687541023928127,
+          0.750277036152511
+        ],
+        "grouped_bootstrap_95": [
+          0.6891064871481029,
+          0.7503059975520195
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.6891064871481029,
+          0.7503059975520195
+        ]
+      },
+      "melanoma_only": {
+        "label": "HAM10000 OOF (N=6,981) ALL melanoma-only",
+        "numerator": 443,
+        "denominator": 771,
+        "n_lesions": 429,
+        "point": 0.5745784695201037,
+        "clopper_pearson_95": [
+          0.5388018115758129,
+          0.6097826080219835
+        ],
+        "grouped_bootstrap_95": [
+          0.5303980750044833,
+          0.6216702052370842
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.5303980750044833,
+          0.6216702052370842
+        ],
+        "interval_method": "boot"
+      },
+      "escalating_class_mix": {
+        "akiec": 222,
+        "bcc": 361,
+        "mel": 771
+      }
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "<40",
+      "n_images": 1964,
+      "n_escalating_images": 369,
+      "prevalence_image": 0.1878818737270876,
+      "n_lesions": 618,
+      "n_escalating_lesions": 114,
+      "prevalence_lesion": 0.18446601941747573,
+      "rule": "argmax",
+      "label": "bcn20000 <40 argmax",
+      "numerator": 103,
+      "denominator": 369,
+      "point": 0.2791327913279133,
+      "clopper_pearson_95": [
+        0.23394235969685057,
+        0.3279076391248137
+      ],
+      "grouped_bootstrap_95": [
+        0.1792702027047378,
+        0.3820605700712588
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 114,
+      "interval": [
+        0.1792702027047378,
+        0.3820605700712588
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9843260188087775,
+      "specificity_interval": [
+        0.9744858262236671,
+        0.992401091884579
+      ],
+      "referral_rate": 0.06517311608961303,
+      "missed_serious": 266,
+      "nnb_pi_03": 2.82,
+      "macro_f1": 0.35808968756010484,
+      "lesion_level": {
+        "label": "lesion-level <40",
+        "numerator": 24,
+        "denominator": 114,
+        "n_lesions": 114,
+        "point": 0.21052631578947367,
+        "clopper_pearson_95": [
+          0.1397897150863499,
+          0.2968582650577121
+        ],
+        "grouped_bootstrap_95": [
+          0.14035087719298245,
+          0.28092105263157774
+        ],
+        "primary_interval": "clopper_pearson",
+        "interval": [
+          0.1397897150863499,
+          0.2968582650577121
+        ]
+      },
+      "melanoma_only": {
+        "label": "BCN-20000 (N=11,982) <40 melanoma-only",
+        "numerator": 60,
+        "denominator": 219,
+        "n_lesions": 50,
+        "point": 0.273972602739726,
+        "clopper_pearson_95": [
+          0.21604774962169665,
+          0.3381293899708526
+        ],
+        "grouped_bootstrap_95": [
+          0.12055865597023603,
+          0.4353483036707453
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.12055865597023603,
+          0.4353483036707453
+        ],
+        "interval_method": "boot"
+      },
+      "escalating_class_mix": {
+        "akiec": 20,
+        "bcc": 130,
+        "mel": 219
+      }
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "40-59",
+      "n_images": 4138,
+      "n_escalating_images": 1805,
+      "prevalence_image": 0.4362010633156114,
+      "n_lesions": 1150,
+      "n_escalating_lesions": 445,
+      "prevalence_lesion": 0.3869565217391304,
+      "rule": "argmax",
+      "label": "bcn20000 40-59 argmax",
+      "numerator": 650,
+      "denominator": 1805,
+      "point": 0.3601108033240997,
+      "clopper_pearson_95": [
+        0.3379310167351173,
+        0.38274624489658926
+      ],
+      "grouped_bootstrap_95": [
+        0.3159275161757428,
+        0.40634335643439956
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 445,
+      "interval": [
+        0.3159275161757428,
+        0.40634335643439956
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9772824689241321,
+      "specificity_interval": [
+        0.9681685475521146,
+        0.9851928040918355
+      ],
+      "referral_rate": 0.16988883518608022,
+      "missed_serious": 1155,
+      "nnb_pi_03": 3.04,
+      "macro_f1": 0.4104277296624449,
+      "lesion_level": {
+        "label": "lesion-level 40-59",
+        "numerator": 146,
+        "denominator": 445,
+        "n_lesions": 445,
+        "point": 0.32808988764044944,
+        "clopper_pearson_95": [
+          0.28461207817721057,
+          0.3738716967942773
+        ],
+        "grouped_bootstrap_95": [
+          0.2853932584269663,
+          0.3708426966292132
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.2853932584269663,
+          0.3708426966292132
+        ]
+      },
+      "melanoma_only": {
+        "label": "BCN-20000 (N=11,982) 40-59 melanoma-only",
+        "numerator": 339,
+        "denominator": 1010,
+        "n_lesions": 182,
+        "point": 0.33564356435643566,
+        "clopper_pearson_95": [
+          0.30654096778903983,
+          0.3657078081012882
+        ],
+        "grouped_bootstrap_95": [
+          0.2644993583454613,
+          0.4049481289968896
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.2644993583454613,
+          0.4049481289968896
+        ],
+        "interval_method": "boot"
+      },
+      "escalating_class_mix": {
+        "akiec": 109,
+        "bcc": 686,
+        "mel": 1010
+      }
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "60+",
+      "n_images": 5806,
+      "n_escalating_images": 4207,
+      "prevalence_image": 0.7245952462969342,
+      "n_lesions": 1663,
+      "n_escalating_lesions": 1175,
+      "prevalence_lesion": 0.7065544197233915,
+      "rule": "argmax",
+      "label": "bcn20000 60+ argmax",
+      "numerator": 1726,
+      "denominator": 4207,
+      "point": 0.4102685999524602,
+      "clopper_pearson_95": [
+        0.3953528262875751,
+        0.4253091012438771
+      ],
+      "grouped_bootstrap_95": [
+        0.3841271064807856,
+        0.4374195769270674
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 1175,
+      "interval": [
+        0.3841271064807856,
+        0.4374195769270674
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9168230143839899,
+      "specificity_interval": [
+        0.8952250504841093,
+        0.9360911391146339
+      ],
+      "referral_rate": 0.32018601446779194,
+      "missed_serious": 2481,
+      "nnb_pi_03": 7.56,
+      "macro_f1": 0.373919551467177,
+      "lesion_level": {
+        "label": "lesion-level 60+",
+        "numerator": 478,
+        "denominator": 1175,
+        "n_lesions": 1175,
+        "point": 0.40680851063829787,
+        "clopper_pearson_95": [
+          0.37855817205823533,
+          0.4355265331995855
+        ],
+        "grouped_bootstrap_95": [
+          0.37872340425531914,
+          0.43659574468085105
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.37872340425531914,
+          0.43659574468085105
+        ]
+      },
+      "melanoma_only": {
+        "label": "BCN-20000 (N=11,982) 60+ melanoma-only",
+        "numerator": 595,
+        "denominator": 1615,
+        "n_lesions": 290,
+        "point": 0.3684210526315789,
+        "clopper_pearson_95": [
+          0.3448426243974947,
+          0.3924788452645879
+        ],
+        "grouped_bootstrap_95": [
+          0.31985769395147023,
+          0.4157182452155809
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.31985769395147023,
+          0.4157182452155809
+        ],
+        "interval_method": "boot"
+      },
+      "escalating_class_mix": {
+        "akiec": 605,
+        "bcc": 1987,
+        "mel": 1615
+      }
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "ALL",
+      "n_images": 11908,
+      "n_escalating_images": 6381,
+      "prevalence_image": 0.5358582465569365,
+      "n_lesions": 3427,
+      "n_escalating_lesions": 1733,
+      "prevalence_lesion": 0.5056901079661511,
+      "rule": "argmax",
+      "label": "bcn20000 ALL argmax",
+      "numerator": 2479,
+      "denominator": 6381,
+      "point": 0.3884971007679047,
+      "clopper_pearson_95": [
+        0.3765129304585205,
+        0.4005832759891598
+      ],
+      "grouped_bootstrap_95": [
+        0.36657548169744264,
+        0.41089058248594806
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 1733,
+      "interval": [
+        0.36657548169744264,
+        0.41089058248594806
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9618237741993848,
+      "specificity_interval": [
+        0.954240953951916,
+        0.9694630771911416
+      ],
+      "referral_rate": 0.22589855559287875,
+      "missed_serious": 3902,
+      "nnb_pi_03": 4.18,
+      "macro_f1": 0.4022005046713447,
+      "lesion_level": {
+        "label": "lesion-level ALL",
+        "numerator": 648,
+        "denominator": 1733,
+        "n_lesions": 1733,
+        "point": 0.3739180611656088,
+        "clopper_pearson_95": [
+          0.35107931547030097,
+          0.39718462246787867
+        ],
+        "grouped_bootstrap_95": [
+          0.3525533756491633,
+          0.3958453548759377
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.3525533756491633,
+          0.3958453548759377
+        ]
+      },
+      "melanoma_only": {
+        "label": "BCN-20000 (N=11,982) ALL melanoma-only",
+        "numerator": 994,
+        "denominator": 2844,
+        "n_lesions": 521,
+        "point": 0.349507735583685,
+        "clopper_pearson_95": [
+          0.3319702868527395,
+          0.367355391754183
+        ],
+        "grouped_bootstrap_95": [
+          0.3108576231378408,
+          0.3862510244133885
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.3108576231378408,
+          0.3862510244133885
+        ],
+        "interval_method": "boot"
+      },
+      "escalating_class_mix": {
+        "akiec": 734,
+        "bcc": 2803,
+        "mel": 2844
+      }
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "<40",
+      "n_images": 756,
+      "n_escalating_images": 36,
+      "prevalence_image": 0.047619047619047616,
+      "n_lesions": 756,
+      "n_escalating_lesions": 36,
+      "prevalence_lesion": 0.047619047619047616,
+      "rule": "argmax",
+      "label": "mskcc <40 argmax",
+      "numerator": 12,
+      "denominator": 36,
+      "point": 0.3333333333333333,
+      "clopper_pearson_95": [
+        0.18556180982592121,
+        0.5097025466518912
+      ],
+      "grouped_bootstrap_95": [
+        0.19444444444444445,
+        0.4729166666666629
+      ],
+      "primary_interval": "clopper_pearson",
+      "n_lesions_positive": 36,
+      "interval": [
+        0.18556180982592121,
+        0.5097025466518912
+      ],
+      "interval_method": "CP",
+      "specificity": 0.9791666666666666,
+      "specificity_interval": [
+        0.9680555555555556,
+        0.9888888888888889
+      ],
+      "referral_rate": 0.03571428571428571,
+      "missed_serious": 24,
+      "nnb_pi_03": 3.02,
+      "macro_f1": null,
+      "lesion_level": {
+        "label": "lesion-level <40",
+        "numerator": 12,
+        "denominator": 36,
+        "n_lesions": 36,
+        "point": 0.3333333333333333,
+        "clopper_pearson_95": [
+          0.18556180982592121,
+          0.5097025466518912
+        ],
+        "grouped_bootstrap_95": [
+          0.19444444444444445,
+          0.4729166666666629
+        ],
+        "primary_interval": "clopper_pearson",
+        "interval": [
+          0.18556180982592121,
+          0.5097025466518912
+        ]
+      },
+      "melanoma_only": {
+        "label": "MSKCC (N=2,903) <40 melanoma-only",
+        "numerator": 12,
+        "denominator": 36,
+        "n_lesions": 36,
+        "point": 0.3333333333333333,
+        "clopper_pearson_95": [
+          0.18556180982592121,
+          0.5097025466518912
+        ],
+        "grouped_bootstrap_95": [
+          0.19444444444444445,
+          0.4729166666666629
+        ],
+        "primary_interval": "clopper_pearson",
+        "interval": [
+          0.18556180982592121,
+          0.5097025466518912
+        ],
+        "interval_method": "CP"
+      },
+      "escalating_class_mix": {
+        "mel": 36
+      }
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "40-59",
+      "n_images": 827,
+      "n_escalating_images": 123,
+      "prevalence_image": 0.1487303506650544,
+      "n_lesions": 826,
+      "n_escalating_lesions": 122,
+      "prevalence_lesion": 0.14769975786924938,
+      "rule": "argmax",
+      "label": "mskcc 40-59 argmax",
+      "numerator": 28,
+      "denominator": 123,
+      "point": 0.22764227642276422,
+      "clopper_pearson_95": [
+        0.15690983756985866,
+        0.31192955051407323
+      ],
+      "grouped_bootstrap_95": [
+        0.15447154471544716,
+        0.30327868852459017
+      ],
+      "primary_interval": "clopper_pearson",
+      "n_lesions_positive": 122,
+      "interval": [
+        0.15690983756985866,
+        0.31192955051407323
+      ],
+      "interval_method": "CP",
+      "specificity": 0.9616477272727273,
+      "specificity_interval": [
+        0.9474431818181818,
+        0.9758522727272727
+      ],
+      "referral_rate": 0.06650544135429262,
+      "missed_serious": 95,
+      "nnb_pi_03": 6.45,
+      "macro_f1": null,
+      "lesion_level": {
+        "label": "lesion-level 40-59",
+        "numerator": 28,
+        "denominator": 122,
+        "n_lesions": 122,
+        "point": 0.22950819672131148,
+        "clopper_pearson_95": [
+          0.1582472060892493,
+          0.31434121138563675
+        ],
+        "grouped_bootstrap_95": [
+          0.1557377049180328,
+          0.30327868852459017
+        ],
+        "primary_interval": "clopper_pearson",
+        "interval": [
+          0.1582472060892493,
+          0.31434121138563675
+        ]
+      },
+      "melanoma_only": {
+        "label": "MSKCC (N=2,903) 40-59 melanoma-only",
+        "numerator": 28,
+        "denominator": 123,
+        "n_lesions": 122,
+        "point": 0.22764227642276422,
+        "clopper_pearson_95": [
+          0.15690983756985866,
+          0.31192955051407323
+        ],
+        "grouped_bootstrap_95": [
+          0.15447154471544716,
+          0.30327868852459017
+        ],
+        "primary_interval": "clopper_pearson",
+        "interval": [
+          0.15690983756985866,
+          0.31192955051407323
+        ],
+        "interval_method": "CP"
+      },
+      "escalating_class_mix": {
+        "mel": 123
+      }
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "60+",
+      "n_images": 1010,
+      "n_escalating_images": 321,
+      "prevalence_image": 0.3178217821782178,
+      "n_lesions": 995,
+      "n_escalating_lesions": 310,
+      "prevalence_lesion": 0.31155778894472363,
+      "rule": "argmax",
+      "label": "mskcc 60+ argmax",
+      "numerator": 82,
+      "denominator": 321,
+      "point": 0.2554517133956386,
+      "clopper_pearson_95": [
+        0.20863710010660258,
+        0.3068428286457369
+      ],
+      "grouped_bootstrap_95": [
+        0.21052631578947367,
+        0.30218789661936074
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 310,
+      "interval": [
+        0.21052631578947367,
+        0.30218789661936074
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9158200290275762,
+      "specificity_interval": [
+        0.893740902474527,
+        0.936231884057971
+      ],
+      "referral_rate": 0.13861386138613863,
+      "missed_serious": 239,
+      "nnb_pi_03": 11.65,
+      "macro_f1": null,
+      "lesion_level": {
+        "label": "lesion-level 60+",
+        "numerator": 82,
+        "denominator": 310,
+        "n_lesions": 310,
+        "point": 0.2645161290322581,
+        "clopper_pearson_95": [
+          0.21626236486885184,
+          0.3173335200541701
+        ],
+        "grouped_bootstrap_95": [
+          0.21935483870967742,
+          0.31290322580645163
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.21935483870967742,
+          0.31290322580645163
+        ]
+      },
+      "melanoma_only": {
+        "label": "MSKCC (N=2,903) 60+ melanoma-only",
+        "numerator": 82,
+        "denominator": 321,
+        "n_lesions": 310,
+        "point": 0.2554517133956386,
+        "clopper_pearson_95": [
+          0.20863710010660258,
+          0.3068428286457369
+        ],
+        "grouped_bootstrap_95": [
+          0.21052631578947367,
+          0.30218789661936074
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.21052631578947367,
+          0.30218789661936074
+        ],
+        "interval_method": "boot"
+      },
+      "escalating_class_mix": {
+        "mel": 321
+      }
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "ALL",
+      "n_images": 2593,
+      "n_escalating_images": 480,
+      "prevalence_image": 0.18511376783648284,
+      "n_lesions": 2575,
+      "n_escalating_lesions": 466,
+      "prevalence_lesion": 0.18097087378640778,
+      "rule": "argmax",
+      "label": "mskcc ALL argmax",
+      "numerator": 122,
+      "denominator": 480,
+      "point": 0.25416666666666665,
+      "clopper_pearson_95": [
+        0.21579208037584902,
+        0.2956002150050348
+      ],
+      "grouped_bootstrap_95": [
+        0.21412259281869142,
+        0.29436325678496866
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 466,
+      "interval": [
+        0.21412259281869142,
+        0.29436325678496866
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9526739233317558,
+      "specificity_interval": [
+        0.9433668363573076,
+        0.9620857570702774
+      ],
+      "referral_rate": 0.08561511762437331,
+      "missed_serious": 358,
+      "nnb_pi_03": 7.02,
+      "macro_f1": null,
+      "lesion_level": {
+        "label": "lesion-level ALL",
+        "numerator": 122,
+        "denominator": 466,
+        "n_lesions": 466,
+        "point": 0.26180257510729615,
+        "clopper_pearson_95": [
+          0.22243585684805658,
+          0.3042225311942818
+        ],
+        "grouped_bootstrap_95": [
+          0.22103004291845493,
+          0.30257510729613735
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.22103004291845493,
+          0.30257510729613735
+        ]
+      },
+      "melanoma_only": {
+        "label": "MSKCC (N=2,903) ALL melanoma-only",
+        "numerator": 122,
+        "denominator": 480,
+        "n_lesions": 466,
+        "point": 0.25416666666666665,
+        "clopper_pearson_95": [
+          0.21579208037584902,
+          0.2956002150050348
+        ],
+        "grouped_bootstrap_95": [
+          0.21412259281869142,
+          0.29436325678496866
+        ],
+        "primary_interval": "grouped_bootstrap",
+        "interval": [
+          0.21412259281869142,
+          0.29436325678496866
+        ],
+        "interval_method": "boot"
+      },
+      "escalating_class_mix": {
+        "mel": 480
+      }
+    }
+  ],
+  "transfer": [
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "<40",
+      "lambda": 0.26,
+      "rule": "frozen_lambda",
+      "label": "ham_oof <40 lambda",
+      "numerator": 40,
+      "denominator": 64,
+      "point": 0.625,
+      "clopper_pearson_95": [
+        0.4950764600526647,
+        0.7429510775519335
+      ],
+      "grouped_bootstrap_95": [
+        0.45450994318181825,
+        0.7838320463320461
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 34,
+      "interval": [
+        0.45450994318181825,
+        0.7838320463320461
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9537848605577689,
+      "specificity_interval": [
+        0.9377905468555094,
+        0.9681560231744092
+      ],
+      "referral_rate": 0.07429871114480667,
+      "missed_serious": 24,
+      "nnb_pi_03": 3.39,
+      "macro_f1": 0.7834517576277963,
+      "delta_sensitivity": 0.078125,
+      "delta_referral_rate": 0.024260803639120546
+    },
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "40-59",
+      "lambda": 0.74,
+      "rule": "frozen_lambda",
+      "label": "ham_oof 40-59 lambda",
+      "numerator": 356,
+      "denominator": 397,
+      "point": 0.8967254408060453,
+      "clopper_pearson_95": [
+        0.8625104360569449,
+        0.9248638670378135
+      ],
+      "grouped_bootstrap_95": [
+        0.8553913928414258,
+        0.9335080771439009
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 224,
+      "interval": [
+        0.8553913928414258,
+        0.9335080771439009
+      ],
+      "interval_method": "boot",
+      "specificity": 0.8692449355432781,
+      "specificity_interval": [
+        0.852876338222535,
+        0.8844190152433054
+      ],
+      "referral_rate": 0.22847043701799485,
+      "missed_serious": 41,
+      "nnb_pi_03": 5.71,
+      "macro_f1": 0.731756819368027,
+      "delta_sensitivity": 0.2846347607052897,
+      "delta_referral_rate": 0.12660668380462725
+    },
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "60+",
+      "lambda": 0.33,
+      "rule": "frozen_lambda",
+      "label": "ham_oof 60+ lambda",
+      "numerator": 746,
+      "denominator": 893,
+      "point": 0.8353863381858903,
+      "clopper_pearson_95": [
+        0.809406809616517,
+        0.8591299261432201
+      ],
+      "grouped_bootstrap_95": [
+        0.8045579859152366,
+        0.8655576358296622
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 559,
+      "interval": [
+        0.8045579859152366,
+        0.8655576358296622
+      ],
+      "interval_method": "boot",
+      "specificity": 0.8505250154416306,
+      "specificity_interval": [
+        0.8296689679589309,
+        0.8717648591386206
+      ],
+      "referral_rate": 0.39331210191082805,
+      "missed_serious": 147,
+      "nnb_pi_03": 6.79,
+      "macro_f1": 0.7785854845640466,
+      "delta_sensitivity": 0.09742441209406494,
+      "delta_referral_rate": 0.07563694267515925
+    },
+    {
+      "cohort": "ham_oof",
+      "panel": "HAM10000 OOF (N=6,981)",
+      "band": "ALL",
+      "lambda": "per-band (frozen)",
+      "rule": "frozen_lambda",
+      "label": "ham_oof ALL lambda",
+      "numerator": 1142,
+      "denominator": 1354,
+      "point": 0.843426883308715,
+      "clopper_pearson_95": [
+        0.822959488509662,
+        0.8623909027746094
+      ],
+      "grouped_bootstrap_95": [
+        0.8185115461577356,
+        0.8673700075357951
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 817,
+      "interval": [
+        0.8185115461577356,
+        0.8673700075357951
+      ],
+      "interval_method": "boot",
+      "specificity": 0.8828055108248345,
+      "specificity_interval": [
+        0.8724757812379675,
+        0.8934258177082355
+      ],
+      "referral_rate": 0.2588218349416679,
+      "missed_serious": 212,
+      "nnb_pi_03": 5.49,
+      "macro_f1": 0.7688536062508501,
+      "delta_sensitivity": 0.15140324963072382,
+      "delta_referral_rate": 0.08872245427048828
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "<40",
+      "lambda": 0.26,
+      "rule": "frozen_lambda",
+      "label": "bcn20000 <40 lambda",
+      "numerator": 130,
+      "denominator": 369,
+      "point": 0.3523035230352303,
+      "clopper_pearson_95": [
+        0.30356701161708116,
+        0.40343166094803334
+      ],
+      "grouped_bootstrap_95": [
+        0.24449750830564784,
+        0.45873419290850476
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 114,
+      "interval": [
+        0.24449750830564784,
+        0.45873419290850476
+      ],
+      "interval_method": "boot",
+      "specificity": 0.9686520376175548,
+      "specificity_interval": [
+        0.9554211948295694,
+        0.9810608533111796
+      ],
+      "referral_rate": 0.09164969450101833,
+      "missed_serious": 239,
+      "nnb_pi_03": 3.88,
+      "macro_f1": 0.3835400624014173,
+      "delta_sensitivity": 0.07317073170731703,
+      "delta_referral_rate": 0.0264765784114053
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "40-59",
+      "lambda": 0.74,
+      "rule": "frozen_lambda",
+      "label": "bcn20000 40-59 lambda",
+      "numerator": 1305,
+      "denominator": 1805,
+      "point": 0.7229916897506925,
+      "clopper_pearson_95": [
+        0.7017181641912672,
+        0.7435380258051619
+      ],
+      "grouped_bootstrap_95": [
+        0.6807869587250054,
+        0.7645541549953314
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 445,
+      "interval": [
+        0.6807869587250054,
+        0.7645541549953314
+      ],
+      "interval_method": "boot",
+      "specificity": 0.7616802400342906,
+      "specificity_interval": [
+        0.7337062101173025,
+        0.7903355848926722
+      ],
+      "referral_rate": 0.44973417109714836,
+      "missed_serious": 500,
+      "nnb_pi_03": 11.66,
+      "macro_f1": 0.4488293736480299,
+      "delta_sensitivity": 0.3628808864265928,
+      "delta_referral_rate": 0.27984533591106814
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "60+",
+      "lambda": 0.33,
+      "rule": "frozen_lambda",
+      "label": "bcn20000 60+ lambda",
+      "numerator": 2365,
+      "denominator": 4207,
+      "point": 0.5621583075826004,
+      "clopper_pearson_95": [
+        0.5470089598576355,
+        0.5772212622617154
+      ],
+      "grouped_bootstrap_95": [
+        0.5361336130344879,
+        0.5890516082033628
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 1175,
+      "interval": [
+        0.5361336130344879,
+        0.5890516082033628
+      ],
+      "interval_method": "boot",
+      "specificity": 0.8242651657285803,
+      "specificity_interval": [
+        0.7935314132249206,
+        0.8531896855783045
+      ],
+      "referral_rate": 0.45573544609025146,
+      "missed_serious": 1842,
+      "nnb_pi_03": 11.11,
+      "macro_f1": 0.4145222626163262,
+      "delta_sensitivity": 0.15188970763014026,
+      "delta_referral_rate": 0.13554943162245953
+    },
+    {
+      "cohort": "bcn20000",
+      "panel": "BCN-20000 (N=11,982)",
+      "band": "ALL",
+      "lambda": "per-band (frozen)",
+      "rule": "frozen_lambda",
+      "label": "bcn20000 ALL lambda",
+      "numerator": 3800,
+      "denominator": 6381,
+      "point": 0.595517943895941,
+      "clopper_pearson_95": [
+        0.583356111442038,
+        0.6075923999243382
+      ],
+      "grouped_bootstrap_95": [
+        0.5735287004302709,
+        0.6177252721785307
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 1733,
+      "interval": [
+        0.5735287004302709,
+        0.6177252721785307
+      ],
+      "interval_method": "boot",
+      "specificity": 0.8395151076533381,
+      "specificity_interval": [
+        0.8240250164081064,
+        0.8552146337142351
+      ],
+      "referral_rate": 0.393600940544172,
+      "missed_serious": 2581,
+      "nnb_pi_03": 9.71,
+      "macro_f1": 0.4418257158224433,
+      "delta_sensitivity": 0.2070208431280363,
+      "delta_referral_rate": 0.16770238495129325
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "<40",
+      "lambda": 0.26,
+      "rule": "frozen_lambda",
+      "label": "mskcc <40 lambda",
+      "numerator": 14,
+      "denominator": 36,
+      "point": 0.3888888888888889,
+      "clopper_pearson_95": [
+        0.2314244016621428,
+        0.5653619525515745
+      ],
+      "grouped_bootstrap_95": [
+        0.2222222222222222,
+        0.5555555555555556
+      ],
+      "primary_interval": "clopper_pearson",
+      "n_lesions_positive": 36,
+      "interval": [
+        0.2314244016621428,
+        0.5653619525515745
+      ],
+      "interval_method": "CP",
+      "specificity": 0.9625,
+      "specificity_interval": [
+        0.9486111111111111,
+        0.9763888888888889
+      ],
+      "referral_rate": 0.05423280423280423,
+      "missed_serious": 22,
+      "nnb_pi_03": 4.12,
+      "macro_f1": null,
+      "delta_sensitivity": 0.05555555555555558,
+      "delta_referral_rate": 0.018518518518518517
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "40-59",
+      "lambda": 0.74,
+      "rule": "frozen_lambda",
+      "label": "mskcc 40-59 lambda",
+      "numerator": 60,
+      "denominator": 123,
+      "point": 0.4878048780487805,
+      "clopper_pearson_95": [
+        0.39666242432272997,
+        0.5795481240024105
+      ],
+      "grouped_bootstrap_95": [
+        0.3983739837398374,
+        0.5773540583766488
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 122,
+      "interval": [
+        0.3983739837398374,
+        0.5773540583766488
+      ],
+      "interval_method": "boot",
+      "specificity": 0.7457386363636364,
+      "specificity_interval": [
+        0.7116477272727273,
+        0.7769886363636364
+      ],
+      "referral_rate": 0.2889963724304716,
+      "missed_serious": 63,
+      "nnb_pi_03": 17.85,
+      "macro_f1": null,
+      "delta_sensitivity": 0.26016260162601623,
+      "delta_referral_rate": 0.22249093107617898
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "60+",
+      "lambda": 0.33,
+      "rule": "frozen_lambda",
+      "label": "mskcc 60+ lambda",
+      "numerator": 114,
+      "denominator": 321,
+      "point": 0.35514018691588783,
+      "clopper_pearson_95": [
+        0.30278311840519,
+        0.4101986081149464
+      ],
+      "grouped_bootstrap_95": [
+        0.3028298671963236,
+        0.40557494596647004
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 310,
+      "interval": [
+        0.3028298671963236,
+        0.40557494596647004
+      ],
+      "interval_method": "boot",
+      "specificity": 0.8635703918722787,
+      "specificity_interval": [
+        0.8376811594202899,
+        0.8892168595448161
+      ],
+      "referral_rate": 0.20594059405940593,
+      "missed_serious": 207,
+      "nnb_pi_03": 13.42,
+      "macro_f1": null,
+      "delta_sensitivity": 0.09968847352024923,
+      "delta_referral_rate": 0.0673267326732673
+    },
+    {
+      "cohort": "mskcc",
+      "panel": "MSKCC (N=2,903)",
+      "band": "ALL",
+      "lambda": "per-band (frozen)",
+      "rule": "frozen_lambda",
+      "label": "mskcc ALL lambda",
+      "numerator": 188,
+      "denominator": 480,
+      "point": 0.39166666666666666,
+      "clopper_pearson_95": [
+        0.34774256905607615,
+        0.43693395269833013
+      ],
+      "grouped_bootstrap_95": [
+        0.34701090567703935,
+        0.4363294217803484
+      ],
+      "primary_interval": "grouped_bootstrap",
+      "n_lesions_positive": 466,
+      "interval": [
+        0.34701090567703935,
+        0.4363294217803484
+      ],
+      "interval_method": "boot",
+      "specificity": 0.8580217699952674,
+      "specificity_interval": [
+        0.8425769038221113,
+        0.8722800378429517
+      ],
+      "referral_rate": 0.18819899730042422,
+      "missed_serious": 292,
+      "nnb_pi_03": 12.72,
+      "macro_f1": null,
+      "delta_sensitivity": 0.1375,
+      "delta_referral_rate": 0.10258387967605091
+    }
+  ],
+  "lambda_by_band": {
+    "40-59": 0.74,
+    "60+": 0.33,
+    "<40": 0.26,
+    "unknown": 0.65,
+    "pooled": 0.65
+  },
+  "dose_response": {
+    "unit": "lesion-level prevalence (matches the pre-registered skew table); sensitivity is image-level, matching every published HAM number",
+    "skew_reconciliation": "the plan quoted 3.90 / 6.48 / 7.33. BCN and MSKCC reproduce to within the pre-registered SCC exclusion; HAM's ratio is larger here because it is computed lesion-level on the 6,981-row OOF panel actually being scored, where the plan's 7.33 came from the image-level *training* prior in results/age_band_prior.csv. Both are data-derived; the ordering of the three centres is identical either way.",
+    "ordered_by_skew_ascending": [
+      "bcn20000",
+      "mskcc",
+      "ham_oof"
+    ],
+    "predicted_sensitivity_order_descending": [
+      "bcn20000",
+      "mskcc",
+      "ham_oof"
+    ],
+    "observed_sensitivity_order_descending": [
+      "ham_oof",
+      "mskcc",
+      "bcn20000"
+    ],
+    "claim_b_ordering_holds": false,
+    "claim_b_ordering_reversed": true,
+    "spearman_skew_vs_sensitivity": 1.0,
+    "spearman_note": "n=3, descriptive only; no p-value is computed or implied",
+    "claim_a_auc_spread": 0.10504094732182379,
+    "claim_a_auc_range": [
+      0.7902777777777777,
+      0.8953187250996015
+    ],
+    "claim_a_within_cohort": {
+      "bcn20000": {
+        "auc_by_band": {
+          "<40": 0.7914264597191427,
+          "40-59": 0.8263360931260856,
+          "60+": 0.7945171044477078
+        },
+        "worst_band": "<40",
+        "under40_is_worst": true,
+        "under40_minus_60plus": -0.0030906447285651284
+      },
+      "mskcc": {
+        "auc_by_band": {
+          "<40": 0.7902777777777777,
+          "40-59": 0.6930432372505542,
+          "60+": 0.6937816782641328
+        },
+        "worst_band": "40-59",
+        "under40_is_worst": false,
+        "under40_minus_60plus": 0.0964960995136449
+      },
+      "ham_oof": {
+        "auc_by_band": {
+          "<40": 0.8953187250996015,
+          "40-59": 0.954677577225137,
+          "60+": 0.9344839106163028
+        },
+        "worst_band": "<40",
+        "under40_is_worst": true,
+        "under40_minus_60plus": -0.03916518551670123
+      }
+    },
+    "age_gap_by_skew_is_monotonic": false,
+    "rows": [
+      {
+        "cohort": "bcn20000",
+        "panel": "BCN-20000 (N=11,982)",
+        "under40_prevalence_lesion": 0.18446601941747573,
+        "over60_prevalence_lesion": 0.7065544197233915,
+        "skew_ratio": 3.8302686963952275,
+        "under40_argmax_sensitivity": 0.2791327913279133,
+        "under40_sensitivity_ci": [
+          0.1792702027047378,
+          0.3820605700712588
+        ],
+        "over60_argmax_sensitivity": 0.4102685999524602,
+        "age_gap_under40_minus_60plus": -0.13113580862454688,
+        "under40_escalation_mass_auc": 0.7914264597191427,
+        "under40_auc_ci": [
+          0.7264309568585302,
+          0.8430306973186532
+        ],
+        "over60_escalation_mass_auc": 0.7945171044477078,
+        "under40_melanoma_only_sensitivity": 0.273972602739726,
+        "under40_escalating_class_mix": {
+          "akiec": 20,
+          "bcc": 130,
+          "mel": 219
+        }
+      },
+      {
+        "cohort": "mskcc",
+        "panel": "MSKCC (N=2,903)",
+        "under40_prevalence_lesion": 0.047619047619047616,
+        "over60_prevalence_lesion": 0.31155778894472363,
+        "skew_ratio": 6.542713567839197,
+        "under40_argmax_sensitivity": 0.3333333333333333,
+        "under40_sensitivity_ci": [
+          0.18556180982592121,
+          0.5097025466518912
+        ],
+        "over60_argmax_sensitivity": 0.2554517133956386,
+        "age_gap_under40_minus_60plus": 0.07788161993769471,
+        "under40_escalation_mass_auc": 0.7902777777777777,
+        "under40_auc_ci": [
+          0.7030300940474954,
+          0.8671759692862304
+        ],
+        "over60_escalation_mass_auc": 0.6937816782641328,
+        "under40_melanoma_only_sensitivity": 0.3333333333333333,
+        "under40_escalating_class_mix": {
+          "mel": 36
+        }
+      },
+      {
+        "cohort": "ham_oof",
+        "panel": "HAM10000 OOF (N=6,981)",
+        "under40_prevalence_lesion": 0.037486218302094816,
+        "over60_prevalence_lesion": 0.31671388101983,
+        "skew_ratio": 8.448808531911348,
+        "under40_argmax_sensitivity": 0.546875,
+        "under40_sensitivity_ci": [
+          0.390625,
+          0.7083786231884056
+        ],
+        "over60_argmax_sensitivity": 0.7379619260918253,
+        "age_gap_under40_minus_60plus": -0.19108692609182532,
+        "under40_escalation_mass_auc": 0.8953187250996015,
+        "under40_auc_ci": [
+          0.8368850876381317,
+          0.9437393845545029
+        ],
+        "over60_escalation_mass_auc": 0.9344839106163028,
+        "under40_melanoma_only_sensitivity": 0.49019607843137253,
+        "under40_escalating_class_mix": {
+          "akiec": 1,
+          "bcc": 12,
+          "mel": 51
+        }
+      }
+    ]
+  },
+  "confirmatory": {
+    "ham_oof": {
+      "panel": "HAM10000 OOF (N=6,981)",
+      "n_escalating_images": 64,
+      "sensitivity_argmax": 0.546875,
+      "sensitivity_frozen_lambda": 0.625,
+      "only_argmax_caught": 0,
+      "only_rule_caught": 5,
+      "discordant": 5,
+      "p_value_exact": 0.0625,
+      "holm_family": "external_replication_family",
+      "holm_family_size": 5,
+      "p_holm_upper_bound": 0.3125,
+      "significant_at_holm_bound": false,
+      "bound_note": "conservative: Holm's adjusted p for the smallest member cannot exceed m*p, so this bound holds whatever E2, E3 and E4 turn out to be. E0 is withdrawn and enters at p = 1.0; the denominator stays at 5.",
+      "structural_note": "one-sided by construction. Adding lambda >= 0 to the escalating classes can only move a prediction toward them, so an escalating case caught by argmax is always caught by the rule and `only_argmax_caught` is structurally 0. The exact p then reduces to 2 * 0.5^b in the number of rescues b, which makes it a test of 'did the rule rescue anything', not of whether the rule is worth deploying. The deployment question is the sensitivity/specificity trade reported beside it -- `delta_sensitivity` against `delta_referral_rate` and the change in Macro-F1 -- and that trade, not this p-value, is what the manuscript should argue from.",
+      "role": "secondary (descriptive)"
+    },
+    "bcn20000": {
+      "panel": "BCN-20000 (N=11,982)",
+      "n_escalating_images": 369,
+      "sensitivity_argmax": 0.2791327913279133,
+      "sensitivity_frozen_lambda": 0.3523035230352303,
+      "only_argmax_caught": 0,
+      "only_rule_caught": 27,
+      "discordant": 27,
+      "p_value_exact": 1.4901161193847656e-08,
+      "holm_family": "external_replication_family",
+      "holm_family_size": 5,
+      "p_holm_upper_bound": 7.450580596923828e-08,
+      "significant_at_holm_bound": true,
+      "bound_note": "conservative: Holm's adjusted p for the smallest member cannot exceed m*p, so this bound holds whatever E2, E3 and E4 turn out to be. E0 is withdrawn and enters at p = 1.0; the denominator stays at 5.",
+      "structural_note": "one-sided by construction. Adding lambda >= 0 to the escalating classes can only move a prediction toward them, so an escalating case caught by argmax is always caught by the rule and `only_argmax_caught` is structurally 0. The exact p then reduces to 2 * 0.5^b in the number of rescues b, which makes it a test of 'did the rule rescue anything', not of whether the rule is worth deploying. The deployment question is the sensitivity/specificity trade reported beside it -- `delta_sensitivity` against `delta_referral_rate` and the change in Macro-F1 -- and that trade, not this p-value, is what the manuscript should argue from.",
+      "role": "PRIMARY (pre-registered)"
+    },
+    "mskcc": {
+      "panel": "MSKCC (N=2,903)",
+      "n_escalating_images": 36,
+      "sensitivity_argmax": 0.3333333333333333,
+      "sensitivity_frozen_lambda": 0.3888888888888889,
+      "only_argmax_caught": 0,
+      "only_rule_caught": 2,
+      "discordant": 2,
+      "p_value_exact": 0.5,
+      "holm_family": "external_replication_family",
+      "holm_family_size": 5,
+      "p_holm_upper_bound": 1.0,
+      "significant_at_holm_bound": false,
+      "bound_note": "conservative: Holm's adjusted p for the smallest member cannot exceed m*p, so this bound holds whatever E2, E3 and E4 turn out to be. E0 is withdrawn and enters at p = 1.0; the denominator stays at 5.",
+      "structural_note": "one-sided by construction. Adding lambda >= 0 to the escalating classes can only move a prediction toward them, so an escalating case caught by argmax is always caught by the rule and `only_argmax_caught` is structurally 0. The exact p then reduces to 2 * 0.5^b in the number of rescues b, which makes it a test of 'did the rule rescue anything', not of whether the rule is worth deploying. The deployment question is the sensitivity/specificity trade reported beside it -- `delta_sensitivity` against `delta_referral_rate` and the change in Macro-F1 -- and that trade, not this p-value, is what the manuscript should argue from.",
+      "role": "secondary (descriptive)"
+    },
+    "family_member": "E1_under40_sens_frozen_lambda_vs_argmax",
+    "primary_cohort": "bcn20000"
+  },
+  "frozen_ham_anchors_crossfitted": [
+    {
+      "band": "<40",
+      "argmax_sens": 0.546875,
+      "escalation_mass_auc": 0.8892679282868526,
+      "auc_ci": [
+        0.830502299395985,
+        0.9491281863963732
+      ],
+      "escalating_prior": 0.04852160727824109
+    },
+    {
+      "band": "40-59",
+      "argmax_sens": 0.6120906801007556,
+      "escalation_mass_auc": 0.9525381428856387,
+      "auc_ci": [
+        0.9361791376557957,
+        0.9651644401755723
+      ],
+      "escalating_prior": 0.1275706940874036
+    },
+    {
+      "band": "60+",
+      "argmax_sens": 0.7334826427771557,
+      "escalation_mass_auc": 0.9334505490857101,
+      "auc_ci": [
+        0.9222956546469304,
+        0.9450502698280189
+      ],
+      "escalating_prior": 0.3554936305732484
+    },
+    {
+      "band": "unknown",
+      "argmax_sens": 1.0,
+      "escalation_mass_auc": 1.0,
+      "auc_ci": [
+        1.0,
+        1.0
+      ],
+      "escalating_prior": 0.05263157894736842
+    },
+    {
+      "band": "ALL",
+      "argmax_sens": 0.68952802359882,
+      "escalation_mass_auc": 0.9487219927892495,
+      "auc_ci": [
+        0.9404624411930531,
+        0.9563604136663917
+      ],
+      "escalating_prior": 0.19424151267726686
+    }
+  ],
+  "verdict": {
+    "preregistered_contingency_fired": "A fails AND the ordering is non-monotonic: report the three point estimates with intervals, drop the trend language, offer no post-hoc explanation.",
+    "claim_a_flat_across_centres": false,
+    "claim_a_under40_worst_within_cohort": {
+      "bcn20000": true,
+      "mskcc": false,
+      "ham_oof": true
+    },
+    "claim_b_ordering_holds": false,
+    "claim_b_ordering_reversed": true,
+    "mix_control_changes_conclusion": false,
+    "design_limitation": "the dose variable is entangled with cohort-level transfer quality. The lowest-skew centre (BCN) is also the centre the frozen ensemble transfers to worst -- its all-ages Macro-F1 is roughly half HAM's -- so its under-40 sensitivity is not a clean read of the skew mechanism. This is stated as a limitation of the design, NOT as a reason to retain the hypothesis: the pre-registered contingency for a failed Claim A is to report it plainly, and that is what the verdict above does.",
+    "what_does_transfer": "the frozen per-band lambda raises under-40 escalation sensitivity in all three centres at a small referral cost, without a single parameter fitted on target data. That is the operating-point result; it is not evidence for the mechanism, because a constant escalating-class bonus raises sensitivity under any prior."
+  }
+}
