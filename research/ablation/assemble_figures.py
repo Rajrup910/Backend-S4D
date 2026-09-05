@@ -49,6 +49,43 @@ def build_figure2_reliability() -> None:
     print(f"Wrote {out_path.relative_to(REPO_ROOT)} ({canvas.size[0]}x{canvas.size[1]})")
 
 
+def build_figure4_selective() -> None:
+    """Session 15: risk-coverage and the abstention trade-off as one two-panel float.
+
+    These were Figures 4 and 6 of the S10 draft and they tell one story twice -- the same
+    sweep over the same abstention thresholds, read once as risk against coverage and once
+    as the safety/workload trade. Two single-column floats cost roughly half a page more
+    than one full-width float, and the paper is over its page budget, so they are merged
+    here rather than dropped: no panel loses a curve.
+    """
+    left = Image.open(resolve("paper/figures/figure4_risk_coverage.png"))
+    right = Image.open(resolve("paper/figures/figure6_abstention_tradeoff.png"))
+
+    label_h = 50
+    gap = 20
+    width = left.width + right.width + gap
+    height = max(left.height, right.height) + label_h
+
+    canvas = Image.new("RGB", (width, height), "white")
+    draw = ImageDraw.Draw(canvas)
+    try:
+        font = ImageFont.truetype("arial.ttf", 28)
+    except OSError:
+        font = ImageFont.load_default()
+
+    draw.text((left.width // 2 - 130, 10), "(a) Risk-coverage", fill="black", font=font)
+    draw.text((left.width + gap + right.width // 2 - 170, 10),
+              "(b) Safety / workload trade-off", fill="black", font=font)
+
+    canvas.paste(left, (0, label_h))
+    canvas.paste(right, (left.width + gap, label_h))
+
+    out_path = resolve("paper/figures/figure4_selective.png")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    canvas.save(out_path)
+    print(f"Wrote {out_path.relative_to(REPO_ROOT)} ({canvas.size[0]}x{canvas.size[1]})")
+
+
 def build_figure7_gradcam() -> None:
     """2x4 Grad-CAM montage: a confident correct case per row-1 class, a characteristic error below.
 
@@ -143,8 +180,9 @@ def copy_existing_figures() -> None:
 
 def main() -> int:
     build_figure2_reliability()
+    copy_existing_figures()          # the two selective panels must exist before the merge
+    build_figure4_selective()
     build_figure7_gradcam()
-    copy_existing_figures()
     print(
         "\nNote: Figure 1 (architecture diagram) is drawn by "
         "research/ablation/figure1_architecture.py, not by this script."
