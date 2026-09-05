@@ -19,12 +19,24 @@ Regenerate with `python -m research.ablation.run_part_a` followed by
 | `test_pass_receipt.json` | `run_session9_testpass.py` | append-only record of the test read |
 | `session9/` | `run_session9_testpass.py` | every test number added after session 5 |
 | `CLAIM_checklist.md` | maintained by hand | rendered to `paper/supplementary.tex` |
+| `external/analysis_plan_post_s11_v2.json` | `freeze_analysis_plan_v2.py` | the external pre-registration |
+| `external/post_s11_provenance.json` | `freeze_analysis_plan_v2.py` | both plan hashes, v1 retained |
+| `external/*_report.json` | `research/external/eval_*.py` | Sec. IV-J and IV-K |
+| `external/predictions/` | `extract_external_predictions.py` | BCN-20000 and MSKCC matrices |
+| `external/post_s11_artifacts.json` | `build_post_s11_artifacts.py` | SHA-256 manifest of the battery |
+| `external/reviewer_defense_package.md` | `build_post_s11_artifacts.py` | consolidated external provenance |
 
-Two scripts read this directory rather than write it, and both should pass before
-the paper is submitted: `python -m research.ablation.audit_manuscript` checks every
-number in the manuscript against the files above, and
-`python research/ablation/validate_structure.py` stands in for the LaTeX compiler
-that is not installed here. `python -m research.ablation.build_overleaf_bundle`
-then assembles the upload from the manuscript's own dependency list.
+Four scripts read this directory rather than write it, and all four should pass
+before the paper is submitted: `python -m research.ablation.audit_manuscript` checks
+every number in the manuscript against the files above;
+`python -m research.ablation.validate_structure` stands in for the LaTeX compiler
+that is not installed here; `python scripts/external/preflight.py --stage pre_s17`
+checks the external battery's integrity end to end; and
+`python -m research.external.build_post_s11_artifacts --check` re-verifies the
+pre-registration hashes and the ledger coverage without writing anything.
+`python -m research.ablation.build_overleaf_bundle` then assembles the upload from
+the manuscript's own dependency list, and
+`python -m research.ablation.estimate_pages` estimates the compiled length, since
+there is no compiler here to measure it.
 
-Frozen artifact set: 34 prediction matrices, declared 2026-09-04T23:12:52+00:00.
+Frozen artifact set: 34 prediction matrices, declared 2026-09-05T17:58:46+00:00.

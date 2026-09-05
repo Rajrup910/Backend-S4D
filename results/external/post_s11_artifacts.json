@@ -1,0 +1,317 @@
+{
+  "built_at": "2026-09-05T17:58:12+00:00",
+  "session": "S17",
+  "statement": "Every external figure reported in paper/manuscript.tex is re-derived from the artifacts hashed below. No entry here involved a read of the HAM10000 test split: the external cohorts are BCN-20000, MSKCC and PAD-UFES-20, and the two test-anchored columns are reconstructed from frozen Session 9 outputs.",
+  "test_receipt": {
+    "n_executions": 2,
+    "rerun_reasons": []
+  },
+  "pre_registration": {
+    "version": "post_s11_v2",
+    "deviations": 7,
+    "deviation_ids": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7"
+    ],
+    "holm_family": {
+      "family_name": "external_replication_family",
+      "correction_method": "Holm-Bonferroni",
+      "pre_registered_members": [
+        "E0_under40_sens_cell_B_vs_cell_A",
+        "E1_under40_sens_frozen_lambda_vs_argmax",
+        "E2_em_macro_f1_vs_raw",
+        "E3_point_frr_comparison",
+        "E4_mahalanobis_L0_vs_L2"
+      ],
+      "denominator_note": "held at 5 members. E0 is withdrawn and enters at p = 1.0 rather than being removed; E6 and E7 are post-hoc and enter no family."
+    },
+    "hash_checks": [
+      {
+        "version": "v2",
+        "file": "results/external/analysis_plan_post_s11_v2.json",
+        "recorded_sha256": "da3c2e1837a21cb3022498a7bf4a0df3dbc78f42ad3c4cf6d550743119dda868",
+        "actual_sha256": "da3c2e1837a21cb3022498a7bf4a0df3dbc78f42ad3c4cf6d550743119dda868",
+        "matches": true
+      },
+      {
+        "version": "v1",
+        "file": "results/external/analysis_plan_post_s11.json",
+        "recorded_sha256": "e6193e191acba511ba02c4b8d81dee469775df62b1084ec4da56aeb0ddf8d031",
+        "actual_sha256": "e6193e191acba511ba02c4b8d81dee469775df62b1084ec4da56aeb0ddf8d031",
+        "matches": true
+      }
+    ]
+  },
+  "workstreams": {
+    "E0": {
+      "title": "comparison arm (WITHDRAWN in S12)",
+      "report": null,
+      "report_exists": true,
+      "ledger_rows": 1,
+      "no_ledger_by_design": null
+    },
+    "E1": {
+      "title": "three-centre dose-response replication",
+      "report": "results/external/age_rule_transfer_report.json",
+      "report_exists": true,
+      "ledger_rows": 38,
+      "no_ledger_by_design": null
+    },
+    "E2": {
+      "title": "PAD-UFES-20 prior-shift decoupling",
+      "report": "results/external/pad_prior_decoupling_report.json",
+      "report_exists": true,
+      "ledger_rows": 6,
+      "no_ledger_by_design": null
+    },
+    "E2b": {
+      "title": "PAD age rule under the deployed calibrator",
+      "report": "results/external/pad_age_rule_deployed.json",
+      "report_exists": true,
+      "ledger_rows": 6,
+      "no_ledger_by_design": null
+    },
+    "E3": {
+      "title": "three-tier clinical triage",
+      "report": "results/external/clinical_triage_report.json",
+      "report_exists": true,
+      "ledger_rows": 5,
+      "no_ledger_by_design": null
+    },
+    "E4": {
+      "title": "shift detection and conformal widening",
+      "report": "results/external/conformal_shift_audit.json",
+      "report_exists": true,
+      "ledger_rows": 9,
+      "no_ledger_by_design": null
+    },
+    "E5": {
+      "title": "Fitzpatrick skin-tone strata",
+      "report": "results/external/fitzpatrick_slices.json",
+      "report_exists": true,
+      "ledger_rows": 7,
+      "no_ledger_by_design": null
+    },
+    "E6": {
+      "title": "decision-curve net benefit",
+      "report": "results/external/decision_curve_report.json",
+      "report_exists": true,
+      "ledger_rows": 3,
+      "no_ledger_by_design": null
+    },
+    "E7": {
+      "title": "case atlas of rescued lesions",
+      "report": "results/external/case_atlas_report.json",
+      "report_exists": true,
+      "ledger_rows": 0,
+      "no_ledger_by_design": "qualitative exemplar selection; produces no metric, so there is no row to log"
+    },
+    "_total_session_rows": {
+      "ledger_rows": 75
+    }
+  },
+  "verdicts": {
+    "E1 Claim A (cohort-invariant escalation-mass AUC)": "FAILED -- spread 0.105 across three centres",
+    "E1 Claim B (sensitivity tracks prior skew)": "FAILED, ordering reversed",
+    "E1 contingency": "A fails AND the ordering is non-monotonic: report the three point estimates with intervals, drop the trend language, offer no post-hoc explanation.",
+    "E1 design limitation": "the dose variable is entangled with cohort-level transfer quality. The lowest-skew centre (BCN) is also the centre the frozen ensemble transfers to worst -- its all-ages Macro-F1 is roughly half HAM's -- so its under-40 sensitivity is not a clean read of the skew mechanism. This is stated as a limitation of the design, NOT as a reason to retain the hypothesis: the pre-registered contingency for a failed Claim A is to report it plainly, and that is what the verdict above does.",
+    "E1 what does transfer": "the frozen per-band lambda raises under-40 escalation sensitivity in all three centres at a small referral cost, without a single parameter fitted on target data. That is the operating-point result; it is not evidence for the mechanism, because a constant escalating-class bonus raises sensitivity under any prior.",
+    "E2 confirmatory member (E2_em_macro_f1_vs_raw)": "significant in the WRONG direction -- p = 2.89e-23, 321 cases correct only without the correction against 113 only with it",
+    "E2b calibrator repoint": "the superseded and deployed Dirichlet maps differ by up to 0.0967 in calibrated probability on PAD; the manuscript quotes the deployed column"
+  },
+  "num_files": 35,
+  "artifacts": {
+    "pre_registration": [
+      {
+        "path": "results/external/analysis_plan_post_s11.json",
+        "bytes": 2805,
+        "sha256": "e6193e191acba511ba02c4b8d81dee469775df62b1084ec4da56aeb0ddf8d031"
+      },
+      {
+        "path": "results/external/analysis_plan_post_s11_v2.json",
+        "bytes": 10695,
+        "sha256": "da3c2e1837a21cb3022498a7bf4a0df3dbc78f42ad3c4cf6d550743119dda868"
+      },
+      {
+        "path": "results/external/post_s11_provenance.json",
+        "bytes": 1304,
+        "sha256": "4d01df251c21e2f8354a0b5dd6d75344fc4cc7924144ee989d0259e8b8bc3ae8"
+      }
+    ],
+    "reports": [
+      {
+        "path": "results/external/age_rule_transfer_report.json",
+        "bytes": 60563,
+        "sha256": "018970caf7810bc70cd6ca01177e7c04f4cc108915b8c5b142648670221ffaa9"
+      },
+      {
+        "path": "results/external/case_atlas_report.json",
+        "bytes": 2454,
+        "sha256": "06fca3a8c99e0e4283f559b97f8799f31730b2bd93a30b0ae97157df9e646e9f"
+      },
+      {
+        "path": "results/external/clinical_triage_report.json",
+        "bytes": 1913,
+        "sha256": "90179b596edc5d7cd424cf49276c61dad48a7189e2a7c4f9592f39890b351362"
+      },
+      {
+        "path": "results/external/conformal_shift_audit.json",
+        "bytes": 3761,
+        "sha256": "f59badc306760488689a3ea7909e48129975df5b06d7e9e24ff11cff8f44df05"
+      },
+      {
+        "path": "results/external/decision_curve_report.json",
+        "bytes": 10596,
+        "sha256": "878959503db496f85b5ddc40cf0ee8d8e038a461f7fb66d8d4ed9fe76a3fe260"
+      },
+      {
+        "path": "results/external/fitzpatrick_slices.json",
+        "bytes": 2623,
+        "sha256": "8d5b442cce9fc390b1d36f8801f173af7d940b7e5a2958e803a6b3eb8425809c"
+      },
+      {
+        "path": "results/external/manifest_audit.json",
+        "bytes": 143,
+        "sha256": "c57fc37ce624fbdaddf803cd39de075c2029b944acb6a080ea3a458ebf470a28"
+      },
+      {
+        "path": "results/external/pad_age_rule_deployed.json",
+        "bytes": 2582,
+        "sha256": "6bb8a59a4d37a3b69297309ff31868f49593e19c06af94a039a696dc80ccfea6"
+      },
+      {
+        "path": "results/external/pad_prior_decoupling_report.json",
+        "bytes": 10135,
+        "sha256": "e3b882b066e9a38fb7a25286954ba87096043c7c6a19228ab1c1f651e1f03971"
+      }
+    ],
+    "tables": [
+      {
+        "path": "results/external/e1_claim_a_escalation_mass_auc.csv",
+        "bytes": 2030,
+        "sha256": "f60348a398e56afc0daec46eec061199aa26b8d60ec2fcb6868771524235387a"
+      },
+      {
+        "path": "results/external/e1_claim_b_argmax_sensitivity.csv",
+        "bytes": 14389,
+        "sha256": "98b810f859e3d151b067f35eeb957ee099589b735a78f236a57edfd284388bb3"
+      },
+      {
+        "path": "results/external/e1_lambda_sweep_descriptive.csv",
+        "bytes": 92933,
+        "sha256": "f957be9ccbbe9b3c6ee1909f473220c77045fd76c2a4c6c6cf0a36902210d486"
+      },
+      {
+        "path": "results/external/e1_lambda_transfer.csv",
+        "bytes": 5082,
+        "sha256": "5ad69ec41332a215a0a1c4a3693febddf359ef9af94a26f2ad1b5ec6d63529de"
+      }
+    ],
+    "predictions": [
+      {
+        "path": "results/external/predictions/convnext_small_bcn20000.csv",
+        "bytes": 3184078,
+        "sha256": "3bc68d21e4b173e3813d43d3a73a422f85c2b455457b2667af72e3649a0315d0"
+      },
+      {
+        "path": "results/external/predictions/convnext_small_mskcc.csv",
+        "bytes": 770542,
+        "sha256": "9ad981eef0ab955b588cfadcf7433b2b20a781a98c46614b40f74df6c654dfc8"
+      },
+      {
+        "path": "results/external/predictions/convnext_tiny_bcn20000.csv",
+        "bytes": 3158083,
+        "sha256": "01dd4a5c0714efe95385022f00f1d145e1a1fed1fc506ba3d8bffd140f19a92f"
+      },
+      {
+        "path": "results/external/predictions/convnext_tiny_mskcc.csv",
+        "bytes": 764526,
+        "sha256": "7b4fd062e0a8a12f3b29af1beef579bbffeeebd9eb4c19953a320dd8debe4a99"
+      },
+      {
+        "path": "results/external/predictions/densenet121_bcn20000.csv",
+        "bytes": 3112073,
+        "sha256": "28a9ed341912af9e59c8f14fdb0fdcc5435040e81d2e71b6c095240174f05ec1"
+      },
+      {
+        "path": "results/external/predictions/densenet121_mskcc.csv",
+        "bytes": 754429,
+        "sha256": "fb9270a06c02dee604aa1e7380e3d78a04eafc285cc30cb56bcb34237cd211f5"
+      },
+      {
+        "path": "results/external/predictions/efficientnet_b0_bcn20000.csv",
+        "bytes": 3201198,
+        "sha256": "9ee2fbc30cdfdb63c0d5ff5c0221e24c9877af96c59683810060465dfe3b194b"
+      },
+      {
+        "path": "results/external/predictions/efficientnet_b0_mskcc.csv",
+        "bytes": 775677,
+        "sha256": "e7afb84690cd4f39b81b741f8b8d1f822b511ff90d97ec295034eab2d1166df0"
+      },
+      {
+        "path": "results/external/predictions/efficientnet_b3_bcn20000.csv",
+        "bytes": 3192524,
+        "sha256": "1186bc58b0ae03dfa972872c0a1a27aac9498b84634c63c84064f9c2cef8f91a"
+      },
+      {
+        "path": "results/external/predictions/efficientnet_b3_mskcc.csv",
+        "bytes": 773936,
+        "sha256": "352e88e6e05aa6fa78f69172c6aa926c6374627a2b991b03000eef32e30352a8"
+      },
+      {
+        "path": "results/external/predictions/ensemble_dirichlet_bcn20000.csv",
+        "bytes": 4158158,
+        "sha256": "ee427b9d762e898d10f6ad6fbca34ae8ecd536dba58f0f5b9e6896534cfa9d31"
+      },
+      {
+        "path": "results/external/predictions/ensemble_dirichlet_mskcc.csv",
+        "bytes": 1021810,
+        "sha256": "4f8aaccaeea369e126cc06849896bcda50c8e43381ff491326f69afe063e16e0"
+      },
+      {
+        "path": "results/external/predictions/resnet50_bcn20000.csv",
+        "bytes": 3031665,
+        "sha256": "de1c08d917d7d8310e2d6185ea9ad343403254cd81e27b6e0bbbb229f6af48f0"
+      },
+      {
+        "path": "results/external/predictions/resnet50_mskcc.csv",
+        "bytes": 735159,
+        "sha256": "9caf458457a65e8606ef597334f99a41f8b41c55154a4d6806751d0bd1de246d"
+      }
+    ],
+    "paper_tables": [
+      {
+        "path": "paper/tables/external_table_safety_nets.tex",
+        "bytes": 3907,
+        "sha256": "a2b9685b4c6f61870dfd474d7efd8a3eaa3ee2e680fdae72d2577ab3f012b898"
+      },
+      {
+        "path": "paper/tables/external_table_validity_battery.tex",
+        "bytes": 6318,
+        "sha256": "7f0041370275527c71d7d5e57fde0edd20ea06f05ce5f9587e5207c115da15dd"
+      }
+    ],
+    "paper_figures": [
+      {
+        "path": "paper/figures/external_figure_case_atlas.png",
+        "bytes": 1778153,
+        "sha256": "245e3f16dbc4b22fe738a2168d1723b7e72d3df13bca447a0b825f6bec33a26e"
+      },
+      {
+        "path": "paper/figures/external_figure_decision_curve.png",
+        "bytes": 262247,
+        "sha256": "ba5d06fcf48a1eb42812b12b6c91118142dc887be086dabefe5b465b6962d427"
+      },
+      {
+        "path": "paper/figures/external_figure_dose_response.png",
+        "bytes": 116615,
+        "sha256": "a1bd4aeedbc94edfa913a6a46c0f189564979a5219af401cf3888613de13474b"
+      }
+    ]
+  }
+}
