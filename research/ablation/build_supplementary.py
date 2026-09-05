@@ -66,7 +66,23 @@ def inline(text: str) -> str:
                   lambda m: keep(r"\emph{%s}" % _escape(m.group(1))), text)
 
     text = _escape(text)
-    return re.sub(r"\x00(\d+)\x00", lambda m: stash[int(m.group(1))], text)
+
+    # Placeholders NEST: `**bold with `code` inside**` stashes the code span first, then the
+    # bold rule stashes a string that still contains the inner placeholder. re.sub does not
+    # re-scan its own replacement, so a single pass leaves those inner \x00N\x00 markers in
+    # the output as raw NUL bytes -- which is exactly what shipped in supplementary.tex
+    # (item 23, "all splits grouped by `lesion_id`") until 2026-09-06. Restore to a fixed
+    # point instead, bounded by the stash depth.
+    for _ in range(len(stash) + 1):
+        restored = re.sub(r"\x00(\d+)\x00", lambda m: stash[int(m.group(1))], text)
+        if restored == text:
+            break
+        text = restored
+    if "\x00" in text:
+        raise AssertionError(
+            "unresolved placeholder left in rendered LaTeX -- markdown nesting deeper than "
+            f"the stash bound ({len(stash)}): {text[:200]!r}")
+    return text
 
 
 def _split_row(line: str) -> list[str]:
