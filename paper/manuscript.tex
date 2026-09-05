@@ -55,23 +55,25 @@ no new human-subjects data were collected.}}
 Reported accuracy on public dermoscopy benchmarks has largely saturated, yet the properties
 that decide whether a classifier is deployable --- calibration, knowing when to defer, and
 whether its guarantees hold for the patients who need them --- are rarely measured, and almost
-never measured \emph{per subgroup}. We build a seven-class HAM10000 classifier as an ablation
-ladder in which every fitted component is fitted on validation or on $6{,}981$ out-of-fold
-training predictions, never on test, and every new test quantity comes from one pass against a
-pre-registered $19$-item analysis plan. A uniform soft-vote over six CNN backbones reaches
+never \emph{per subgroup}. We build a seven-class HAM10000 classifier as an ablation ladder
+with every component fitted on validation or on $6{,}981$ out-of-fold training predictions,
+never on test, and every test quantity from one pass against a pre-registered $19$-item
+analysis plan. A uniform soft-vote over six CNN backbones reaches
 Macro-F1 $0.7718$; $24$-view test-time augmentation gives $0.7859$ and Dirichlet calibration
 $0.8047$, cutting expected calibration error from $0.1575$ to $0.0206$. Ensembling is the only
 rung clearing significance (McNemar, Holm-adjusted $p=2.0\times10^{-4}$); five further
-combination levers, among them a mixed CNN--transformer ensemble and a $30$-member fold-bagged
-ensemble, are all negative, and we report that exhaustion as a result. What remains is subgroup
+combination levers, among them a mixed CNN--transformer ensemble and a $30$-member fold bag,
+are all negative, and we report that exhaustion as a result. What remains is subgroup
 structure. Marginal conformal coverage at $\alpha=0.10$ attains $90.1\%$ overall, $73.4\%$ on
 malignant lesions, and $23.8\%$ on malignant lesions in patients under $40$; class-conditional
 calibration lifts that last figure only to $0.57$, while calibrating jointly on age band
 $\times$ escalation requirement reaches $0.95$. Escalation sensitivity under $40$ is $0.143$
 $[0.030, 0.363]$ against $0.764$ $[0.683, 0.836]$ at $60+$ (difference $-0.621$, Holm
 $p<0.001$), and abstention defers only $11\%$ of those misses. A one-parameter age-conditional
-rule fitted out-of-fold raises escalation sensitivity to $0.831$, at a Number Needed to Biopsy
-of $3.0 \rightarrow 6.2$ at a stated $3\%$ reference prevalence. Carried frozen to two further
+rule fitted out-of-fold raises escalation sensitivity from $0.731$ to $0.831$ \emph{overall},
+at a Number Needed to Biopsy of $3.0 \rightarrow 6.2$ at a stated $3\%$ reference prevalence
+--- but it helps the under-$40$ band least, lifting it only to $0.238$: the blind spot is
+mitigated, not closed. Carried frozen to two further
 dermoscopic centres ($11{,}982$ BCN-20000 and $2{,}903$ MSKCC images, nothing re-fitted), that
 rule again raises under-$40$ escalation sensitivity ($0.279 \rightarrow 0.352$ and $0.333
 \rightarrow 0.389$) --- while both pre-registered mechanistic claims fail. The operating point

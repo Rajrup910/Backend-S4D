@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-09-05T17:58:12+00:00",
+  "built_at": "2026-09-05T19:00:23+00:00",
   "session": "S17",
   "statement": "Every external figure reported in paper/manuscript.tex is re-derived from the artifacts hashed below. No entry here involved a read of the HAM10000 test split: the external cohorts are BCN-20000, MSKCC and PAD-UFES-20, and the two test-anchored columns are reconstructed from frozen Session 9 outputs.",
   "test_receipt": {
