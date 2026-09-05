@@ -2443,6 +2443,47 @@ refs), `preflight --stage pre_s17` 34, `frozen_params --selftest` 6, `build_post
 35 artifacts + both plan hashes, `build_overleaf_bundle` 16 files / 5.70 MB rebuilt against the
 corrected manuscript.
 
+**4. Two defects that would have stopped the Overleaf compile outright.** Neither is a number,
+so no numeric check could see either one.
+
+`paper/supplementary.tex` **contained two NUL bytes**, and `file` classified the document as
+`data` rather than LaTeX. The cause is placeholder nesting in `build_supplementary.py`: the
+markdown converter stashes inline spans as `\x00N\x00`, so ``**bold with `code` inside**``
+stashes the code span first and then stashes a *bold* string that still contains the inner
+placeholder. The final restore was a single `re.sub`, and `re.sub` does not re-scan its own
+replacement, so the inner marker survived into the output. Checklist item 23 shipped as
+`all splits grouped by \x000\x00` instead of `all splits grouped by \texttt{lesion\_id}`.
+The restore now runs to a fixed point bounded by the stash depth and raises if any placeholder
+survives.
+
+`validate_structure.py` **could not have caught it, because each document was getting half a
+screen**: the manuscript was checked for control bytes (`< 32`) and the supplementary for
+unmapped non-ascii (`> 127`). NUL is a control byte, so it fell through the gap — and the
+manuscript check's own comment claimed the reverse of what the code did. Both documents now
+get both screens through one `_stray_bytes` helper.
+
+**Every `§` in the supplementary was an undefined control sequence.** `build_supplementary.py`
+mapped `§` to a bare `\S`, and TeX reads a control word greedily, so `§III-A` emitted
+`\SIII-A` — parsed as the single undefined command `\SIII`, not as `\S` followed by `III-A`.
+All **25** section references were affected (`\SI` ×3, `\SIII` ×7, `\SIII-A` ×11, `\SIV` ×1,
+`\SV` ×2, `\SVI` ×1), each one a hard compile error. Now emits `\S{}`. A new
+`_swallowed()` guard in `validate_structure.py` catches the whole class for `\S`, `\P`,
+`\dag` and `\ddag` across both documents, and was verified by reverting the generator.
+
+**5. `paper/tables/oof_vs_val.tex` would have overflowed its column by roughly 2.7×.** It is a
+single-column `table` whose `cost_sensitive_thresholds` row carries two 7-element vectors —
+about 154 printed characters against the ~63 that fit a 252pt column at `normalsize`. Fixed in
+the generator, since the file is generated: `table*` + `\scriptsize`, landing near 485pt against
+516pt of `\textwidth`. Regenerated with `--skip-runs`, which rebuilds from the frozen fit states
+with the test lock armed; `results/oof_vs_val_comparison.csv` is byte-identical, so only the
+rendering changed. The five other over-wide tables are the orphans S16 collapsed into the two
+composites and are input by neither document, so their width is moot;
+`appendix_table_tripod_ai.tex` reads as over-wide only because the estimator counts characters —
+it uses `p{5.5cm}p{6.0cm}` columns that wrap, and fits.
+
+**Overleaf bundle** rebuilt (16 files, 5.70 MB) and scanned: no `.tex` in it carries a NUL byte
+or a swallowed control word.
+
 **Left open, deliberately, for the owner:**
 
 1. ⚠️ The abstract is **314 words** against IEEE TMI's 250. It was already ~297 before this
@@ -2452,7 +2493,8 @@ corrected manuscript.
    backing table in `results/` — a Hard Rule 4 gap. The one value quoted in the caption
    (`mel` $0.796$) is sourced from `session4_conformal_report.md` and is checked; the other six
    bars are not reconstructible without re-running the conformal fit.
-3. ⚠️ Still never compiled here. `paper/manuscript_overleaf.zip` is rebuilt and current.
+3. ⚠️ Still never compiled here — but two certain compile errors were removed tonight, so
+   the first Overleaf run should get further than it would have. `paper/manuscript_overleaf.zip` is rebuilt and current.
 
 
 ## 11. Known findings that constrain later work

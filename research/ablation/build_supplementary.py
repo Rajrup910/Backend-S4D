@@ -29,7 +29,11 @@ UNICODE = [
     ("—", "---"), ("–", "--"), ("→", r"$\rightarrow$"),
     ("×", r"$\times$"), ("≥", r"$\ge$"), ("≤", r"$\le$"),
     ("λ", r"$\lambda$"), ("α", r"$\alpha$"), ("π", r"$\pi$"),
-    ("§", r"\S"), ("’", "'"), ("“", "``"), ("”", "''"),
+    # \S{} not \S: TeX consumes letters greedily, so "§III-A" would emit "\SIII-A" and be
+    # read as one undefined control sequence \SIII. All 25 section references in the CLAIM
+    # checklist hit this -- \SI, \SIII, \SIII-A, \SIV, \SV, \SVI -- and every one of them
+    # was a hard compile error until 2026-09-06.
+    ("§", r"\S{}"), ("’", "'"), ("“", "``"), ("”", "''"),
 ]
 
 # Characters LaTeX reserves. Applied only to plain prose, never inside a rebuilt command.

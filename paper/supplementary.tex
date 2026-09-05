@@ -90,8 +90,8 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \endhead
 \bottomrule
 \endfoot
-3 & Scientific and clinical background, including the intended use & Met & \SI Introduction \\
-4 & Study objectives and hypotheses & Met & \SI, contributions list \\
+3 & Scientific and clinical background, including the intended use & Met & \S{}I Introduction \\
+4 & Study objectives and hypotheses & Met & \S{}I, contributions list \\
 \end{longtable}
 
 
@@ -109,9 +109,9 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \endhead
 \bottomrule
 \endfoot
-5 & Prospective or retrospective study & Met & Retrospective, stated in \SIII-A \\
-6 & Study goal (model creation, exploratory, feasibility, non-inferiority) & Met & \SI --- model development and evaluation, explicitly not a clinical trial \\
-7 & Ethical approval / institutional review & N/A & Public de-identified datasets (HAM10000, PAD-UFES-20); no new human-subject data collected. Stated in \SIII-A \\
+5 & Prospective or retrospective study & Met & Retrospective, stated in \S{}III-A \\
+6 & Study goal (model creation, exploratory, feasibility, non-inferiority) & Met & \S{}I --- model development and evaluation, explicitly not a clinical trial \\
+7 & Ethical approval / institutional review & N/A & Public de-identified datasets (HAM10000, PAD-UFES-20); no new human-subject data collected. Stated in \S{}III-A \\
 8 & Registration of the study protocol & \textbf{Not met} & Not registered. A pre-registered analysis plan is used instead: \texttt{results/analysis\_plan.json}, frozen before the single test read (S9) and hashed into \texttt{results/frozen\_artifacts.json} \\
 9 & Sources of funding and role of funder & Met & Acknowledgements (\texttt{TODO} marker pending) \\
 \end{longtable}
@@ -131,12 +131,12 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \endhead
 \bottomrule
 \endfoot
-10 & Data sources & Met & \SIII-A; HAM10000 (Tschandl et al.), PAD-UFES-20 (Pacheco et al.) \\
-11 & Eligibility criteria: how, by whom, and when data were selected & Met & \SIII-A; \texttt{ml/preprocessing/split\_dataset.py} \\
-12 & Data pre-processing steps & Met & \SIII \emph{Backbones and training}; \texttt{ml/preprocessing/transforms.py}. Colour constancy was planned and \textbf{not} implemented --- reported as absent rather than omitted (Limitations) \\
-13 & Selection of data subsets, if applicable & Met & \SIII-A \\
+10 & Data sources & Met & \S{}III-A; HAM10000 (Tschandl et al.), PAD-UFES-20 (Pacheco et al.) \\
+11 & Eligibility criteria: how, by whom, and when data were selected & Met & \S{}III-A; \texttt{ml/preprocessing/split\_dataset.py} \\
+12 & Data pre-processing steps & Met & \S{}III \emph{Backbones and training}; \texttt{ml/preprocessing/transforms.py}. Colour constancy was planned and \textbf{not} implemented --- reported as absent rather than omitted (Limitations) \\
+13 & Selection of data subsets, if applicable & Met & \S{}III-A \\
 14 & Definitions of data elements, with references to Common Data Elements & Partial & Class definitions in Table I. No formal CDE mapping --- dermoscopy has no widely adopted CDE set for these seven diagnoses \\
-15 & De-identification methods & Met & Inherited from the source datasets, both released de-identified; stated in \SIII-A \\
+15 & De-identification methods & Met & Inherited from the source datasets, both released de-identified; stated in \S{}III-A \\
 16 & How missing data were handled & Met & Missing \texttt{age}/\texttt{sex} are kept as an explicit \texttt{unknown} level and never folded into a real group --- \texttt{research/selective/fairness.py:load\_attributes}; the excluded counts are footnoted in Table IV \\
 \end{longtable}
 
@@ -155,9 +155,9 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \endhead
 \bottomrule
 \endfoot
-17 & Definition of the reference standard & Met & \SIII-A; histopathology, follow-up, expert consensus or in-vivo confocal microscopy, per HAM10000's \texttt{dx\_type} \\
-18 & Rationale for choosing the reference standard & Met & \SIII-A \\
-19 & Source of ground-truth annotations; qualifications of annotators & Met & \SIII-A, deferred to the source dataset publications \\
+17 & Definition of the reference standard & Met & \S{}III-A; histopathology, follow-up, expert consensus or in-vivo confocal microscopy, per HAM10000's \texttt{dx\_type} \\
+18 & Rationale for choosing the reference standard & Met & \S{}III-A \\
+19 & Source of ground-truth annotations; qualifications of annotators & Met & \S{}III-A, deferred to the source dataset publications \\
 20 & Annotation tools & N/A & Labels are dataset-supplied; no annotation performed in this work \\
 21 & Measurement of inter- and intra-rater variability & \textbf{Not met} & Not available. The source datasets do not release per-rater labels, so variability cannot be computed here. Stated in Limitations \\
 \end{longtable}
@@ -178,7 +178,7 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \bottomrule
 \endfoot
 22 & Intended sample size and how it was determined & Partial & Fixed by the public datasets rather than powered in advance. Post-hoc power is reported where it binds: the under-40 subgroup gates in \texttt{research/stats/results\_oof/intersectional\_age\_sex.csv} and the conformal per-class certifiability counts \\
-23 & How data were assigned to partitions; specify training, validation, test & Met & \SIII-A; \textbf{all splits grouped by \texttt{lesion\_id}} with \texttt{assert\_no\_leakage()} enforced --- \texttt{ml/configs/splits/split\_v1.csv}, train 6,981 / val 1,532 / test 1,502 \\
+23 & How data were assigned to partitions; specify training, validation, test & Met & \S{}III-A; \textbf{all splits grouped by \texttt{lesion\_id}} with \texttt{assert\_no\_leakage()} enforced --- \texttt{ml/configs/splits/split\_v1.csv}, train 6,981 / val 1,532 / test 1,502 \\
 24 & Level at which partitions are disjoint & Met & Lesion level, not image level. This is Hard Rule 1 of the project and the reason the bootstrap resamples lesions (\texttt{research/ablation/bootstrap.py}) \\
 \end{longtable}
 
@@ -197,9 +197,9 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \endhead
 \bottomrule
 \endfoot
-25 & Detailed description of the model & Met & \SIII \emph{Backbones and training}, \emph{Ensembling}, \emph{Test-time augmentation and calibration}; six CNN backbones, soft-vote ensemble, 24-view TTA, Dirichlet calibration \\
-26 & Software libraries, frameworks, and packages & Met & \SIII \emph{Backbones and training}, closing paragraph; Python 3.12, PyTorch 2.11 (CUDA 12.8), \texttt{timm}, scikit-learn 1.5. Pinned environment in \texttt{pyproject.toml} \\
-27 & Initialisation of model parameters & Met & \SIII \emph{Backbones and training}; ImageNet-pretrained, two-stage schedule (3 frozen head epochs, then fine-tune) \\
+25 & Detailed description of the model & Met & \S{}III \emph{Backbones and training}, \emph{Ensembling}, \emph{Test-time augmentation and calibration}; six CNN backbones, soft-vote ensemble, 24-view TTA, Dirichlet calibration \\
+26 & Software libraries, frameworks, and packages & Met & \S{}III \emph{Backbones and training}, closing paragraph; Python 3.12, PyTorch 2.11 (CUDA 12.8), \texttt{timm}, scikit-learn 1.5. Pinned environment in \texttt{pyproject.toml} \\
+27 & Initialisation of model parameters & Met & \S{}III \emph{Backbones and training}; ImageNet-pretrained, two-stage schedule (3 frozen head epochs, then fine-tune) \\
 \end{longtable}
 
 
@@ -217,9 +217,9 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \endhead
 \bottomrule
 \endfoot
-28 & Details of training approach & Met & \SIII \emph{Backbones and training}; \texttt{ml/configs/training\_config.yaml}, effective-number class weighting (Cui et al. 2019), seed 42 \\
+28 & Details of training approach & Met & \S{}III \emph{Backbones and training}; \texttt{ml/configs/training\_config.yaml}, effective-number class weighting (Cui et al. 2019), seed 42 \\
 29 & Method of selecting the final model & Met & \textbf{Macro-F1 on validation, never accuracy} (Hard Rule 3 --- 67\% \texttt{nv} makes accuracy meaningless). The one place this discipline was nearly broken is documented as a counter-example: ridge stacking has the best test and the worst val, and is therefore \emph{not} reported \\
-30 & Ensembling techniques, if used & Met & \SIII \emph{Ensembling}; uniform soft-vote over six CNNs. Rank-averaging, Nelder--Mead weights, ridge stacking and Caruana greedy selection were all evaluated and are reported as rejected \\
+30 & Ensembling techniques, if used & Met & \S{}III \emph{Ensembling}; uniform soft-vote over six CNNs. Rank-averaging, Nelder--Mead weights, ridge stacking and Caruana greedy selection were all evaluated and are reported as rejected \\
 \end{longtable}
 
 
@@ -237,11 +237,11 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \endhead
 \bottomrule
 \endfoot
-31 & Metrics of model performance, and why they were chosen & Met & \SIII \emph{Metrics}; Macro-F1, balanced accuracy, escalation sensitivity, ECE, and the two clinical-utility definitions (Number Needed to Biopsy at a stated reference prevalence, False Reassurance Rate). Accuracy is explicitly excluded as a selection criterion \\
+31 & Metrics of model performance, and why they were chosen & Met & \S{}III \emph{Metrics}; Macro-F1, balanced accuracy, escalation sensitivity, ECE, and the two clinical-utility definitions (Number Needed to Biopsy at a stated reference prevalence, False Reassurance Rate). Accuracy is explicitly excluded as a selection criterion \\
 32 & Statistical measures of significance and uncertainty & Met & Lesion-grouped bootstrap for Macro-F1/ECE/AUC; \textbf{exact Clopper--Pearson for subgroup proportions} --- the switch rule is stated once in \texttt{research/stats/intervals.py} and applied by \texttt{research/run\_session7\_stats.py}. McNemar and DeLong with Holm--Bonferroni \\
 33 & Robustness or sensitivity analysis & Met & 11-rung ablation ladder (\texttt{results/ablation\_table.csv}) plus five further combination levers reported as negative, two of them pre-registered rungs read in the single test pass (\texttt{results/session9/new\_rung\_comparisons.json}); $\lambda$ stability under lesion resampling, \texttt{research/agerule/results\_oof/}; NNB reported across a stated prevalence range 0.01--0.05 \\
 34 & Methods for explainability or interpretability & Partial & Grad-CAM overlays (\texttt{paper/figures/gradcam/}, Fig. 7) plus a quantitative lesion-interior attribution fraction over the whole test split against Tschandl's segmentation masks (0.523 [0.509, 0.536], concentration ratio 3.45; \texttt{results/session9/attribution\_summary\_test.json}). Deliberately \textbf{not} claimed as causal evidence: for a misclassified case the map is taken w.r.t. the predicted class and lands on the lesion almost by construction, and Grad-CAM fails known sanity checks (Adebayo et al. 2018). The mechanistic claim rests on escalation-mass AUC instead \\
-35 & Validation or testing on external data & Partial & Performed, on a \textbf{different modality}. The frozen system was applied unmodified to all 2,106 PAD-UFES-20 smartphone clinical images (\texttt{research/xdomain/results/}, \SIV \emph{External evaluation}): the six-CNN soft-vote reaches Macro-F1 0.167, below its own best member (0.188), and the frozen calibration map degrades it further to 0.133. This is a dataset-shift benchmark rather than external validation of the intended use; \textbf{no independent same-modality dermoscopy cohort has been evaluated}, and that gap is stated in Limitations \\
+35 & Validation or testing on external data & Partial & Performed, on a \textbf{different modality}. The frozen system was applied unmodified to all 2,106 PAD-UFES-20 smartphone clinical images (\texttt{research/xdomain/results/}, \S{}IV \emph{External evaluation}): the six-CNN soft-vote reaches Macro-F1 0.167, below its own best member (0.188), and the frozen calibration map degrades it further to 0.133. This is a dataset-shift benchmark rather than external validation of the intended use; \textbf{no independent same-modality dermoscopy cohort has been evaluated}, and that gap is stated in Limitations \\
 36 & Pre-specification of the analysis, and any deviations & Met & \texttt{results/analysis\_plan.json} (frozen before the single test read) and \texttt{results/comparison\_families.json} (every comparison family declared before its members are run, with confirmatory and exploratory sets separated) \\
 \end{longtable}
 
@@ -260,11 +260,11 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \endhead
 \bottomrule
 \endfoot
-37 & Flow of participants or cases (a diagram is recommended) & Partial & Counts given in Table I and \SIII-A; no CONSORT-style flow diagram. Nothing is excluded after ingestion, so the flow is a single step \\
+37 & Flow of participants or cases (a diagram is recommended) & Partial & Counts given in Table I and \S{}III-A; no CONSORT-style flow diagram. Nothing is excluded after ingestion, so the flow is a single step \\
 38 & Demographic and clinical characteristics of each partition & Partial & Age band and sex reported, including the training escalating-class prior by band (\texttt{results/age\_band\_prior.csv}, 4.9\% under 40 vs 35.5\% at 60+) and an age $\times$ sex intersectional slice with its suppressed cells named. \textbf{Skin tone is unavailable for the development cohort}: HAM10000 ships no Fitzpatrick labels and the ITA image proxy is documented as invalid on dermoscopy. It is reported for the external cohort, where 1,302 of 2,106 images carry a Fitzpatrick label --- types I--IV are powered, V and VI are suppressed, so the analysis says nothing about darker skin \\
 39 & Performance metrics for all partitions & Met & \texttt{results/ablation\_table.csv}; validation and OOF in \texttt{research/stats/results\_oof/} \\
 40 & Estimates of diagnostic accuracy and their precision & Met & Every reported proportion carries a 95\% interval with its method named --- Table IV, \texttt{research/stats/results\_oof/age\_gap\_intervals.csv} \\
-41 & Failure analysis of incorrectly classified cases & Met & \SV \emph{Confidently wrong is a distinct failure mode}; the under-40 blind spot, and specifically that it is a \emph{confidently}-wrong failure --- the abstention gate defers only 6.2\% of that band against 17.3\% at 60+, and rescues 11.1\% [0.014, 0.347] of its misses against 36.2\% [0.227, 0.515] at 60+. Across the split only 21 of 78 missed escalating lesions are deferred (\texttt{results/session9/orthogonality\_test.csv}) \\
+41 & Failure analysis of incorrectly classified cases & Met & \S{}V \emph{Confidently wrong is a distinct failure mode}; the under-40 blind spot, and specifically that it is a \emph{confidently}-wrong failure --- the abstention gate defers only 6.2\% of that band against 17.3\% at 60+, and rescues 11.1\% [0.014, 0.347] of its misses against 36.2\% [0.227, 0.515] at 60+. Across the split only 21 of 78 missed escalating lesions are deferred (\texttt{results/session9/orthogonality\_test.csv}) \\
 \end{longtable}
 
 
@@ -282,8 +282,8 @@ Generated for the manuscript in \texttt{paper/manuscript.tex}. Intended to be in
 \endhead
 \bottomrule
 \endfoot
-42 & Study limitations, including potential bias, statistical uncertainty, and generalisability & Met & \SVI Limitations; per-band calibration disparity, the intersectional suppressed cells, the stacking mismatch, the forfeited conformal guarantee under out-of-fold calibration, and the failure of the age rule to be orthogonal to abstention in the very band it targets are all named rather than omitted \\
-43 & Implications for practice, including the intended use and clinical role & Met & \SV \emph{Clinical positioning}; framed around deployability --- decision rule, abstention, conformal sets and number-needed-to-biopsy rather than headline accuracy \\
+42 & Study limitations, including potential bias, statistical uncertainty, and generalisability & Met & \S{}VI Limitations; per-band calibration disparity, the intersectional suppressed cells, the stacking mismatch, the forfeited conformal guarantee under out-of-fold calibration, and the failure of the age rule to be orthogonal to abstention in the very band it targets are all named rather than omitted \\
+43 & Implications for practice, including the intended use and clinical role & Met & \S{}V \emph{Clinical positioning}; framed around deployability --- decision rule, abstention, conformal sets and number-needed-to-biopsy rather than headline accuracy \\
 \end{longtable}
 
 
