@@ -15,8 +15,8 @@ Individual members span Macro-F1 0.124–0.188 (cf. the repo's prior 0.113–0.1
 | session8b | pad_member_efficientnet_b3 | pad | 0.1239 | 0.2673 | 0.2241 | 0.279 | 0.0577 | 1173 |
 | session8b | pad_member_resnet50 | pad | 0.1717 | 0.3093 | 0.2569 | 0.4014 | 0.1731 | 974 |
 | session8b | pad_ensemble_softvote | pad | 0.1669 | 0.3097 | 0.2626 | 0.3565 | 0.1154 | 1047 |
-| session8b | pad_ensemble_dirichlet | pad | 0.1325 | 0.2961 | 0.217 | 0.2231 | 0.1154 | 1264 |
-| session8b | pad_ensemble_dirichlet_agerule | pad | 0.177 | 0.347 | 0.284 | 0.5851 | 0.3269 | 675 |
+| session8b | pad_ensemble_dirichlet | pad | 0.1303 | 0.2931 | 0.2137 | 0.2207 | 0.1154 | 1268 |
+| session8b | pad_ensemble_dirichlet_agerule | pad | 0.1723 | 0.3423 | 0.2754 | 0.5679 | 0.3269 | 703 |
 
 The Dirichlet map and age-rule rows show whether the frozen HAM operating point transfers; PAD's escalating prevalence (~77%) is the inverse of HAM's (~19%), so the escalation-biasing lambda rule behaves very differently here — reported as measured.
 
@@ -26,15 +26,15 @@ PAD carries Fitzpatrick for 1,302 of 2,106 rows. Cohort is Fitzpatrick I–III d
 
 | group | n | n_escalating | macro_f1 | escalation_sensitivity | escalation_fpr | adequately_powered | positives_powered |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| I | 137 | 129 | 0.0881 | 0.3488 | 0.0 | True | True |
-| II | 750 | 693 | 0.098 | 0.29 | 0.0351 | True | True |
-| III | 347 | 316 | 0.12 | 0.2563 | 0.0 | True | True |
+| I | 137 | 129 | 0.0887 | 0.3488 | 0.0 | True | True |
+| II | 750 | 693 | 0.0967 | 0.2872 | 0.0351 | True | True |
+| III | 347 | 316 | 0.1104 | 0.2468 | 0.0323 | True | True |
 | IV | 59 | 36 | 0.1522 | 0.2778 | 0.0 | True | True |
 | V | 8 | 6 | 0.0476 | 0.5 | 0.0 | False | False |
 | VI | 1 | 0 | 0.0 | nan | 0.0 | False | False |
-| unknown | 804 | 447 | 0.1034 | 0.0515 | 0.0196 | True | True |
+| unknown | 804 | 447 | 0.1034 | 0.0537 | 0.0196 | True | True |
 
-Gaps across powered groups: `{"demographic_parity_gap": 0.29115372044885063, "macro_f1_gap": 0.06414915295477355, "equalized_odds_tpr_gap": 0.29738307059986474, "equalized_odds_fpr_gap": 0.03508771929824561}`
+Gaps across powered groups: `{"demographic_parity_gap": 0.28990993935432324, "macro_f1_gap": 0.06354623620278849, "equalized_odds_tpr_gap": 0.2951459341345404, "equalized_odds_fpr_gap": 0.03508771929824561}`
 
 ## 3. Mahalanobis distance under real shift
 

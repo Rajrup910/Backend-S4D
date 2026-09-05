@@ -1110,9 +1110,10 @@ system can offer.
 \includegraphics[width=\columnwidth]{figure5_conformal_coverage.png}
 \caption{Per-class empirical coverage for APS at $\alpha=0.10$ under marginal and Mondrian
 class-conditional calibration, against the $90\%$ target. Marginal calibration (blue) buys
-its average from \textsc{nv} and \textsc{df} while under-covering the escalating classes,
-worst on \textsc{mel} at $0.796$; class-conditional calibration (orange) lifts every class
-to or above target. LAC shows the same pattern more severely (\textsc{mel} $0.671$,
+its average from \textsc{nv} and \textsc{df} while under-covering two of the three
+escalating classes, worst on \textsc{mel} at $0.796$; \textsc{akiec} lands only just at
+target, not below it. Class-conditional calibration (orange) brings every class to or above
+target --- raising six of them and trimming \textsc{nv}, which had been over-covered. LAC shows the same pattern more severely (\textsc{mel} $0.671$,
 Table~\ref{tab:conformal}).}
 \label{fig:conformal}
 \end{figure}
@@ -1338,12 +1339,16 @@ the interesting cell would defeat the purpose of having set one.
 \centering
 \includegraphics[width=0.90\textwidth]{figure7_gradcam.png}
 \caption{Grad-CAM attributions for ConvNeXt-Tiny on the test split. Top row: the
-highest-confidence correct case for four classes the model handles well; attribution is
-compact and lesion-centred. Bottom row: the highest-confidence \emph{error} for four
-classes it confuses, including both directions of the \textsc{mel}/\textsc{bkl}
-confusion. Panels are selected deterministically by confidence from
-\texttt{gradcam\_stats.csv}. The bottom row is the failure mode abstention cannot catch:
-the attribution is on the lesion and the model is confident, but the label is wrong.}
+highest-confidence correct case for four classes the model handles well. Bottom row: the
+highest-confidence \emph{error} for four classes it confuses, including both directions of
+the \textsc{mel}/\textsc{bkl} confusion. Each panel prints true $\rightarrow$ predicted and
+the softmax value; panels are selected deterministically by confidence from
+\texttt{gradcam\_stats.csv}. These are the model's \emph{most} confident errors, which at
+$0.59$--$0.85$ still straddle its mean confidence of $0.7048$, so the row illustrates the
+failure mode rather than quantifying it. Read the maps as illustration only: over all
+$1{,}502$ test images the lesion-interior mass fraction is $0.523$, and it is \emph{higher}
+for errors than for correct predictions --- a predicted-class artefact analysed in the text,
+not evidence that errors are the better localised.}
 \label{fig:gradcam}
 \end{figure*}
 
@@ -1454,13 +1459,13 @@ an empirical audit with no finite-sample claim attached.
 \textbf{Skin tone: what PAD can and cannot say.} PAD carries a Fitzpatrick label for $1{,}302$
 of $2{,}106$ images. Four types clear our power gate --- I ($n=137$), II ($750$), III ($347$),
 IV ($59$) --- and types V ($8$) and VI ($1$) do not, and are reported as suppressed. A pooled
-equalised-odds true-positive-rate gap across all groups is $0.297$, but that figure is
+equalised-odds true-positive-rate gap across all groups is $0.295$, but that figure is
 \emph{not} a skin-tone finding and must not be quoted as one: it is driven almost entirely by
-the $804$ images with no Fitzpatrick label, whose escalation sensitivity is $0.051$ against
-$0.256$--$0.349$ for every labelled type. That is a data-completeness artefact, and the
+the $804$ images with no Fitzpatrick label, whose escalation sensitivity is $0.054$ against
+$0.247$--$0.349$ for every labelled type. That is a data-completeness artefact, and the
 population with missing labels differs systematically from the population with them.
-Restricted to types I--IV, the true skin-tone spread is $0.093$ and \emph{non-monotonic}
-(I $0.349$, II $0.290$, III $0.256$, IV $0.278$). Panel~B of
+Restricted to types I--IV, the true skin-tone spread is $0.102$ and \emph{non-monotonic}
+(I $0.349$, II $0.287$, III $0.247$, IV $0.278$). Panel~B of
 Table~\ref{tab:external_safety} reports the same four strata under the three-tier triage
 taxonomy instead, where the quantity is Tier-1 sensitivity rather than escalation
 sensitivity --- a narrower positive class, so the values are lower (I $0.269$, II $0.203$,
@@ -1490,7 +1495,9 @@ rises, so that BCN-20000 --- the least skewed centre --- would score highest. Th
 ordering is the exact reverse, and the HAM10000 and BCN-20000 intervals do not overlap.
 \textbf{(b)} Claim~A predicted a cohort-invariant escalation-mass AUC; the under-$40$ spread
 across centres is $0.105$, and within MSKCC the under-$40$ band is the \emph{best}-ranked
-band rather than the worst. Bars are lesion-grouped bootstrap intervals. Both pre-registered
+band rather than the worst. Error bars are lesion-grouped bootstrap intervals on the
+under-$40$ band, the pre-registered quantity; the $60+$ points are plotted as point estimates
+for reference and carry none. Both pre-registered
 claims fail, and the contingency declared before the data were seen was to report the three
 estimates with intervals, drop the trend language, and offer no post-hoc explanation.}
 \label{fig:dose_response}
@@ -1558,8 +1565,10 @@ threshold does not.
 \caption{Decision curves for the frozen age-conditional rule. Net benefit against threshold
 probability $p_t$ for biopsy-all, biopsy-none, argmax triage, the frozen $\lambda$-rule, and a
 risk model that thresholds the escalation mass $S_{\mathrm{esc}}$ directly. The $\lambda$-rule
-and argmax are fixed operating points and are therefore flat in $p_t$; only the risk model
-traces a curve. \textbf{Left}: the full out-of-fold panel, where the rule dominates argmax
+and argmax are fixed operating points: they refer the same cases at every $p_t$, so their true-
+and false-positive counts do not vary, but their net benefit still declines in $p_t$ because the
+false-positive term carries the odds weight $p_t/(1-p_t)$. Only the risk model changes
+\emph{which} cases it refers as $p_t$ moves, which is why its curve is the steeper one. \textbf{Left}: the full out-of-fold panel, where the rule dominates argmax
 across the plausible range. \textbf{Centre}: the under-$40$ band alone, where the two are
 indistinguishable and the ordering inverts by $p_t = 0.20$. \textbf{Right}: PAD-UFES-20, where
 the inverted prior lifts every strategy's net benefit and the comparison says little about the
@@ -1761,7 +1770,7 @@ there, and BCN-20000 is the centre the frozen system transfers to worst
 (Sec.~\ref{sec:results-battery}). On skin tone, HAM10000 has no Fitzpatrick labels and an
 individual typology angle proxy computed from image statistics is invalid on dermoscopy ---
 vignetting and erythema dominate the measured angle --- so we report none; the external cohort
-supplies real labels for types I--IV, where the sensitivity spread is $0.093$ and
+supplies real labels for types I--IV, where the sensitivity spread is $0.102$ and
 non-monotonic, while types V and VI are represented by nine images in total and are
 suppressed. This work therefore has nothing to say about darker skin, the population where
 published disparities are largest~\cite{daneshjou2022disparities}, and answering that
