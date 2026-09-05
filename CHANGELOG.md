@@ -961,6 +961,14 @@ against 0.256–0.349 for every labelled tone I–IV — a missing-data/selectio
 rows likely differ systematically, e.g. by lesion type or acquisition site), not a skin-tone
 finding. **Restricted to labelled tones I–IV only**, the sensitivity spread is a much smaller
 0.093 (I 0.349, II 0.290, III 0.256, IV 0.278) and is **non-monotonic** — it does not reproduce
+
+> ⚠️ **Superseded 2026-09-06 (§S19).** Every Fitzpatrick figure in this S8b section was
+> produced with the *calibration* Dirichlet map, not the deployed one. Corrected values:
+> pooled TPR gap **0.295**, unlabelled sensitivity **0.054**, labelled range
+> **0.247–0.349**, I–IV spread **0.102** (I 0.349, II **0.287**, III **0.247**, IV 0.278).
+> The reading is unchanged — the spread is still non-monotonic and still not a
+> darker-skin finding — but quote the S19 numbers, not these.
+
 the literature's typical darker-skin-underperforms pattern, and n=59 at IV is thin. `macro_f1_gap`
 (0.064) is *not* confounded this way — "unknown"'s macro-F1 (0.103) sits inside the I–IV range.
 **Action for whoever writes this up**: report the I–IV-only spread as the skin-tone finding,
@@ -2354,6 +2362,97 @@ is defensible, but the upload deliverable does not survive a fresh clone without
 ⚠️ The branch is **not merged and not pushed.** `git merge --ff-only s12-s17-external-replication`
 from `main` puts it on the default branch; `git push -u origin main` publishes it. Neither was
 done here — publishing to a remote is the owner's call.
+
+
+### S19 — audit pass: a wrong calibration map and four caption defects (2026-09-06)
+
+No test read; `results/test_pass_receipt.json` still records `n_executions: 2` with no rerun
+reason. Two independent problems, **neither of which the 348 passing numeric checks could catch.**
+
+**1. `research/xdomain/run_session8b.py` loaded the wrong Dirichlet map.** It read Session 2's
+`research/calibration/results_oof/fit_state.json` instead of the deployed
+`research/selective/results_oof/fit_state.json` — the two differ by `max|dW| = 0.18`. Repointed
+through `research/external/frozen_params.py`, the only permitted loader since S12; the file's
+three duplicated implementations (`load_dirichlet`, `load_lambdas`, `apply_age_rule`) are deleted
+in favour of it, so the rule now delegates to `research.thresholds.optimize` like every other
+caller. `AGE_BINS`/`AGE_LABELS` imports dropped with them.
+
+**What was already safe, and what was not.** S16 *had* repointed the PAD ensemble and age-rule
+metrics through `research/external/eval_pad_age_rule_deployed.py` — re-running the fixed script
+reproduces that script's "deployed map" column exactly (Macro-F1 `0.1303`, escalation sensitivity
+`0.2207`, missed `1,268`; with the rule `0.1723` / `0.5679` / `703`), which is an independent
+confirmation rather than a new number. What S16 missed is the **Fitzpatrick slice**: the
+manuscript's skin-tone paragraph still resolved to `research/xdomain/results/fitzpatrick_slice.csv`,
+produced by the unfixed script. So `DATASET_REFINING.md`'s "no manuscript number depends on it any
+more" was true of the PAD metrics and **false of the fairness slice** — `audit_manuscript` failed
+on two literals the moment the map was corrected.
+
+| Fitzpatrick quantity | superseded | deployed |
+|---|---|---|
+| pooled equalised-odds TPR gap | 0.297 | **0.295** |
+| unlabelled-stratum sensitivity | 0.051 | **0.054** |
+| labelled-type range | 0.256–0.349 | **0.247–0.349** |
+| type II / type III | 0.290 / 0.256 | **0.287** / **0.247** |
+| I–IV spread | 0.093 | **0.102** |
+
+The qualitative finding **survives**: I–IV is still non-monotonic (I 0.349, II 0.287, III 0.247,
+IV 0.278), so the manuscript's reading — that this is not a darker-skin finding and that the
+pooled gap is a data-completeness artefact — is unchanged.
+
+**2. The abstract implied the age rule fixes the failure it had just described.** It quoted
+escalation sensitivity rising "to $0.831$" two sentences after the under-40 figure of $0.143$.
+**$0.831$ is the all-ages number.** `results/session9/agerule_test.csv` puts under-40 after the
+rule at **$0.238$ $[0.082, 0.472]$** — the band the rule helps *least*, exactly as the
+escalation-mass diagnostic predicted. The body was already honest ("Under-$40$ escalation
+sensitivity remains poor in absolute terms after the intervention, and we do not present this as
+a solved problem"); the abstract now carries the same caveat and names both numbers.
+
+**3. Four figure captions asserted things the figures do not show.** The load-bearing one is the
+decision-curve caption, which claimed the λ-rule and argmax "are fixed operating points and are
+therefore **flat in $p_t$**". That is mathematically wrong: net benefit is
+$TP/N - (FP/N)\cdot p_t/(1-p_t)$, so it declines in $p_t$ even when TP and FP are fixed. The
+figure plots the decline and `decision_curve_report.json` contains it (argmax
+$0.1327 \rightarrow 0.1306$ from $p_t\,0.05 \rightarrow 0.10$; the S9 test anchor falls
+monotonically $0.0094 \rightarrow 0.0060$ across $0.05$–$0.20$). Also fixed: the dose–response
+caption implied every point carried a bootstrap interval when only the under-40 points do; the
+conformal caption said marginal calibration under-covers "the escalating classes" when `akiec`
+sits *at* target and only `mel` and `bcc` are below it, and said class-conditional calibration
+"lifts every class" when it in fact trims the over-covered `nv`; and the Grad-CAM caption argued
+from "the attribution is on the lesion and the model is confident" for the error row — the
+predicted-class artefact its own body text explicitly forbids reading that way — while calling
+errors at $0.59$ and $0.63$ confident against an ensemble mean confidence of $0.7048$.
+
+**`audit_manuscript.py` 348 → 357 checks**, with a new `absent()` helper for claims that must not
+return. **All five guards were proved to fail** by reintroducing each defect and confirming a
+non-zero exit. That mattered: the first draft of the S8b guard was **silent**, because `absent()`
+searches the manuscript rather than the module, and because the new docstring names the wrong map
+deliberately, so a substring test over the whole file could never fail. It now inspects the code
+with the module docstring stripped.
+
+**Ledger hygiene.** Re-running S8b appended rows beside the superseded ones, leaving two
+contradictory rows per method. The four pre-fix rows are retagged `__superseded_calibration_map`
+with per-row notes — two of them do not use a Dirichlet map at all and say so, rather than
+carrying a blanket note that would be false. Separately, the `session4` row named
+`selective_cost_sensitive_abstain10` whose own note reads "at 20%" — the documented S4 logging
+bug, whose pre-fix row outlived the fix — is retagged `abstain20__mislabelled_abstain10`. One
+conflicting pair remains and is self-documenting (`gated_fusion_convnext_tiny`, `epochs_run=1`
+smoke run vs the real 20-epoch run).
+
+**Verified after every edit:** `audit_manuscript` 357, `validate_structure` (49/49 cites, 40/40
+refs), `preflight --stage pre_s17` 34, `frozen_params --selftest` 6, `build_post_s11_artifacts`
+35 artifacts + both plan hashes, `build_overleaf_bundle` 16 files / 5.70 MB rebuilt against the
+corrected manuscript.
+
+**Left open, deliberately, for the owner:**
+
+1. ⚠️ The abstract is **314 words** against IEEE TMI's 250. It was already ~297 before this
+   correction, so the overage is pre-existing; the honest fix costs content and belongs with the
+   page-budget decision, not with an audit pass.
+2. ⚠️ **Figure 5's per-class *marginal* coverage values exist only inside the PNG.** There is no
+   backing table in `results/` — a Hard Rule 4 gap. The one value quoted in the caption
+   (`mel` $0.796$) is sourced from `session4_conformal_report.md` and is checked; the other six
+   bars are not reconstructible without re-running the conformal fit.
+3. ⚠️ Still never compiled here. `paper/manuscript_overleaf.zip` is rebuilt and current.
 
 
 ## 11. Known findings that constrain later work

@@ -793,6 +793,77 @@ assert all(int(r["n_tier1"]) == 0 for r in _json("results/external/fitzpatrick_s
     "the unlabelled stratum now holds Tier-1 lesions -- its rates are no longer undefined"
 
 
+# --- S19 regression guards: defects that no numeric comparison can catch -----------------------
+# Every check below fires on a *paragraph* or a *code path* becoming wrong, not on a digit
+# drifting. Each one corresponds to a defect that was actually present in the manuscript or the
+# pipeline on 2026-09-06 and that all 348 preceding checks passed straight over.
+
+def absent(label, literal, why):
+    """A literal that must NOT reappear in the manuscript."""
+    global checks
+    checks += 1
+    if literal in FULL:
+        failures.append(f"{label}: {literal!r} is back -- {why}")
+
+
+_ABSTRACT = re.search(r"\\begin\{abstract\}(.*?)\\end\{abstract\}", SRC, re.S).group(1)
+
+# 1. The abstract quoted 0.831 -- the all-ages escalation sensitivity -- two sentences after the
+#    under-40 failure, so it read as the fix for that band. Under-40 reaches only 0.238.
+if "0.831" in _ABSTRACT:
+    checks += 1
+    if "0.238" not in _ABSTRACT:
+        failures.append(
+            "abstract quotes the all-ages 0.831 without the under-40 0.238 it does NOT fix; "
+            "results/session9/agerule_test.csv puts under-40 at 0.238 [0.082, 0.472]")
+    checks += 1
+    if "mitigated" not in _ABSTRACT:
+        failures.append(
+            "abstract no longer says the under-40 blind spot is mitigated rather than closed; "
+            "Sec. results-agerule says 'we do not present this as a solved problem'")
+
+# 2. Net benefit at a FIXED operating point still declines in p_t, because the false-positive
+#    term carries the odds weight p_t/(1-p_t). The caption claimed the curves were flat.
+absent("DCA caption flatness", "therefore flat in $p_t$",
+       "a fixed operating point holds TP and FP fixed but its net benefit still falls in p_t")
+_nb = _E6["panels"]["HAM10000 OOF (N=6,981)"]["reference_points"]
+_by_pt = {r["p_t"]: r for r in _nb}
+checks += 1
+if not _by_pt[0.10]["net_benefit_argmax"] < _by_pt[0.05]["net_benefit_argmax"]:
+    failures.append("argmax net benefit no longer declines in p_t -- the DCA caption fix is void")
+checks += 1
+if not _by_pt[0.10]["net_benefit_lambda_rule"] < _by_pt[0.05]["net_benefit_lambda_rule"]:
+    failures.append("lambda-rule net benefit no longer declines in p_t -- DCA caption fix is void")
+
+# 3. The Grad-CAM caption argued from "the attribution is on the lesion" for the ERROR row --
+#    the predicted-class artefact the body text explicitly forbids reading that way.
+absent("Grad-CAM caption artefact", "the attribution is on the lesion and the model is confident",
+       "errors score higher on lesion-interior fraction only because the map is taken w.r.t. the "
+       "predicted class; the body says so and the caption must not argue the other way")
+
+# 4. S8b must score PAD through the DEPLOYED Dirichlet map. It read Session 2's calibration map
+#    until 2026-09-06, which silently moved every calibrated and age-rule PAD figure.
+_S8B_SRC = resolve("research/xdomain/run_session8b.py").read_text(encoding="utf-8")
+# Strip the module docstring: it *names* the wrong map in order to record the bug, so a naive
+# substring test over the whole file can never fail. Only executable code is checked.
+_S8B_CODE = _S8B_SRC.split('"""', 2)[-1] if _S8B_SRC.lstrip().startswith('"""') else _S8B_SRC
+checks += 1
+if "research/calibration/results_oof/fit_state.json" in _S8B_CODE:
+    failures.append(
+        "run_session8b.py again references Session 2's calibration map in code; it must load "
+        "the deployed research/selective/results_oof/fit_state.json via "
+        "research.external.frozen_params (the two differ by max|dW| = 0.18)")
+checks += 1
+if "from research.external import frozen_params" not in _S8B_CODE:
+    failures.append("run_session8b.py no longer imports frozen_params -- it is the only "
+                    "permitted loader for a frozen transfer parameter (S12)")
+
+# 5. The conformal caption said marginal calibration under-covers "the escalating classes".
+#    akiec sits at target; only mel and bcc are below it.
+absent("conformal caption overstatement", "while under-covering the escalating classes",
+       "akiec is at target under marginal calibration, so only two of the three are under-covered")
+
+
 # --- Bibliography grew as the Related Work rewrite requires ------------------------------------
 claim("bibliography size", 49, SRC.count("\\bibitem{"))
 
