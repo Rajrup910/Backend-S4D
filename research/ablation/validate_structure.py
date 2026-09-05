@@ -106,6 +106,24 @@ def _stray_bytes(name, text):
 
 _stray_bytes("manuscript.tex", s)
 
+
+# ---- \S swallowed by a following letter
+# TeX reads a control word greedily, so "\SIII-A" is the single undefined control sequence
+# \SIII, not \S followed by "III-A". build_supplementary.py mapped "§" to a bare "\S" and
+# emitted 25 of these -- \SI, \SIII, \SIII-A, \SIV, \SV, \SVI -- every one a hard compile
+# error. The correct output is "\S{}III-A". This catches the whole class: any single-letter
+# control sequence that a letter runs into.
+def _swallowed(name, text):
+    body = re.sub(r"(?m)^%.*$", "", text)
+    for m in re.finditer(r"\\(S|P|dag|ddag|copyright|pounds)([a-zA-Z]+)", body):
+        problems.append(
+            "%s: '\\%s%s' -- TeX reads this as one control word, not \\%s + '%s'; "
+            "the generator must emit '\\%s{}'"
+            % (name, m.group(1), m.group(2), m.group(1), m.group(2), m.group(1)))
+
+
+_swallowed("manuscript.tex", s)
+
 # ---- tabular column counts
 # The column spec may itself contain braces -- `@{}lccc@{}`, `p{0.3\textwidth}` -- so the
 # capture has to allow one level of nesting. `[^}]*` stopped at the `}` inside `@{}` and
@@ -167,6 +185,7 @@ if os.path.isfile(SUPP):
     # character it does not know about, which pdflatex would reject. Control bytes are
     # screened here too -- see the note on _stray_bytes above.
     _stray_bytes("supplementary.tex", sup)
+    _swallowed("supplementary.tex", sup)
 
     # unescaped LaTeX specials outside comments
     for lineno, line in enumerate(sup.split("\n"), 1):
