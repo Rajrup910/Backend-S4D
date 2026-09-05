@@ -1,0 +1,450 @@
+{
+  "plain": {
+    "convnext_small": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f0_best.pt",
+        "epochs_run": 13,
+        "n": 1397,
+        "sha256": "a87127053e0ff0cdeacbc54366b0b14242b9ee4aa20fbebd72e92a01b57dccc3",
+        "val_macro_f1": 0.704033656202449
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f1_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "1aaaee4a9adb2e323397ec5907537beb164a7cd328949f4afa9f6b3aa7ab757d",
+        "val_macro_f1": 0.733010865683588
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f2_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "1cf6879cc176ce377bdd00622da7122374c69f9f565e860c964fc0aade0cdac9",
+        "val_macro_f1": 0.7529856682098647
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f3_best.pt",
+        "epochs_run": 26,
+        "n": 1396,
+        "sha256": "833e30cbef2966624a777eccd41e4f2333fe48bcd6a935d2251b25b020248d77",
+        "val_macro_f1": 0.7435940101959975
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f4_best.pt",
+        "epochs_run": 24,
+        "n": 1396,
+        "sha256": "d5dc00dbc04ef4181f6af7adaba9f0518be4d6ee90ad6a0b3cd41f737c67b93e",
+        "val_macro_f1": 0.730374344093798
+      }
+    },
+    "convnext_tiny": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f0_best.pt",
+        "epochs_run": 18,
+        "n": 1397,
+        "sha256": "ac210a653cf083431ae5e36d0bb428f7886e688abb11ae42b59823ba4f932946",
+        "val_macro_f1": 0.7581988447045461
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f1_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "f33721f57e9645f0fe32b2c163967cde3f0354a599470aec920490733cbe5459",
+        "val_macro_f1": 0.7505671056035947
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f2_best.pt",
+        "epochs_run": 22,
+        "n": 1396,
+        "sha256": "f0fb9d5a3534828462bfb96dd472a04a3104de5d3fb199d1ac59b32015447481",
+        "val_macro_f1": 0.7525551970779587
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f3_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "e5e36702298ef64a8f024e520d1116b84cfdf1306a743c0aff39298994fa8a2c",
+        "val_macro_f1": 0.7601090421549228
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f4_best.pt",
+        "epochs_run": 13,
+        "n": 1396,
+        "sha256": "aa1936f07a5eb5613331ad7d690ae17918ceebdd837807fd60909cd76cf08f39",
+        "val_macro_f1": 0.7204754773848229
+      }
+    },
+    "densenet121": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f0_best.pt",
+        "epochs_run": 23,
+        "n": 1397,
+        "sha256": "5eb9c3c785021f02bb2f76a0431e4439600d374231957c23a295871e62408412",
+        "val_macro_f1": 0.7434147319840773
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f1_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "a5260a4b0a45eba5413caa28b2762f62f49add592850f2180d911195db812dcf",
+        "val_macro_f1": 0.7220904803484228
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f2_best.pt",
+        "epochs_run": 23,
+        "n": 1396,
+        "sha256": "f76b91a541248c84e0f696bbee50463ad61a5d2947210c1181a0edfb55bba165",
+        "val_macro_f1": 0.7314077428944612
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f3_best.pt",
+        "epochs_run": 25,
+        "n": 1396,
+        "sha256": "92a99347c49e8e8308aa6f22a9e850e540bc7cb0c0648f6b2a7cb487033ca3b5",
+        "val_macro_f1": 0.7197312115969762
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f4_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "31fbd994f5a65b7f422fb13fb69f5c99d6218c707da3ff785b9ef8e4ae0ad4b4",
+        "val_macro_f1": 0.7134222110015812
+      }
+    },
+    "efficientnet_b0": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f0_best.pt",
+        "epochs_run": 30,
+        "n": 1397,
+        "sha256": "066af6e13155b49ae38bb5498fb9fd36c945d6e883f13cb2ef621cfbd3484738",
+        "val_macro_f1": 0.6825973400144927
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f1_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "04f6041eed4aa6128827cb6fdde9773a6e9de87879aed88e79e6aa7b06c0c758",
+        "val_macro_f1": 0.6927444419407235
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f2_best.pt",
+        "epochs_run": 20,
+        "n": 1396,
+        "sha256": "a4c54fcfe091c38483570088ba2f3c11c97df0b80b1273f232a620d77067e5e4",
+        "val_macro_f1": 0.679404878149638
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f3_best.pt",
+        "epochs_run": 27,
+        "n": 1396,
+        "sha256": "0571aaa2cc158e27cdbf749c2272093e5bb43117e90eec776f986f972995fcd4",
+        "val_macro_f1": 0.7154507233469509
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f4_best.pt",
+        "epochs_run": 17,
+        "n": 1396,
+        "sha256": "938241d437161ec686ce03d39ab4e7ba53fb354e2c7786b75b9369b5287d98f4",
+        "val_macro_f1": 0.6653289978880057
+      }
+    },
+    "efficientnet_b3": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f0_best.pt",
+        "epochs_run": 30,
+        "n": 1397,
+        "sha256": "b03bf5112dd33f471de9b1c958261b6bd7ead129367ae94a74950add7f41e5ec",
+        "val_macro_f1": 0.6904699629610732
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f1_best.pt",
+        "epochs_run": 22,
+        "n": 1396,
+        "sha256": "3e64ed017f2896c8894f53fd7eb3bbde4e1193e45ace4b4c64b1abe5fa448672",
+        "val_macro_f1": 0.7021698261083801
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f2_best.pt",
+        "epochs_run": 17,
+        "n": 1396,
+        "sha256": "ed038737a826b72b7921b412c2a58c0f2f549029a9e872fe8b59f5f315febbbe",
+        "val_macro_f1": 0.7040829598835614
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f3_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "793961faed8b38be1a8ba98cec88e0d9a5659e0802848e4328b8a09d85673bf9",
+        "val_macro_f1": 0.7288509412657268
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f4_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "a21f3e35512507e20a89f29c807829bc056a65614b96e6fdb5f3a8776c7d1846",
+        "val_macro_f1": 0.6957179534794342
+      }
+    },
+    "resnet50": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f0_best.pt",
+        "epochs_run": 30,
+        "n": 1397,
+        "sha256": "84152972d36572aa1a90994ee26112af59160020d13180a9377802646331ef0d",
+        "val_macro_f1": 0.7015578942949042
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f1_best.pt",
+        "epochs_run": 28,
+        "n": 1396,
+        "sha256": "e3bb900f1ece863d16af3721184046900f593974b2c766fbccc89f6289fd26b8",
+        "val_macro_f1": 0.6981036874372287
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f2_best.pt",
+        "epochs_run": 25,
+        "n": 1396,
+        "sha256": "f00a5559afb9c3598d54a30b27b04c000d6886959a6dcfdf79c0c1682b7aac8a",
+        "val_macro_f1": 0.713269301264733
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f3_best.pt",
+        "epochs_run": 28,
+        "n": 1396,
+        "sha256": "928b344b587d002a5e90636a1e823eca24100ce5594357c11237d35d80ad083e",
+        "val_macro_f1": 0.7346744745623953
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f4_best.pt",
+        "epochs_run": 23,
+        "n": 1396,
+        "sha256": "600c2e144cecb689aee6e93ec3bbe4ae7609425b498758911ae68b113cc5699b",
+        "val_macro_f1": 0.6964742205527091
+      }
+    }
+  },
+  "tta": {
+    "convnext_small": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f0_best.pt",
+        "epochs_run": 13,
+        "n": 1397,
+        "sha256": "a87127053e0ff0cdeacbc54366b0b14242b9ee4aa20fbebd72e92a01b57dccc3",
+        "val_macro_f1": 0.704033656202449
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f1_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "1aaaee4a9adb2e323397ec5907537beb164a7cd328949f4afa9f6b3aa7ab757d",
+        "val_macro_f1": 0.733010865683588
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f2_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "1cf6879cc176ce377bdd00622da7122374c69f9f565e860c964fc0aade0cdac9",
+        "val_macro_f1": 0.7529856682098647
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f3_best.pt",
+        "epochs_run": 26,
+        "n": 1396,
+        "sha256": "833e30cbef2966624a777eccd41e4f2333fe48bcd6a935d2251b25b020248d77",
+        "val_macro_f1": 0.7435940101959975
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/convnext_small-oof_f4_best.pt",
+        "epochs_run": 24,
+        "n": 1396,
+        "sha256": "d5dc00dbc04ef4181f6af7adaba9f0518be4d6ee90ad6a0b3cd41f737c67b93e",
+        "val_macro_f1": 0.730374344093798
+      }
+    },
+    "convnext_tiny": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f0_best.pt",
+        "epochs_run": 18,
+        "n": 1397,
+        "sha256": "ac210a653cf083431ae5e36d0bb428f7886e688abb11ae42b59823ba4f932946",
+        "val_macro_f1": 0.7581988447045461
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f1_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "f33721f57e9645f0fe32b2c163967cde3f0354a599470aec920490733cbe5459",
+        "val_macro_f1": 0.7505671056035947
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f2_best.pt",
+        "epochs_run": 22,
+        "n": 1396,
+        "sha256": "f0fb9d5a3534828462bfb96dd472a04a3104de5d3fb199d1ac59b32015447481",
+        "val_macro_f1": 0.7525551970779587
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f3_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "e5e36702298ef64a8f024e520d1116b84cfdf1306a743c0aff39298994fa8a2c",
+        "val_macro_f1": 0.7601090421549228
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/convnext_tiny-oof_f4_best.pt",
+        "epochs_run": 13,
+        "n": 1396,
+        "sha256": "aa1936f07a5eb5613331ad7d690ae17918ceebdd837807fd60909cd76cf08f39",
+        "val_macro_f1": 0.7204754773848229
+      }
+    },
+    "densenet121": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f0_best.pt",
+        "epochs_run": 23,
+        "n": 1397,
+        "sha256": "5eb9c3c785021f02bb2f76a0431e4439600d374231957c23a295871e62408412",
+        "val_macro_f1": 0.7434147319840773
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f1_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "a5260a4b0a45eba5413caa28b2762f62f49add592850f2180d911195db812dcf",
+        "val_macro_f1": 0.7220904803484228
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f2_best.pt",
+        "epochs_run": 23,
+        "n": 1396,
+        "sha256": "f76b91a541248c84e0f696bbee50463ad61a5d2947210c1181a0edfb55bba165",
+        "val_macro_f1": 0.7314077428944612
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f3_best.pt",
+        "epochs_run": 25,
+        "n": 1396,
+        "sha256": "92a99347c49e8e8308aa6f22a9e850e540bc7cb0c0648f6b2a7cb487033ca3b5",
+        "val_macro_f1": 0.7197312115969762
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/densenet121-oof_f4_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "31fbd994f5a65b7f422fb13fb69f5c99d6218c707da3ff785b9ef8e4ae0ad4b4",
+        "val_macro_f1": 0.7134222110015812
+      }
+    },
+    "efficientnet_b0": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f0_best.pt",
+        "epochs_run": 30,
+        "n": 1397,
+        "sha256": "066af6e13155b49ae38bb5498fb9fd36c945d6e883f13cb2ef621cfbd3484738",
+        "val_macro_f1": 0.6825973400144927
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f1_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "04f6041eed4aa6128827cb6fdde9773a6e9de87879aed88e79e6aa7b06c0c758",
+        "val_macro_f1": 0.6927444419407235
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f2_best.pt",
+        "epochs_run": 20,
+        "n": 1396,
+        "sha256": "a4c54fcfe091c38483570088ba2f3c11c97df0b80b1273f232a620d77067e5e4",
+        "val_macro_f1": 0.679404878149638
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f3_best.pt",
+        "epochs_run": 27,
+        "n": 1396,
+        "sha256": "0571aaa2cc158e27cdbf749c2272093e5bb43117e90eec776f986f972995fcd4",
+        "val_macro_f1": 0.7154507233469509
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b0-oof_f4_best.pt",
+        "epochs_run": 17,
+        "n": 1396,
+        "sha256": "938241d437161ec686ce03d39ab4e7ba53fb354e2c7786b75b9369b5287d98f4",
+        "val_macro_f1": 0.6653289978880057
+      }
+    },
+    "efficientnet_b3": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f0_best.pt",
+        "epochs_run": 30,
+        "n": 1397,
+        "sha256": "b03bf5112dd33f471de9b1c958261b6bd7ead129367ae94a74950add7f41e5ec",
+        "val_macro_f1": 0.6904699629610732
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f1_best.pt",
+        "epochs_run": 22,
+        "n": 1396,
+        "sha256": "3e64ed017f2896c8894f53fd7eb3bbde4e1193e45ace4b4c64b1abe5fa448672",
+        "val_macro_f1": 0.7021698261083801
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f2_best.pt",
+        "epochs_run": 17,
+        "n": 1396,
+        "sha256": "ed038737a826b72b7921b412c2a58c0f2f549029a9e872fe8b59f5f315febbbe",
+        "val_macro_f1": 0.7040829598835614
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f3_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "793961faed8b38be1a8ba98cec88e0d9a5659e0802848e4328b8a09d85673bf9",
+        "val_macro_f1": 0.7288509412657268
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/efficientnet_b3-oof_f4_best.pt",
+        "epochs_run": 30,
+        "n": 1396,
+        "sha256": "a21f3e35512507e20a89f29c807829bc056a65614b96e6fdb5f3a8776c7d1846",
+        "val_macro_f1": 0.6957179534794342
+      }
+    },
+    "resnet50": {
+      "0": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f0_best.pt",
+        "epochs_run": 30,
+        "n": 1397,
+        "sha256": "84152972d36572aa1a90994ee26112af59160020d13180a9377802646331ef0d",
+        "val_macro_f1": 0.7015578942949042
+      },
+      "1": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f1_best.pt",
+        "epochs_run": 28,
+        "n": 1396,
+        "sha256": "e3bb900f1ece863d16af3721184046900f593974b2c766fbccc89f6289fd26b8",
+        "val_macro_f1": 0.6981036874372287
+      },
+      "2": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f2_best.pt",
+        "epochs_run": 25,
+        "n": 1396,
+        "sha256": "f00a5559afb9c3598d54a30b27b04c000d6886959a6dcfdf79c0c1682b7aac8a",
+        "val_macro_f1": 0.713269301264733
+      },
+      "3": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f3_best.pt",
+        "epochs_run": 28,
+        "n": 1396,
+        "sha256": "928b344b587d002a5e90636a1e823eca24100ce5594357c11237d35d80ad083e",
+        "val_macro_f1": 0.7346744745623953
+      },
+      "4": {
+        "checkpoint": "ml/checkpoints/oof/resnet50-oof_f4_best.pt",
+        "epochs_run": 23,
+        "n": 1396,
+        "sha256": "600c2e144cecb689aee6e93ec3bbe4ae7609425b498758911ae68b113cc5699b",
+        "val_macro_f1": 0.6964742205527091
+      }
+    }
+  }
+}

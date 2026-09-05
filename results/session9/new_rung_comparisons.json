@@ -1,0 +1,73 @@
+{
+  "family": {
+    "name": "s9_new_rungs",
+    "kind": "confirmatory",
+    "question": "do OOF-fitted calibration (A7-oof) or fold-bagging (A8) improve Macro-F1?",
+    "estimand": "paired Macro-F1 difference against the published A7-val rung",
+    "split": "test (single pre-registered pass)",
+    "size": 2,
+    "correction": "holm-bonferroni",
+    "session": "session9_testpass",
+    "artifact": "pending -- results/analysis_plan.json then the S9 test pass",
+    "members": [
+      "A7-oof vs A7-val",
+      "A8 vs A7-val"
+    ],
+    "note": "Declared here, before the rungs exist, so admitting them cannot look retrospective. They are a separate family from the S5 DeLong tests because the estimand differs (Macro-F1, not per-class AUC) and because folding them into a 42-test family would penalise the S5 result for a later session's additions. Both directions are pre-registered two-sided: S4 measured A7-oof costing 0.011 val Macro-F1, so it may well be a loss."
+  },
+  "comparisons": [
+    {
+      "metric": "macro_f1",
+      "point_estimate": -0.01762276014484143,
+      "mean": -0.018001042656479792,
+      "ci_low": -0.04506377146224375,
+      "ci_high": 0.005423335249672157,
+      "p_value_two_sided": 0.15,
+      "n_boot": 2000,
+      "comparison": "A7_oof vs A7_val"
+    },
+    {
+      "metric": "macro_f1",
+      "point_estimate": -0.023732716487741,
+      "mean": -0.024490964961437673,
+      "ci_low": -0.06246385545815544,
+      "ci_high": 0.004313654187541268,
+      "p_value_two_sided": 0.121,
+      "n_boot": 2000,
+      "comparison": "A8 vs A7_val"
+    }
+  ],
+  "holm": {
+    "family": "s9_new_rungs",
+    "alpha": 0.05,
+    "n_tests": 2,
+    "p_raw": [
+      0.15,
+      0.121
+    ],
+    "p_holm": [
+      0.242,
+      0.242
+    ],
+    "significant_holm": [
+      false,
+      false
+    ],
+    "n_significant": 0
+  },
+  "a7_reproduction": {
+    "published_macro_f1": 0.8047238352979755,
+    "reproduced_macro_f1": 0.8047238352979755,
+    "abs_drift": 0.0,
+    "tolerance": 0.0005,
+    "source": "results/ablation_table.csv"
+  },
+  "members_evaluated": [
+    "A7_oof vs A7_val",
+    "A8 vs A7_val"
+  ],
+  "members_declared": [
+    "A7-oof vs A7-val",
+    "A8 vs A7-val"
+  ]
+}

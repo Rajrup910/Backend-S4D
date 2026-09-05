@@ -1,0 +1,156 @@
+[
+  {
+    "group": "I",
+    "n": 137,
+    "n_tier1": 104,
+    "powered": true,
+    "tier1_sensitivity": 0.2692,
+    "tier1_sensitivity_ci": [
+      0.1869,
+      0.3651
+    ],
+    "point_frr": 0.6058,
+    "point_frr_ci": [
+      0.5051,
+      0.7002
+    ],
+    "set_frr": 0.0962,
+    "set_frr_ci": [
+      0.0471,
+      0.1697
+    ],
+    "mean_set_size": 3.48
+  },
+  {
+    "group": "II",
+    "n": 750,
+    "n_tier1": 537,
+    "powered": true,
+    "tier1_sensitivity": 0.203,
+    "tier1_sensitivity_ci": [
+      0.1697,
+      0.2395
+    ],
+    "point_frr": 0.6797,
+    "point_frr_ci": [
+      0.6384,
+      0.719
+    ],
+    "set_frr": 0.0596,
+    "set_frr_ci": [
+      0.0411,
+      0.0831
+    ],
+    "mean_set_size": 3.5
+  },
+  {
+    "group": "III",
+    "n": 347,
+    "n_tier1": 227,
+    "powered": true,
+    "tier1_sensitivity": 0.2026,
+    "tier1_sensitivity_ci": [
+      0.1523,
+      0.2609
+    ],
+    "point_frr": 0.7093,
+    "point_frr_ci": [
+      0.6455,
+      0.7674
+    ],
+    "set_frr": 0.1013,
+    "set_frr_ci": [
+      0.0653,
+      0.1481
+    ],
+    "mean_set_size": 3.42
+  },
+  {
+    "group": "IV",
+    "n": 59,
+    "n_tier1": 26,
+    "powered": true,
+    "tier1_sensitivity": 0.2308,
+    "tier1_sensitivity_ci": [
+      0.0897,
+      0.4365
+    ],
+    "point_frr": 0.6154,
+    "point_frr_ci": [
+      0.4057,
+      0.7977
+    ],
+    "set_frr": 0.0769,
+    "set_frr_ci": [
+      0.0095,
+      0.2513
+    ],
+    "mean_set_size": 3.0
+  },
+  {
+    "group": "V",
+    "n": 8,
+    "n_tier1": 3,
+    "powered": false,
+    "tier1_sensitivity": 1.0,
+    "tier1_sensitivity_ci": [
+      0.2924,
+      1.0
+    ],
+    "point_frr": 0.0,
+    "point_frr_ci": [
+      0.0,
+      0.7076
+    ],
+    "set_frr": 0.0,
+    "set_frr_ci": [
+      0.0,
+      0.7076
+    ],
+    "mean_set_size": 3.38
+  },
+  {
+    "group": "VI",
+    "n": 1,
+    "n_tier1": 0,
+    "powered": false,
+    "tier1_sensitivity": 0.0,
+    "tier1_sensitivity_ci": [
+      0.0,
+      0.0
+    ],
+    "point_frr": 0.0,
+    "point_frr_ci": [
+      0.0,
+      0.0
+    ],
+    "set_frr": 0.0,
+    "set_frr_ci": [
+      0.0,
+      0.0
+    ],
+    "mean_set_size": 4.0
+  },
+  {
+    "group": "Unknown",
+    "n": 804,
+    "n_tier1": 0,
+    "powered": false,
+    "tier1_sensitivity": 0.0,
+    "tier1_sensitivity_ci": [
+      0.0,
+      0.0
+    ],
+    "point_frr": 0.0,
+    "point_frr_ci": [
+      0.0,
+      0.0
+    ],
+    "set_frr": 0.0,
+    "set_frr_ci": [
+      0.0,
+      0.0
+    ],
+    "mean_set_size": 3.31
+  }
+]

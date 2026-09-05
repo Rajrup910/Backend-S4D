@@ -1,0 +1,138 @@
+{
+  "statement": "Every test-split number in paper/manuscript.tex is emitted by the executions listed below, each governed by the analysis plan whose hash it carries. A quantity absent from the plan was not computed from test.",
+  "plan_path": "results/analysis_plan.json",
+  "executions": [
+    {
+      "at": "2026-09-04T22:23:11+00:00",
+      "stage": "tables",
+      "plan_sha256": "5c9bebcf255a87b7136ce75918454e9daa9770d1ac7e0bb483bbddc32be5a13f",
+      "n_quantities": 18,
+      "quantity_ids": [
+        "ladder.A7_val",
+        "ladder.A7_oof",
+        "ladder.A8",
+        "ladder.new_rung_comparisons",
+        "agerule.band_sensitivity_argmax",
+        "agerule.confirmatory_gap",
+        "agerule.escalation_mass_auc",
+        "agerule.lambda_rule",
+        "agerule.nnb",
+        "agerule.orthogonality",
+        "conformal.coverage",
+        "conformal.frr",
+        "conformal.frr_bound_alpha",
+        "conformal.cell_coverage",
+        "selective.operating_points",
+        "calibration.by_band",
+        "fairness.per_class_f1",
+        "fairness.intersectional"
+      ],
+      "inputs": [
+        {
+          "path": "research/predictions_tta/convnext_tiny_test.csv",
+          "sha256": "3c160817fba3ba0e2bae35272823fbc1c3f63be74b4803b1fbe6feaeb7ab624d",
+          "bytes": 370072
+        },
+        {
+          "path": "research/predictions_tta/convnext_small_test.csv",
+          "sha256": "25b1e7a16a62ec71ebb529585e1079e9e4d2ccab3011c9421773010dca4e47d2",
+          "bytes": 373465
+        },
+        {
+          "path": "research/predictions_tta/densenet121_test.csv",
+          "sha256": "106d02b0c096c53f1476780303d7284b64e7f84d9c1c35bb25e96084c793f5cd",
+          "bytes": 364635
+        },
+        {
+          "path": "research/predictions_tta/efficientnet_b0_test.csv",
+          "sha256": "1eb81303e203ebbd0ce4c9e0b1f3fd530d9ac050cf38470e9fbc62b016cefce1",
+          "bytes": 376044
+        },
+        {
+          "path": "research/predictions_tta/efficientnet_b3_test.csv",
+          "sha256": "8fc86bf628eb1e990e3e43b2bf30bc61e7388062695fe197568f1059c5977f90",
+          "bytes": 375270
+        },
+        {
+          "path": "research/predictions_tta/resnet50_test.csv",
+          "sha256": "a9079cd32007b8fdaf687a8327c5123751768bf326173a73969cb3b9a7b240c8",
+          "bytes": 354927
+        }
+      ],
+      "outputs": [
+        "results/session9/ladder.csv",
+        "results/session9/new_rung_comparisons.json",
+        "results/session9/age_gap_test.csv",
+        "results/session9/age_gap_confirmatory_test.json",
+        "results/session9/agerule_test.csv",
+        "results/session9/agerule_summary_test.json",
+        "results/session9/nnb_test.csv",
+        "results/session9/orthogonality_test.csv",
+        "results/session9/conformal_test.csv",
+        "results/session9/conformal_cells_test.csv",
+        "results/session9/frr_sweep_test.csv",
+        "results/session9/frr_bounds_test.csv",
+        "results/session9/selective_test.csv",
+        "results/session9/band_calibration_test.csv",
+        "results/session9/band_calibration_gaps_test.json",
+        "results/session9/per_class_f1_test.csv",
+        "results/session9/intersectional_test.csv",
+        "results/session9/intersectional_disparities_test.json",
+        "results/session9/session9_tables_report.md"
+      ],
+      "skipped": {
+        "attribution.lesion_interior": "stage 'attribution' has not been run; it is a separate GPU stage governed by the same plan and receipt."
+      },
+      "rerun_reason": ""
+    },
+    {
+      "at": "2026-09-04T22:26:36+00:00",
+      "stage": "attribution",
+      "plan_sha256": "5c9bebcf255a87b7136ce75918454e9daa9770d1ac7e0bb483bbddc32be5a13f",
+      "n_quantities": 1,
+      "quantity_ids": [
+        "attribution.lesion_interior"
+      ],
+      "inputs": [
+        {
+          "path": "research/predictions_tta/convnext_tiny_test.csv",
+          "sha256": "3c160817fba3ba0e2bae35272823fbc1c3f63be74b4803b1fbe6feaeb7ab624d",
+          "bytes": 370072
+        },
+        {
+          "path": "research/predictions_tta/convnext_small_test.csv",
+          "sha256": "25b1e7a16a62ec71ebb529585e1079e9e4d2ccab3011c9421773010dca4e47d2",
+          "bytes": 373465
+        },
+        {
+          "path": "research/predictions_tta/densenet121_test.csv",
+          "sha256": "106d02b0c096c53f1476780303d7284b64e7f84d9c1c35bb25e96084c793f5cd",
+          "bytes": 364635
+        },
+        {
+          "path": "research/predictions_tta/efficientnet_b0_test.csv",
+          "sha256": "1eb81303e203ebbd0ce4c9e0b1f3fd530d9ac050cf38470e9fbc62b016cefce1",
+          "bytes": 376044
+        },
+        {
+          "path": "research/predictions_tta/efficientnet_b3_test.csv",
+          "sha256": "8fc86bf628eb1e990e3e43b2bf30bc61e7388062695fe197568f1059c5977f90",
+          "bytes": 375270
+        },
+        {
+          "path": "research/predictions_tta/resnet50_test.csv",
+          "sha256": "a9079cd32007b8fdaf687a8327c5123751768bf326173a73969cb3b9a7b240c8",
+          "bytes": 354927
+        }
+      ],
+      "outputs": [
+        "results/session9/attribution_test.csv",
+        "results/session9/attribution_summary_test.json",
+        "results/session9/session9_attribution_report.md"
+      ],
+      "skipped": {},
+      "rerun_reason": ""
+    }
+  ],
+  "n_executions": 2
+}

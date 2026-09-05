@@ -1,0 +1,35 @@
+[project]
+name = "scan4disease"
+version = "0.1.0"
+description = "AI-assisted dermatology screening: CNN classification, Grad-CAM, deterministic triage, LLM explanation."
+requires-python = ">=3.12,<3.14"
+
+# Dependencies live in ml/requirements.txt and backend/requirements.txt rather than here,
+# because torch must be installed from a CUDA-specific index that a plain dependency list
+# cannot express. See scripts/setup_env.ps1.
+
+[tool.pytest.ini_options]
+# Makes `ml` and `backend` importable from anywhere without installing the package.
+pythonpath = ["."]
+testpaths = ["tests", "backend/tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "slow: takes more than a few seconds",
+    "needs_model: requires a trained checkpoint on disk",
+    "needs_llm: requires a running Ollama instance",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["upstream", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# B008 flags function calls in argument defaults. That is precisely how FastAPI declares
+# dependencies and form fields (`Depends(...)`, `File(...)`, `Form(...)`) -- it is the
+# framework's documented idiom, not an accident.
+"backend/app/routes/*.py" = ["B008"]

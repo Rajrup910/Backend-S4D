@@ -1,0 +1,184 @@
+{
+  "frozen_at": "2026-09-04T23:12:52+00:00",
+  "statement": "All test-split numbers reported in paper/manuscript.tex are re-derived from these frozen per-image prediction matrices. Each matrix is the output of one test-set evaluation; re-computing a metric from a frozen matrix is not an additional look at the test set. Entries in research/experiments.csv that are not reproduced from these files are a development record only.",
+  "num_files": 34,
+  "files": [
+    {
+      "path": "research/predictions/convnext_small_test.csv",
+      "rows": 1502,
+      "sha256": "b7fa1147daa90c19034e13f8c8af98ff4ee6d3069cd3ac0d6972c04cd29b7fc7"
+    },
+    {
+      "path": "research/predictions/convnext_small_val.csv",
+      "rows": 1532,
+      "sha256": "9968c36d74ee6b4d5e5ec8dad328359703e36b8d27a6541d31d6444671f47445"
+    },
+    {
+      "path": "research/predictions/convnext_tiny_test.csv",
+      "rows": 1502,
+      "sha256": "42a5abe46aa0632ad262eed55cc657f6e7456edeeb539ea6b7459cec515d2e77"
+    },
+    {
+      "path": "research/predictions/convnext_tiny_val.csv",
+      "rows": 1532,
+      "sha256": "45aee0a9225c868e27c18442a679d8c3bc8f524dbc4ca9d954a1c0ab70f21a93"
+    },
+    {
+      "path": "research/predictions/densenet121_test.csv",
+      "rows": 1502,
+      "sha256": "a018a215d2eebb6c6a5aa3d65d88ddd679868ab3a2cb1d5007b1d0d90fa710a5"
+    },
+    {
+      "path": "research/predictions/densenet121_val.csv",
+      "rows": 1532,
+      "sha256": "f47a6967ad45b673db256397f36b7b106a35ce307cc33b6a3c2d31e4be13eab5"
+    },
+    {
+      "path": "research/predictions/efficientnet_b0_test.csv",
+      "rows": 1502,
+      "sha256": "c5bdaed89b0947c7eb2d3194450555aa845aef9d500133e5ac86c516a393ce2c"
+    },
+    {
+      "path": "research/predictions/efficientnet_b0_val.csv",
+      "rows": 1532,
+      "sha256": "a6343d08f973406ae6ad476f9e799fcb4abc8ecffa7b42748267123a53767506"
+    },
+    {
+      "path": "research/predictions/efficientnet_b3_test.csv",
+      "rows": 1502,
+      "sha256": "7994b4fd1efd465345fbeaff42ebc1d089386f517872d6f3b5c9d5f9e586ebb6"
+    },
+    {
+      "path": "research/predictions/efficientnet_b3_val.csv",
+      "rows": 1532,
+      "sha256": "851d368d82d811253e43c5e0628693a3b34638e8b046d124f356772b4f08f107"
+    },
+    {
+      "path": "research/predictions/gated_fusion_convnext_tiny_test.csv",
+      "rows": 1502,
+      "sha256": "64044b2957a9ce800d0c3b313f3fc60db7f8edf344fa41b49614630f648fd9fe"
+    },
+    {
+      "path": "research/predictions/gated_fusion_convnext_tiny_val.csv",
+      "rows": 1532,
+      "sha256": "7c04d69e562273e7640f8c9303ec700ae48d9e18bba2fec2f998a71a3511b418"
+    },
+    {
+      "path": "research/predictions/maxvit_tiny_test.csv",
+      "rows": 1502,
+      "sha256": "a825701b738fcdd79ee3ddc9aa8733e20b6ba389807b3be5970ed6756430cbaa"
+    },
+    {
+      "path": "research/predictions/maxvit_tiny_val.csv",
+      "rows": 1532,
+      "sha256": "14793b19df3409702c7f98e7c2b91c0250438af8567fa5414f73c48ac971966c"
+    },
+    {
+      "path": "research/predictions/resnet50_test.csv",
+      "rows": 1502,
+      "sha256": "390fcbff4c15cd912c054e639430dd675ce76c3c904e4215c128d8771ffd2ead"
+    },
+    {
+      "path": "research/predictions/resnet50_val.csv",
+      "rows": 1532,
+      "sha256": "3ab33bd13c481f3fa579d99142b59e066edd35b2d4b1ae406fb0d06363af8e70"
+    },
+    {
+      "path": "research/predictions/swinv2_tiny_test.csv",
+      "rows": 1502,
+      "sha256": "11928b42dab5a882d45033965cd355bc9558e9f71591f0242040c734812b2a8e"
+    },
+    {
+      "path": "research/predictions/swinv2_tiny_val.csv",
+      "rows": 1532,
+      "sha256": "546a3bcc1e09be8bd784c14a1e438d26bbac26870ae739c23a7727f21c7be1aa"
+    },
+    {
+      "path": "research/predictions_tta/convnext_small_test.csv",
+      "rows": 1502,
+      "sha256": "25b1e7a16a62ec71ebb529585e1079e9e4d2ccab3011c9421773010dca4e47d2"
+    },
+    {
+      "path": "research/predictions_tta/convnext_small_val.csv",
+      "rows": 1532,
+      "sha256": "0953bae7e95855ef9289fd332f8e1893b24c58d7b18c33028e9d91b61e7418a1"
+    },
+    {
+      "path": "research/predictions_tta/convnext_tiny_test.csv",
+      "rows": 1502,
+      "sha256": "3c160817fba3ba0e2bae35272823fbc1c3f63be74b4803b1fbe6feaeb7ab624d"
+    },
+    {
+      "path": "research/predictions_tta/convnext_tiny_val.csv",
+      "rows": 1532,
+      "sha256": "984937263e7e870f0b3fa3da6b8c1b89a83b7ab5c1a8e5e2dfd66e2f5938a720"
+    },
+    {
+      "path": "research/predictions_tta/densenet121_test.csv",
+      "rows": 1502,
+      "sha256": "106d02b0c096c53f1476780303d7284b64e7f84d9c1c35bb25e96084c793f5cd"
+    },
+    {
+      "path": "research/predictions_tta/densenet121_val.csv",
+      "rows": 1532,
+      "sha256": "789bdf3ae8bdbfeed2b6e9d6f754df3bec4b90de98516d8c3d998854737e8180"
+    },
+    {
+      "path": "research/predictions_tta/efficientnet_b0_test.csv",
+      "rows": 1502,
+      "sha256": "1eb81303e203ebbd0ce4c9e0b1f3fd530d9ac050cf38470e9fbc62b016cefce1"
+    },
+    {
+      "path": "research/predictions_tta/efficientnet_b0_val.csv",
+      "rows": 1532,
+      "sha256": "b90342ed02e75c53752ce6adecb047500a369cc43a610032c782fc4c9bfabb2c"
+    },
+    {
+      "path": "research/predictions_tta/efficientnet_b3_test.csv",
+      "rows": 1502,
+      "sha256": "8fc86bf628eb1e990e3e43b2bf30bc61e7388062695fe197568f1059c5977f90"
+    },
+    {
+      "path": "research/predictions_tta/efficientnet_b3_val.csv",
+      "rows": 1532,
+      "sha256": "f7738e7a523127ec1aa02a24bdfcc0ea6a788a22d70a0965e030b98976d9ed51"
+    },
+    {
+      "path": "research/predictions_tta/maxvit_tiny_test.csv",
+      "rows": 1502,
+      "sha256": "e44daed37d7351f49da1efdd6047da36fa3f5fec1b138287e3b45b5b859b68c5"
+    },
+    {
+      "path": "research/predictions_tta/maxvit_tiny_val.csv",
+      "rows": 1532,
+      "sha256": "50d9aacafefebab998bd663e1bd1eb522eaf22d9cd4af224b320d29c8ee8408a"
+    },
+    {
+      "path": "research/predictions_tta/resnet50_test.csv",
+      "rows": 1502,
+      "sha256": "a9079cd32007b8fdaf687a8327c5123751768bf326173a73969cb3b9a7b240c8"
+    },
+    {
+      "path": "research/predictions_tta/resnet50_val.csv",
+      "rows": 1532,
+      "sha256": "e829699ea8d37e2026170f887da80dd41fdd6dec0c6a20167a7c99246719a573"
+    },
+    {
+      "path": "research/predictions_tta/swinv2_tiny_test.csv",
+      "rows": 1502,
+      "sha256": "81738abad3b4cac0684bf90784dfe285e6b069c2ee98defad9549392dafb9d2f"
+    },
+    {
+      "path": "research/predictions_tta/swinv2_tiny_val.csv",
+      "rows": 1532,
+      "sha256": "72ee45722f7ac4d70ad1d182cae32cd6e1855b75156c3921f4eaeb1caf0572bc"
+    }
+  ],
+  "analysis_plan": {
+    "path": "results/analysis_plan.json",
+    "sha256": "5c9bebcf255a87b7136ce75918454e9daa9770d1ac7e0bb483bbddc32be5a13f",
+    "frozen_at": "2026-09-04T16:23:17+00:00",
+    "n_quantities": 19,
+    "statement": "The pre-registered analysis plan for the single session-9 test pass. Written before any test read; the pass refuses to emit a quantity it does not name. Its hash is recorded here so that a plan revised after seeing test numbers would be visibly a different plan."
+  }
+}

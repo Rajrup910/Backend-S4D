@@ -1,0 +1,120 @@
+{
+  "fit_split": "oof",
+  "matrix_split": "train",
+  "fit_predictions_dir": "research/predictions_oof_tta",
+  "val_predictions_dir": "research/predictions_tta",
+  "tta": true,
+  "read_test": false,
+  "session": "session7_stats_oof",
+  "n_boot": 2000,
+  "num_bins": 15,
+  "calibration_gaps": {
+    "oof/uncalibrated": {
+      "ece_gap": 0.10892049304406591,
+      "signed_gap_spread": 0.10988421910348745,
+      "accuracy_gap": 0.13964509399612723,
+      "n_groups": 3.0,
+      "groups": [
+        "40-59",
+        "60+",
+        "<40"
+      ],
+      "excluded_groups": [
+        "unknown"
+      ]
+    },
+    "oof/dirichlet": {
+      "ece_gap": 0.01499214998012733,
+      "signed_gap_spread": 0.06792282952331818,
+      "accuracy_gap": 0.14538826219438583,
+      "n_groups": 3.0,
+      "groups": [
+        "40-59",
+        "60+",
+        "<40"
+      ],
+      "excluded_groups": [
+        "unknown"
+      ]
+    },
+    "val/uncalibrated": {
+      "ece_gap": 0.06391211939267114,
+      "signed_gap_spread": 0.06712993001393763,
+      "accuracy_gap": 0.09665337682735287,
+      "n_groups": 3.0,
+      "groups": [
+        "40-59",
+        "60+",
+        "<40"
+      ],
+      "excluded_groups": [
+        "unknown"
+      ]
+    },
+    "val/dirichlet": {
+      "ece_gap": 0.007948392610650987,
+      "signed_gap_spread": 0.0627972404173488,
+      "accuracy_gap": 0.13509323023639797,
+      "n_groups": 3.0,
+      "groups": [
+        "40-59",
+        "60+",
+        "<40"
+      ],
+      "excluded_groups": [
+        "unknown"
+      ]
+    }
+  },
+  "worst_calibrated_band": "<40",
+  "worst_calibrated_band_ece": 0.22897073223986614,
+  "worst_class": "mel",
+  "worst_class_f1": 0.6066619418851878,
+  "confirmatory_age_gap": {
+    "comparison": "<40 vs 60+",
+    "sensitivity_a": 0.546875,
+    "sensitivity_b": 0.7334826427771557,
+    "n_positive_a": 64,
+    "n_positive_b": 893,
+    "difference": -0.1866076427771557,
+    "ci_lo": -0.3704446859096843,
+    "ci_hi": -0.015623992956009879,
+    "p_value_two_sided": 0.036,
+    "n_boot": 2000,
+    "family": "age_gap_confirmatory",
+    "alpha": 0.05,
+    "n_tests": 1,
+    "p_raw": [
+      0.036
+    ],
+    "p_holm": [
+      0.036
+    ],
+    "significant_holm": [
+      true
+    ],
+    "n_significant": 1
+  },
+  "val_age_gap": {
+    "comparison": "<40 vs 60+",
+    "sensitivity_a": 0.5454545454545454,
+    "sensitivity_b": 0.7743362831858407,
+    "n_positive_a": 22,
+    "n_positive_b": 226,
+    "difference": -0.22888173773129528,
+    "ci_lo": -0.5966512580209389,
+    "ci_hi": 0.07839703339703327,
+    "p_value_two_sided": 0.158,
+    "n_boot": 2000
+  },
+  "intersectional_disparities": {
+    "n_usable_cells": 6.0,
+    "equalized_odds_tpr_gap": 0.24791318864774625,
+    "demographic_parity_gap": 0.29126976644525393
+  },
+  "n_intersectional_cells": 10,
+  "n_intersectional_suppressed": 4,
+  "selective_policy_score": "msp",
+  "test_read": false,
+  "table4_test_column": "pending session9 single test pass"
+}

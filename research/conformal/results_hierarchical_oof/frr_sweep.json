@@ -1,0 +1,163 @@
+{
+  "sweep": [
+    {
+      "alpha": 0.2,
+      "frr": 0.1331168831168831,
+      "frr_upper": 0.18339639230812863,
+      "mean_set_size": 1.0359007832898173,
+      "singleton_rate": 0.7402088772845953,
+      "frr_detail": {
+        "numerator": 41,
+        "denominator": 308,
+        "n_lesions": 175,
+        "point": 0.1331168831168831,
+        "clopper_pearson_95": [
+          0.09724836019742777,
+          0.17622721337652625
+        ],
+        "grouped_bootstrap_95": [
+          0.08463949843260188,
+          0.18339639230812863
+        ],
+        "primary_interval": "grouped_bootstrap"
+      }
+    },
+    {
+      "alpha": 0.15,
+      "frr": 0.10064935064935066,
+      "frr_upper": 0.14377103657559276,
+      "mean_set_size": 1.152088772845953,
+      "singleton_rate": 0.7049608355091384,
+      "frr_detail": {
+        "numerator": 31,
+        "denominator": 308,
+        "n_lesions": 175,
+        "point": 0.10064935064935066,
+        "clopper_pearson_95": [
+          0.06941604463292615,
+          0.1398164721107117
+        ],
+        "grouped_bootstrap_95": [
+          0.06134969325153374,
+          0.14377103657559276
+        ],
+        "primary_interval": "grouped_bootstrap"
+      }
+    },
+    {
+      "alpha": 0.1,
+      "frr": 0.06818181818181818,
+      "frr_upper": 0.10233690069400912,
+      "mean_set_size": 1.2845953002610966,
+      "singleton_rate": 0.6501305483028721,
+      "frr_detail": {
+        "numerator": 21,
+        "denominator": 308,
+        "n_lesions": 175,
+        "point": 0.06818181818181818,
+        "clopper_pearson_95": [
+          0.042697888982662906,
+          0.10233690069400912
+        ],
+        "grouped_bootstrap_95": [
+          0.035135428883406816,
+          0.10561056105610561
+        ],
+        "primary_interval": "clopper_pearson"
+      }
+    },
+    {
+      "alpha": 0.05,
+      "frr": 0.00974025974025974,
+      "frr_upper": 0.028199753977880767,
+      "mean_set_size": 1.8511749347258486,
+      "singleton_rate": 0.2206266318537859,
+      "frr_detail": {
+        "numerator": 3,
+        "denominator": 308,
+        "n_lesions": 175,
+        "point": 0.00974025974025974,
+        "clopper_pearson_95": [
+          0.002013197664727241,
+          0.028199753977880767
+        ],
+        "grouped_bootstrap_95": [
+          0.0,
+          0.02547974196699293
+        ],
+        "primary_interval": "clopper_pearson"
+      }
+    },
+    {
+      "alpha": 0.02,
+      "frr": 0.0,
+      "frr_upper": 0.011905443984505487,
+      "mean_set_size": 3.2630548302872064,
+      "singleton_rate": 0.0039164490861618795,
+      "frr_detail": {
+        "numerator": 0,
+        "denominator": 308,
+        "n_lesions": 175,
+        "point": 0.0,
+        "clopper_pearson_95": [
+          0.0,
+          0.011905443984505487
+        ],
+        "grouped_bootstrap_95": [
+          0.0,
+          0.0
+        ],
+        "primary_interval": "clopper_pearson"
+      }
+    },
+    {
+      "alpha": 0.01,
+      "frr": 0.0,
+      "frr_upper": 0.011905443984505487,
+      "mean_set_size": 3.3257180156657964,
+      "singleton_rate": 0.022845953002610966,
+      "frr_detail": {
+        "numerator": 0,
+        "denominator": 308,
+        "n_lesions": 175,
+        "point": 0.0,
+        "clopper_pearson_95": [
+          0.0,
+          0.011905443984505487
+        ],
+        "grouped_bootstrap_95": [
+          0.0,
+          0.0
+        ],
+        "primary_interval": "clopper_pearson"
+      }
+    }
+  ],
+  "bound_answers": {
+    "0.10": {
+      "alpha": 0.05,
+      "frr": 0.00974025974025974,
+      "frr_upper": 0.028199753977880767,
+      "mean_set_size": 1.8511749347258486
+    },
+    "0.05": {
+      "alpha": 0.05,
+      "frr": 0.00974025974025974,
+      "frr_upper": 0.028199753977880767,
+      "mean_set_size": 1.8511749347258486
+    },
+    "0.02": {
+      "alpha": 0.02,
+      "frr": 0.0,
+      "frr_upper": 0.011905443984505487,
+      "mean_set_size": 3.2630548302872064
+    },
+    "0.01": null
+  },
+  "targets": [
+    0.1,
+    0.05,
+    0.02,
+    0.01
+  ]
+}

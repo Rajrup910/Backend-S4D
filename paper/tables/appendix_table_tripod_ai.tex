@@ -1,0 +1,41 @@
+\begin{table*}[t]
+\caption{TRIPOD+AI (2024) Reporting Checklist Cross-Walk: External Validation and Model Transportability}
+\label{tab:tripod_ai}
+\centering
+\scriptsize
+\begin{tabular}{lp{5.5cm}p{6.0cm}l}
+\toprule
+\textbf{Item} & \textbf{TRIPOD+AI Reporting Standard} & \textbf{Study Implementation in Manuscript} & \textbf{Manuscript Section / Artifact} \\
+\midrule
+1 & Identify study as developing/validating an AI model & Stated in Title and Abstract as clinical safety-net engineering & Title, Abstract \\
+2 & Structured summary of objectives, data, validation & Comprehensive summary of multi-center findings and safety nets & Abstract \\
+3a & Scientific rationale and clinical problem & Young-patient melanoma triage failure and age prior skew & Section~I \\
+3b & Specific study aims and validation objectives & Formal hypothesis: argmax decision failure vs. information failure & Section~I, Section~II \\
+4a & Study design and cohort origins & Multi-center: Vienna/Queensland (HAM), Barcelona (BCN), NY (MSK), Brazil (PAD) & Section~III-A, Section~V-F \\
+4b & Setting and eligibility criteria & Lesion deduplication, age availability, SCC exclusion documented & Section~III-A, Table~I \\
+5a & Target clinical outcome definitions & 7-class dermatopathology ground truth + 3-tier actionability hierarchy & Section~III-B, Table~\ref{tab:clinical_triage} \\
+6a & Input predictors and image acquisitions & Polarized contact dermoscopy (HAM/BCN/MSK) and smartphone photos (PAD) & Section~III-A \\
+7 & Sample size and power calculations & Gate 0 power check ($\ge 100$ under-40 escalating lesions in BCN; $N=115$) & Section~V-F, \texttt{power\_report.md} \\
+8 & Missing data handling & Missing age excluded from age-sliced metrics; null lesion IDs grouped & Section~III-A, Rule 6 \\
+9a & Architecture and model development & 6 ImageNet CNNs, effective-number loss, 2-stage transfer learning & Section~III-C \\
+10a & Model specification and hyperparameter freeze & Pre-registered protocol, SHA-256 locked checkpoints, Dirichlet calibration & Section~III-D, \texttt{frozen\_artifacts.json} \\
+10b & Post-processing and decision rules & Escalation-mass threshold $\lambda_{\mathrm{opt}}=0.2818$; Mondrian conformal prediction & Section~IV, Section~V-B \\
+11 & In-distribution performance metrics & Macro-F1, Balanced Acc, Escalation AUC, point-FRR, set-FRR, NNB & Section~V-A, Table~II \\
+12 & Stratified subgroup evaluation & Stratified by age ($<40$, $40$--$59$, $60+$) and sex with cluster CIs & Section~V-C, Table~\ref{tab:agegap} \\
+13a & External validation cohort specification & Multi-center Level 1 (BCN-20000, MSKCC) and Level 2 (PAD-UFES-20) & Section~V-F, Section~V-G \\
+13b & Zero-target tuning discipline & Zero parameter fitting on external cohorts; HAM-OOF parameters frozen & Section~V-F, Hard Rule 3 \\
+14 & Prior shift decoupling & Decomposed Bayesian prior shift from optical shift using Saerens EM & Section~V-G, Table~\ref{tab:pad_prior_shift} \\
+15 & Clinical decision curve analysis & Net Benefit evaluated across clinical thresholds $p_t \in [0.05, 0.20]$ & Section~V-E, Table~\ref{tab:decision_curve} \\
+16 & Algorithmic fairness assessment & Stratified by Fitzpatrick skin types I--IV; V/VI suppressed per power gates & Section~V-G, Table~\ref{tab:fitzpatrick_fairness} \\
+17 & Shift detection and safety nets & Mahalanobis OOD distance ($\mathrm{AUROC}=0.9148$) and conformal set widening & Section~V-G, Table~\ref{tab:conformal_shift} \\
+18 & Risk of bias and data leakage & Strict lesion-grouped split verification (\texttt{assert\_no\_leakage()}) & Section~III-A \\
+19 & Interpretation of mechanistic findings & Argmax fails due to prior skew, not feature representation failure & Section~VI-A \\
+20 & Causal validation via comparison arm & \emph{Withdrawn.} The arm requires retraining on BCN+MSK; the published checkpoints are frozen, so it was never run. Entered into the Holm family at $p=1.0$ & Section~VI-C (Limitations) \\
+21 & Clinical deployment implications & Two-tiered triage, local calibration requirement, visible uncertainty & Section~VI-B \\
+22 & Study limitations & Conformal non-exchangeability, underpowered Fitzpatrick V/VI sample & Section~VI-C \\
+23 & Reproducibility and open artifacts & Code, split manifests, scripts, and pre-registration hashes published & Section~VII, \texttt{post\_s11\_provenance.json} \\
+\bottomrule
+\end{tabular}
+\vspace{1mm}
+\parbox{\linewidth}{\raggedright \emph{Compliance}: Formal cross-walk of the 23 reporting domains of TRIPOD+AI (2024 update) for transparent reporting of artificial intelligence prediction models in healthcare.}
+\end{table*}

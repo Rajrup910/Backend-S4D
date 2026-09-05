@@ -1,0 +1,30 @@
+# results/
+
+Canonical home for every number and figure in `paper/manuscript.tex` (hard rule 4).
+Regenerate with `python -m research.ablation.run_part_a` followed by
+`python -m research.ablation.build_paper_artifacts`.
+
+| Artifact | Produced by | Used in |
+|---|---|---|
+| `ablation_table.csv` | `run_part_a.py` | Table II, the ablation ladder |
+| `bootstrap_cis.json` | `run_part_a.py` | all lesion-grouped intervals |
+| `mcnemar_delong.json` | `run_part_a.py` | the paired ladder tests |
+| `age_band_prior.csv` | `build_paper_artifacts.py` | the under-40 mechanism |
+| `frozen_artifacts.json` | `build_paper_artifacts.py` | the frozen-artifact declaration |
+| `reports/` | `build_paper_artifacts.py` | per-phase source reports |
+| `oof_vs_val_comparison.csv` | `research/oof/run_comparison.py` | Table III, val vs OOF fitting |
+| `oof_provenance.json` | `research/oof/extract_oof.py` | fold-checkpoint provenance |
+| `comparison_families.json` | `run_session7_stats.py` | the declared multiplicity families |
+| `analysis_plan.json` | `run_session9_plan.py` | the pre-registered test quantities |
+| `test_pass_receipt.json` | `run_session9_testpass.py` | append-only record of the test read |
+| `session9/` | `run_session9_testpass.py` | every test number added after session 5 |
+| `CLAIM_checklist.md` | maintained by hand | rendered to `paper/supplementary.tex` |
+
+Two scripts read this directory rather than write it, and both should pass before
+the paper is submitted: `python -m research.ablation.audit_manuscript` checks every
+number in the manuscript against the files above, and
+`python research/ablation/validate_structure.py` stands in for the LaTeX compiler
+that is not installed here. `python -m research.ablation.build_overleaf_bundle`
+then assembles the upload from the manuscript's own dependency list.
+
+Frozen artifact set: 34 prediction matrices, declared 2026-09-04T23:12:52+00:00.

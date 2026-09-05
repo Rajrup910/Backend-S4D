@@ -1,0 +1,6 @@
+{
+  "demographic_parity_gap": 0.29115372044885063,
+  "macro_f1_gap": 0.06414915295477355,
+  "equalized_odds_tpr_gap": 0.29738307059986474,
+  "equalized_odds_fpr_gap": 0.03508771929824561
+}

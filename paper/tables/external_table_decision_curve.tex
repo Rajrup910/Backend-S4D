@@ -1,0 +1,24 @@
+\begin{table}[t]
+\caption{Decision curve analysis of the frozen age-conditional escalation rule. Net benefit $=\mathrm{TP}/N-(\mathrm{FP}/N)\,p_t/(1-p_t)$. The HAM10000 columns are the out-of-fold panel (24-view TTA, frozen Dirichlet map, $N=6{,}981$); $\Delta$ is the frozen $\lambda$-rule minus argmax triage with a lesion-grouped paired bootstrap interval. The test column is reconstructed from the frozen Session~9 artifacts (TP, FP and $N$ only) and involves no new read of the test split.}
+\label{tab:decision_curve}
+\centering
+\footnotesize
+\begin{tabular}{lccccc}
+\toprule
+$p_t$ & Biopsy all & Argmax & $\lambda$-rule & $\Delta$ [95\% CI] & Test $\Delta$\textsuperscript{a} \\
+\midrule
+\multicolumn{6}{l}{\textit{All ages}} \\
+0.05 & 0.1518 & 0.1327 & \textbf{0.1589} & +0.0263 [+0.0214, +0.0315] & +0.0156 \\
+0.10 & 0.1047 & 0.1306 & \textbf{0.1534} & +0.0228 [+0.0178, +0.0282] & +0.0114 \\
+0.15 & 0.0520 & 0.1283 & \textbf{0.1472} & +0.0189 [+0.0138, +0.0243] & +0.0067 \\
+0.20 & -0.0072 & 0.1257 & \textbf{0.1403} & +0.0146 [+0.0093, +0.0199] & +0.0015 \\
+\multicolumn{6}{l}{\textit{Age $<$40}} \\
+0.05 & -0.0016 & 0.0253 & 0.0280 & +0.0027 [-0.0002, +0.0065] & +0.0053 \\
+0.10 & -0.0572 & 0.0239 & 0.0254 & +0.0015 [-0.0015, +0.0053] & +0.0034 \\
+0.15 & -0.1194 & 0.0224 & 0.0226 & +0.0002 [-0.0032, +0.0042] & +0.0014 \\
+0.20 & -0.1893 & 0.0207 & 0.0193 & -0.0013 [-0.0053, +0.0029] & -0.0009 \\
+\bottomrule
+\end{tabular}
+\vspace{1mm}
+\parbox{\linewidth}{\raggedright \textsuperscript{a}Derived from frozen Session~9 artifacts (\texttt{results/session9/agerule\_test.csv}); no new test read. Test prevalence 0.193 against 0.194 out of fold.}
+\end{table}

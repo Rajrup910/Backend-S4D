@@ -1,0 +1,170 @@
+{
+  "alpha": 0.05,
+  "rule": "Confirmatory families are enumerated in advance and Holm-Bonferroni corrected within family; the adjusted p-value is the one quoted. Exploratory sets carry no significance claim, are reported as confidence intervals only, and are never described as significant. Families are separate only where the estimand or the split differs.",
+  "n_families": 7,
+  "n_confirmatory": 4,
+  "n_exploratory": 3,
+  "families": [
+    {
+      "name": "delong_per_class_auc",
+      "kind": "confirmatory",
+      "question": "does any ladder step change per-class discrimination?",
+      "estimand": "per-class AUC difference between two rungs (DeLong z-test)",
+      "split": "test",
+      "size": 42,
+      "correction": "holm-bonferroni",
+      "session": "session5_partA",
+      "artifact": "results/mcnemar_delong.json",
+      "members": [],
+      "note": "6 structural comparisons x 7 classes. Exactly one member survives: A5 vs A2 on bkl. Established in S5 and unchanged by later sessions."
+    },
+    {
+      "name": "ladder_mcnemar",
+      "kind": "confirmatory",
+      "question": "does any ladder step change the raw correct/incorrect rate?",
+      "estimand": "paired McNemar statistic between two rungs",
+      "split": "test",
+      "size": 6,
+      "correction": "holm-bonferroni",
+      "session": "session5_partA",
+      "artifact": "results/mcnemar_delong.json",
+      "members": [],
+      "note": "The 6 McNemar tests were reported unadjusted in S5 while the 42 DeLong tests were corrected. They are a family of their own by the same argument and are corrected here. No test data is re-read: the p-values come from the frozen results file. The ensembling result (A5 vs A2) survives comfortably."
+    },
+    {
+      "name": "age_gap_confirmatory",
+      "kind": "confirmatory",
+      "question": "is escalation sensitivity lower in the under-40 band than in the 60+ band?",
+      "estimand": "difference in escalation sensitivity between two age bands",
+      "split": "oof (fitted/estimated); test at S9 (reported once)",
+      "size": 1,
+      "correction": "holm-bonferroni",
+      "session": "session7_stats",
+      "artifact": "research/stats/results_oof/age_gap_intervals.csv",
+      "members": [
+        "<40 vs 60+ escalation sensitivity"
+      ],
+      "note": "One pre-specified comparison, chosen before any interval was computed, because it is the single claim the paper makes about the age gap. The 40-59 band is not part of it: it is reported descriptively so a reader can see the monotone pattern, not tested. A family of one takes no penalty, which is the point of pre-specifying rather than testing all three pairs."
+    },
+    {
+      "name": "subgroup_calibration",
+      "kind": "exploratory",
+      "question": "is the ensemble's under-confidence uniform across age bands?",
+      "estimand": "per-band ECE and signed confidence gap, before and after Dirichlet",
+      "split": "val and oof",
+      "size": null,
+      "correction": "none (intervals only)",
+      "session": "session7_stats",
+      "artifact": "research/stats/results_oof/band_calibration.csv",
+      "members": [],
+      "note": "Reported as intervals with no null hypothesis. The finding -- that the under-40 band is both the most accurate and the worst calibrated -- is a description that motivates group-wise calibration, not a tested claim."
+    },
+    {
+      "name": "intersectional_fairness",
+      "kind": "exploratory",
+      "question": "do age-band disparities differ by sex?",
+      "estimand": "per-cell escalation sensitivity, referral rate and macro-F1",
+      "split": "oof",
+      "size": null,
+      "correction": "none (intervals only)",
+      "session": "session7_stats",
+      "artifact": "research/stats/results_oof/intersectional_age_sex.csv",
+      "members": [],
+      "note": "Six cells at most, several below the module power gates. Testing across cells at these counts would manufacture significance from sampling error; suppressed cells are named rather than dropped."
+    },
+    {
+      "name": "per_class_f1_attribution",
+      "kind": "exploratory",
+      "question": "which classes actually drag Macro-F1 down?",
+      "estimand": "per-class F1 with a lesion-grouped bootstrap interval",
+      "split": "val and oof",
+      "size": null,
+      "correction": "none (intervals only)",
+      "session": "session7_stats",
+      "artifact": "research/stats/results_oof/per_class_f1.csv",
+      "members": [],
+      "note": "Corrects the Limitations attribution, which blames df/vasc scarcity. This is a ranking of point estimates with intervals attached, not a test."
+    },
+    {
+      "name": "s9_new_rungs",
+      "kind": "confirmatory",
+      "question": "do OOF-fitted calibration (A7-oof) or fold-bagging (A8) improve Macro-F1?",
+      "estimand": "paired Macro-F1 difference against the published A7-val rung",
+      "split": "test (single pre-registered pass)",
+      "size": 2,
+      "correction": "holm-bonferroni",
+      "session": "session9_testpass",
+      "artifact": "pending -- results/analysis_plan.json then the S9 test pass",
+      "members": [
+        "A7-oof vs A7-val",
+        "A8 vs A7-val"
+      ],
+      "note": "Declared here, before the rungs exist, so admitting them cannot look retrospective. They are a separate family from the S5 DeLong tests because the estimand differs (Macro-F1, not per-class AUC) and because folding them into a 42-test family would penalise the S5 result for a later session's additions. Both directions are pre-registered two-sided: S4 measured A7-oof costing 0.011 val Macro-F1, so it may well be a loss."
+    }
+  ],
+  "generated_by": "research/run_session7_stats.py",
+  "ledger_session": "session7_stats_oof",
+  "ladder_mcnemar_adjusted": {
+    "family": "ladder_mcnemar",
+    "alpha": 0.05,
+    "n_tests": 6,
+    "p_raw": [
+      0.42485663527965056,
+      0.3776375485639253,
+      0.16866861888781112,
+      3.35860920803772e-05,
+      0.10483300285833895,
+      0.6582534143112833
+    ],
+    "p_holm": [
+      1.0,
+      1.0,
+      0.6746744755512445,
+      0.00020151655248226317,
+      0.5241650142916947,
+      1.0
+    ],
+    "significant_holm": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+    ],
+    "n_significant": 1,
+    "members": [
+      "A2_convnext_tiny vs A1_resnet50",
+      "A3_swinv2_tiny vs A2_convnext_tiny",
+      "A4_gated_fusion vs A2_convnext_tiny",
+      "A5_soft_vote_6cnn vs A2_convnext_tiny",
+      "A6_soft_vote_6cnn_tta vs A5_soft_vote_6cnn",
+      "A7_tta_dirichlet vs A6_soft_vote_6cnn_tta"
+    ]
+  },
+  "age_gap_confirmatory_adjusted": {
+    "family": "age_gap_confirmatory",
+    "alpha": 0.05,
+    "n_tests": 1,
+    "p_raw": [
+      0.036
+    ],
+    "p_holm": [
+      0.036
+    ],
+    "significant_holm": [
+      true
+    ],
+    "n_significant": 1,
+    "comparison": "<40 vs 60+",
+    "sensitivity_a": 0.546875,
+    "sensitivity_b": 0.7334826427771557,
+    "n_positive_a": 64,
+    "n_positive_b": 893,
+    "difference": -0.1866076427771557,
+    "ci_lo": -0.3704446859096843,
+    "ci_hi": -0.015623992956009879,
+    "p_value_two_sided": 0.036,
+    "n_boot": 2000
+  }
+}

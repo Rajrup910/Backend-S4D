@@ -1,0 +1,176 @@
+{
+  "version": "1.0.0",
+  "created": "2026-08-08",
+  "num_classes": 7,
+  "primary_dataset": "HAM10000",
+  "rationale": [
+    "The 7 classes are exactly the 7 distinct values of the HAM10000 metadata `dx` column.",
+    "No class was invented, merged, or split to reach a target count. Section 6 of the master",
+    "specification explicitly forbids fabricating an 8th class to match a project description.",
+    "ISIC 2019 adds SCC (squamous cell carcinoma) as a genuinely separate label. If ISIC 2019 is",
+    "ingested later, SCC is added as an 8th class -- it is NOT folded into `akiec`. `akiec` in",
+    "HAM10000 covers actinic keratosis and intraepithelial carcinoma (Bowen's disease, i.e. SCC",
+    "in situ); invasive SCC is a medically distinct entity and merging the two would be a",
+    "clinically unjustified merge. See `planned_extension` below."
+  ],
+  "malignancy_tiers": {
+    "malignant": "Cancerous. Triage layer escalates unconditionally.",
+    "premalignant": "May progress to cancer. Triage layer escalates.",
+    "benign": "Not cancerous. Triage still considers symptom flags."
+  },
+  "classes": [
+    {
+      "index": 0,
+      "code": "akiec",
+      "name": {
+        "en": "Actinic keratosis / intraepithelial carcinoma",
+        "hi": "एक्टिनिक केराटोसिस / इंट्राएपिथेलियल कार्सिनोमा"
+      },
+      "short_name": {
+        "en": "Actinic keratosis",
+        "hi": "एक्टिनिक केराटोसिस"
+      },
+      "plain_language": {
+        "en": "A rough, scaly patch caused by long-term sun exposure. It is not cancer yet, but it can develop into cancer if left untreated.",
+        "hi": "लंबे समय तक धूप में रहने से होने वाला खुरदरा, पपड़ीदार धब्बा। यह अभी कैंसर नहीं है, लेकिन इलाज न होने पर कैंसर में बदल सकता है।"
+      },
+      "malignancy": "premalignant",
+      "ham10000_dx": ["akiec"],
+      "isic2019_labels": ["AK"]
+    },
+    {
+      "index": 1,
+      "code": "bcc",
+      "name": {
+        "en": "Basal cell carcinoma",
+        "hi": "बेसल सेल कार्सिनोमा"
+      },
+      "short_name": {
+        "en": "Basal cell carcinoma",
+        "hi": "बेसल सेल कार्सिनोमा"
+      },
+      "plain_language": {
+        "en": "The most common form of skin cancer. It grows slowly and rarely spreads to other parts of the body, but it does need medical treatment.",
+        "hi": "त्वचा कैंसर का सबसे आम रूप। यह धीरे-धीरे बढ़ता है और शायद ही कभी शरीर के अन्य हिस्सों में फैलता है, लेकिन इसका चिकित्सकीय इलाज ज़रूरी है।"
+      },
+      "malignancy": "malignant",
+      "ham10000_dx": ["bcc"],
+      "isic2019_labels": ["BCC"]
+    },
+    {
+      "index": 2,
+      "code": "bkl",
+      "name": {
+        "en": "Benign keratosis-like lesion",
+        "hi": "सौम्य केराटोसिस जैसा घाव"
+      },
+      "short_name": {
+        "en": "Benign keratosis",
+        "hi": "सौम्य केराटोसिस"
+      },
+      "plain_language": {
+        "en": "A harmless growth on the skin, often related to age or sun exposure. It is not cancer.",
+        "hi": "त्वचा पर एक हानिरहित वृद्धि, जो अक्सर उम्र या धूप के संपर्क से जुड़ी होती है। यह कैंसर नहीं है।"
+      },
+      "malignancy": "benign",
+      "ham10000_dx": ["bkl"],
+      "isic2019_labels": ["BKL"]
+    },
+    {
+      "index": 3,
+      "code": "df",
+      "name": {
+        "en": "Dermatofibroma",
+        "hi": "डर्मेटोफाइब्रोमा"
+      },
+      "short_name": {
+        "en": "Dermatofibroma",
+        "hi": "डर्मेटोफाइब्रोमा"
+      },
+      "plain_language": {
+        "en": "A small, firm, harmless bump under the skin, often appearing after a minor injury such as an insect bite.",
+        "hi": "त्वचा के नीचे एक छोटी, कठोर, हानिरहित गांठ, जो अक्सर कीड़े के काटने जैसी मामूली चोट के बाद दिखाई देती है।"
+      },
+      "malignancy": "benign",
+      "ham10000_dx": ["df"],
+      "isic2019_labels": ["DF"]
+    },
+    {
+      "index": 4,
+      "code": "mel",
+      "name": {
+        "en": "Melanoma",
+        "hi": "मेलेनोमा"
+      },
+      "short_name": {
+        "en": "Melanoma",
+        "hi": "मेलेनोमा"
+      },
+      "plain_language": {
+        "en": "A serious form of skin cancer that can spread to other parts of the body if not treated early. Early treatment matters a great deal.",
+        "hi": "त्वचा कैंसर का एक गंभीर रूप, जो जल्दी इलाज न होने पर शरीर के अन्य हिस्सों में फैल सकता है। जल्दी इलाज बहुत मायने रखता है।"
+      },
+      "malignancy": "malignant",
+      "ham10000_dx": ["mel"],
+      "isic2019_labels": ["MEL"]
+    },
+    {
+      "index": 5,
+      "code": "nv",
+      "name": {
+        "en": "Melanocytic nevus",
+        "hi": "मेलेनोसाइटिक नीवस (तिल)"
+      },
+      "short_name": {
+        "en": "Mole",
+        "hi": "तिल"
+      },
+      "plain_language": {
+        "en": "An ordinary mole. Most people have several and they are almost always harmless.",
+        "hi": "एक सामान्य तिल। अधिकांश लोगों के शरीर पर कई तिल होते हैं और ये लगभग हमेशा हानिरहित होते हैं।"
+      },
+      "malignancy": "benign",
+      "ham10000_dx": ["nv"],
+      "isic2019_labels": ["NV"]
+    },
+    {
+      "index": 6,
+      "code": "vasc",
+      "name": {
+        "en": "Vascular lesion",
+        "hi": "रक्तवाहिनी संबंधी घाव"
+      },
+      "short_name": {
+        "en": "Vascular lesion",
+        "hi": "रक्तवाहिनी घाव"
+      },
+      "plain_language": {
+        "en": "A mark formed by small blood vessels in the skin, such as a cherry angioma or a birthmark. Usually harmless.",
+        "hi": "त्वचा में छोटी रक्त वाहिकाओं से बना निशान, जैसे चेरी एंजियोमा या जन्मचिह्न। आमतौर पर हानिरहित।"
+      },
+      "malignancy": "benign",
+      "ham10000_dx": ["vasc"],
+      "isic2019_labels": ["VASC"]
+    }
+  ],
+  "planned_extension": {
+    "enabled": false,
+    "condition": "Only if ISIC 2019 is actually ingested and trained on.",
+    "class": {
+      "index": 7,
+      "code": "scc",
+      "name": {
+        "en": "Squamous cell carcinoma",
+        "hi": "स्क्वैमस सेल कार्सिनोमा"
+      },
+      "malignancy": "malignant",
+      "ham10000_dx": [],
+      "isic2019_labels": ["SCC"]
+    },
+    "note": "Do not enable this without retraining. num_classes, the checkpoint head, and the backend all read this file."
+  },
+  "unmapped_source_labels": {
+    "isic2019": ["UNK"],
+    "handling": "ISIC 2019's UNK ('none of the others') is dropped rather than mapped. It is not a disease category and training on it would create a meaningless class."
+  }
+}

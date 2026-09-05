@@ -1,0 +1,10 @@
+{
+  "auroc_id_vs_shift": 0.9128,
+  "n_id_val": 1532,
+  "n_shift_pad": 2106,
+  "median_score_id_val": 485.08,
+  "median_score_shift_pad": 8716.72,
+  "mean_score_id_val": 1621.64,
+  "mean_score_shift_pad": 9489.62,
+  "separation_ratio_median": 17.97
+}

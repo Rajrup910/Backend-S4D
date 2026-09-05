@@ -1,0 +1,30 @@
+{
+  "test/uncalibrated": {
+    "ece_gap": 0.08426756467807747,
+    "signed_gap_spread": 0.09240832890156847,
+    "accuracy_gap": 0.14761101711058566,
+    "n_groups": 3.0,
+    "groups": [
+      "40-59",
+      "60+",
+      "<40"
+    ],
+    "excluded_groups": [
+      "unknown"
+    ]
+  },
+  "test/dirichlet": {
+    "ece_gap": 0.029467126561310973,
+    "signed_gap_spread": 0.05649665810293769,
+    "accuracy_gap": 0.14385161861434503,
+    "n_groups": 3.0,
+    "groups": [
+      "40-59",
+      "60+",
+      "<40"
+    ],
+    "excluded_groups": [
+      "unknown"
+    ]
+  }
+}

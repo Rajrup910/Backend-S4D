@@ -1,0 +1,21 @@
+# ML / training dependencies.
+#
+# IMPORTANT: install torch + torchvision FIRST, from the CUDA index, NOT from PyPI.
+# This machine has an RTX 5050 (Blackwell, sm_120); the default PyPI wheels are built
+# for older architectures and will fail at kernel launch. See scripts/setup_env.ps1.
+#
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+#
+# Then:  pip install -r ml/requirements.txt
+
+timm>=1.0.0
+numpy>=1.26
+pandas>=2.2
+scikit-learn>=1.5
+matplotlib>=3.9
+seaborn>=0.13
+Pillow>=10.3
+opencv-python>=4.10
+tqdm>=4.66
+PyYAML>=6.0
+tensorboard>=2.17

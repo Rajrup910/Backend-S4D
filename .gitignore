@@ -1,0 +1,226 @@
+# ==============================================================================
+# 1. DEEP LEARNING MODEL WEIGHTS & CHECKPOINTS (CRITICAL)
+# ==============================================================================
+# PyTorch checkpoints & weights
+*.pt
+*.pth
+*.pwf
+*.pt.*
+*.pth.*
+*.ckpt
+*.pt.tar
+*.pth.tar
+
+# TensorFlow / Keras / JAX
+*.h5
+*.hdf5
+*.keras
+*.pb
+*.tflite
+saved_model/
+saved_model.pb
+variables/
+
+# ONNX / TensorRT / OpenVINO / Compiled Engines
+*.onnx
+*.engine
+*.plan
+*.bin
+
+# HuggingFace & Safetensors
+*.safetensors
+*model.safetensors*
+
+# Serialized models, embeddings & data pickles
+*.pkl
+*.pickle
+*.joblib
+*.dill
+
+# Dedicated Checkpoint & Weights directories
+**/checkpoints/
+**/weights/
+**/saved_models/
+**/model_weights/
+ml/checkpoints/
+ml/checkpoints/**
+
+# ==============================================================================
+# 2. DYNAMIC TRAINING LOGS, METRICS & EXPERIMENT TRACKERS
+# ==============================================================================
+# General log files & streams
+*.log
+*.log.*
+*.out
+*.err
+log.txt
+*_log.txt
+logs/
+**/logs/
+**/session*_logs/
+
+# TensorBoard event streams
+events.out.tfevents.*
+*tfevents*
+tensorboard/
+tb_logs/
+
+# Experiment Management Systems
+wandb/
+.wandb
+mlruns/
+mlartifacts/
+lightning_logs/
+.neptune/
+.aim/
+.clearml/
+ray_results/
+optuna_study.db
+*.sqlite3
+
+# Profiler traces
+*.pt.trace.json*
+*.chrome_trace*
+
+# ==============================================================================
+# 3. DATASETS, RAW MEDIA & LARGE DATA STORAGE
+# ==============================================================================
+# Massive dataset folders (HAM10000, PAD-UFES-20, ISIC, downloads, etc.)
+data/
+data/**
+datasets/
+datasets/**
+data_cache/
+_downloads/
+
+# Large binary archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+*.rar
+*.7z
+*.bz2
+*.xz
+
+# Heavy scientific array files & binary matrices (except repo configs)
+*.npy
+*.npz
+*.feather
+*.parquet
+*.arrow
+*.mat
+
+# Raw image dumps (ignore image batches outside paper figures)
+data/**/*.jpg
+data/**/*.jpeg
+data/**/*.png
+data/**/*.tif
+data/**/*.tiff
+data/**/*.bmp
+data/**/*.dcm
+data/**/*.dicom
+data/**/*.nii
+data/**/*.nii.gz
+
+# ==============================================================================
+# 4. PYTHON CACHES, RUNTIMES & VIRTUAL ENVIRONMENTS
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+conda-env/
+
+# Packaging & distribution
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Testing & Type checking
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+htmlcov/
+.mypy_cache/
+.pytype/
+.pyre/
+
+# Jupyter Notebook artifacts
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+*.nbconvert.ipynb
+
+# ==============================================================================
+# 5. OS, IDE & LOCAL ASSISTANT ARTIFACTS
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# IDE configurations
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local assistant & agent directories and prompt/context runbooks
+CLAUDE.md
+DATASET_REFINING.md
+.claude/
+.cursor/
+.gemini/
+.agents/
+AGENTS.md
+GEMINI.md
+*copilot*
+*chatgpt*
+prompt_*.md
+
+# Environment files & secrets
+.env*.local
+*.key
+*.pem
+secrets.json
+credentials.json

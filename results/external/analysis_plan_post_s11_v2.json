@@ -1,0 +1,179 @@
+{
+  "version": "post_s11_v2",
+  "purpose": "External Validity, Multi-Center Dermoscopy Replication, and Clinical Actionability Battery",
+  "cohorts": {
+    "Level_0_InDistribution": "HAM10000 Test (Vienna/Queensland, N=1502)",
+    "Level_1_MultiCenterDermoscopy": "BCN-20000 (Barcelona, N=12413) + MSKCC (New York, N=2903)",
+    "Level_2_CrossModalityPhotography": "PAD-UFES-20 (Brazil, N=2106, Fitzpatrick I-VI)"
+  },
+  "inclusion_exclusion_rules": {
+    "SCC_handling": "Excluded from 7-class metrics (431 dropped); scored as Tier 1 in 3-tier clinical actionability",
+    "missing_age": "Excluded from age-band stratified slices; reported as separate unknown row",
+    "lesion_grouping": "Grouped by lesion_id where available; single images treated as singleton clusters where null",
+    "split_discipline": "BCN+MSK 70/15/15 lesion-grouped split (split_bcnmsk.csv); test split read once"
+  },
+  "workstream_endpoints": {
+    "E0_comparison_arm": {
+      "status": "WITHDRAWN before any result was computed",
+      "reason": "the arm required retraining under a re-weighted age prior; the checkpoints are frozen (see the immutability rule) and the two scripts that would have produced it were never implemented beyond a stub. Withdrawing it is a smaller claim than reporting it, not a larger one.",
+      "multiple_comparison_handling": "retained in the family denominator and entered into Holm-Bonferroni at p = 1.0. The family stays at 5 members; withdrawing a member by shrinking the denominator would inflate every survivor.",
+      "withdrawn_endpoints": [
+        "under40_escalation_sensitivity_argmax",
+        "under40_escalation_mass_auc",
+        "age_band_training_prior_skew",
+        "three_seed_reproducibility"
+      ]
+    },
+    "E1_age_rule_replication": [
+      "claim_A_mechanism_escalation_mass_auc_under40",
+      "claim_B_operating_point_frozen_lambda_transfer",
+      "descriptive_lambda_sweep_curve",
+      "E1_dose_response_skew_ordering"
+    ],
+    "E2_prior_shift_decoupling": [
+      "implicit_source_prior_from_ham_oof",
+      "deployable_em_prior_saerens_et_al",
+      "oracle_prior_ceiling_comparison"
+    ],
+    "E3_clinical_triage": [
+      "tier1_biopsy_sensitivity",
+      "tier1_specificity",
+      "point_frr_malignant_as_benign",
+      "nnb_number_needed_to_biopsy_pi_03"
+    ],
+    "E4_shift_hierarchy": [
+      "mahalanobis_distance_monotonicity_L0_L1_L2",
+      "conformal_set_size_widening_audit"
+    ],
+    "E5_fairness_skin_tones": [
+      "stratified_tier1_sensitivity_and_set_frr_fitzpatrick_I_to_IV",
+      "suppressed_cells_declared_V_and_VI"
+    ],
+    "E6_decision_curves": {
+      "status": "POST-HOC SECONDARY -- added after the v1 lock",
+      "declared": "2026-09-05T00:00:00Z",
+      "honest_note": "E6 does not appear in v1's endpoint list. It was written into the battery after the SHA-256 freeze and is therefore not pre-registered. It is reported as exploratory, is excluded from the Holm family, and carries no confirmatory claim.",
+      "endpoints": [
+        "net_benefit_lambda_rule_vs_argmax",
+        "net_benefit_risk_model_s_esc_threshold",
+        "delta_net_benefit_within_under40_band"
+      ],
+      "panel": "research/predictions_oof_tta (24-view TTA) + deployed Dirichlet map",
+      "test_anchor": "net benefit on HAM test reconstructed from TP, FP and N in results/session9/agerule_test.csv -- a frozen S9 artifact. No new test read."
+    },
+    "E7_case_atlas": {
+      "status": "POST-HOC SECONDARY -- added after the v1 lock; illustrative only",
+      "declared": "2026-09-05T00:00:00Z",
+      "honest_note": "a figure, not an endpoint. No statistic is drawn from it and it enters no family. Exemplars are selected by running the frozen rule, and a panel with no qualifying case is shown as empty.",
+      "endpoints": []
+    }
+  },
+  "frozen_transfer_parameters": {
+    "dirichlet_map": "research/selective/results_oof/fit_state.json",
+    "dirichlet_map_note": "v1 named research/calibration/results_oof/fit_state.json. That is a different map (max |dW| = 0.18). The file named here is bit-identical to the calibrator run_session5_agerule fits in process and the one research/session9/testpass.py scores the age rule with, so it is the map under which the frozen lambdas and the S9 test anchor mean what they say. Asserted by research.external.frozen_params --selftest.",
+    "conformal_map": "research/conformal/results_oof/fit_state.json -- the conformal quantiles were calibrated under their own tuning-half Dirichlet map and must be applied under it, not under the deployed map.",
+    "age_rule_lambda": "research/agerule/results_oof/age_rule_lambda.json",
+    "conformal_quantiles": "research/conformal/results_oof/fit_state.json",
+    "mahalanobis_centroids": "fitted on HAM train features, zero target fitting",
+    "loader": "research/external/frozen_params.py (single entry point; nothing is typed)"
+  },
+  "gate_0_status": {
+    "under40_escalating_lesions_bcn": 115,
+    "verdict": "PRIMARY ENDPOINT (>= 100)",
+    "report_file": "results/external/power_report.md"
+  },
+  "multiple_comparison_family": {
+    "family_name": "external_replication_family",
+    "correction_method": "Holm-Bonferroni",
+    "pre_registered_members": [
+      "E0_under40_sens_cell_B_vs_cell_A",
+      "E1_under40_sens_frozen_lambda_vs_argmax",
+      "E2_em_macro_f1_vs_raw",
+      "E3_point_frr_comparison",
+      "E4_mahalanobis_L0_vs_L2"
+    ],
+    "denominator_note": "held at 5 members. E0 is withdrawn and enters at p = 1.0 rather than being removed; E6 and E7 are post-hoc and enter no family."
+  },
+  "supersedes": {
+    "version": "post_s11_v1",
+    "file": "results/external/analysis_plan_post_s11.json",
+    "sha256": "e6193e191acba511ba02c4b8d81dee469775df62b1084ec4da56aeb0ddf8d031"
+  },
+  "amended_timestamp": "2026-09-05T00:00:00Z",
+  "amendment_session": "S12",
+  "new_endpoints_declared_in_v2": {
+    "E1_dose_response_skew_ordering": {
+      "declared": "2026-09-05T00:00:00Z",
+      "declared_before_data": true,
+      "rationale": "the under-40 escalating prior is 4.85% in HAM, 4.8% in MSKCC and 18.6% in BCN. Ordering under-40 argmax escalation sensitivity by that skew tests the decision-rule account as a dose-response across three independent centres rather than as a binary replication in one.",
+      "prediction": "if the failure is a decision-rule artefact of a low escalating prior, sensitivity should order BCN > HAM ~ MSKCC; if the escalation-mass AUC is flat across the same ordering, the ranking signal survives and only the operating point moves.",
+      "direction": "two-sided; a null or reversed ordering is reported as measured",
+      "status": "declared before any BCN/MSK image was scored (S13 has not run)"
+    }
+  },
+  "deviations": [
+    {
+      "id": "D1",
+      "when": "after the v1 lock",
+      "session": "S12",
+      "declared": "v1 lists E0-E5 only",
+      "actual": "E6 (decision curves) and E7 (case atlas) were also built",
+      "resolution": "declared post-hoc secondary; excluded from the Holm family",
+      "affects_inference": "no confirmatory claim rests on either"
+    },
+    {
+      "id": "D2",
+      "when": "after the v1 lock",
+      "session": "S12",
+      "declared": "dirichlet_map = research/calibration/results_oof/fit_state.json",
+      "actual": "the deployed map is research/selective/results_oof/fit_state.json; the two differ by max |dW| = 0.18 and give val Macro-F1 0.7713 vs 0.7715 for the rule",
+      "resolution": "pointer corrected; frozen_params is now the only loader",
+      "affects_inference": "small in magnitude, but they are different systems and the frozen lambdas were fitted under the deployed one. research/xdomain/run_session8b.py still loads the calibration-module map, so its published PAD figures are not directly comparable to this battery's PAD panels until it is re-run."
+    },
+    {
+      "id": "D3",
+      "when": "before any result",
+      "session": "S12",
+      "declared": "E0_comparison_arm as a family member",
+      "actual": "withdrawn; the arm requires retraining and the checkpoints are frozen",
+      "resolution": "Holm entry at p = 1.0, family denominator held at 5",
+      "affects_inference": "conservative; no survivor gains power from the withdrawal"
+    },
+    {
+      "id": "D4",
+      "when": "before S13 scores any image",
+      "session": "S12",
+      "declared": "E1 had three endpoints",
+      "actual": "E1_dose_response_skew_ordering added as a fourth",
+      "resolution": "declared here, ahead of the data",
+      "affects_inference": "pre-registered in the sense that matters: nothing was seen"
+    },
+    {
+      "id": "D5",
+      "when": "after the v1 lock",
+      "session": "S12",
+      "declared": "Level_0_InDistribution = HAM10000 Test (N=1502)",
+      "actual": "five scripts read research/predictions (plain, 1-view) on the test split outside the single pre-registered S9 pass, which the receipt records as 2 executions covering 19 quantities, none of them E3, E4, E6 or E7",
+      "resolution": "every HAM panel repointed to the out-of-fold 24-view TTA matrix (N=6,981); where a table wants a test column it is reconstructed from frozen S9 artifacts",
+      "affects_inference": "the Level-0 figures change. They are now out-of-fold rather than held-out-test, which is the correct anchor for anything fitted on OOF and the only one available without a second test read."
+    },
+    {
+      "id": "D6",
+      "when": "after the v1 lock",
+      "session": "S12",
+      "declared": "mahalanobis_distance_monotonicity_L0_L1_L2",
+      "actual": "the L0 arm read HAM test features (convnext_tiny_test.npz)",
+      "resolution": "L0 is HAM val, as in S8b; the test arm is deleted",
+      "affects_inference": "AUROC val-vs-PAD 0.913, separation ratio 18x -- the S8b figures, unchanged. Nothing rested on the test arm."
+    },
+    {
+      "id": "D7",
+      "when": "after the v1 lock",
+      "session": "S12",
+      "declared": "conformal_set_size_widening_audit",
+      "actual": "APS was reimplemented inline as a deterministic cumulative sum while the stored quantiles were calibrated with the project's randomised APS/RAPS score, so APS marginal coverage read 0.36 against a nominal 0.95",
+      "resolution": "research.conformal.scores is imported; the in-distribution reference is the OOF tuning half, scored under the conformal Dirichlet map the quantiles were calibrated with",
+      "affects_inference": "APS mondrian a05 in-distribution coverage 0.36 -> 0.947. The tuning half is not fully held out (the Dirichlet map and RAPS hyperparameters were fitted on it); the audit carries the ID-to-shift contrast, not an absolute HAM coverage claim, which S9 owns on test."
+    }
+  ]
+}

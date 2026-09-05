@@ -1,0 +1,22 @@
+\begin{table}[t]
+\caption{Conformal Safety-Net Audit: Empirical Set Widening Under Distribution Shift}
+\label{tab:conformal_shift}
+\centering
+\footnotesize
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Cohort / Shift Level} & \textbf{Conformal Method} & \textbf{Marginal} & \textbf{Serious Cov.} & \textbf{set-FRR} & \textbf{Mean $|\mathcal{C}|$} & \textbf{Singleton} \\
+\midrule
+HAM OOF tuning half (L0: ID) & LAC Marginal $\alpha=0.10$ & 0.9052 & 0.7192 & 0.2526 & 1.08 & 0.9194 \\
+PAD-UFES-20 (L2: Shift) & LAC Marginal $\alpha=0.10$ & 0.2379 & 0.1217 & 0.7462 & 1.15 & 0.8191 \\
+HAM OOF tuning half (L0: ID) & LAC Mondrian $\alpha=0.10$ & 0.8816 & 0.8990 & 0.0743 & 1.26 & 0.7783 \\
+PAD-UFES-20 (L2: Shift) & LAC Mondrian $\alpha=0.10$ & 0.4136 & 0.3516 & 0.2747 & 2.10 & 0.3091 \\
+HAM OOF tuning half (L0: ID) & LAC Mondrian $\alpha=0.05$ & 0.9365 & 0.9406 & 0.0386 & 2.33 & 0.1028 \\
+PAD-UFES-20 (L2: Shift) & LAC Mondrian $\alpha=0.05$ & 0.6220 & 0.5722 & 0.1057 & 3.37 & 0.0432 \\
+HAM OOF tuning half (L0: ID) & APS Mondrian $\alpha=0.05$ & 0.9465 & 0.9495 & 0.0297 & 2.49 & 0.1409 \\
+PAD-UFES-20 (L2: Shift) & APS Mondrian $\alpha=0.05$ & 0.6548 & 0.5907 & 0.0725 & 4.06 & 0.0351 \\
+\bottomrule
+\end{tabular}
+\vspace{1mm}
+\parbox{\linewidth}{\raggedright \emph{Audit Finding}: Under Level 2 shift (PAD smartphone photos), the mean conformal set size $|\mathcal{C}(x)|$ widens systematically, converting silent point-prediction errors into visible uncertainty (fewer singletons, larger candidate sets). \emph{Caveat}: External coverage carries no finite-sample guarantee due to non-exchangeability.}
+\end{table}

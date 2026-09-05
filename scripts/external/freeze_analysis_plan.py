@@ -1,0 +1,92 @@
+﻿"""Freeze post-S11 external analysis plan and hash into provenance record (Hard Rule 7)."""
+import hashlib
+import json
+from pathlib import Path
+
+plan = {
+    "version": "post_s11_v1",
+    "purpose": "External Validity, Multi-Center Dermoscopy Replication, and Clinical Actionability Battery",
+    "cohorts": {
+        "Level_0_InDistribution": "HAM10000 Test (Vienna/Queensland, N=1502)",
+        "Level_1_MultiCenterDermoscopy": "BCN-20000 (Barcelona, N=12413) + MSKCC (New York, N=2903)",
+        "Level_2_CrossModalityPhotography": "PAD-UFES-20 (Brazil, N=2106, Fitzpatrick I-VI)"
+    },
+    "inclusion_exclusion_rules": {
+        "SCC_handling": "Excluded from 7-class metrics (431 dropped); scored as Tier 1 in 3-tier clinical actionability",
+        "missing_age": "Excluded from age-band stratified slices; reported as separate unknown row",
+        "lesion_grouping": "Grouped by lesion_id where available; single images treated as singleton clusters where null",
+        "split_discipline": "BCN+MSK 70/15/15 lesion-grouped split (split_bcnmsk.csv); test split read once"
+    },
+    "workstream_endpoints": {
+        "E0_comparison_arm": [
+            "under40_escalation_sensitivity_argmax",
+            "under40_escalation_mass_auc",
+            "age_band_training_prior_skew",
+            "three_seed_reproducibility"
+        ],
+        "E1_age_rule_replication": [
+            "claim_A_mechanism_escalation_mass_auc_under40",
+            "claim_B_operating_point_frozen_lambda_transfer",
+            "descriptive_lambda_sweep_curve"
+        ],
+        "E2_prior_shift_decoupling": [
+            "implicit_source_prior_from_ham_oof",
+            "deployable_em_prior_saerens_et_al",
+            "oracle_prior_ceiling_comparison"
+        ],
+        "E3_clinical_triage": [
+            "tier1_biopsy_sensitivity",
+            "tier1_specificity",
+            "point_frr_malignant_as_benign",
+            "nnb_number_needed_to_biopsy_pi_03"
+        ],
+        "E4_shift_hierarchy": [
+            "mahalanobis_distance_monotonicity_L0_L1_L2",
+            "conformal_set_size_widening_audit"
+        ],
+        "E5_fairness_skin_tones": [
+            "stratified_tier1_sensitivity_and_set_frr_fitzpatrick_I_to_IV",
+            "suppressed_cells_declared_V_and_VI"
+        ]
+    },
+    "frozen_transfer_parameters": {
+        "dirichlet_map": "research/calibration/results_oof/fit_state.json",
+        "age_rule_lambda": "research/agerule/results_oof/age_rule_lambda.json",
+        "conformal_quantiles": "research/conformal/results_oof/fit_state.json",
+        "mahalanobis_centroids": "fitted on HAM train features, zero target fitting"
+    },
+    "gate_0_status": {
+        "under40_escalating_lesions_bcn": 115,
+        "verdict": "PRIMARY ENDPOINT (>= 100)",
+        "report_file": "results/external/power_report.md"
+    },
+    "multiple_comparison_family": {
+        "family_name": "external_replication_family",
+        "correction_method": "Holm-Bonferroni",
+        "pre_registered_members": [
+            "E0_under40_sens_cell_B_vs_cell_A",
+            "E1_under40_sens_frozen_lambda_vs_argmax",
+            "E2_em_macro_f1_vs_raw",
+            "E3_point_frr_comparison",
+            "E4_mahalanobis_L0_vs_L2"
+        ]
+    }
+}
+
+plan_path = Path("results/external/analysis_plan_post_s11.json")
+plan_bytes = json.dumps(plan, indent=2).encode("utf-8")
+plan_path.write_bytes(plan_bytes)
+plan_sha256 = hashlib.sha256(plan_bytes).hexdigest()
+
+provenance = {
+    "analysis_plan_file": str(plan_path),
+    "analysis_plan_sha256": plan_sha256,
+    "frozen_timestamp": "2026-09-05T05:33:00Z",
+    "pre_registered": True,
+    "status": "LOCKED"
+}
+prov_path = Path("results/external/post_s11_provenance.json")
+prov_path.write_text(json.dumps(provenance, indent=2), encoding="utf-8")
+
+print(f"Post-S11 analysis plan frozen and hashed: {plan_sha256[:16]}...")
+print(f"Provenance locked in {prov_path}")

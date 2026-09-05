@@ -1,0 +1,6 @@
+{
+  "arch": "convnext_tiny",
+  "checkpoint": "ml/checkpoints/convnext_tiny_best.HAM-only.pt",
+  "target_layer": "Sequential",
+  "split": "test"
+}

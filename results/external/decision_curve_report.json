@@ -1,0 +1,331 @@
+{
+  "session": "session_post_s11",
+  "workstream": "E6_decision_curves",
+  "status": "post_hoc_secondary; declared in analysis_plan_post_s11_v2.json",
+  "ham_panel": "research/predictions_oof_tta/{arch}_train.csv",
+  "calibration": "research/selective/results_oof/fit_state.json",
+  "lambda_by_band": {
+    "40-59": 0.74,
+    "60+": 0.33,
+    "<40": 0.26,
+    "unknown": 0.65,
+    "pooled": 0.65
+  },
+  "rule": "argmax_c ( p_c + lambda_band * 1[c escalates] )",
+  "test_read": false,
+  "panels": {
+    "HAM10000 OOF (N=6,981)": {
+      "n": 6981,
+      "n_escalating": 1356,
+      "prevalence": 0.19424151267726686,
+      "referral_rate_argmax": 0.16974645466265578,
+      "referral_rate_lambda_rule": 0.25827245380318004,
+      "reference_points": [
+        {
+          "p_t": 0.05,
+          "net_benefit_treat_all": 0.15183317123922827,
+          "net_benefit_argmax": 0.1326532920181847,
+          "net_benefit_lambda_rule": 0.1589049977759181,
+          "net_benefit_risk_model": 0.17586833435113353,
+          "delta_nb": 0.02625170575773339,
+          "ci_low": 0.021402853477195814,
+          "ci_high": 0.03150562132137176,
+          "p_value_two_sided": 0.0,
+          "n_boot": 1000
+        },
+        {
+          "p_t": 0.1,
+          "net_benefit_treat_all": 0.10471279186362983,
+          "net_benefit_argmax": 0.13059256076015854,
+          "net_benefit_lambda_rule": 0.15338458355218132,
+          "net_benefit_risk_model": 0.16331630298110744,
+          "delta_nb": 0.022792022792022776,
+          "ci_low": 0.017815970943023524,
+          "ci_high": 0.028173374606964403,
+          "p_value_two_sided": 0.0,
+          "n_boot": 1000
+        },
+        {
+          "p_t": 0.15,
+          "net_benefit_treat_all": 0.052048838443843365,
+          "net_benefit_argmax": 0.12828939053059987,
+          "net_benefit_lambda_rule": 0.1472147088315343,
+          "net_benefit_risk_model": 0.15443599012445547,
+          "delta_nb": 0.01892531830093444,
+          "ci_low": 0.013806900202406254,
+          "ci_high": 0.024272876118440926,
+          "p_value_two_sided": 0.0,
+          "n_boot": 1000
+        },
+        {
+          "p_t": 0.2,
+          "net_benefit_treat_all": -0.0071981091534164265,
+          "net_benefit_argmax": 0.12569832402234637,
+          "net_benefit_lambda_rule": 0.14027359977080647,
+          "net_benefit_risk_model": 0.1449290932531156,
+          "delta_nb": 0.014575275748460098,
+          "ci_low": 0.00927179074011091,
+          "ci_high": 0.019935208665896292,
+          "p_value_two_sided": 0.0,
+          "n_boot": 1000
+        }
+      ]
+    },
+    "HAM10000 OOF, age $<$40": {
+      "n": 1319,
+      "n_escalating": 64,
+      "prevalence": 0.04852160727824109,
+      "referral_rate_argmax": 0.050037907505686124,
+      "referral_rate_lambda_rule": 0.07429871114480667,
+      "reference_points": [
+        {
+          "p_t": 0.05,
+          "net_benefit_treat_all": -0.0015562028650093832,
+          "net_benefit_argmax": 0.025298272215793463,
+          "net_benefit_lambda_rule": 0.028011651570168786,
+          "net_benefit_risk_model": 0.02797174893260445,
+          "delta_nb": 0.0027133793543753226,
+          "ci_low": -0.00019504630922770796,
+          "ci_high": 0.0065087917218356415,
+          "p_value_two_sided": 0.08,
+          "n_boot": 1000
+        },
+        {
+          "p_t": 0.1,
+          "net_benefit_treat_all": -0.05719821413528768,
+          "net_benefit_argmax": 0.02392384803302165,
+          "net_benefit_lambda_rule": 0.025440148260466682,
+          "net_benefit_risk_model": 0.01945918625221127,
+          "delta_nb": 0.0015163002274450332,
+          "ci_low": -0.0015321102890057381,
+          "ci_high": 0.005287346798762762,
+          "p_value_two_sided": 0.4,
+          "n_boot": 1000
+        },
+        {
+          "p_t": 0.15,
+          "net_benefit_treat_all": -0.1193863443785399,
+          "net_benefit_argmax": 0.022387726887570795,
+          "net_benefit_lambda_rule": 0.022566115149623152,
+          "net_benefit_risk_model": 0.014449449226240911,
+          "delta_nb": 0.00017838826205235706,
+          "ci_low": -0.003175880992335252,
+          "ci_high": 0.004153137651184889,
+          "p_value_two_sided": 0.936,
+          "n_boot": 1000
+        },
+        {
+          "p_t": 0.2,
+          "net_benefit_treat_all": -0.18934799090219864,
+          "net_benefit_argmax": 0.020659590598938588,
+          "net_benefit_lambda_rule": 0.019332827899924184,
+          "net_benefit_risk_model": 0.012509476876421535,
+          "delta_nb": -0.001326762699014404,
+          "ci_low": -0.005340461570662947,
+          "ci_high": 0.0028890110941086453,
+          "p_value_two_sided": 0.548,
+          "n_boot": 1000
+        }
+      ]
+    },
+    "PAD-UFES-20 (N=2,106)": {
+      "n": 2106,
+      "n_escalating": 1627,
+      "prevalence": 0.7725546058879392,
+      "referral_rate_argmax": 0.1752136752136752,
+      "referral_rate_lambda_rule": 0.4843304843304843,
+      "reference_points": [
+        {
+          "p_t": 0.05,
+          "net_benefit_treat_all": 0.760583795671515,
+          "net_benefit_argmax": 0.1702154246013895,
+          "net_benefit_lambda_rule": 0.4363472784525416,
+          "net_benefit_risk_model": 0.6410006497725795,
+          "delta_nb": 0.2661318538511521,
+          "ci_low": 0.24565313167674765,
+          "ci_high": 0.2857545694500974,
+          "p_value_two_sided": 0.0,
+          "n_boot": 1000
+        },
+        {
+          "p_t": 0.1,
+          "net_benefit_treat_all": 0.7472828954310435,
+          "net_benefit_argmax": 0.16993774401181808,
+          "net_benefit_lambda_rule": 0.4336815447926559,
+          "net_benefit_risk_model": 0.5127149941964757,
+          "delta_nb": 0.2637438007808378,
+          "ci_low": 0.24292394960334085,
+          "ci_high": 0.2833754589213102,
+          "p_value_two_sided": 0.0,
+          "n_boot": 1000
+        },
+        {
+          "p_t": 0.15,
+          "net_benefit_treat_all": 0.7324171833975756,
+          "net_benefit_argmax": 0.1696273951175912,
+          "net_benefit_lambda_rule": 0.43070219540807775,
+          "net_benefit_risk_model": 0.4232445114798056,
+          "delta_nb": 0.2610748002904866,
+          "ci_low": 0.23996747193047033,
+          "ci_high": 0.280880036070829,
+          "p_value_two_sided": 0.0,
+          "n_boot": 1000
+        },
+        {
+          "p_t": 0.2,
+          "net_benefit_treat_all": 0.7156932573599241,
+          "net_benefit_argmax": 0.16927825261158594,
+          "net_benefit_lambda_rule": 0.4273504273504274,
+          "net_benefit_risk_model": 0.3563627730294397,
+          "delta_nb": 0.2580721747388415,
+          "ci_low": 0.23679184656966068,
+          "ci_high": 0.27800490149725615,
+          "p_value_two_sided": 0.0,
+          "n_boot": 1000
+        }
+      ]
+    }
+  },
+  "ham_test_anchor_from_s9": {
+    "<40": {
+      "argmax": {
+        "n": 290,
+        "n_escalating": 21,
+        "tp": 3,
+        "fp": 5,
+        "prevalence": 0.07241379310344828,
+        "net_benefit": {
+          "0.05": 0.009437386569872959,
+          "0.10": 0.00842911877394636,
+          "0.15": 0.007302231237322515,
+          "0.20": 0.00603448275862069
+        }
+      },
+      "lambda_rule": {
+        "n": 290,
+        "n_escalating": 21,
+        "tp": 5,
+        "fp": 14,
+        "prevalence": 0.07241379310344828,
+        "net_benefit": {
+          "0.05": 0.0147005444646098,
+          "0.10": 0.011877394636015325,
+          "0.15": 0.00872210953346856,
+          "0.20": 0.005172413793103448
+        }
+      }
+    },
+    "40-59": {
+      "argmax": {
+        "n": 671,
+        "n_escalating": 70,
+        "tp": 57,
+        "fp": 16,
+        "prevalence": 0.10432190760059612,
+        "net_benefit": {
+          "0.05": 0.08369283865401209,
+          "0.10": 0.08229839377380362,
+          "0.15": 0.08073989655474709,
+          "0.20": 0.0789865871833085
+        }
+      },
+      "lambda_rule": {
+        "n": 671,
+        "n_escalating": 70,
+        "tp": 68,
+        "fp": 89,
+        "prevalence": 0.10432190760059612,
+        "net_benefit": {
+          "0.05": 0.09436034198760687,
+          "0.10": 0.08660374234144726,
+          "0.15": 0.07793460156044534,
+          "0.20": 0.06818181818181818
+        }
+      }
+    },
+    "60+": {
+      "argmax": {
+        "n": 532,
+        "n_escalating": 199,
+        "tp": 152,
+        "fp": 34,
+        "prevalence": 0.37406015037593987,
+        "net_benefit": {
+          "0.05": 0.2823506133755441,
+          "0.10": 0.2786131996658312,
+          "0.15": 0.2744360902255639,
+          "0.20": 0.26973684210526316
+        }
+      },
+      "lambda_rule": {
+        "n": 532,
+        "n_escalating": 199,
+        "tp": 168,
+        "fp": 57,
+        "prevalence": 0.37406015037593987,
+        "net_benefit": {
+          "0.05": 0.3101503759398496,
+          "0.10": 0.3038847117794486,
+          "0.15": 0.29688191065900044,
+          "0.20": 0.2890037593984962
+        }
+      }
+    },
+    "unknown": {
+      "argmax": {
+        "n": 9,
+        "n_escalating": 0,
+        "tp": 0,
+        "fp": 0,
+        "prevalence": 0.0,
+        "net_benefit": {
+          "0.05": 0.0,
+          "0.10": 0.0,
+          "0.15": 0.0,
+          "0.20": 0.0
+        }
+      },
+      "lambda_rule": {
+        "n": 9,
+        "n_escalating": 0,
+        "tp": 0,
+        "fp": 2,
+        "prevalence": 0.0,
+        "net_benefit": {
+          "0.05": -0.011695906432748539,
+          "0.10": -0.024691358024691357,
+          "0.15": -0.0392156862745098,
+          "0.20": -0.05555555555555555
+        }
+      }
+    },
+    "ALL": {
+      "argmax": {
+        "n": 1502,
+        "n_escalating": 290,
+        "tp": 212,
+        "fp": 55,
+        "prevalence": 0.19307589880159787,
+        "net_benefit": {
+          "0.05": 0.1392178849253627,
+          "0.10": 0.13707649060511912,
+          "0.15": 0.13468316754131746,
+          "0.20": 0.13199067909454062
+        }
+      },
+      "lambda_rule": {
+        "n": 1502,
+        "n_escalating": 290,
+        "tp": 241,
+        "fp": 162,
+        "prevalence": 0.19307589880159787,
+        "net_benefit": {
+          "0.05": 0.1547760880229869,
+          "0.10": 0.14846870838881493,
+          "0.15": 0.14141928409179919,
+          "0.20": 0.13348868175765646
+        }
+      }
+    }
+  }
+}

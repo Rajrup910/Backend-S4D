@@ -1,0 +1,43 @@
+{
+  "status": "WITHDRAWN",
+  "withdrawn_session": "S12",
+  "withdrawn_date": "2026-09-05",
+  "workstream": "E0_comparison_arm",
+  "reason": "The arm was never built: train_comparison_arm.py and eval_comparison_arm.py were 1.8 kB and 7.1 kB stubs, and the arm it describes needs retraining on BCN+MSK, which the frozen-checkpoint rule forbids. The payload below was additionally computed from research/predictions/{arch}_test.csv -- the plain 1-view matrix, on the test split, outside the single pre-registered S9 pass (2 executions, 19 quantities, none of them E0). It is retained for provenance and must not be cited.",
+  "multiple_comparison_handling": "E0_under40_sens_cell_B_vs_cell_A stays in the external_replication_family and enters Holm-Bonferroni at p = 1.0; the denominator is held at 5.",
+  "declared_in": "results/external/analysis_plan_post_s11_v2.json",
+  "withdrawn_payload": {
+    "cell": "Cell A (Control: HAM10000)",
+    "model": "ConvNeXt-Tiny (single, uncalibrated, no TTA)",
+    "train_site": "Vienna / Queensland (HAM10000)",
+    "test_site": "Vienna / Queensland (HAM10000)",
+    "bands": {
+      "<40": {
+        "n_total": 290,
+        "n_escalating": 21,
+        "n_caught": 5,
+        "sensitivity": 0.2381,
+        "auc": 0.7708
+      },
+      "40-59": {
+        "n_total": 671,
+        "n_escalating": 70,
+        "n_caught": 59,
+        "sensitivity": 0.8429,
+        "auc": 0.9502
+      },
+      "60+": {
+        "n_total": 532,
+        "n_escalating": 199,
+        "n_caught": 161,
+        "sensitivity": 0.809,
+        "auc": 0.8963
+      }
+    },
+    "prior_skew": {
+      "under40_prevalence": 0.0485,
+      "over60_prevalence": 0.3555,
+      "skew_ratio": 7.33
+    }
+  }
+}

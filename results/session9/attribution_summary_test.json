@@ -1,0 +1,90 @@
+{
+  "arch": "convnext_tiny",
+  "checkpoint": "ml/checkpoints/convnext_tiny_best.HAM-only.pt",
+  "masks": "data/ham10000/HAM10000_segmentations_lesion_tschandl/HAM10000_segmentations_lesion_tschandl",
+  "n": 1502,
+  "n_missing_masks": 0,
+  "missing_mask_image_ids": [],
+  "interior_fraction_mean": 0.5226938274060283,
+  "interior_fraction_median": 0.5241615176200867,
+  "interior_fraction_ci_lo": 0.5091301762384927,
+  "interior_fraction_ci_hi": 0.5355489214445031,
+  "lesion_area_fraction_mean": 0.25606674094404736,
+  "concentration_ratio_mean": 3.454203763244516,
+  "border_mass_fraction_mean": 0.17864675227374013,
+  "breakdown": [
+    {
+      "group": "ALL",
+      "n": 1502,
+      "mean": 0.5226938274060283,
+      "ci_lo": 0.5091301762384927,
+      "ci_hi": 0.5355489214445031
+    },
+    {
+      "group": "correct",
+      "n": 1246,
+      "mean": 0.5129785756206806,
+      "ci_lo": 0.4986122857112057,
+      "ci_hi": 0.5276174853974972
+    },
+    {
+      "group": "incorrect",
+      "n": 256,
+      "mean": 0.569979779455025,
+      "ci_lo": 0.5327422932192439,
+      "ci_hi": 0.6112385907115527
+    },
+    {
+      "group": "true=akiec",
+      "n": 52,
+      "mean": 0.6733625098489798,
+      "ci_lo": 0.598146103933759,
+      "ci_hi": 0.7426427310003111
+    },
+    {
+      "group": "true=bcc",
+      "n": 71,
+      "mean": 0.6142763770382169,
+      "ci_lo": 0.5475368344778749,
+      "ci_hi": 0.677706452170903
+    },
+    {
+      "group": "true=bkl",
+      "n": 167,
+      "mean": 0.5680734583896078,
+      "ci_lo": 0.5254135303146147,
+      "ci_hi": 0.61179198613205
+    },
+    {
+      "group": "true=df",
+      "n": 20,
+      "mean": 0.6938083931803704,
+      "ci_lo": 0.6066559604095185,
+      "ci_hi": 0.7792287194261364
+    },
+    {
+      "group": "true=mel",
+      "n": 167,
+      "mean": 0.6596731478682981,
+      "ci_lo": 0.6200247836062514,
+      "ci_hi": 0.7020366064936617
+    },
+    {
+      "group": "true=nv",
+      "n": 1004,
+      "mean": 0.47723757544907175,
+      "ci_lo": 0.4615870449790376,
+      "ci_hi": 0.49175558695613075
+    },
+    {
+      "group": "true=vasc",
+      "n": 21,
+      "mean": 0.40006088678325924,
+      "ci_lo": 0.31138984795720515,
+      "ci_hi": 0.49824826291570545
+    }
+  ],
+  "n_boot": 2000,
+  "seed": 42,
+  "interpretation": "interior_fraction is the share of Grad-CAM mass inside the annotated lesion; lesion_area_fraction is the lesion's share of the frame, and concentration_ratio is their quotient. A ratio near 1 means the map is no more concentrated on the lesion than area alone would predict. This is a supporting qualitative check and carries no causal claim -- for a misclassified image the map is taken with respect to the predicted class, so landing on the lesion is close to automatic."
+}

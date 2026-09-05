@@ -1,0 +1,19 @@
+\begin{table}[t]
+\caption{Cross-Cohort 3-Tier Clinical Actionability: Triage Performance and Safety Nets}
+\label{tab:clinical_triage}
+\centering
+\footnotesize
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Cohort / Model Configuration} & \textbf{Tier Acc.} & \textbf{Tier-1 Sens.} & \textbf{Tier-1 Spec.} & \textbf{point-FRR} & \textbf{Missed T1} & \textbf{NNB} ($\pi=0.03$) \\
+\midrule
+HAM10000 OOF (Raw Ensemble, N=6,981) & 0.8936 & 0.6781 & 0.9509 & 0.2875 & 326 & 3.3 \\
+HAM10000 OOF (Calibrated Ensemble, N=6,981) & 0.8986 & 0.6578 & 0.9584 & 0.3289 & 373 & 3.0 \\
+PAD-UFES-20 (Raw Ensemble) & 0.3732 & 0.2698 & 0.9446 & 0.5195 & 466 & 7.6 \\
+PAD-UFES-20 (Calibrated Ensemble) & 0.3310 & 0.2185 & 0.9644 & 0.6756 & 606 & 6.3 \\
+PAD-UFES-20 (Oracle Prior Triage) & 0.4720 & 0.4771 & 0.7469 & 0.0524 & 47 & 18.1 \\
+\bottomrule
+\end{tabular}
+\vspace{1mm}
+\parbox{\linewidth}{\raggedright \emph{Definitions}: Tier 1 (Urgent Biopsy: \textsc{mel}, \textsc{bcc}, \textsc{scc}); Tier 2 (Pre-cancerous Consult: \textsc{akiec}); Tier 3 (Benign Discharge: \textsc{nv}, \textsc{bkl}, \textsc{df}, \textsc{vasc}). \textbf{point-FRR} is the fraction of malignant Tier-1 lesions misclassified as benign Tier 3. NNB (Number Needed to Biopsy) is evaluated at reference clinical prevalence $\pi=0.03$.}
+\end{table}

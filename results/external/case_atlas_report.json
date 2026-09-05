@@ -1,0 +1,89 @@
+{
+  "session": "session_post_s11",
+  "workstream": "E7_case_atlas",
+  "status": "post_hoc_secondary; declared in analysis_plan_post_s11_v2.json",
+  "panel": "research/predictions_oof_tta/{arch}_train.csv",
+  "calibration": "research/selective/results_oof/fit_state.json",
+  "lambda_by_band": {
+    "40-59": 0.74,
+    "60+": 0.33,
+    "<40": 0.26,
+    "unknown": 0.65,
+    "pooled": 0.65
+  },
+  "rule": "argmax_c ( p_c + lambda_band * 1[c escalates] )",
+  "test_read": false,
+  "selection": "deterministic; criteria evaluated by running the rule, no tuned threshold",
+  "rescued_by_rule": {
+    "total": 205,
+    "by_band": {
+      "40-59": 113,
+      "60+": 87,
+      "<40": 5
+    },
+    "under40_melanoma": 4
+  },
+  "cases": [
+    {
+      "panel": "A",
+      "title": "A. Under-40 escalation recovered by the frozen $\\lambda$-rule",
+      "source": "ham",
+      "note": null,
+      "found": true,
+      "image_id": "ISIC_0030134",
+      "true_code": "mel",
+      "argmax_code": "nv",
+      "rule_code": "mel",
+      "age": 30.0,
+      "band": "<40",
+      "lambda_band": 0.26,
+      "rule_margin": 0.23563322195174108,
+      "s_esc": 0.48677842218179995,
+      "top2_gap": 0.02436677804825893
+    },
+    {
+      "panel": "B",
+      "title": "B. Ambiguous lesion: top-2 classes within 0.05",
+      "source": "ham",
+      "note": null,
+      "found": true,
+      "image_id": "ISIC_0031520",
+      "true_code": "bcc",
+      "argmax_code": "bkl",
+      "rule_code": "bkl",
+      "age": 75.0,
+      "band": "60+",
+      "lambda_band": 0.33,
+      "rule_margin": 0.0,
+      "s_esc": 0.17254384738842993,
+      "top2_gap": 0.0005801033464777339
+    },
+    {
+      "panel": "C",
+      "title": "C. Cross-modality smartphone capture (PAD-UFES-20)",
+      "source": "pad",
+      "note": null,
+      "found": true,
+      "image_id": "pad_PAT_1000_31_620",
+      "class_code": "bkl",
+      "fitzpatrick": "nan"
+    },
+    {
+      "panel": "D",
+      "title": "D. Benign keratosis, discharged with low escalation mass",
+      "source": "ham",
+      "note": null,
+      "found": true,
+      "image_id": "ISIC_0024383",
+      "true_code": "bkl",
+      "argmax_code": "bkl",
+      "rule_code": "bkl",
+      "age": 70.0,
+      "band": "60+",
+      "lambda_band": 0.33,
+      "rule_margin": 0.0,
+      "s_esc": 0.0019207883092872543,
+      "top2_gap": 0.9959667914864964
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comparison": "<40 vs 60+",
+  "sensitivity_a": 0.14285714285714285,
+  "sensitivity_b": 0.7638190954773869,
+  "n_positive_a": 21,
+  "n_positive_b": 199,
+  "difference": -0.6209619526202441,
+  "ci_lo": -0.7864090311488673,
+  "ci_hi": -0.3864482779209531,
+  "p_value_two_sided": 0.0,
+  "n_boot": 2000,
+  "holm": {
+    "family": "age_gap_confirmatory",
+    "alpha": 0.05,
+    "n_tests": 1,
+    "p_raw": [
+      0.0
+    ],
+    "p_holm": [
+      0.0
+    ],
+    "significant_holm": [
+      true
+    ],
+    "n_significant": 1
+  }
+}

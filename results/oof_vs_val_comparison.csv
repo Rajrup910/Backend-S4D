@@ -1,0 +1,27 @@
+module,quantity,val_fitted,oof_fitted,evaluated_on,val_fit_in_sample,note
+calibration,selected_calibrator,dirichlet,dirichlet,val (selection),False,chosen by val ECE in both arms
+calibration,val_ece,0.0201,0.0210,val,True,expected calibration error of the selected calibrator on val
+calibration,val_macro_f1,0.7825,0.7719,val,True,argmax of the calibrated ensemble
+calibration,val_escalation_sensitivity,0.7208,0.7143,val,True,
+calibration,n_fitting_rows,1532,6981,--,False,rows the coefficients were fitted on
+calibration,cost_sensitive_thresholds,"[-0.300, -0.250, 0.250, 0.000, -0.300, 0.250, -0.300]","[-0.300, -0.300, 0.300, 0.300, -0.300, 0.300, -0.250]",--,False,per-class score shifts
+calibration,cost_sensitive_fit_specificity,0.8775,0.8626,fit split,False,escalation specificity on the fitting split (floor 0.85)
+conformal,n_calibration_rows,762,3468,--,False,"calibration half of the fitting split, grouped by lesion_id"
+conformal,exact_finite_sample_guarantee,True,False,--,False,"OOF scores come from five fold models, so the split-conformal theorem does not transfer; coverage must be audited empirically"
+conformal,degenerate_class_conditional_cells_a10,0,0,--,False,class-conditional cells with no certifiable finite threshold (summed over LAC/APS/RAPS)
+conformal,min_class_calibration_count_a10,11,45,--,False,rarest class's calibration points; alpha=0.05 needs >=19
+conformal,raps_k_reg_a10,1,1,--,False,tuned on the tuning half
+conformal,raps_penalty_a10,0.2000,0.2000,--,False,tuned on the tuning half
+conformal,degenerate_class_conditional_cells_a05,6,0,--,False,class-conditional cells with no certifiable finite threshold (summed over LAC/APS/RAPS)
+conformal,min_class_calibration_count_a05,11,45,--,False,rarest class's calibration points; alpha=0.05 needs >=19
+conformal,raps_k_reg_a05,1,1,--,False,tuned on the tuning half
+conformal,raps_penalty_a05,0.0500,0.0500,--,False,tuned on the tuning half
+selective,policy_score,margin,msp,val (selection),False,"lowest val AURC; Mahalanobis excluded from both arms -- the two arms disagree, see below"
+selective,val_aurc_of_policy,0.0256,0.0308,val,True,"area under the risk-coverage curve of the selected score, on val"
+selective,n_fitting_rows,1532,6981,--,False,rows behind every abstention quantile below
+selective,abstention_threshold_00pct,inf,inf,--,False,"score value above which the system abstains -- NOT COMPARABLE across columns: the arms selected different scores (margin vs msp), which live on different scales"
+selective,abstention_threshold_05pct,0.8428,0.4734,--,False,"score value above which the system abstains -- NOT COMPARABLE across columns: the arms selected different scores (margin vs msp), which live on different scales"
+selective,abstention_threshold_10pct,0.6549,0.3855,--,False,"score value above which the system abstains -- NOT COMPARABLE across columns: the arms selected different scores (margin vs msp), which live on different scales"
+selective,abstention_threshold_15pct,0.5054,0.2943,--,False,"score value above which the system abstains -- NOT COMPARABLE across columns: the arms selected different scores (margin vs msp), which live on different scales"
+selective,abstention_threshold_20pct,0.3628,0.2268,--,False,"score value above which the system abstains -- NOT COMPARABLE across columns: the arms selected different scores (margin vs msp), which live on different scales"
+selective,operating_point_threshold,0.6549,0.3855,--,False,"threshold at the headline operating point -- NOT COMPARABLE, see above"

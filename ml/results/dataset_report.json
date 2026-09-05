@@ -1,0 +1,107 @@
+{
+  "generated": "2026-08-08",
+  "manifest": "ml/data/manifest.csv",
+  "class_mapping_version": "1.0.0",
+  "labels": {
+    "num_images": 10015,
+    "num_classes_declared": 7,
+    "num_classes_present": 7,
+    "distribution": {
+      "akiec": {
+        "count": 327,
+        "share": 0.032651023464802795,
+        "malignancy": "premalignant"
+      },
+      "bcc": {
+        "count": 514,
+        "share": 0.05132301547678482,
+        "malignancy": "malignant"
+      },
+      "bkl": {
+        "count": 1099,
+        "share": 0.10973539690464304,
+        "malignancy": "benign"
+      },
+      "df": {
+        "count": 115,
+        "share": 0.011482775836245632,
+        "malignancy": "benign"
+      },
+      "mel": {
+        "count": 1113,
+        "share": 0.11113330004992511,
+        "malignancy": "malignant"
+      },
+      "nv": {
+        "count": 6705,
+        "share": 0.6694957563654518,
+        "malignancy": "benign"
+      },
+      "vasc": {
+        "count": 142,
+        "share": 0.014178731902146779,
+        "malignancy": "benign"
+      }
+    },
+    "largest_class": "nv",
+    "smallest_present_class": "df",
+    "imbalance_ratio": 58.30434782608695
+  },
+  "grouping": {
+    "num_lesions": 7470,
+    "num_images": 10015,
+    "lesions_with_multiple_images": 1956,
+    "images_in_multi_image_lesions": 4501,
+    "max_images_per_lesion": 6,
+    "mean_images_per_lesion": 1.3406961178045516,
+    "leakage_exposure": 0.4494258612081877,
+    "lesions_with_conflicting_labels": []
+  },
+  "metadata": {
+    "age": {
+      "missing": 57,
+      "distinct": 18
+    },
+    "sex": {
+      "missing": 0,
+      "distinct": 3
+    },
+    "localization": {
+      "missing": 0,
+      "distinct": 15
+    },
+    "dx_type": {
+      "missing": 0,
+      "distinct": 4
+    }
+  },
+  "images": {
+    "corrupt": [],
+    "too_small": [],
+    "distinct_resolutions": 1,
+    "most_common_resolutions": [
+      {
+        "size": [
+          600,
+          450
+        ],
+        "count": 10015
+      }
+    ],
+    "colour_modes": {
+      "RGB": 10015
+    },
+    "duplicate_groups": [
+      [
+        "ISIC_0024366",
+        "ISIC_0029861"
+      ],
+      [
+        "ISIC_0024777",
+        "ISIC_0029938"
+      ]
+    ],
+    "duplicate_image_count": 2,
+    "hashing_performed": true
+  }
+}

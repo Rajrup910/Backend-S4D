@@ -1,0 +1,596 @@
+[
+  {
+    "a": "A2_convnext_tiny",
+    "b": "A1_resnet50",
+    "question": "does backbone choice among the frozen CNNs matter?",
+    "mcnemar": {
+      "statistic": 0.6368421052631579,
+      "p_value": 0.42485663527965056,
+      "only_a_correct": 101,
+      "only_b_correct": 89
+    },
+    "macro_f1_diff": {
+      "metric": "macro_f1",
+      "point_estimate": 0.04010348145779652,
+      "mean": 0.04030209092691574,
+      "ci_low": -0.005374616846192996,
+      "ci_high": 0.08582106973148364,
+      "p_value_two_sided": 0.076,
+      "n_boot": 1000
+    },
+    "delong_per_class": [
+      {
+        "class_code": "akiec",
+        "auc_a": 0.9462068965517242,
+        "auc_b": 0.9439257294429708,
+        "z": 0.10742692671086775,
+        "p_value": 0.9144502936835177,
+        "n_positive": 52,
+        "n_negative": 1450,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bcc",
+        "auc_a": 0.9271168590860326,
+        "auc_b": 0.9874016988021772,
+        "z": -2.252941404552304,
+        "p_value": 0.024262843770267994,
+        "n_positive": 71,
+        "n_negative": 1431,
+        "p_value_holm": 0.8249366881891118,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bkl",
+        "auc_a": 0.9195048106035121,
+        "auc_b": 0.9169301845746709,
+        "z": 0.18774968306806805,
+        "p_value": 0.8510728812919107,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "df",
+        "auc_a": 0.8610998650472335,
+        "auc_b": 0.9484143049932523,
+        "z": -1.331164948693892,
+        "p_value": 0.18313474194824808,
+        "n_positive": 20,
+        "n_negative": 1482,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "mel",
+        "auc_a": 0.9130682455314091,
+        "auc_b": 0.8961806723631389,
+        "z": 1.342755752190983,
+        "p_value": 0.17935107531707706,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "nv",
+        "auc_a": 0.9530852493639899,
+        "auc_b": 0.9345389526232422,
+        "z": 3.0022599430768726,
+        "p_value": 0.002679832381656915,
+        "n_positive": 1004,
+        "n_negative": 498,
+        "p_value_holm": 0.10987312764793351,
+        "significant_holm": false
+      },
+      {
+        "class_code": "vasc",
+        "auc_a": 0.9999356933860647,
+        "auc_b": 0.9888749557892029,
+        "z": 1.8195591438951495,
+        "p_value": 0.06882616828465267,
+        "n_positive": 21,
+        "n_negative": 1481,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      }
+    ]
+  },
+  {
+    "a": "A3_swinv2_tiny",
+    "b": "A2_convnext_tiny",
+    "question": "does a transformer architecture beat the best CNN, standalone?",
+    "mcnemar": {
+      "statistic": 0.7783783783783784,
+      "p_value": 0.3776375485639253,
+      "only_a_correct": 99,
+      "only_b_correct": 86
+    },
+    "macro_f1_diff": {
+      "metric": "macro_f1",
+      "point_estimate": -0.01860386128550473,
+      "mean": -0.01886764053821824,
+      "ci_low": -0.0744391887122825,
+      "ci_high": 0.034007282942085756,
+      "p_value_two_sided": 0.466,
+      "n_boot": 1000
+    },
+    "delong_per_class": [
+      {
+        "class_code": "akiec",
+        "auc_a": 0.9077718832891247,
+        "auc_b": 0.9462068965517242,
+        "z": -1.5841104293280222,
+        "p_value": 0.11316859144487795,
+        "n_positive": 52,
+        "n_negative": 1450,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bcc",
+        "auc_a": 0.9349612700662395,
+        "auc_b": 0.9271168590860326,
+        "z": 0.3200034201694059,
+        "p_value": 0.7489657378575598,
+        "n_positive": 71,
+        "n_negative": 1431,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bkl",
+        "auc_a": 0.9293458027764696,
+        "auc_b": 0.9195048106035121,
+        "z": 0.7563170820127941,
+        "p_value": 0.4494591088247246,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "df",
+        "auc_a": 0.7307692307692307,
+        "auc_b": 0.8610998650472335,
+        "z": -1.9199704482711493,
+        "p_value": 0.05486163228472987,
+        "n_positive": 20,
+        "n_negative": 1482,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "mel",
+        "auc_a": 0.8905828791854493,
+        "auc_b": 0.9130682455314091,
+        "z": -1.8015181039816894,
+        "p_value": 0.07162125643328249,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "nv",
+        "auc_a": 0.9359269748315975,
+        "auc_b": 0.9530852493639899,
+        "z": -2.7422730436506866,
+        "p_value": 0.006101559884253885,
+        "n_positive": 1004,
+        "n_negative": 498,
+        "p_value_holm": 0.23185927560164762,
+        "significant_holm": false
+      },
+      {
+        "class_code": "vasc",
+        "auc_a": 0.9971062023729139,
+        "auc_b": 0.9999356933860647,
+        "z": -1.1068735104203722,
+        "p_value": 0.26834862014667404,
+        "n_positive": 21,
+        "n_negative": 1481,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      }
+    ]
+  },
+  {
+    "a": "A4_gated_fusion",
+    "b": "A2_convnext_tiny",
+    "question": "does multimodal fusion beat the best CNN, standalone?",
+    "mcnemar": {
+      "statistic": 1.894736842105263,
+      "p_value": 0.16866861888781112,
+      "only_a_correct": 95,
+      "only_b_correct": 76
+    },
+    "macro_f1_diff": {
+      "metric": "macro_f1",
+      "point_estimate": -0.004824543134693937,
+      "mean": -0.004756464639342585,
+      "ci_low": -0.053569757667037234,
+      "ci_high": 0.04166874990279662,
+      "p_value_two_sided": 0.868,
+      "n_boot": 1000
+    },
+    "delong_per_class": [
+      {
+        "class_code": "akiec",
+        "auc_a": 0.9480371352785146,
+        "auc_b": 0.9462068965517242,
+        "z": 0.0571855525494644,
+        "p_value": 0.9543973867220212,
+        "n_positive": 52,
+        "n_negative": 1450,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bcc",
+        "auc_a": 0.9689668408775505,
+        "auc_b": 0.9271168590860326,
+        "z": 1.7770514419686665,
+        "p_value": 0.07555977641574399,
+        "n_positive": 71,
+        "n_negative": 1431,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bkl",
+        "auc_a": 0.9142703357330283,
+        "auc_b": 0.9195048106035121,
+        "z": -0.41698479909977554,
+        "p_value": 0.6766895263434985,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "df",
+        "auc_a": 0.991497975708502,
+        "auc_b": 0.8610998650472335,
+        "z": 1.8937735075183881,
+        "p_value": 0.05825507953559724,
+        "n_positive": 20,
+        "n_negative": 1482,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "mel",
+        "auc_a": 0.8898293301038372,
+        "auc_b": 0.9130682455314091,
+        "z": -1.7339815339064493,
+        "p_value": 0.08292135969171667,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "nv",
+        "auc_a": 0.9328689259028144,
+        "auc_b": 0.9530852493639899,
+        "z": -2.902120473819694,
+        "p_value": 0.0037064597009904003,
+        "n_positive": 1004,
+        "n_negative": 498,
+        "p_value_holm": 0.14825838803961602,
+        "significant_holm": false
+      },
+      {
+        "class_code": "vasc",
+        "auc_a": 0.9992926272467123,
+        "auc_b": 0.9999356933860647,
+        "z": -1.4192570503701047,
+        "p_value": 0.15582408880003157,
+        "n_positive": 21,
+        "n_negative": 1481,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      }
+    ]
+  },
+  {
+    "a": "A5_soft_vote_6cnn",
+    "b": "A2_convnext_tiny",
+    "question": "does ensembling gain over the single best model?",
+    "mcnemar": {
+      "statistic": 17.203252032520325,
+      "p_value": 3.35860920803772e-05,
+      "only_a_correct": 85,
+      "only_b_correct": 38
+    },
+    "macro_f1_diff": {
+      "metric": "macro_f1",
+      "point_estimate": 0.025869210825058775,
+      "mean": 0.02621605455951939,
+      "ci_low": -0.010919714153772806,
+      "ci_high": 0.061706882283187874,
+      "p_value_two_sided": 0.16,
+      "n_boot": 1000
+    },
+    "delong_per_class": [
+      {
+        "class_code": "akiec",
+        "auc_a": 0.9830901856763926,
+        "auc_b": 0.9462068965517242,
+        "z": 1.6244679392671768,
+        "p_value": 0.10427597750687378,
+        "n_positive": 52,
+        "n_negative": 1450,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bcc",
+        "auc_a": 0.9937599039379534,
+        "auc_b": 0.9271168590860326,
+        "z": 2.550952031072645,
+        "p_value": 0.010742911073577251,
+        "n_positive": 71,
+        "n_negative": 1431,
+        "p_value_holm": 0.3974877097223583,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bkl",
+        "auc_a": 0.9571912355065151,
+        "auc_b": 0.9195048106035121,
+        "z": 3.610068381441554,
+        "p_value": 0.00030611629276800184,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 0.012856884296256078,
+        "significant_holm": true
+      },
+      {
+        "class_code": "df",
+        "auc_a": 0.9964574898785424,
+        "auc_b": 0.8610998650472335,
+        "z": 1.9096436213965455,
+        "p_value": 0.05617911458312434,
+        "n_positive": 20,
+        "n_negative": 1482,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "mel",
+        "auc_a": 0.9357778824373725,
+        "auc_b": 0.9130682455314091,
+        "z": 2.4178330789908595,
+        "p_value": 0.01561323723911732,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 0.5589997231656114,
+        "significant_holm": false
+      },
+      {
+        "class_code": "nv",
+        "auc_a": 0.9642574281188501,
+        "auc_b": 0.9530852493639899,
+        "z": 2.877827742471095,
+        "p_value": 0.004004237242498398,
+        "n_positive": 1004,
+        "n_negative": 498,
+        "p_value_holm": 0.1561652524574375,
+        "significant_holm": false
+      },
+      {
+        "class_code": "vasc",
+        "auc_a": 0.9993890871676151,
+        "auc_b": 0.9999356933860647,
+        "z": -1.5154640188224633,
+        "p_value": 0.12965493567011485,
+        "n_positive": 21,
+        "n_negative": 1481,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      }
+    ]
+  },
+  {
+    "a": "A6_soft_vote_6cnn_tta",
+    "b": "A5_soft_vote_6cnn",
+    "question": "does 24-view TTA help the ensemble?",
+    "mcnemar": {
+      "statistic": 2.630434782608696,
+      "p_value": 0.10483300285833895,
+      "only_a_correct": 29,
+      "only_b_correct": 17
+    },
+    "macro_f1_diff": {
+      "metric": "macro_f1",
+      "point_estimate": 0.014091352046013195,
+      "mean": 0.013648466741812986,
+      "ci_low": -0.007974996337907788,
+      "ci_high": 0.03906033213962791,
+      "p_value_two_sided": 0.212,
+      "n_boot": 1000
+    },
+    "delong_per_class": [
+      {
+        "class_code": "akiec",
+        "auc_a": 0.9877055702917773,
+        "auc_b": 0.9830901856763926,
+        "z": 2.4198298676534837,
+        "p_value": 0.015527770087933651,
+        "n_positive": 52,
+        "n_negative": 1450,
+        "p_value_holm": 0.5589997231656114,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bcc",
+        "auc_a": 0.9933957342939539,
+        "auc_b": 0.9937599039379534,
+        "z": -0.8175908996568392,
+        "p_value": 0.41359082562578686,
+        "n_positive": 71,
+        "n_negative": 1431,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bkl",
+        "auc_a": 0.9663504451770617,
+        "auc_b": 0.9571912355065151,
+        "z": 2.026153615120233,
+        "p_value": 0.04274904527273619,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "df",
+        "auc_a": 0.9975708502024291,
+        "auc_b": 0.9964574898785424,
+        "z": 1.4282253250017651,
+        "p_value": 0.15322701353639878,
+        "n_positive": 20,
+        "n_negative": 1482,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "mel",
+        "auc_a": 0.941505752539864,
+        "auc_b": 0.9357778824373725,
+        "z": 1.8177007180401372,
+        "p_value": 0.069109887951009,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "nv",
+        "auc_a": 0.9659034544552714,
+        "auc_b": 0.9642574281188501,
+        "z": 1.3000268457523696,
+        "p_value": 0.19359176829420355,
+        "n_positive": 1004,
+        "n_negative": 498,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "vasc",
+        "auc_a": 0.9992604739397447,
+        "auc_b": 0.9993890871676151,
+        "z": -0.6839990816851036,
+        "p_value": 0.4939757456756503,
+        "n_positive": 21,
+        "n_negative": 1481,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      }
+    ]
+  },
+  {
+    "a": "A7_tta_dirichlet",
+    "b": "A6_soft_vote_6cnn_tta",
+    "question": "does Dirichlet calibration help the TTA ensemble?",
+    "mcnemar": {
+      "statistic": 0.1956521739130435,
+      "p_value": 0.6582534143112833,
+      "only_a_correct": 25,
+      "only_b_correct": 21
+    },
+    "macro_f1_diff": {
+      "metric": "macro_f1",
+      "point_estimate": 0.018854298427122385,
+      "mean": 0.019618275827637043,
+      "ci_low": -0.0023714166813820214,
+      "ci_high": 0.04540995067338754,
+      "p_value_two_sided": 0.09,
+      "n_boot": 1000
+    },
+    "delong_per_class": [
+      {
+        "class_code": "akiec",
+        "auc_a": 0.98868700265252,
+        "auc_b": 0.9877055702917773,
+        "z": 1.397581154539968,
+        "p_value": 0.16223888078442017,
+        "n_positive": 52,
+        "n_negative": 1450,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bcc",
+        "auc_a": 0.9939075402801154,
+        "auc_b": 0.9933957342939539,
+        "z": 1.7312930740514825,
+        "p_value": 0.08339950611035178,
+        "n_positive": 71,
+        "n_negative": 1431,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "bkl",
+        "auc_a": 0.9666419969050664,
+        "auc_b": 0.9663504451770617,
+        "z": 0.17404485188231564,
+        "p_value": 0.8618302134018359,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "df",
+        "auc_a": 0.9985829959514169,
+        "auc_b": 0.9975708502024291,
+        "z": 1.541834741407927,
+        "p_value": 0.12311375737266361,
+        "n_positive": 20,
+        "n_negative": 1482,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "mel",
+        "auc_a": 0.9396667339478346,
+        "auc_b": 0.941505752539864,
+        "z": -1.2012186008002013,
+        "p_value": 0.2296664158645627,
+        "n_positive": 167,
+        "n_negative": 1335,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "nv",
+        "auc_a": 0.9665894654314471,
+        "auc_b": 0.9659034544552714,
+        "z": 0.7648631015822597,
+        "p_value": 0.4443530678279469,
+        "n_positive": 1004,
+        "n_negative": 498,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      },
+      {
+        "class_code": "vasc",
+        "auc_a": 0.9992604739397447,
+        "auc_b": 0.9992604739397447,
+        "z": 0.0,
+        "p_value": 1.0,
+        "n_positive": 21,
+        "n_negative": 1481,
+        "p_value_holm": 1.0,
+        "significant_holm": false
+      }
+    ]
+  }
+]

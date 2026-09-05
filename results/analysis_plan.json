@@ -1,0 +1,519 @@
+{
+  "plan_version": "1.0",
+  "frozen_at": "2026-09-04T16:23:17+00:00",
+  "session": "session9_testpass",
+  "statement": "This plan is written before any session-9 code reads the test split. It names every test-set quantity the manuscript will report, the formula for each, the split each fitted parameter came from, and the hash of the file that parameter is frozen in. research/run_session9_testpass.py executes this plan and refuses to emit a quantity the plan does not name. A quantity that occurs to us after seeing these numbers is not in this paper.",
+  "hard_rules": {
+    "rule_2": "the test split is read once per experiment; results/test_pass_receipt.json records every execution and requires a stated reason for a repeat",
+    "rule_4": "every reported number resolves to a file under results/; the pass writes one CSV or JSON per quantity group",
+    "selection": "every parameter applied to test was fitted on OOF or validation; every *method* selection (calibrator family, uncertainty score) was made on validation"
+  },
+  "constants": {
+    "escalating_classes": [
+      "akiec",
+      "bcc",
+      "mel"
+    ],
+    "class_codes": [
+      "akiec",
+      "bcc",
+      "bkl",
+      "df",
+      "mel",
+      "nv",
+      "vasc"
+    ],
+    "age_bins": [
+      0,
+      40,
+      60,
+      200
+    ],
+    "age_labels": [
+      "<40",
+      "40-59",
+      "60+"
+    ],
+    "unknown_age_band": "unknown",
+    "conformal_alphas": [
+      0.1,
+      0.05
+    ],
+    "frr_bounds": [
+      0.1,
+      0.05,
+      0.02,
+      0.01
+    ],
+    "abstention_targets": [
+      "00",
+      "05",
+      "10",
+      "15",
+      "20"
+    ],
+    "abstention_operating_point": 0.1,
+    "reference_prevalence": 0.03,
+    "prevalence_sensitivity_range": [
+      0.01,
+      0.05
+    ],
+    "ece_bins": 15,
+    "n_boot": 2000,
+    "seed": 42,
+    "min_group_size": 30,
+    "min_positives": 10,
+    "small_count_switch": 30,
+    "ensemble_members": [
+      "convnext_tiny",
+      "convnext_small",
+      "densenet121",
+      "efficientnet_b0",
+      "efficientnet_b3",
+      "resnet50"
+    ],
+    "foldbag_members": 30
+  },
+  "interval_rule": "Proportions (sensitivity, rescue rate, FRR, coverage) take the exact Clopper-Pearson interval when the numerator is below 30, and the lesion-grouped percentile bootstrap otherwise; both are always reported and the leading one is named per row. Non-proportions (macro-F1, balanced accuracy, AUC, ECE) always take the lesion-grouped bootstrap. The rule is fixed here so it cannot be chosen per number.",
+  "conformal_caveat": "Split conformal's finite-sample guarantee needs calibration and test scores to be exchangeable under one fixed score function. The OOF calibration scores come from five fold models and the test scores from the full-train ensemble, so no exact guarantee transfers. Coverage is therefore audited empirically against nominal 1-alpha and never asserted. The validation-fitted variant keeps the exact guarantee at n=24/22 per class; CV+/cross-conformal would restore a (1-2alpha) guarantee but needs test scored by all five fold models, which is a second test read and is out of scope here.",
+  "foldbag_caveat": "Rung A8 reuses the Dirichlet map fitted on the 6-member OOF ensemble, because no out-of-fold matrix can exist for a 30-member bag: for any training row, 24 of the 30 members saw it. Averaging 30 members flattens the maximum probability further than averaging 6, so the map is applied to a slightly flatter distribution than it was fitted on and will under-sharpen A8. A8 is a lower bound on a properly calibrated fold-bag.",
+  "nnb_caveat": "NNB is prevalence-dependent. HAM10000's escalating prevalence is roughly 20%, against 1-5% in primary-care screening, so the observed NNB must never be compared to the 8-15 dermatologist range. The reported figure is re-weighted to pi=0.03 by importance-weighting the benign class, which assumes the class-conditional score distributions transfer -- an optimistic assumption, stated rather than hidden.",
+  "fitted_inputs": [
+    {
+      "name": "dirichlet_oof_tta",
+      "path": "research/selective/results_oof/fit_state.json",
+      "key": "dirichlet",
+      "fit_split": "oof",
+      "fits": "Dirichlet calibration map for the 6-CNN TTA soft-vote ensemble, fitted on all 6,981 out-of-fold rows. Drives rung A7-oof and, with the caveat recorded in research/session9/foldbag.py, rung A8.",
+      "sha256": "721f7442ce642b747b03865da8582391964bfcb39ebc9b082bba16f4106913b7",
+      "bytes": 3237
+    },
+    {
+      "name": "abstention_msp_oof",
+      "path": "research/selective/results_oof/fit_state.json",
+      "key": "abstention_thresholds",
+      "fit_split": "oof",
+      "fits": "Max-softmax abstention quantiles at 0/5/10/15/20% target abstention. The score family (msp) was selected on validation by AURC; only the quantiles come from OOF.",
+      "sha256": "721f7442ce642b747b03865da8582391964bfcb39ebc9b082bba16f4106913b7",
+      "bytes": 3237
+    },
+    {
+      "name": "age_rule_lambda",
+      "path": "research/agerule/results_oof/age_rule_lambda.json",
+      "key": "by_band",
+      "fit_split": "oof",
+      "fits": "One scalar lambda per age band for the escalation-mass rule argmax_c (p_c + lambda*1[c escalates]), fitted on cross-fitted Dirichlet probabilities under a 0.85 escalation-specificity floor.",
+      "sha256": "737beac72b84114d4498d078ce21127ad850f5dbcb69f58b3323a32b28e2b84e",
+      "bytes": 11058
+    },
+    {
+      "name": "conformal_oof",
+      "path": "research/conformal/results_oof/fit_state.json",
+      "key": "quantiles",
+      "fit_split": "oof",
+      "fits": "Marginal and class-conditional (Mondrian) conformal quantiles for LAC, APS and RAPS at alpha 0.10 and 0.05, plus the RAPS hyperparameters tuned on the OOF tuning half.",
+      "sha256": "5dcb126dcf8013737b46b294b42bafe6e809b35f140b166253ee30add172480c",
+      "bytes": 9575
+    },
+    {
+      "name": "conformal_hierarchical_oof",
+      "path": "research/conformal/results_hierarchical_oof/fit_state.json",
+      "key": "states",
+      "fit_split": "oof",
+      "fits": "Bipartite (age band x escalation requirement) conformal thresholds, with each cell's fallback source recorded, and the FRR-bounding alpha answers.",
+      "sha256": "410be226b0fc4d48f523796d92455ca9a91689724c31fee9322151ac0f1516b6",
+      "bytes": 18252
+    },
+    {
+      "name": "stats_oof",
+      "path": "research/stats/results_oof/fit_state.json",
+      "key": null,
+      "fit_split": "oof",
+      "fits": "The OOF arm of Table IV and the per-band calibration slice, against which the test arm is reported side by side rather than in place of.",
+      "sha256": "980efb4a71ea856ed5f50afadf1a53c132989bfa0c6a8a21b271ef7f759a73ec",
+      "bytes": 3063
+    }
+  ],
+  "test_inputs": [
+    {
+      "path": "research/predictions_tta/convnext_tiny_test.csv",
+      "sha256": "3c160817fba3ba0e2bae35272823fbc1c3f63be74b4803b1fbe6feaeb7ab624d"
+    },
+    {
+      "path": "research/predictions_tta/convnext_small_test.csv",
+      "sha256": "25b1e7a16a62ec71ebb529585e1079e9e4d2ccab3011c9421773010dca4e47d2"
+    },
+    {
+      "path": "research/predictions_tta/densenet121_test.csv",
+      "sha256": "106d02b0c096c53f1476780303d7284b64e7f84d9c1c35bb25e96084c793f5cd"
+    },
+    {
+      "path": "research/predictions_tta/efficientnet_b0_test.csv",
+      "sha256": "1eb81303e203ebbd0ce4c9e0b1f3fd530d9ac050cf38470e9fbc62b016cefce1"
+    },
+    {
+      "path": "research/predictions_tta/efficientnet_b3_test.csv",
+      "sha256": "8fc86bf628eb1e990e3e43b2bf30bc61e7388062695fe197568f1059c5977f90"
+    },
+    {
+      "path": "research/predictions_tta/resnet50_test.csv",
+      "sha256": "a9079cd32007b8fdaf687a8327c5123751768bf326173a73969cb3b9a7b240c8"
+    }
+  ],
+  "families": [
+    {
+      "name": "delong_per_class_auc",
+      "kind": "confirmatory",
+      "question": "does any ladder step change per-class discrimination?",
+      "estimand": "per-class AUC difference between two rungs (DeLong z-test)",
+      "split": "test",
+      "size": 42,
+      "correction": "holm-bonferroni",
+      "session": "session5_partA",
+      "artifact": "results/mcnemar_delong.json",
+      "members": [],
+      "note": "6 structural comparisons x 7 classes. Exactly one member survives: A5 vs A2 on bkl. Established in S5 and unchanged by later sessions."
+    },
+    {
+      "name": "ladder_mcnemar",
+      "kind": "confirmatory",
+      "question": "does any ladder step change the raw correct/incorrect rate?",
+      "estimand": "paired McNemar statistic between two rungs",
+      "split": "test",
+      "size": 6,
+      "correction": "holm-bonferroni",
+      "session": "session5_partA",
+      "artifact": "results/mcnemar_delong.json",
+      "members": [],
+      "note": "The 6 McNemar tests were reported unadjusted in S5 while the 42 DeLong tests were corrected. They are a family of their own by the same argument and are corrected here. No test data is re-read: the p-values come from the frozen results file. The ensembling result (A5 vs A2) survives comfortably."
+    },
+    {
+      "name": "age_gap_confirmatory",
+      "kind": "confirmatory",
+      "question": "is escalation sensitivity lower in the under-40 band than in the 60+ band?",
+      "estimand": "difference in escalation sensitivity between two age bands",
+      "split": "oof (fitted/estimated); test at S9 (reported once)",
+      "size": 1,
+      "correction": "holm-bonferroni",
+      "session": "session7_stats",
+      "artifact": "research/stats/results_oof/age_gap_intervals.csv",
+      "members": [
+        "<40 vs 60+ escalation sensitivity"
+      ],
+      "note": "One pre-specified comparison, chosen before any interval was computed, because it is the single claim the paper makes about the age gap. The 40-59 band is not part of it: it is reported descriptively so a reader can see the monotone pattern, not tested. A family of one takes no penalty, which is the point of pre-specifying rather than testing all three pairs."
+    },
+    {
+      "name": "subgroup_calibration",
+      "kind": "exploratory",
+      "question": "is the ensemble's under-confidence uniform across age bands?",
+      "estimand": "per-band ECE and signed confidence gap, before and after Dirichlet",
+      "split": "val and oof",
+      "size": null,
+      "correction": "none (intervals only)",
+      "session": "session7_stats",
+      "artifact": "research/stats/results_oof/band_calibration.csv",
+      "members": [],
+      "note": "Reported as intervals with no null hypothesis. The finding -- that the under-40 band is both the most accurate and the worst calibrated -- is a description that motivates group-wise calibration, not a tested claim."
+    },
+    {
+      "name": "intersectional_fairness",
+      "kind": "exploratory",
+      "question": "do age-band disparities differ by sex?",
+      "estimand": "per-cell escalation sensitivity, referral rate and macro-F1",
+      "split": "oof",
+      "size": null,
+      "correction": "none (intervals only)",
+      "session": "session7_stats",
+      "artifact": "research/stats/results_oof/intersectional_age_sex.csv",
+      "members": [],
+      "note": "Six cells at most, several below the module power gates. Testing across cells at these counts would manufacture significance from sampling error; suppressed cells are named rather than dropped."
+    },
+    {
+      "name": "per_class_f1_attribution",
+      "kind": "exploratory",
+      "question": "which classes actually drag Macro-F1 down?",
+      "estimand": "per-class F1 with a lesion-grouped bootstrap interval",
+      "split": "val and oof",
+      "size": null,
+      "correction": "none (intervals only)",
+      "session": "session7_stats",
+      "artifact": "research/stats/results_oof/per_class_f1.csv",
+      "members": [],
+      "note": "Corrects the Limitations attribution, which blames df/vasc scarcity. This is a ranking of point estimates with intervals attached, not a test."
+    },
+    {
+      "name": "s9_new_rungs",
+      "kind": "confirmatory",
+      "question": "do OOF-fitted calibration (A7-oof) or fold-bagging (A8) improve Macro-F1?",
+      "estimand": "paired Macro-F1 difference against the published A7-val rung",
+      "split": "test (single pre-registered pass)",
+      "size": 2,
+      "correction": "holm-bonferroni",
+      "session": "session9_testpass",
+      "artifact": "pending -- results/analysis_plan.json then the S9 test pass",
+      "members": [
+        "A7-oof vs A7-val",
+        "A8 vs A7-val"
+      ],
+      "note": "Declared here, before the rungs exist, so admitting them cannot look retrospective. They are a separate family from the S5 DeLong tests because the estimand differs (Macro-F1, not per-class AUC) and because folding them into a 42-test family would penalise the S5 result for a later session's additions. Both directions are pre-registered two-sided: S4 measured A7-oof costing 0.011 val Macro-F1, so it may well be a loss."
+    }
+  ],
+  "n_quantities": 19,
+  "quantities": [
+    {
+      "id": "ladder.A7_val",
+      "group": "ladder",
+      "definition": "Published rung A7: 6-CNN TTA soft vote with the validation-fitted Dirichlet map. Recomputed here from the frozen matrices as a reproduction check against results/ablation_table.csv, and used as the paired baseline for both new rungs.",
+      "formula": "macro-F1, balanced accuracy, escalation sensitivity and missed-serious count of argmax(Dirichlet_val(mean_k p_k)) over the 1,502 test images",
+      "parameters_from": "validation only -- the Dirichlet map is refitted on the validation TTA ensemble in-process, deterministically, exactly as research.run_session2_calibration fitted it (the published run predates write_fit_state, so no frozen copy exists). Reproducing the published A7 test macro-F1 to within 5e-4 is the assertion that it is the same map; the pass stops if it drifts.",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/ladder.csv"
+    },
+    {
+      "id": "ladder.A7_oof",
+      "group": "ladder",
+      "definition": "Rung A7-oof: identical to A7 except the Dirichlet map is fitted on the 6,981 out-of-fold rows instead of the 1,532 validation rows. Isolates the benefit of un-overfitted calibration from every other change.",
+      "formula": "macro-F1, balanced accuracy, escalation sensitivity and missed-serious count of argmax(Dirichlet_oof(mean_k p_k)) over the 1,502 test images",
+      "parameters_from": "dirichlet_oof_tta",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "two-sided -- S4 measured the OOF-fitted map costing 0.011 validation macro-F1 against the val-fitted one, so a loss is a live outcome and is reported as measured",
+      "family": "s9_new_rungs",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/ladder.csv"
+    },
+    {
+      "id": "ladder.A8",
+      "group": "ladder",
+      "definition": "Rung A8: uniform 30-member fold-bagged ensemble (6 architectures x 5 folds), 24-view TTA, then the OOF-fitted Dirichlet map. No member selection of any kind -- see research/session9/foldbag.py for why, and for the calibrator mismatch this rung carries.",
+      "formula": "macro-F1, balanced accuracy, escalation sensitivity and missed-serious count of argmax(Dirichlet_oof(mean_m p_m)) over 30 members, 1,502 images",
+      "parameters_from": "dirichlet_oof_tta",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "two-sided",
+      "family": "s9_new_rungs",
+      "stage": "tables",
+      "requires": [
+        "research/predictions_foldbag_tta"
+      ],
+      "output": "results/session9/ladder.csv"
+    },
+    {
+      "id": "ladder.new_rung_comparisons",
+      "group": "ladder",
+      "definition": "Paired macro-F1 difference of each new rung against A7-val, with a lesion-grouped paired bootstrap interval and a two-sided bootstrap p-value, Holm-corrected within the two-member s9_new_rungs family declared in S7 before either rung existed.",
+      "formula": "macro_F1(rung) - macro_F1(A7_val) on the same lesion resample each draw; p = 2*min(P(d<=0), P(d>=0)); Holm-Bonferroni over the family",
+      "parameters_from": "dirichlet_oof_tta",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "two-sided",
+      "family": "s9_new_rungs",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/new_rung_comparisons.json"
+    },
+    {
+      "id": "agerule.band_sensitivity_argmax",
+      "group": "agerule",
+      "definition": "Escalation sensitivity per age band under the plain argmax rule on the deployed A7 probabilities. This is the test column of Table IV and the quantity the paper's under-40 claim rests on.",
+      "formula": "of the truly-escalating images in each band, the share whose argmax class is also escalating",
+      "parameters_from": "none",
+      "interval": "exact Clopper-Pearson when the numerator is < 30, lesion-grouped bootstrap otherwise (research.stats.intervals.proportion)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/age_gap_test.csv"
+    },
+    {
+      "id": "agerule.confirmatory_gap",
+      "group": "agerule",
+      "definition": "The single pre-specified confirmatory comparison: escalation sensitivity in the <40 band minus the 60+ band. Sole member of its family, so it takes no multiplicity penalty -- which is the point of having pre-specified it rather than testing all three pairs.",
+      "formula": "sens(<40) - sens(60+), unpaired lesion-grouped bootstrap within each band; p = 2*min(P(d<=0), P(d>=0))",
+      "parameters_from": "none",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "two-sided",
+      "family": "age_gap_confirmatory",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/age_gap_test.csv"
+    },
+    {
+      "id": "agerule.escalation_mass_auc",
+      "group": "agerule",
+      "definition": "Per-band AUC of escalating-class probability mass against the binary escalate label. Tuning-free: no threshold, no calibration, no prior, so it separates 'the probability vector does not carry the signal' from 'the argmax rule discards it'. This is the mechanism evidence the Discussion rests on.",
+      "formula": "AUC(1[y escalates], sum_{c escalating} p_c) within each band",
+      "parameters_from": "none",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/age_gap_test.csv"
+    },
+    {
+      "id": "agerule.lambda_rule",
+      "group": "agerule",
+      "definition": "The age-conditional escalation rule at the OOF-fitted per-band lambda, applied once to test: per-band escalation sensitivity, specificity, referral rate and missed-serious count, and overall macro-F1, each beside its argmax baseline.",
+      "formula": "argmax_c (p_c + lambda_band * 1[c escalates]); lambda = 0.26 (<40), 0.74 (40-59), 0.33 (60+), pooled 0.65 for unknown age -- values frozen in research/agerule/results_oof/age_rule_lambda.json",
+      "parameters_from": "age_rule_lambda",
+      "interval": "exact Clopper-Pearson when the numerator is < 30, lesion-grouped bootstrap otherwise (research.stats.intervals.proportion)",
+      "direction": "two-sided -- an increase in <40 sensitivity is the expectation, but the referral cost is reported beside it and a null or negative result is reported as measured",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/agerule_test.csv"
+    },
+    {
+      "id": "agerule.nnb",
+      "group": "agerule",
+      "definition": "Number Needed to Biopsy for the argmax rule and the lambda rule, per band and overall, at the observed prevalence and re-weighted to a stated reference prevalence. The reference version is the one the paper quotes; the observed one is reported so the correction is visible.",
+      "formula": "NNB = (TP + w*FP)/TP with benign weight w = n_pos(1-pi)/(n_neg*pi); primary pi = 0.03, pre-registered sensitivity range [0.01, 0.05]. Never set beside the 8-15 dermatologist range without the prevalence caveat in the same sentence.",
+      "parameters_from": "age_rule_lambda",
+      "interval": "point estimate only",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/nnb_test.csv"
+    },
+    {
+      "id": "agerule.orthogonality",
+      "group": "agerule",
+      "definition": "Whether the escalation-mass rule and MSP abstention catch the same failures. Cost-sensitive thresholding was demoted in S5 as redundant with abstention; this is the evidence that the age rule is not, because it targets confidently-wrong cases abstention by construction retains.",
+      "formula": "per band: of the escalating cases argmax misses, the share the abstention policy refers (rescue rate), the share the lambda rule catches, and the overlap between those two sets",
+      "parameters_from": "abstention_msp_oof, age_rule_lambda",
+      "interval": "exact Clopper-Pearson when the numerator is < 30, lesion-grouped bootstrap otherwise (research.stats.intervals.proportion)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/orthogonality_test.csv"
+    },
+    {
+      "id": "conformal.coverage",
+      "group": "conformal",
+      "definition": "Achieved coverage, set size, singleton and empty rates for LAC, APS and RAPS under marginal, class-conditional and bipartite calibration at alpha 0.10 and 0.05. Reported as measured against nominal 1-alpha, never asserted: OOF calibration scores come from five fold models while test is scored by the full-train ensemble, so the finite-sample exchangeability guarantee does not transfer.",
+      "formula": "marginal coverage = mean 1[y_i in S(x_i)]; escalating coverage restricted to truly-escalating images; thresholds frozen from the OOF fit",
+      "parameters_from": "conformal_oof, conformal_hierarchical_oof",
+      "interval": "exact Clopper-Pearson when the numerator is < 30, lesion-grouped bootstrap otherwise (research.stats.intervals.proportion)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/conformal_test.csv"
+    },
+    {
+      "id": "conformal.frr",
+      "group": "conformal",
+      "definition": "False Reassurance Rate: the share of truly-escalating images whose prediction set contains no escalating class. Reported as the primary conformal endpoint precisely because marginal coverage is misleading under this class imbalance -- a set can cover the true label at the nominal rate while systematically reassuring on melanoma.",
+      "formula": "FRR = |{i : y_i escalates and S(x_i) holds no escalating class}| / |{i : y_i escalates}|",
+      "parameters_from": "conformal_oof, conformal_hierarchical_oof",
+      "interval": "exact Clopper-Pearson when the numerator is < 30, lesion-grouped bootstrap otherwise (research.stats.intervals.proportion)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/conformal_test.csv"
+    },
+    {
+      "id": "conformal.frr_bound_alpha",
+      "group": "conformal",
+      "definition": "The alpha at which FRR's upper confidence limit falls below each of a stated set of bounds, and the mean set size that alpha costs. Reported as 'the alpha needed to bound FRR' rather than as a pre-committed FRR target: committing to a target and then choosing alpha to clear it is the selection this paper refuses everywhere else.",
+      "formula": "smallest alpha in the frozen OOF sweep whose test FRR upper limit <= bound, for bounds {0.10, 0.05, 0.02, 0.01}; reported as unreachable rather than clipped when no alpha in the sweep achieves it",
+      "parameters_from": "conformal_hierarchical_oof",
+      "interval": "exact Clopper-Pearson when the numerator is < 30, lesion-grouped bootstrap otherwise (research.stats.intervals.proportion)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/frr_sweep_test.csv"
+    },
+    {
+      "id": "conformal.cell_coverage",
+      "group": "conformal",
+      "definition": "Coverage inside each (age band x escalation requirement) cell -- the quantity the bipartite calibrator promises -- reported for the marginal and class-conditional baselines too, so 'bipartite helps' is a measured comparison rather than an argument from construction. Degenerate (+inf) cells are reported as such, not clipped.",
+      "formula": "per cell: mean 1[y_i in S(x_i)] over that cell's test images",
+      "parameters_from": "conformal_hierarchical_oof",
+      "interval": "exact Clopper-Pearson when the numerator is < 30, lesion-grouped bootstrap otherwise (research.stats.intervals.proportion)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/conformal_cells_test.csv"
+    },
+    {
+      "id": "selective.operating_points",
+      "group": "selective",
+      "definition": "Coverage, macro-F1, balanced accuracy, escalation sensitivity and missed-serious count at the OOF-fitted MSP abstention quantiles for 0/5/10/15/20% target abstention. The score family was selected on validation by AURC; only the quantiles come from OOF, and the OOF fit selected msp where the val fit selected margin, so the two arms' thresholds are on different scales and are not comparable as numbers.",
+      "formula": "retain cases whose uncertainty score <= threshold; metrics on retained cases only, with achieved coverage stated alongside",
+      "parameters_from": "abstention_msp_oof",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/selective_test.csv"
+    },
+    {
+      "id": "calibration.by_band",
+      "group": "calibration",
+      "definition": "Per-age-band accuracy, mean confidence, signed gap and ECE, before and after the OOF-fitted Dirichlet map, plus the aggregate. S7 found on OOF that the under-40 band is simultaneously the most accurate and the worst calibrated, and that the global map leaves residual gaps of opposite sign across bands; this is the test arm of that finding.",
+      "formula": "ECE over 15 equal-width confidence bins; signed gap = mean confidence - accuracy, negative meaning under-confident",
+      "parameters_from": "dirichlet_oof_tta",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "descriptive",
+      "family": "subgroup_calibration",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/band_calibration_test.csv"
+    },
+    {
+      "id": "fairness.per_class_f1",
+      "group": "fairness",
+      "definition": "Per-class F1 with intervals, to settle which classes actually drag macro-F1 down. Limitations currently attributes the interval width to df/vasc scarcity; the OOF arm says the drag is melanoma.",
+      "formula": "one-vs-rest F1 per class, lesion-grouped bootstrap interval",
+      "parameters_from": "dirichlet_oof_tta",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "descriptive",
+      "family": "per_class_f1_attribution",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/per_class_f1_test.csv"
+    },
+    {
+      "id": "fairness.intersectional",
+      "group": "fairness",
+      "definition": "Age band x sex cells: escalation sensitivity, referral rate, rescue rate and macro-F1, subject to the module's existing power gates (n >= 30, positives >= 10). Cells failing a gate are named as suppressed, never silently dropped -- an intersectional table that cannot be powered is a finding about the data, and on test the <40 cells are expected to fail.",
+      "formula": "per cell, the same estimands as the aggregate fairness slice; spreads computed only over cells clearing every gate",
+      "parameters_from": "abstention_msp_oof",
+      "interval": "exact Clopper-Pearson when the numerator is < 30, lesion-grouped bootstrap otherwise (research.stats.intervals.proportion)",
+      "direction": "descriptive",
+      "family": "intersectional_fairness",
+      "stage": "tables",
+      "requires": [],
+      "output": "results/session9/intersectional_test.csv"
+    },
+    {
+      "id": "attribution.lesion_interior",
+      "group": "attribution",
+      "definition": "Share of Grad-CAM activation mass falling inside the annotated lesion boundary, from Tschandl's HAM10000 segmentation masks, for ConvNeXt-Tiny over the test split. Replaces the image-frame border-mass heuristic, which measures distance from the picture edge rather than from the lesion. Reported split by correct/incorrect and by class. It is a supporting qualitative check carrying no causal claim: for a misclassified case the map is taken with respect to the predicted class, so landing on the lesion is close to automatic. The escalation-mass AUC carries the mechanism argument instead.",
+      "formula": "interior_fraction = sum(cam * mask) / sum(cam), the mask resized to the cam resolution and binarised at 0.5, cam min-max normalised as in ml.explainability.gradcam",
+      "parameters_from": "none",
+      "interval": "lesion-grouped percentile bootstrap (research.ablation.bootstrap)",
+      "direction": "descriptive",
+      "family": "none",
+      "stage": "attribution",
+      "requires": [
+        "data/ham10000/HAM10000_segmentations_lesion_tschandl",
+        "ml/checkpoints/convnext_tiny_best.HAM-only.pt"
+      ],
+      "output": "results/session9/attribution_test.csv"
+    }
+  ],
+  "outputs_root": "results/session9/",
+  "receipt": "results/test_pass_receipt.json",
+  "self_sha256": "5c9bebcf255a87b7136ce75918454e9daa9770d1ac7e0bb483bbddc32be5a13f"
+}

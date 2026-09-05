@@ -1,0 +1,16 @@
+{
+  "analysis_plan_file": "results/external/analysis_plan_post_s11_v2.json",
+  "analysis_plan_sha256": "da3c2e1837a21cb3022498a7bf4a0df3dbc78f42ad3c4cf6d550743119dda868",
+  "version": "post_s11_v2",
+  "frozen_timestamp": "2026-09-05T00:00:00Z",
+  "pre_registered": true,
+  "status": "LOCKED",
+  "supersedes": {
+    "analysis_plan_file": "results/external/analysis_plan_post_s11.json",
+    "analysis_plan_sha256": "e6193e191acba511ba02c4b8d81dee469775df62b1084ec4da56aeb0ddf8d031",
+    "version": "post_s11_v1",
+    "frozen_timestamp": "2026-09-05T05:33:00Z",
+    "retained": "byte-for-byte; amendments are append-only"
+  },
+  "deviation_note": "Amended 2026-09-05 in Session 12. Seven deviations are recorded in the v2 plan's `deviations` array. Two were made before any corresponding data existed (E0 withdrawn, E1 dose-response added ahead of S13) and are pre-registered in the sense that matters. Five correct work that had already been done under the v1 lock -- E6/E7 admitted as post-hoc, the Dirichlet pointer corrected, the Level-0 panel moved off unregistered test reads, the Mahalanobis test arm deleted, and the conformal score function repaired. Those five are amendments to a broken record, not pre-registration, and are labelled as such wherever their numbers are reported."
+}

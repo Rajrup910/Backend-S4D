@@ -1,0 +1,640 @@
+"""Session 5, Part C: assert every headline number in the manuscript matches results/.
+
+Hard rule 4 says nothing in the paper is hand-entered. LaTeX cannot enforce that, so this
+script does: it re-reads results/ablation_table.csv, results/mcnemar_delong.json and
+results/age_band_prior.csv, and checks both the numeric claims and the literal strings that
+carry them in paper/manuscript.tex. Run it after any re-run of run_part_a.py -- if a metric
+moves, this fails and names the sentence that needs editing.
+
+Session 11 folded in the Session 10 verifiers, so the script now also covers everything the
+manuscript revision added: the two new ladder rungs, the age-conditional rule, NNB, FRR and
+bipartite conformal coverage, per-band calibration, intersectional cells, lesion-interior
+attribution, the external PAD-UFES-20 evaluation, and the frozen-plan/receipt discipline. Some
+of those are checked as whole reconstructed table rows rather than as loose substrings, which
+is stricter and is what caught two rounding errors during S10.
+
+A number of load-bearing *directional* claims are asserted outright rather than compared to a
+literal -- that errors score higher on lesion-interior attribution, that under-40 conformal
+coverage improves marginal < class-conditional < bipartite, that the post-calibration residuals
+disagree in sign across age bands. If any of those flips, a paragraph is wrong, not a digit.
+
+Exit code 1 on any mismatch, so it can gate a build. Structural validation of the .tex itself
+(citations, labels, refs, environments) is a separate script, research/ablation/validate_structure.py.
+
+Usage:
+    python -m research.ablation.audit_manuscript
+"""
+
+from __future__ import annotations
+
+import csv
+import json
+import re
+
+from ml.paths import resolve
+
+SRC = resolve("paper/manuscript.tex").read_text(encoding="utf-8")
+
+ladder = {}
+with open(resolve("results/ablation_table.csv"), encoding="utf-8") as fh:
+    for row in csv.DictReader(fh):
+        ladder[row["rung"]] = row
+
+comparisons = json.load(open(resolve("results/mcnemar_delong.json"), encoding="utf-8"))
+by_pair = {(c["a"], c["b"]): c for c in comparisons}
+
+failures = []
+checks = 0
+
+
+def claim(label, value, expected, tol=5e-5):
+    """Assert a number quoted in the manuscript matches the artifact."""
+    global checks
+    checks += 1
+    if abs(float(value) - float(expected)) > tol:
+        failures.append(f"{label}: manuscript {value} vs artifact {expected}")
+
+
+def quoted(text):
+    """Confirm a literal string appears in the manuscript."""
+    global checks
+    checks += 1
+    if text not in SRC:
+        failures.append(f"string not found in manuscript: {text!r}")
+
+
+# --- Ladder Macro-F1 values quoted in prose -------------------------------------------
+for rung, quoted_value in [
+    ("A1_resnet50", 0.7058), ("A2_convnext_tiny", 0.7459), ("A3_swinv2_tiny", 0.7273),
+    ("A4_gated_fusion", 0.7411), ("A5_soft_vote_6cnn", 0.7718),
+    ("A6_soft_vote_6cnn_tta", 0.7859), ("A7_tta_dirichlet", 0.8047),
+    ("B_margin_abstain10", 0.8577), ("B_margin_abstain20", 0.8957),
+]:
+    claim(f"{rung} macro_f1", quoted_value, round(float(ladder[rung]["macro_f1"]), 4))
+    quoted(f"${quoted_value}$")
+
+# --- Confidence intervals quoted in prose ---------------------------------------------
+for rung, lo, hi in [
+    ("A1_resnet50", 0.6470, 0.7501),
+    ("A2_convnext_tiny", 0.6928, 0.7806),
+    ("A5_soft_vote_6cnn", 0.7201, 0.8118),
+]:
+    claim(f"{rung} ci_low", lo, round(float(ladder[rung]["macro_f1_ci_low"]), 4))
+    claim(f"{rung} ci_high", hi, round(float(ladder[rung]["macro_f1_ci_high"]), 4))
+    quoted(f"[{lo:.4f}, {hi:.4f}]")
+
+# --- Escalation sensitivity / missed serious for the A6 -> A7 regression ---------------
+claim("A6 esc sens", 0.7862, round(float(ladder["A6_soft_vote_6cnn_tta"]["escalation_sensitivity"]), 4))
+claim("A7 esc sens", 0.7310, round(float(ladder["A7_tta_dirichlet"]["escalation_sensitivity"]), 4))
+claim("A6 missed", 62, int(ladder["A6_soft_vote_6cnn_tta"]["missed_serious"]))
+claim("A7 missed", 78, int(ladder["A7_tta_dirichlet"]["missed_serious"]))
+claim("B10 missed", 54, int(ladder["B_margin_abstain10"]["missed_serious"]))
+claim("B20 missed", 36, int(ladder["B_margin_abstain20"]["missed_serious"]))
+
+# --- Coverage values -------------------------------------------------------------------
+for rung, cov in [("B_margin_abstain05", 0.954), ("B_margin_abstain10", 0.892),
+                  ("B_margin_abstain15", 0.836), ("B_margin_abstain20", 0.779)]:
+    claim(f"{rung} coverage", cov, round(float(ladder[rung]["coverage"]), 3), tol=6e-4)
+quoted("$0.954/0.892/0.836/0.779$")
+
+# deferral percentages quoted in abstract/results
+claim("abstain10 deferral pct", 10.8, round((1 - float(ladder["B_margin_abstain10"]["coverage"])) * 100, 1))
+claim("abstain20 deferral pct", 22.1, round((1 - float(ladder["B_margin_abstain20"]["coverage"])) * 100, 1))
+quoted("$10.8\\%$")
+quoted("$22.1\\%$")
+
+# --- Paired statistics -----------------------------------------------------------------
+ens = by_pair[("A5_soft_vote_6cnn", "A2_convnext_tiny")]
+claim("ensembling McNemar chi2", 17.20, round(ens["mcnemar"]["statistic"], 2), tol=6e-3)
+claim("ensembling only_a_correct", 85, ens["mcnemar"]["only_a_correct"])
+claim("ensembling only_b_correct", 38, ens["mcnemar"]["only_b_correct"])
+claim("ensembling diff", 0.026, round(ens["macro_f1_diff"]["point_estimate"], 3), tol=6e-4)
+quoted("3.4\\times10^{-5}")
+
+bkl = [d for d in ens["delong_per_class"] if d["class_code"] == "bkl"][0]
+claim("bkl AUC ensemble", 0.9572, round(bkl["auc_a"], 4))
+claim("bkl AUC convnext", 0.9195, round(bkl["auc_b"], 4))
+claim("bkl z", 3.61, round(bkl["z"], 2), tol=6e-3)
+claim("bkl Holm p", 0.013, round(bkl["p_value_holm"], 3), tol=6e-4)
+assert bkl["significant_holm"], "bkl should be the surviving Holm-significant test"
+
+# exactly one Holm-significant test overall, as the manuscript claims
+n_sig = sum(1 for c in comparisons for d in c["delong_per_class"] if d["significant_holm"])
+claim("Holm-significant count", 1, n_sig)
+n_tests = sum(len(c["delong_per_class"]) for c in comparisons)
+claim("DeLong family size", 42, n_tests)
+quoted("$42$ DeLong tests")
+
+for pair, p in [(("A2_convnext_tiny", "A1_resnet50"), 0.42),
+                (("A3_swinv2_tiny", "A2_convnext_tiny"), 0.38),
+                (("A4_gated_fusion", "A2_convnext_tiny"), 0.17),
+                (("A6_soft_vote_6cnn_tta", "A5_soft_vote_6cnn"), 0.10),
+                (("A7_tta_dirichlet", "A6_soft_vote_6cnn_tta"), 0.66)]:
+    claim(f"McNemar p {pair[0]}", p, round(by_pair[pair]["mcnemar"]["p_value"], 2), tol=6e-3)
+
+# --- Calibration direction ------------------------------------------------------------
+# The manuscript claims the uncalibrated ensemble is UNDER-confident, contradicting the usual
+# single-network result. That claim is load-bearing (it justifies Dirichlet over temperature
+# scaling) and it was wrong in an earlier draft, so it is asserted here rather than trusted.
+from research.ablation.loader import load_predictions  # noqa: E402
+from research.ensembling.data import load_split_matrix  # noqa: E402
+
+_matrix = load_split_matrix("test", predictions_dir="research/predictions")
+_ens = _matrix.probs.mean(axis=1)
+_conf = _ens.max(axis=1).mean()
+_acc = (_ens.argmax(axis=1) == _matrix.y_true).mean()
+claim("ensemble mean confidence", 0.7048, round(float(_conf), 4))
+claim("ensemble accuracy", 0.8609, round(float(_acc), 4))
+claim("ensemble signed gap", -0.156, round(float(_conf - _acc), 3), tol=6e-4)
+assert _conf < _acc, "ensemble must be UNDER-confident for the Sec. IV-B argument to hold"
+quoted("$0.7048$")
+quoted("$0.8609$")
+quoted("$-0.156$")
+
+_single = load_predictions("research/predictions/convnext_tiny_test.csv", "convnext_tiny")
+_sconf = _single.probs.max(axis=1).mean()
+_sacc = (_single.y_pred == _single.y_true).mean()
+claim("convnext confidence", 0.7606, round(float(_sconf), 4))
+claim("convnext accuracy", 0.8296, round(float(_sacc), 4))
+assert _sconf < _sacc, "single backbone is also under-confident, as the manuscript states"
+
+# --- Figure 5 plots APS, so its caption must quote the APS worst class, not LAC's ---------
+quoted("worst on \\textsc{mel} at $0.796$")
+
+# --- Age-band prior --------------------------------------------------------------------
+with open(resolve("results/age_band_prior.csv"), encoding="utf-8") as fh:
+    prior = {(r["split"], r["age_band"]): r for r in csv.DictReader(fh)}
+claim("train <40 escalating share", 0.049, round(float(prior[("train", "<40")]["escalating_share"]), 3), tol=6e-4)
+claim("train 60+ escalating share", 0.355, round(float(prior[("train", "60+")]["escalating_share"]), 3), tol=6e-4)
+quoted("$4.9\\%$")
+quoted("$35.5\\%$")
+
+# --- Split sizes -----------------------------------------------------------------------
+for text in ["6{,}981", "1{,}532", "1{,}502", "7{,}470", "10{,}015", "5{,}229",
+             "1{,}120", "1{,}121", "1{,}004", "1{,}340", "1{,}170"]:
+    quoted(text)
+
+# =======================================================================================
+#  Session 10 additions: every number the manuscript revision introduced.
+#
+#  Folded in from the S10 staging scripts (research/ablation/verify_s10_{numbers,tables}.py,
+#  now deleted). Two classes of check:
+#
+#    present()  a literal, formatted from a results/ artifact, appears somewhere in the
+#               manuscript or one of its \input tables.
+#    row()      a whole table row reconstructs cell-for-cell from the artifact. This is the
+#               stricter one and it is what caught two FRR rounding errors in S10 that
+#               substring presence alone did not.
+#
+#  Nothing here reads the test split; every source is a frozen file under results/.
+# =======================================================================================
+
+import pandas as pd  # noqa: E402
+
+_TABLES = "".join(
+    resolve("paper/tables/%s" % name).read_text(encoding="utf-8")
+    for name in ("ablation_table.tex", "oof_vs_val.tex", "table4_agegap.tex")
+)
+FULL = SRC + _TABLES
+NORM = " ".join(FULL.split())
+
+
+def present(label, literal, source):
+    """A literal derived from an artifact must appear in the manuscript or its tables."""
+    global checks
+    checks += 1
+    if literal not in FULL:
+        failures.append(f"{label}: {literal!r} absent (source: {source})")
+
+
+def row(label, cells, source):
+    """A whole table row must reconstruct from the artifact, ignoring column padding."""
+    global checks
+    checks += 1
+    want = " ".join((" & ".join(cells) + r" \\").split())
+    if want not in NORM:
+        failures.append(f"{label}: row absent (source: {source}) -- want: {want}")
+
+
+def _f(x, nd):
+    return ("%%.%df" % nd) % float(x)
+
+
+def _csv(path):
+    return pd.read_csv(resolve(path))
+
+
+def _json(path):
+    return json.load(open(resolve(path), encoding="utf-8"))
+
+
+S9 = "results/session9/"
+
+# --- New ladder rungs A7-oof and A8 ----------------------------------------------------
+_lad = _csv(S9 + "ladder.csv").set_index("rung")
+for _rung in ("A7_oof", "A8"):
+    present(f"{_rung} macro_f1", _f(_lad.loc[_rung, "macro_f1"], 4), S9 + "ladder.csv")
+    present(f"{_rung} ci_low", _f(_lad.loc[_rung, "macro_f1_ci_low"], 4), S9 + "ladder.csv")
+    present(f"{_rung} ci_high", _f(_lad.loc[_rung, "macro_f1_ci_high"], 4), S9 + "ladder.csv")
+present("A8 missed serious", str(int(_lad.loc["A8", "missed_serious"])), S9 + "ladder.csv")
+# A7-val inside the S9 pass must still reproduce the published rung, or the frozen matrices moved
+claim("A7_val reproduction", float(_lad.loc["A7_val", "macro_f1"]),
+      float(ladder["A7_tta_dirichlet"]["macro_f1"]))
+
+_cmp = _json(S9 + "new_rung_comparisons.json")
+for _c, _ph in zip(_cmp["comparisons"], _cmp["holm"]["p_holm"]):
+    _n = _c["comparison"]
+    present(f"delta {_n}", _f(abs(_c["point_estimate"]), 4), S9 + "new_rung_comparisons.json")
+    present(f"delta {_n} ci_low", _f(abs(_c["ci_low"]), 4), S9 + "new_rung_comparisons.json")
+    present(f"delta {_n} ci_high", _f(abs(_c["ci_high"]), 4), S9 + "new_rung_comparisons.json")
+    present(f"delta {_n} holm", _f(_ph, 3), S9 + "new_rung_comparisons.json")
+    # both rungs are negative; the Discussion says so in words
+    assert _c["point_estimate"] < 0, f"{_n} is no longer negative -- rewrite Sec. IV-B"
+
+# --- Age gap and the escalation-mass AUC -----------------------------------------------
+_gap = _csv(S9 + "age_gap_test.csv").set_index("band")
+for _b in ("<40", "40-59", "60+"):
+    present(f"agegap sens {_b}", _f(_gap.loc[_b, "sensitivity"], 3), S9 + "age_gap_test.csv")
+    present(f"agegap AUC {_b}", _f(_gap.loc[_b, "escalation_mass_auc"], 3),
+            S9 + "age_gap_test.csv")
+# The softened mechanism claim is load-bearing: on test the <40 band must rank WORST, else
+# Sec. IV-F's "part decision rule, part lost information" reading needs rewriting again.
+assert (_gap.loc["<40", "escalation_mass_auc"]
+        < min(_gap.loc["40-59", "escalation_mass_auc"],
+              _gap.loc["60+", "escalation_mass_auc"])), \
+    "under-40 no longer has the worst within-band AUC on test -- revisit Sec. IV-F"
+
+_conf = _json(S9 + "age_gap_confirmatory_test.json")
+for _k in ("difference", "ci_lo", "ci_hi"):
+    present(f"confirmatory {_k}", _f(abs(_conf[_k]), 3), S9 + "age_gap_confirmatory_test.json")
+assert _conf["holm"]["significant_holm"][0], "confirmatory age comparison must stay significant"
+
+# --- The age-conditional rule -----------------------------------------------------------
+_ar = _csv(S9 + "agerule_test.csv")
+_ars = _json(S9 + "agerule_summary_test.json")
+for _b in ("<40", "40-59", "60+", "ALL"):
+    for _r in ("argmax", "lambda_rule"):
+        _row = _ar[(_ar["band"] == _b) & (_ar["rule"] == _r)].iloc[0]
+        present(f"rule sens {_b} {_r}", _f(_row["escalation_sensitivity"], 3),
+                S9 + "agerule_test.csv")
+        present(f"rule referral {_b} {_r}", _f(_row["referral_rate"], 3),
+                S9 + "agerule_test.csv")
+for _b in ("<40", "40-59", "60+"):
+    present(f"lambda {_b}", _f(_ars["lambda_by_band"][_b], 2), S9 + "agerule_summary_test.json")
+present("rule macro_f1", _f(_ars["macro_f1_lambda_rule"], 4), S9 + "agerule_summary_test.json")
+present("argmax macro_f1", _f(_ars["macro_f1_argmax"], 4), S9 + "agerule_summary_test.json")
+present("rule macro_f1 delta", _f(abs(_ars["macro_f1_delta"]), 3),
+        S9 + "agerule_summary_test.json")
+present("rule missed", str(_ars["missed_serious_lambda_rule"]), S9 + "agerule_summary_test.json")
+
+# --- Number Needed to Biopsy at the stated reference prevalence -------------------------
+_nnb = _csv(S9 + "nnb_test.csv")
+for _c in ("<40", "40-59", "60+", "ALL"):
+    for _r in ("argmax", "lambda_rule"):
+        _row = _nnb[(_nnb["cohort"] == _c) & (_nnb["rule"] == _r)].iloc[0]
+        present(f"NNB {_c} {_r}", _f(_row["nnb_reference"], 1), S9 + "nnb_test.csv")
+_all = _nnb[_nnb["cohort"] == "ALL"]
+for _col in ("nnb_at_0.01", "nnb_at_0.05"):
+    for _r in ("argmax", "lambda_rule"):
+        present(f"{_col} {_r}", _f(_all[_all["rule"] == _r][_col].iloc[0], 1),
+                S9 + "nnb_test.csv")
+
+# tab:agerule reconstructed row for row -- sensitivity, referral and NNB share a row, so a
+# per-value check would not catch a cell landing in the wrong band.
+_TEXBAND = {"<40": "$<40$", "40-59": "$40$--$59$", "60+": "$60+$", "ALL": "All"}
+for _b in ("<40", "40-59", "60+", "ALL"):
+    for _r, _texrule in (("argmax", r"$\arg\max$"), ("lambda_rule", r"$+\lambda$")):
+        _a = _ar[(_ar["band"] == _b) & (_ar["rule"] == _r)].iloc[0]
+        _nb = _nnb[(_nnb["cohort"] == _b) & (_nnb["rule"] == _r)].iloc[0]
+        _cell = "%s [%s, %s]" % (_f(_a["escalation_sensitivity"], 3),
+                                 _f(_a["sens_ci_lo"], 3), _f(_a["sens_ci_hi"], 3))
+        if (_b, _r) == ("ALL", "lambda_rule"):
+            _cell = r"\textbf{%s}" % _cell
+        row(f"agerule {_b} {_r}",
+            [_texrule, _cell, _f(_a["referral_rate"], 3), _f(_nb["nnb_reference"], 1)],
+            S9 + "agerule_test.csv + nnb_test.csv")
+
+
+# --- Orthogonality of the rule and the abstention gate ----------------------------------
+_ort = _csv(S9 + "orthogonality_test.csv").set_index("band")
+for _b in ("<40", "40-59", "60+", "ALL"):
+    _r = _ort.loc[_b]
+    present(f"ortho missed {_b}", str(int(_r["n_missed_by_argmax"])),
+            S9 + "orthogonality_test.csv")
+    present(f"ortho deferred {_b}", str(int(_r["n_missed_referred"])),
+            S9 + "orthogonality_test.csv")
+    present(f"ortho lambda {_b}", str(int(_r["n_missed_caught_by_lambda"])),
+            S9 + "orthogonality_test.csv")
+    present(f"ortho jaccard {_b}", _f(_r["jaccard_overlap"], 2),
+            S9 + "orthogonality_test.csv")
+    present(f"rescue rate {_b}", "%.1f" % (100 * float(_r["miss_rescue_rate"])),
+            S9 + "orthogonality_test.csv")
+for _b in ("<40", "60+"):
+    present(f"band abstention {_b}", "%.1f" % (100 * float(_ort.loc[_b, "band_abstention_rate"])),
+            S9 + "orthogonality_test.csv")
+# The paper reports this as a NEGATIVE result. If the overlap ever stops being total, the
+# Limitations paragraph and Sec. IV-G both become wrong in the friendly direction.
+assert _ort.loc["<40", "jaccard_overlap"] == 1.0, \
+    "under-40 orthogonality is no longer total -- Sec. IV-G and Limitations both overstate it"
+
+# tab:ortho reconstructed row for row.
+for _tex, _b, _bold in (("$<40$", "<40", True), ("$40$--$59$", "40-59", False),
+                        ("$60+$", "60+", False), ("All", "ALL", False)):
+    _r = _ort.loc[_b]
+    _j = _f(_r["jaccard_overlap"], 2)
+    row(f"ortho row {_b}",
+        [_tex, str(int(_r["n_missed_by_argmax"])), str(int(_r["n_missed_referred"])),
+         str(int(_r["n_missed_caught_by_lambda"])),
+         (r"\textbf{%s}" % _j) if _bold else _j],
+        S9 + "orthogonality_test.csv")
+
+
+# --- Conformal: coverage, the under-40 column, FRR --------------------------------------
+_cf = _csv(S9 + "conformal_test.csv")
+_CAL = {"marginal": "marginal", "class_conditional": "class-cond.", "bipartite": "bipartite"}
+_BOLD_U40 = {("LAC", "bipartite", 0.10), ("LAC", "bipartite", 0.05)}
+_BOLD_FRR = {("RAPS", "bipartite", 0.05)}
+for _m, _c, _a in [("LAC", "marginal", 0.10), ("LAC", "class_conditional", 0.10),
+                   ("LAC", "bipartite", 0.10), ("LAC", "bipartite", 0.05),
+                   ("RAPS", "marginal", 0.10), ("RAPS", "class_conditional", 0.10),
+                   ("RAPS", "bipartite", 0.10), ("RAPS", "marginal", 0.05),
+                   ("RAPS", "bipartite", 0.05)]:
+    _r = _cf[(_cf["method"] == _m) & (_cf["calibrator"] == _c)
+             & (_cf["alpha"].round(3) == _a)].iloc[0]
+    _u40 = _f(_r["under40_escalating_coverage"], 3)
+    if (_m, _c, _a) in _BOLD_U40:
+        _u40 = r"\textbf{%s}" % _u40
+    _frr = "%s [%s, %s]" % (_f(_r["frr"], 3), _f(_r["frr_ci_lo"], 3), _f(_r["frr_ci_hi"], 3))
+    if (_m, _c, _a) in _BOLD_FRR:
+        _frr = r"\textbf{%s}" % _frr
+    row(f"conformal {_m}/{_c}/a{_a:.2f}",
+        ["%.2f" % _a, _CAL[_c], _f(_r["marginal_coverage"], 3),
+         _f(_r["escalating_coverage"], 3), _u40, _frr, _f(_r["mean_set_size"], 2)],
+        S9 + "conformal_test.csv")
+
+# The paper's sharpest new claim: class-conditional calibration does NOT repair the under-40
+# subgroup and bipartite does. Asserted, not trusted.
+def _u40cov(m, c, a):
+    return float(_cf[(_cf["method"] == m) & (_cf["calibrator"] == c)
+                     & (_cf["alpha"].round(3) == a)].iloc[0]["under40_escalating_coverage"])
+
+
+for _m in ("LAC", "RAPS"):
+    assert _u40cov(_m, "marginal", 0.10) < _u40cov(_m, "class_conditional", 0.10) \
+        < _u40cov(_m, "bipartite", 0.10), \
+        f"{_m}: marginal < class-conditional < bipartite no longer holds for under-40 coverage"
+
+_bounds = _csv(S9 + "frr_bounds_test.csv")
+_rb = _bounds[(_bounds["method"] == "RAPS") & (_bounds["calibrator"] == "bipartite")]
+for _b in (0.05, 0.02):
+    present(f"FRR bound {_b:.2f} set size", _f(_rb[_rb["frr_bound"] == _b]["mean_set_size"].iloc[0], 2),
+            S9 + "frr_bounds_test.csv")
+# "no alpha in the grid bounds FRR below 0.01" is a claim about the whole sweep, not one row
+assert not _bounds[_bounds["frr_bound"] == 0.01]["achieved"].any(), \
+    "some alpha now bounds FRR below 0.01 -- Sec. IV-E claims none does"
+quoted("bounds FRR below")
+
+# --- Per-band calibration ----------------------------------------------------------------
+_bc = _csv(S9 + "band_calibration_test.csv")
+
+
+def _bcell(src, grp, col, nd=3):
+    _r = _bc[(_bc["source"] == src) & (_bc["group"] == grp)].iloc[0]
+    _v = float(_r[col])
+    if col == "signed_gap":
+        return "$%s%s$" % ("+" if _v >= 0 else "-", _f(abs(_v), nd))
+    return "$%s$" % _f(_v, nd)
+
+
+for _tex, _grp in (("$<40$", "<40"), ("$40$--$59$", "40-59"), ("$60+$", "60+"), ("All", "ALL")):
+    _n = int(_bc[(_bc["source"] == "dirichlet") & (_bc["group"] == _grp)].iloc[0]["n"])
+    row(f"bandcal {_grp}",
+        [_tex, str(_n), _bcell("uncalibrated", _grp, "signed_gap"),
+         _bcell("uncalibrated", _grp, "ece"), _bcell("dirichlet", _grp, "signed_gap"),
+         _bcell("dirichlet", _grp, "ece")],
+        S9 + "band_calibration_test.csv")
+
+_gaps = _json(S9 + "band_calibration_gaps_test.json")
+present("ece gap uncalibrated", _f(_gaps["test/uncalibrated"]["ece_gap"], 3),
+        S9 + "band_calibration_gaps_test.json")
+present("ece gap dirichlet", _f(_gaps["test/dirichlet"]["ece_gap"], 3),
+        S9 + "band_calibration_gaps_test.json")
+
+# The load-bearing calibration claim is the SIGN DISAGREEMENT after a single global map, not
+# the ranking (which S9 showed does not replicate). Assert the sign disagreement directly.
+_dir = _bc[(_bc["source"] == "dirichlet") & (_bc["group"].isin(["<40", "40-59", "60+"]))]
+assert _dir["signed_gap"].min() < 0 < _dir["signed_gap"].max(), \
+    "post-Dirichlet residuals no longer disagree in sign across bands -- Sec. IV-B overstates"
+
+_oofbc = _csv("research/stats/results_oof/band_calibration.csv")
+for _split, _src, _grp in (("oof", "uncalibrated", "<40"), ("oof", "uncalibrated", "40-59"),
+                           ("oof", "uncalibrated", "60+"), ("oof", "dirichlet", "<40"),
+                           ("oof", "dirichlet", "60+"), ("val", "dirichlet", "60+")):
+    _r = _oofbc[(_oofbc["split"] == _split) & (_oofbc["source"] == _src)
+                & (_oofbc["group"] == _grp)].iloc[0]
+    present(f"{_split}/{_src}/{_grp} signed gap", _f(abs(_r["signed_gap"]), 3),
+            "research/stats/results_oof/band_calibration.csv")
+present("oof <40 accuracy",
+        _f(_oofbc[(_oofbc["split"] == "oof") & (_oofbc["source"] == "uncalibrated")
+                  & (_oofbc["group"] == "<40")].iloc[0]["accuracy"], 3),
+        "research/stats/results_oof/band_calibration.csv")
+
+# --- Per-class F1: the corrected Limitations attribution ---------------------------------
+_pcf = _csv(S9 + "per_class_f1_test.csv").set_index("class_code")
+for _c in ("akiec", "mel", "df", "vasc"):
+    present(f"per-class F1 {_c}", _f(_pcf.loc[_c, "f1"], 3), S9 + "per_class_f1_test.csv")
+for _c in ("df", "vasc"):
+    present(f"per-class CI width {_c}", _f(_pcf.loc[_c, "ci_width"], 3),
+            S9 + "per_class_f1_test.csv")
+# Limitations now says the LEVEL drag is akiec/mel and the VARIANCE is df/vasc. Both halves
+# of that correction are asserted, because the earlier draft had it backwards.
+assert _pcf.loc[["akiec", "mel"], "f1"].max() < _pcf.loc[["df", "vasc"], "f1"].min(), \
+    "akiec/mel are no longer the lowest per-class F1 -- Limitations attribution is stale"
+assert _pcf.loc[["df", "vasc"], "ci_width"].min() > _pcf.loc[["akiec", "mel"], "ci_width"].max(), \
+    "df/vasc no longer have the widest intervals -- Limitations attribution is stale"
+
+# --- Intersectional cells ----------------------------------------------------------------
+_int = _csv(S9 + "intersectional_test.csv").set_index("group")
+for _cell in ("40-59 x female", "40-59 x male", "60+ x female", "60+ x male", "<40 x female"):
+    _r = _int.loc[_cell]
+    for _col in ("escalation_sensitivity", "sens_ci_lo", "sens_ci_hi"):
+        present(f"intersectional {_cell} {_col}", _f(_r[_col], 3),
+                S9 + "intersectional_test.csv")
+_idis = _json(S9 + "intersectional_disparities_test.json")
+for _k in ("equalized_odds_tpr_gap", "demographic_parity_gap", "referral_burden_gap"):
+    present(f"intersectional {_k}", _f(_idis[_k], 3),
+            S9 + "intersectional_disparities_test.json")
+claim("intersectional usable cells", 5, int(_idis["n_usable_cells"]))
+# The manuscript says the <40 male cell is suppressed and declines to quote its sensitivity.
+# Sec. IV-H says this cell "fails the gate by one case" and declines to quote a sensitivity.
+# A bare substring test for its value is useless (0.000 appears inside CIs), so check the
+# substantive claim instead: it is flagged suppressed, and it is short by exactly one positive.
+from research.selective.fairness import MIN_POSITIVES  # noqa: E402
+
+_u40m = _int.loc["<40 x male"]
+assert str(_u40m["suppressed"]).lower() == "true", "<40 x male is no longer suppressed"
+claim("<40 x male escalating count", MIN_POSITIVES - 1, int(_u40m["n_escalating"]))
+claim("fairness positives gate", 10, MIN_POSITIVES)
+quoted("so it fails the gate by one case")
+
+# --- Grad-CAM attribution against the Tschandl masks --------------------------------------
+_att = _json(S9 + "attribution_summary_test.json")
+for _k, _nd in (("interior_fraction_mean", 3), ("interior_fraction_ci_lo", 3),
+                ("interior_fraction_ci_hi", 3), ("lesion_area_fraction_mean", 3),
+                ("concentration_ratio_mean", 2)):
+    present(f"attribution {_k}", _f(_att[_k], _nd), S9 + "attribution_summary_test.json")
+for _g in ("correct", "incorrect", "true=nv"):
+    _b = [x for x in _att["breakdown"] if x["group"] == _g][0]
+    present(f"attribution {_g}", _f(_b["mean"], 3), S9 + "attribution_summary_test.json")
+claim("attribution missing masks", 0, int(_att["n_missing_masks"]))
+# The paper explains the predicted-class artefact by pointing at errors scoring HIGHER.
+_c_mean = [x for x in _att["breakdown"] if x["group"] == "correct"][0]["mean"]
+_i_mean = [x for x in _att["breakdown"] if x["group"] == "incorrect"][0]["mean"]
+assert _i_mean > _c_mean, "errors no longer score higher -- Sec. IV-I's caveat needs rewriting"
+
+# --- Selective classification at the OOF-fitted gate ---------------------------------------
+_sel = _csv(S9 + "selective_test.csv").set_index("target_abstention")
+_s10 = _sel.loc["10%"]
+present("sel 10% coverage", "%.1f" % (100 * float(_s10["coverage"])), S9 + "selective_test.csv")
+present("sel 10% macro_f1", _f(_s10["macro_f1"], 4), S9 + "selective_test.csv")
+present("sel 10% missed", str(int(_s10["missed_serious"])), S9 + "selective_test.csv")
+
+# --- External evaluation on PAD-UFES-20 ----------------------------------------------------
+_X = "research/xdomain/results/"
+_pad = _csv(_X + "ensemble_on_pad.csv").set_index("method")
+for _m in ("pad_ensemble_softvote", "pad_member_convnext_small", "pad_ensemble_dirichlet",
+           "pad_ensemble_dirichlet_agerule", "pad_member_efficientnet_b3"):
+    present(f"PAD macro_f1 {_m}", _f(_pad.loc[_m, "macro_f1"], 3), _X + "ensemble_on_pad.csv")
+for _m in ("pad_ensemble_softvote", "pad_ensemble_dirichlet", "pad_ensemble_dirichlet_agerule"):
+    present(f"PAD esc sens {_m}", _f(_pad.loc[_m, "escalation_sens"], 3),
+            _X + "ensemble_on_pad.csv")
+for _m in ("pad_ensemble_dirichlet", "pad_ensemble_dirichlet_agerule"):
+    present(f"PAD mel recall {_m}", _f(_pad.loc[_m, "mel_recall"], 3), _X + "ensemble_on_pad.csv")
+    present(f"PAD missed {_m}",
+            "{:,}".format(int(_pad.loc[_m, "missed_serious"])).replace(",", "{,}"),
+            _X + "ensemble_on_pad.csv")
+# "the ensemble is worse than its own best member" is the paper's cross-domain claim
+_members = [i for i in _pad.index if i.startswith("pad_member_")]
+assert _pad.loc["pad_ensemble_softvote", "macro_f1"] < _pad.loc[_members, "macro_f1"].max(), \
+    "the PAD soft-vote no longer trails its best member -- Sec. IV-J overstates"
+
+_fitz = _csv(_X + "fitzpatrick_slice.csv")
+_fitz = _fitz[_fitz["group"] != "ALL"].set_index("group")
+for _g in ("I", "II", "III", "IV"):
+    present(f"fitzpatrick sens {_g}", _f(_fitz.loc[_g, "escalation_sensitivity"], 3),
+            _X + "fitzpatrick_slice.csv")
+    present(f"fitzpatrick n {_g}", str(int(_fitz.loc[_g, "n"])), _X + "fitzpatrick_slice.csv")
+present("fitzpatrick unknown sens", _f(_fitz.loc["unknown", "escalation_sensitivity"], 3),
+        _X + "fitzpatrick_slice.csv")
+present("fitzpatrick unknown n", str(int(_fitz.loc["unknown", "n"])), _X + "fitzpatrick_slice.csv")
+present("fitzpatrick pooled tpr gap", _f(_json(_X + "fitzpatrick_gaps.json")["equalized_odds_tpr_gap"], 3),
+        _X + "fitzpatrick_gaps.json")
+_iiv = _fitz.loc[["I", "II", "III", "IV"], "escalation_sensitivity"]
+present("fitzpatrick I-IV spread", _f(_iiv.max() - _iiv.min(), 3),
+        _X + "fitzpatrick_slice.csv (derived)")
+# The manuscript says the I-IV pattern is NON-monotonic; that is the whole point of the
+# paragraph, so it is asserted rather than described.
+assert not (_iiv.is_monotonic_increasing or _iiv.is_monotonic_decreasing), \
+    "the Fitzpatrick I-IV spread is now monotonic -- Sec. IV-J's reading changes"
+
+_mah = _json(_X + "mahalanobis_shift.json")
+present("mahalanobis auroc", _f(_mah["auroc_id_vs_shift"], 3), _X + "mahalanobis_shift.json")
+present("mahalanobis id median", "%d" % round(_mah["median_score_id_val"]),
+        _X + "mahalanobis_shift.json")
+present("mahalanobis shift median",
+        "{:,}".format(round(_mah["median_score_shift_pad"])).replace(",", "{,}"),
+        _X + "mahalanobis_shift.json")
+present("mahalanobis separation", "%d" % round(_mah["separation_ratio_median"]),
+        _X + "mahalanobis_shift.json")
+
+# --- OOF-vs-val diagnostics quoted in Methods and Sec. IV-E --------------------------------
+_ovv = _csv("results/oof_vs_val_comparison.csv")
+
+
+def _ovv_get(module, quantity, column):
+    return _ovv[(_ovv["module"] == module)
+                & (_ovv["quantity"] == quantity)].iloc[0][column]
+
+
+present("conformal calibration rows (oof)",
+        "{:,}".format(int(float(_ovv_get("conformal", "n_calibration_rows", "oof_fitted"))))
+        .replace(",", "{,}"), "results/oof_vs_val_comparison.csv")
+present("conformal min class count (oof)",
+        str(int(float(_ovv_get("conformal", "min_class_calibration_count_a05", "oof_fitted")))),
+        "results/oof_vs_val_comparison.csv")
+claim("degenerate cells a05 (val)",
+      6, int(float(_ovv_get("conformal", "degenerate_class_conditional_cells_a05", "val_fitted"))))
+claim("degenerate cells a05 (oof)",
+      0, int(float(_ovv_get("conformal", "degenerate_class_conditional_cells_a05", "oof_fitted"))))
+# Methods states plainly that the OOF arm forfeits the exact guarantee.
+assert str(_ovv_get("conformal", "exact_finite_sample_guarantee", "oof_fitted")) in ("False", "false"), \
+    "the OOF conformal arm now claims an exact guarantee -- Methods says it does not"
+# and that OOF fitting flips the selected uncertainty score
+claim_val = str(_ovv_get("selective", "policy_score", "val_fitted"))
+claim_oof = str(_ovv_get("selective", "policy_score", "oof_fitted"))
+assert (claim_val, claim_oof) == ("margin", "msp"), \
+    f"the val/OOF score selection is now ({claim_val}, {claim_oof}) -- Sec. IV-D says (margin, msp)"
+
+# --- Fold yields quoted in Methods ---------------------------------------------------------
+_folds = resolve("ml/results/oof_fold_report.md").read_text(encoding="utf-8")
+for _tok, _what in (("71", "df OOF rows"), ("99", "vasc OOF rows"), ("64", "escalating <40")):
+    checks += 1
+    if _tok not in _folds:
+        failures.append(f"fold report missing {_what} ({_tok})")
+    present(f"Methods quotes {_what}", f"${_tok}$", "ml/results/oof_fold_report.md")
+
+# --- Holm-corrected McNemar, quoted in the abstract and Discussion --------------------------
+_fam = _json("results/comparison_families.json")
+_holm = _fam["ladder_mcnemar_adjusted"]
+_idx = _holm["members"].index("A5_soft_vote_6cnn vs A2_convnext_tiny")
+claim("ensembling McNemar Holm p", 2.0e-4, round(_holm["p_holm"][_idx], 6), tol=6e-6)
+quoted("2.0\\times10^{-4}")
+claim("McNemar family size", 6, _holm["n_tests"])
+claim("McNemar Holm survivors", 1, _holm["n_significant"])
+claim("declared comparison families", 7, _fam["n_families"])
+claim("confirmatory families", 4, _fam["n_confirmatory"])
+claim("exploratory families", 3, _fam["n_exploratory"])
+quoted("Seven families")
+
+# --- The frozen analysis plan and the single test pass ---------------------------------------
+_plan = _json("results/analysis_plan.json")
+claim("pre-registered quantities", 19, int(_plan["n_quantities"]))
+quoted("$19$-item")
+claim("reference prevalence", 0.03, float(_plan["constants"]["reference_prevalence"]))
+_receipt = _json("results/test_pass_receipt.json")
+_emitted = sum(int(e["n_quantities"]) for e in _receipt["executions"])
+claim("quantities emitted by the test pass", 19, _emitted)
+for _e in _receipt["executions"]:
+    assert _e["plan_sha256"] == _plan["self_sha256"], \
+        "a test-pass execution carries a different plan hash than the frozen plan"
+    assert not _e.get("rerun_reason"), \
+        "the test split was re-read with a stated reason -- the manuscript claims one pass"
+
+# --- CLAIM 2024 checklist, and the supplementary that renders it ---------------------------
+# The manuscript quotes the checklist outcome, so the checklist is the artifact and the
+# manuscript is the claim -- exactly the direction hard rule 4 wants.
+_claim = resolve("results/CLAIM_checklist.md").read_text(encoding="utf-8")
+_counts = dict(re.findall(r"^\| (Met|Partial|Not met|N/A) \| (\d+) \|$", _claim, flags=re.M))
+claim("CLAIM items met", 33, int(_counts["Met"]))
+claim("CLAIM items partial", 7, int(_counts["Partial"]))
+claim("CLAIM items not met", 2, int(_counts["Not met"]))
+claim("CLAIM items N/A", 2, int(_counts["N/A"]))
+claim("CLAIM total", 44, sum(int(v) for v in _counts.values()))
+claim("CLAIM rows present", 44, len(re.findall(r"^\| \d+ \|", _claim, flags=re.M)))
+quoted("$33$ items met, $7$ partial, $2$ not")
+# The supplement is generated from that Markdown; if it is missing the bundle ships without it.
+assert resolve("paper/supplementary.tex").is_file(), \
+    "paper/supplementary.tex is missing -- run research.ablation.build_supplementary"
+
+
+# --- Bibliography grew as the Related Work rewrite requires ------------------------------------
+claim("bibliography size", 47, SRC.count("\\bibitem{"))
+
+print(f"{checks} checks run")
+if failures:
+    print(f"\n{len(failures)} FAILURES:")
+    for f in failures:
+        print("  -", f)
+else:
+    print("\nAll manuscript numbers match results/ artifacts.")
+raise SystemExit(1 if failures else 0)
