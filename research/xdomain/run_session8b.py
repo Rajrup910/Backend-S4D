@@ -20,6 +20,15 @@ Nothing here is fitted on PAD: every parameter (Dirichlet map, lambda per band) 
 from the HAM OOF fits and applied unchanged. This is a transfer test, so the operating
 point is not expected to be optimal on PAD; it is reported as measured.
 
+Every frozen parameter is imported from `research.external.frozen_params`, which is the
+only loader for one. **Until 2026-09-06 this file loaded its own Dirichlet map from
+`research/calibration/results_oof/fit_state.json` -- Session 2's calibration sweep, not the
+deployed map** (`research/selective/results_oof/fit_state.json`, the one S5 refits in-process
+and S9 scored the test pass with). The two differ by `max|dW| = 0.18`, so every calibrated
+and age-rule row this script printed before that date is superseded by the numbers it prints
+now, and its PAD panels were not comparable with the external battery's. See CHANGELOG S12
+section 2a and the `frozen_params` module docstring.
+
     $py -m research.xdomain.run_session8b
 """
 
@@ -35,10 +44,10 @@ from sklearn.metrics import roc_auc_score
 
 from ml.evaluation.metrics import compute_metrics
 from ml.paths import REPO_ROOT, load_class_mapping, resolve
-from research.calibration.methods import CalibrationState, apply_calibration
 from research.experiment_log import log_experiment
+from research.external import frozen_params as fp
 from research.selective import mahalanobis
-from research.selective.fairness import AGE_BINS, AGE_LABELS, gaps, slice_attribute
+from research.selective.fairness import gaps, slice_attribute
 
 ARCHS = (
     "convnext_tiny", "convnext_small", "densenet121",
@@ -47,8 +56,6 @@ ARCHS = (
 CLASS_CODES = ("akiec", "bcc", "bkl", "df", "mel", "nv", "vasc")
 PRED_DIR = "research/predictions_pad"
 FEATURE_DIR = "research/selective/features"
-DIRICHLET_STATE = "research/calibration/results_oof/fit_state.json"
-LAMBDA_STATE = "research/agerule/results_oof/age_rule_lambda.json"
 MANIFEST_PAD = "ml/data/manifest_pad.csv"
 OUT_DIR = "research/xdomain/results"
 
@@ -88,47 +95,10 @@ def load_pad_matrix() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     return np.asarray(ids.astype(str)), y_true, probs
 
 
-def load_dirichlet() -> CalibrationState:
-    state = json.loads(resolve(DIRICHLET_STATE).read_text())
-    d = state["calibrators"]["dirichlet"]
-    return CalibrationState(
-        method="dirichlet",
-        weight=np.asarray(d["weight"], dtype=np.float64),
-        bias=np.asarray(d["bias"], dtype=np.float64),
-        temperature=float("nan"),
-    )
-
-
-def load_lambdas() -> dict[str, float]:
-    state = json.loads(resolve(LAMBDA_STATE).read_text())
-    lam = {b: state["by_band"][b]["lam"] for b in state["by_band"]}
-    lam["pooled"] = state["pooled"]["lam"]
-    return lam
-
-
-# --------------------------------------------------------------------------- rules
-def escalating_indices() -> list[int]:
-    return [c.index for c in load_class_mapping().classes if c.needs_escalation]
-
-
-def apply_age_rule(probs: np.ndarray, ages: np.ndarray, lam: dict[str, float]) -> np.ndarray:
-    """argmax_c ( p_c + lambda_band * 1[c escalates] ), band from age; frozen lambdas."""
-    escal = escalating_indices()
-    bonus_mask = np.zeros(probs.shape[1])
-    bonus_mask[escal] = 1.0
-    bands = pd.cut(ages, bins=AGE_BINS, labels=AGE_LABELS, right=False).astype(object)
-    bands = np.where(pd.isna(bands), "unknown", bands)
-    adjusted = probs.copy()
-    for i, band in enumerate(bands):
-        lam_b = lam.get(str(band), lam["pooled"])
-        adjusted[i] = probs[i] + lam_b * bonus_mask
-    return adjusted.argmax(axis=1)
-
-
 def metrics_row(session: str, method: str, y_true: np.ndarray, y_pred: np.ndarray,
                 probs: np.ndarray) -> dict:
     m = compute_metrics(y_true, y_pred, probs)
-    escal = escalating_indices()
+    escal = fp.escalating_indices()
     true_s = np.isin(y_true, escal)
     pred_s = np.isin(y_pred, escal)
     sens = float((true_s & pred_s).sum() / true_s.sum()) if true_s.sum() else float("nan")
@@ -200,12 +170,11 @@ def main(argv: list[str] | None = None) -> int:
     ensemble = probs.mean(axis=1)                                   # uniform soft-vote
     rows.append(metrics_row("session8b", "pad_ensemble_softvote", y_true, ensemble.argmax(1), ensemble))
 
-    dirichlet = load_dirichlet()
-    cal = apply_calibration(dirichlet, np.log(np.clip(ensemble, 1e-12, None)))
+    cal = fp.calibrate(ensemble)                                 # deployed HAM-OOF Dirichlet
     rows.append(metrics_row("session8b", "pad_ensemble_dirichlet", y_true, cal.argmax(1), cal))
 
-    lam = load_lambdas()
-    rule_pred = apply_age_rule(cal, ages, lam)
+    lam = fp.load_lambda_by_band()
+    rule_pred = fp.apply_age_rule(cal, ages, lam=lam)
     rows.append(metrics_row("session8b", "pad_ensemble_dirichlet_agerule", y_true, rule_pred, cal))
 
     table = pd.DataFrame(rows)
