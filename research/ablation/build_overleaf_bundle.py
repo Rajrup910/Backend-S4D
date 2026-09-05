@@ -57,9 +57,17 @@ def main() -> int:
 
     members = [MANUSCRIPT] + dependencies(tex)
     if (root / SUPPLEMENT).is_file():
+        # The supplement has its own dependencies since S16 -- the TRIPOD+AI cross-walk and
+        # the case atlas moved into it -- and shipping it without them produces a bundle that
+        # compiles the paper and fails on the supplement, which is the failure mode this
+        # script exists to prevent.
         members.append(SUPPLEMENT)
+        members += dependencies((root / SUPPLEMENT).read_text(encoding="utf-8"))
     else:
         print(f"  note: {SUPPLEMENT} absent -- run build_supplementary first to include it")
+
+    seen: set[str] = set()
+    members = [m for m in members if not (m in seen or seen.add(m))]
 
     missing = [m for m in members if not (root / m).is_file()]
     if missing:

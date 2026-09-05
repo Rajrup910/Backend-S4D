@@ -1,5 +1,5 @@
 {
-  "frozen_at": "2026-09-04T23:12:52+00:00",
+  "frozen_at": "2026-09-05T17:58:46+00:00",
   "statement": "All test-split numbers reported in paper/manuscript.tex are re-derived from these frozen per-image prediction matrices. Each matrix is the output of one test-set evaluation; re-computing a metric from a frozen matrix is not an additional look at the test set. Entries in research/experiments.csv that are not reproduced from these files are a development record only.",
   "num_files": 34,
   "files": [

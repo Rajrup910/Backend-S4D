@@ -85,8 +85,21 @@ for ch in body:
 if depth != 0:
     problems.append("unbalanced braces in manuscript.tex: net %d" % depth)
 
+# ---- control characters
+# A `"\balance"` written from a script that forgot its raw-string prefix leaves a literal
+# backspace (0x08) in the file, followed by `alance`. It is invisible in an editor, LaTeX
+# reports it far from the cause, and only the supplementary was screened for stray bytes.
+_control = sorted({c for c in s if ord(c) < 32 and c not in "\n\t"})
+if _control:
+    problems.append("manuscript.tex holds control characters: %s"
+                    % [hex(ord(c)) for c in _control])
+
 # ---- tabular column counts
-for m in re.finditer(r"\\begin\{tabular\}\{([^}]*)\}(.*?)\\end\{tabular\}", full, re.S):
+# The column spec may itself contain braces -- `@{}lccc@{}`, `p{0.3\textwidth}` -- so the
+# capture has to allow one level of nesting. `[^}]*` stopped at the `}` inside `@{}` and
+# reported every row of the two composite external tables as "spec says 0".
+for m in re.finditer(
+        r"\\begin\{tabular\}\{((?:[^{}]|\{[^{}]*\})*)\}(.*?)\\end\{tabular\}", full, re.S):
     spec = re.sub(r"[^lcrp]", "", re.sub(r"p\{[^}]*\}", "p", m.group(1)))
     ncol = len(spec)
     for line in m.group(2).split("\\\\"):
@@ -152,7 +165,11 @@ if os.path.isfile(SUPP):
             for m in re.finditer(re.escape(ch), line):
                 if m.start() == 0 or line[m.start() - 1] != "\\":
                     problems.append("supplementary line %d: unescaped %r" % (lineno, ch))
-        if re.search(r"(?<!\\)_", line):
+        # File names are not typeset, so an underscore inside \input, \includegraphics,
+        # \label or \ref is legal and must not be reported. Only prose underscores matter.
+        prose = re.sub(r"\\(?:input|includegraphics|label|ref|graphicspath)"
+                       r"(?:\[[^\]]*\])?\{[^}]*\}", "", line)
+        if re.search(r"(?<!\\)_", prose):
             problems.append("supplementary line %d: unescaped '_'" % lineno)
 
     n_items = len(re.findall(r"(?m)^\d+ &", sup))

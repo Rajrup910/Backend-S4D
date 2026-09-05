@@ -193,7 +193,9 @@ import pandas as pd  # noqa: E402
 
 _TABLES = "".join(
     resolve("paper/tables/%s" % name).read_text(encoding="utf-8")
-    for name in ("ablation_table.tex", "oof_vs_val.tex", "table4_agegap.tex")
+    for name in ("ablation_table.tex", "oof_vs_val.tex", "table4_agegap.tex",
+                 # S16: the two composite external floats the manuscript now inputs.
+                 "external_table_validity_battery.tex", "external_table_safety_nets.tex")
 )
 FULL = SRC + _TABLES
 NORM = " ".join(FULL.split())
@@ -216,7 +218,7 @@ def row(label, cells, source):
         failures.append(f"{label}: row absent (source: {source}) -- want: {want}")
 
 
-def _f(x, nd):
+def _f(x, nd=3):
     return ("%%.%df" % nd) % float(x)
 
 
@@ -500,19 +502,35 @@ present("sel 10% macro_f1", _f(_s10["macro_f1"], 4), S9 + "selective_test.csv")
 present("sel 10% missed", str(int(_s10["missed_serious"])), S9 + "selective_test.csv")
 
 # --- External evaluation on PAD-UFES-20 ----------------------------------------------------
+# The per-member Macro-F1 values still come from the S8b sweep, the only run that scored the
+# six checkpoints individually. Everything the calibrator touches now comes from
+# `pad_age_rule_deployed.json` instead: S8b applied the *calibration* OOF Dirichlet fit rather
+# than the deployed one, and S16 put the two in the same paper, at which point the third
+# decimal stopped being a curiosity (missed serious 1,264 against 1,268).
 _X = "research/xdomain/results/"
 _pad = _csv(_X + "ensemble_on_pad.csv").set_index("method")
-for _m in ("pad_ensemble_softvote", "pad_member_convnext_small", "pad_ensemble_dirichlet",
-           "pad_ensemble_dirichlet_agerule", "pad_member_efficientnet_b3"):
+for _m in ("pad_ensemble_softvote", "pad_member_convnext_small", "pad_member_efficientnet_b3"):
     present(f"PAD macro_f1 {_m}", _f(_pad.loc[_m, "macro_f1"], 3), _X + "ensemble_on_pad.csv")
-for _m in ("pad_ensemble_softvote", "pad_ensemble_dirichlet", "pad_ensemble_dirichlet_agerule"):
-    present(f"PAD esc sens {_m}", _f(_pad.loc[_m, "escalation_sens"], 3),
-            _X + "ensemble_on_pad.csv")
-for _m in ("pad_ensemble_dirichlet", "pad_ensemble_dirichlet_agerule"):
-    present(f"PAD mel recall {_m}", _f(_pad.loc[_m, "mel_recall"], 3), _X + "ensemble_on_pad.csv")
-    present(f"PAD missed {_m}",
-            "{:,}".format(int(_pad.loc[_m, "missed_serious"])).replace(",", "{,}"),
-            _X + "ensemble_on_pad.csv")
+
+_PADRULE = "results/external/pad_age_rule_deployed.json"
+_padr = _json(_PADRULE)
+assert _padr["rule_implementations_agree"], \
+    "frozen_params and run_session8b implement different age rules on PAD"
+assert (_padr["superseded_s8b"]["dirichlet"]["missed_serious"]
+        != _padr["deployed"]["dirichlet"]["missed_serious"]), \
+    "the two Dirichlet maps no longer differ on PAD -- the S16 repoint is moot, simplify it"
+for _arm in ("dirichlet", "dirichlet_plus_age_rule"):
+    _row = _padr["deployed"][_arm]
+    present(f"PAD macro_f1 {_arm} (deployed map)", _f(_row["macro_f1"], 3), _PADRULE)
+    present(f"PAD esc sens {_arm} (deployed map)", _f(_row["escalation_sens"], 3), _PADRULE)
+    present(f"PAD mel recall {_arm} (deployed map)", _f(_row["mel_recall"], 3), _PADRULE)
+    present(f"PAD missed {_arm} (deployed map)",
+            "{:,}".format(int(_row["missed_serious"])).replace(",", "{,}"), _PADRULE)
+# the frozen rule must still trade referrals for sensitivity in the same direction as on HAM
+assert (_padr["deployed"]["dirichlet_plus_age_rule"]["escalation_sens"]
+        > _padr["deployed"]["dirichlet"]["escalation_sens"]), \
+    "the frozen rule no longer raises PAD escalation sensitivity -- Sec. IV-J is wrong"
+
 # "the ensemble is worse than its own best member" is the paper's cross-domain claim
 _members = [i for i in _pad.index if i.startswith("pad_member_")]
 assert _pad.loc["pad_ensemble_softvote", "macro_f1"] < _pad.loc[_members, "macro_f1"].max(), \
@@ -627,8 +645,156 @@ assert resolve("paper/supplementary.tex").is_file(), \
     "paper/supplementary.tex is missing -- run research.ablation.build_supplementary"
 
 
+# --- S16: the three-centre external battery (E1) ----------------------------------------
+# Every literal below is read from the frozen S13/S14 reports, and the directional asserts
+# fire when a *paragraph* of Sec. IV-K becomes wrong rather than a digit -- the same style
+# S11 introduced. Both pre-registered claims failed, and the write-up depends on them having
+# failed in the specific ways recorded here.
+_E1 = _json("results/external/age_rule_transfer_report.json")
+_dose = {r["cohort"]: r for r in _E1["dose_response"]["rows"]}
+
+present("E1 AUC spread", _f(_E1["dose_response"]["claim_a_auc_spread"], 3),
+        "age_rule_transfer_report.json")
+assert not _E1["verdict"]["claim_a_flat_across_centres"], \
+    "Claim A now holds -- Sec. IV-K says it fails"
+assert _E1["verdict"]["claim_b_ordering_reversed"], \
+    "the Claim B ordering is no longer reversed -- Sec. IV-K and the abstract say it is"
+assert not _E1["verdict"]["mix_control_changes_conclusion"], \
+    "the melanoma-only mix control now changes the conclusion"
+assert _E1["dose_response"]["claim_a_within_cohort"]["mskcc"]["worst_band"] != "<40", \
+    "under-40 is worst within MSKCC again -- Sec. IV-K claims it is the best-ranked band"
+assert _E1["dose_response"]["claim_a_within_cohort"]["ham_oof"]["under40_is_worst"], \
+    "under-40 is no longer the worst band on HAM -- the internal result moved"
+
+for _c in ("ham_oof", "bcn20000", "mskcc"):
+    _row = _dose[_c]
+    present(f"E1 {_c} under40 AUC", _f(_row["under40_escalation_mass_auc"]), "E1 report")
+    present(f"E1 {_c} under40 argmax sens", _f(_row["under40_argmax_sensitivity"]), "E1 report")
+    present(f"E1 {_c} melanoma-only sens",
+            _f(_row["under40_melanoma_only_sensitivity"]), "E1 report")
+    _lam = [t for t in _E1["transfer"]
+            if t["cohort"] == _c and t["band"] == "<40" and t["rule"] == "frozen_lambda"][0]
+    present(f"E1 {_c} lambda sens", _f(_lam["point"]), "E1 report")
+    present(f"E1 {_c} lambda referral cost",
+            "%+.3f" % _lam["delta_referral_rate"], "E1 report")
+    # the frozen rule must still help, at a cost, in every centre
+    assert _lam["delta_sensitivity"] > 0 and _lam["delta_referral_rate"] > 0, \
+        f"the frozen lambda no longer trades referrals for sensitivity in {_c}"
+
+# The descriptive lambda sweep is quoted in three places (Sec. IV-K, the Discussion and
+# Limitations) as the argument that the rule's *magnitude* does not transport.
+_sweep = _csv("results/external/e1_lambda_sweep_descriptive.csv")
+_sweep = _sweep[_sweep["band"] == "<40"]
+_opt = {c: g.loc[g["expected_cost"].idxmin(), "lambda"]
+        for c, g in _sweep.groupby("cohort")}
+for _c, _lam_opt in sorted(_opt.items()):
+    present(f"E1 {_c} under40 lambda optimum", _f(_lam_opt, 2),
+            "e1_lambda_sweep_descriptive.csv")
+assert abs(_opt["ham_oof"] - 0.26) < abs(_opt["bcn20000"] - 0.26),     "the source-cohort optimum is no longer the closest to the frozen lambda"
+
+_conf1 = _E1["confirmatory"][_E1["confirmatory"]["primary_cohort"]]
+assert _conf1["only_argmax_caught"] == 0, \
+    "argmax now catches a case the rule misses -- the one-sidedness argument in Sec. IV-K breaks"
+present("E1 confirmatory rescues", str(int(_conf1["only_rule_caught"])), "E1 report")
+
+# all-ages Macro-F1 of the two cohorts, quoted in the design-limitation paragraph
+_ham_all = [r for r in _E1["claim_b"] if r["cohort"] == "ham_oof" and r["band"] == "ALL"][0]
+_bcn_all = [r for r in _E1["claim_b"] if r["cohort"] == "bcn20000" and r["band"] == "ALL"][0]
+present("E1 HAM all-ages macro_f1", _f(_ham_all["macro_f1"]), "E1 report")
+present("E1 BCN all-ages macro_f1", _f(_bcn_all["macro_f1"]), "E1 report")
+assert _bcn_all["macro_f1"] < _ham_all["macro_f1"], \
+    "BCN no longer transfers worse than HAM -- the entanglement limitation is void"
+
+# --- S16: decision curves (E6) ----------------------------------------------------------
+_E6 = _json("results/external/decision_curve_report.json")
+_all10 = [p for p in _E6["panels"]["HAM10000 OOF (N=6,981)"]["reference_points"]
+          if abs(p["p_t"] - 0.10) < 1e-9][0]
+_u4010 = [p for p in _E6["panels"][r"HAM10000 OOF, age $<$40"]["reference_points"]
+          if abs(p["p_t"] - 0.10) < 1e-9][0]
+present("E6 all-ages delta at 0.10", "+%.4f" % _all10["delta_nb"], "decision_curve_report.json")
+present("E6 all-ages CI at 0.10",
+        "[+%.4f, +%.4f]" % (_all10["ci_low"], _all10["ci_high"]), "decision_curve_report.json")
+present("E6 under40 delta at 0.10", "+%.4f" % _u4010["delta_nb"], "decision_curve_report.json")
+assert _all10["ci_low"] > 0, "the all-ages net-benefit gain no longer excludes zero"
+assert _u4010["ci_low"] < 0 < _u4010["ci_high"], \
+    "the under-40 net-benefit difference is no longer null -- Sec. IV-K overstates"
+_u4020 = [p for p in _E6["panels"][r"HAM10000 OOF, age $<$40"]["reference_points"]
+          if abs(p["p_t"] - 0.20) < 1e-9][0]
+assert _u4020["delta_nb"] < 0, "the under-40 curve no longer turns negative by p_t = 0.20"
+assert _E6["test_read"] is False, "the decision-curve report now declares a test read"
+
+# --- S16: prior-shift decomposition on PAD (E2) -----------------------------------------
+_E2 = _json("results/external/pad_prior_decoupling_report.json")
+_variants = {v["variant"]: v for v in _E2["results"]}
+_raw = _variants["Raw Ensemble (Soft-Vote)"]
+_oracle = _variants["Oracle Prior Correction"]
+_em = _variants["Deployable EM Prior (Saerens et al.)"]
+present("E2 oracle macro_f1", _f(_oracle["macro_f1"]), "pad_prior_decoupling_report.json")
+present("E2 EM macro_f1", _f(_em["macro_f1"]), "pad_prior_decoupling_report.json")
+present("E2 EM iterations", str(int(_E2["em_iterations"])), "pad_prior_decoupling_report.json")
+present("E2 EM df prior", _f(_E2["em_estimated_prior_pi_t"]["df"]),
+        "pad_prior_decoupling_report.json")
+present("E2 oracle bcc prior", _f(_E2["oracle_target_prior_pi_t"]["bcc"]),
+        "pad_prior_decoupling_report.json")
+present("E2 source nv prior", _f(_E2["implicit_source_prior_pi_s"]["nv"]),
+        "pad_prior_decoupling_report.json")
+assert _oracle["macro_f1"] > _raw["macro_f1"], \
+    "the oracle prior no longer beats raw -- the prior-shift half of the decomposition is void"
+assert _em["macro_f1"] < _raw["macro_f1"], \
+    "label-free EM no longer hurts -- Sec. IV-J reports it as a negative result"
+_e2c = _E2["confirmatory"]
+assert _e2c["only_raw_correct"] > _e2c["only_em_correct"], \
+    "the E2 confirmatory member is no longer significant in the wrong direction"
+present("E2 McNemar chi2", "%.2f" % _e2c["mcnemar_statistic"], "pad_prior_decoupling_report.json")
+present("E2 only-raw-correct", str(int(_e2c["only_raw_correct"])),
+        "pad_prior_decoupling_report.json")
+present("E2 only-EM-correct", str(int(_e2c["only_em_correct"])),
+        "pad_prior_decoupling_report.json")
+
+# --- S16: triage and the safety nets under shift (E3, E4, E5) ---------------------------
+_E3 = {r["cohort"]: r for r in _json("results/external/clinical_triage_report.json")}
+_ham_cal = _E3["HAM10000 OOF (Calibrated Ensemble, N=6,981)"]
+_pad_cal = _E3["PAD-UFES-20 (Calibrated Ensemble)"]
+present("E3 HAM NNB", "%.1f" % _ham_cal["nnb_pi_03"], "clinical_triage_report.json")
+present("E3 PAD NNB", "%.1f" % _pad_cal["nnb_pi_03"], "clinical_triage_report.json")
+present("E3 HAM missed T1", str(int(_ham_cal["missed_tier1_as_tier3"])),
+        "clinical_triage_report.json")
+present("E3 PAD point-FRR", _f(_pad_cal["point_frr"]), "clinical_triage_report.json")
+assert _pad_cal["nnb_pi_03"] > _ham_cal["nnb_pi_03"], \
+    "PAD no longer costs more biopsies per malignancy than HAM"
+
+_E4 = _json("results/external/conformal_shift_audit.json")
+_aps = {r["cohort"]: r for r in _E4["conformal_audit"]
+        if r["method"] == "APS" and r["mondrian"] and abs(r["alpha"] - 0.05) < 1e-9}
+_id, _shift = _aps["HAM OOF tuning half (L0: ID)"], _aps["PAD-UFES-20 (L2: Shift)"]
+for _label, _rec in (("ID", _id), ("shift", _shift)):
+    present(f"E4 APS {_label} set size", "%.2f" % _rec["mean_set_size"],
+            "conformal_shift_audit.json")
+    present(f"E4 APS {_label} singleton", _f(_rec["singleton_rate"], 3),
+            "conformal_shift_audit.json")
+    present(f"E4 APS {_label} serious coverage", _f(_rec["serious_coverage"], 3),
+            "conformal_shift_audit.json")
+assert _shift["mean_set_size"] > _id["mean_set_size"], \
+    "conformal sets no longer widen under shift -- the safety-net argument in Sec. IV-J is void"
+assert _shift["serious_coverage"] < _id["serious_coverage"], \
+    "serious-class coverage no longer degrades under shift -- Sec. V overstates the caveat"
+
+_E5 = [r for r in _json("results/external/fitzpatrick_slices.json")
+       if r["powered"] and int(r["n_tier1"]) > 0]
+_sens5 = [r["tier1_sensitivity"] for r in _E5]
+for _rec in _E5:
+    present(f"E5 tier-1 sens {_rec['group']}", _f(_rec["tier1_sensitivity"]),
+            "fitzpatrick_slices.json")
+present("E5 I-IV spread", _f(max(_sens5) - min(_sens5)), "fitzpatrick_slices.json")
+assert _sens5 != sorted(_sens5) and _sens5 != sorted(_sens5, reverse=True), \
+    "Fitzpatrick I-IV Tier-1 sensitivity is now monotonic -- the fairness paragraph is wrong"
+assert all(int(r["n_tier1"]) == 0 for r in _json("results/external/fitzpatrick_slices.json")
+           if r["group"] == "Unknown"), \
+    "the unlabelled stratum now holds Tier-1 lesions -- its rates are no longer undefined"
+
+
 # --- Bibliography grew as the Related Work rewrite requires ------------------------------------
-claim("bibliography size", 47, SRC.count("\\bibitem{"))
+claim("bibliography size", 49, SRC.count("\\bibitem{"))
 
 print(f"{checks} checks run")
 if failures:
