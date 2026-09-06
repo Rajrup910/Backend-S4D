@@ -310,52 +310,6 @@ Code & Diagnosis & Tier & Test $n$ \\
 \end{tabular}
 \end{table}
 
-\subsection{Out-of-fold predictions over the training split}
-\label{sec:oof}
-Every component downstream of the backbones has to be fitted somewhere, and fitting all of
-them on the same $1{,}532$ validation images makes that split do six jobs at once: early
-stopping and checkpoint selection for every backbone, ensemble method selection, the
-calibration map, threshold optimisation, abstention quantiles, and conformal calibration.
-None of this leaks into test, but every operating point so derived is fitted on data the
-backbones were themselves optimised against, and the rare classes supply very few calibration
-points. We therefore retrained the six backbones under $K$-fold cross-validation to obtain
-out-of-fold (OOF) predictions covering the entire training split.
-
-Folds are assigned by \texttt{StratifiedGroupKFold} ($K=5$, shuffled, seed $42$) on the
-diagnostic label with \texttt{lesion\_id} as the grouping variable. Plain grouped $K$-fold is
-not adequate here: with $51$ \textsc{df} and $69$ \textsc{vasc} lesions it can leave one fold
-with a third of the rare-class support of another, damaging precisely the class-conditional
-conformal quantile this exercise exists to improve. Each fold file presents the $\mathrm{fold}
-\neq k$ training rows as \emph{train} ($\approx 5{,}585$ images), the real validation split
-unchanged as \emph{val} --- used only for early stopping and checkpoint selection, so the fold
-recipe stays identical to that of the deployed checkpoints --- and the $\mathrm{fold}=k$ rows
-as the held-out partition. The real test images are omitted from the fold files entirely and
-are therefore physically unloadable during fold training. The lesion-disjointness assertion is
-re-run on each of the five files; every lesion falls in exactly one fold, the union of the five
-holdouts is exactly the $6{,}981$ training images with no duplicates, and no test image appears
-anywhere.
-
-Thirty fold models (six architectures $\times$ five folds) were trained under the frozen
-recipe --- identical configuration, seed, monitored metric, patience and augmentation --- and
-written to a separate checkpoint directory, so that no downstream file glob can substitute a
-fold model for a deployed one. The assembled OOF matrices carry $6{,}981$ rows per
-architecture with per-row checkpoint provenance. The rare-class yield improves substantially:
-$71$ \textsc{df} and $99$ \textsc{vasc} OOF rows against $24$ and $22$ in validation, and $64$
-escalating cases in the under-$40$ band against $22$ in validation and $21$ in test. That
-last figure is the reason the age-conditional rule of Sec.~\ref{sec:agerule} is fitted here
-and nowhere else.
-
-\textbf{The stacking mismatch, stated rather than assumed away.} OOF row $i$ is scored by a
-model trained on $5{,}585$ images, whereas every deployed validation and test prediction comes
-from a model trained on all $6{,}981$. The fold models are systematically slightly weaker and
-slightly less confident, so a calibrator fitted on OOF and handed to the stronger full-train
-model is biased towards over-sharpening. This is the classic stacking mismatch. We do not
-claim to have removed it: we measured it --- all $30$ fold models were scored over the
-untouched validation split, which no fold model saw --- before trusting anything fitted on
-OOF, and we report the validation-fitted and OOF-fitted variants \emph{side by side}
-(Table~\ref{tab:oof_vs_val}) rather than replacing one with the other. The corresponding
-ladder rungs (A7-val versus A7-oof) are likewise reported as a pair.
-
 \subsection{External cohort}
 \label{sec:external-data}
 For the external evaluation of Sec.~\ref{sec:results-external} we use all $2{,}106$ images of
@@ -388,148 +342,6 @@ stating in the text: version~1 named the wrong out-of-fold Dirichlet fit. Three 
 project, they differ by up to $0.18$ in the calibration weight matrix, and only one of them is
 the map the system actually deploys. Every external number here uses the deployed map, loaded
 through a single accessor that no analysis script is permitted to bypass.
-
-\subsection{Metrics}
-\label{sec:metrics}
-We report three primary metrics and never use accuracy for model selection, because the
-$67\%$ \textsc{nv} majority makes it a measure of prior-matching rather than of diagnostic
-skill.
-
-\emph{Macro-F1} averages per-class F1 with equal weight, so the twenty \textsc{df} images
-count as much as the thousand \textsc{nv} images. \emph{Balanced accuracy} is the macro-averaged
-recall. \emph{Escalation sensitivity} collapses the seven-way problem into the screening
-question that matters --- does this lesion need to be seen by a clinician? --- by defining the
-positive set as $\escset$ and reporting
-\begin{equation}
-\mathrm{Sens}_{\mathrm{esc}} = \frac{|\{i : y_i \in \mathcal{E} \wedge \hat{y}_i \in \mathcal{E}\}|}
-                                     {|\{i : y_i \in \mathcal{E}\}|},
-\end{equation}
-with $\mathcal{E}$ the escalating set. Its complement in absolute terms, the count of
-\emph{missed serious cases}, is reported alongside because a rate over $290$ positives hides
-the clinical unit of harm. Calibration is measured by expected calibration error (ECE) over
-$15$ equal-width confidence bins.
-
-Two further quantities are used for the clinical-utility analysis and are defined here
-because both are easy to report misleadingly.
-
-\emph{Number Needed to Biopsy} (NNB) is the reciprocal of the positive predictive value of
-the escalate decision, $\mathrm{NNB} = (\mathrm{TP}+\mathrm{FP})/\mathrm{TP}$: how many
-lesions a clinic must escalate to catch one that needed escalating. It is
-\emph{prevalence-dependent}, and HAM10000 is a curated cohort whose escalating prevalence
-($19.3\%$ on the test split) is far above the $1$--$5\%$ typical of primary-care screening.
-An unadjusted NNB from this dataset must therefore never be compared against the
-dermatologist range quoted in the clinical literature. We report NNB re-weighted to a stated
-reference prevalence $\pi$ by importance-weighting the benign cases,
-\begin{equation}
-w \;=\; \frac{1-\pi}{\pi}\cdot\frac{p}{1-p},
-\qquad
-\mathrm{NNB}_{\pi} \;=\; 1 + w\,\frac{\mathrm{FP}}{\mathrm{TP}},
-\label{eq:nnb}
-\end{equation}
-with $p$ the observed escalating prevalence in the cohort. We use $\pi = 0.03$ throughout and
-report $\pi \in \{0.01, 0.05\}$ as a sensitivity range. Equation~\eqref{eq:nnb} assumes the
-class-conditional score distributions transfer to the lower-prevalence setting, which is
-optimistic; we state the assumption rather than hiding it inside the number.
-
-\emph{False Reassurance Rate} (FRR) is the conformal endpoint we treat as primary:
-\begin{equation}
-\mathrm{FRR} \;=\;
-\frac{|\{i : y_i \in \mathcal{E},\; \mathcal{C}(x_i) \cap \mathcal{E} = \emptyset\}|}
-     {|\{i : y_i \in \mathcal{E}\}|},
-\label{eq:frr}
-\end{equation}
-the share of truly escalating lesions whose prediction set $\mathcal{C}(x_i)$ contains no
-escalating class at all --- a formally valid shortlist that would not prompt referral. It is
-the natural endpoint for this problem precisely because marginal coverage is not
-(Sec.~\ref{sec:results-conformal}).
-
-\subsection{Backbones and training}
-Six ImageNet-pretrained CNN backbones --- ResNet-50~\cite{he2016resnet},
-DenseNet-121~\cite{huang2017densenet}, EfficientNet-B0 and
--B3~\cite{tan2019efficientnet}, ConvNeXt-Tiny and -Small~\cite{liu2022convnext} --- are
-fine-tuned identically: $224\times224$ inputs, a two-stage schedule (three epochs with the
-backbone frozen at a head learning rate of $10^{-3}$, then full fine-tuning at $10^{-4}$),
-AdamW with weight decay $10^{-4}$, cosine annealing, batch size $32$, label smoothing
-$0.05$, gradient clipping at norm $5.0$, mixed precision, and a maximum of $30$ epochs with
-early stopping (patience $8$) on validation Macro-F1. Class imbalance is handled by
-effective-number weighting~\cite{cui2019classbalanced} with $\beta=0.999$. Augmentation is
-deliberately conservative: random resized crops (scale $[0.8,1.0]$), horizontal and vertical
-flips, $\pm20^\circ$ rotation, and only mild colour jitter (brightness/contrast $0.15$,
-saturation $0.10$, hue $0.02$), because colour is diagnostically meaningful in pigmented
-lesions and heavy colour distortion destroys signal rather than adding invariance.
-Two transformer backbones (SwinV2-Tiny~\cite{liu2022swinv2}, MaxViT-Tiny~\cite{tu2022maxvit})
-and two alternative losses (LDAM-DRW~\cite{cao2019ldam}, ASL~\cite{ridnik2021asl}) are trained
-under the same protocol. The random seed is fixed at $42$ throughout.
-
-All experiments run on Python 3.12 with PyTorch 2.11 (CUDA 12.8), \texttt{timm} for the
-pretrained backbones, and scikit-learn 1.5 for the statistical and calibration components; the
-pinned environment is in the repository.
-
-\subsection{Ensembling}
-The ensemble is a uniform arithmetic soft-vote over the six CNN members' probability
-vectors. This choice is deliberate and is itself a result. We evaluated rank averaging,
-geometric soft-voting, Nelder--Mead weight optimisation, Caruana greedy selection with
-replacement~\cite{caruana2004ensemble}, and non-negative ridge stacking on flattened
-per-class logits, all fitted out-of-fold within the validation split using
-\texttt{StratifiedGroupKFold} with lesion groups. Nelder--Mead converged to uniform weights
-$[0.167]^6$, which we read as corroboration rather than as a distinct method. Ensemble
-diversity was audited on validation: mean pairwise disagreement $0.1483$, mean Yule's $Q$
-$0.8986$, mean double-fault ratio $0.0989$.
-
-\subsection{Test-time augmentation and calibration}
-TTA pools $24$ deterministic views per image --- the eight dihedral transforms of the square
-at three scales --- using only evaluation-time transforms (resize, centre crop, normalise),
-so no training-time randomness enters inference. Views are combined by entropy-weighted
-pooling.
-
-Four calibrators were fitted on validation and compared by validation ECE: none, temperature
-scaling, matrix scaling, and Dirichlet calibration~\cite{kull2019dirichlet} with $L_2$
-regularisation. Dirichlet won on validation ECE and is used for all downstream stages.
-
-\subsection{Selective prediction and conformal sets}
-Seven uncertainty scores were compared by validation area under the risk--coverage curve
-(AURC): maximum softmax probability, top-two margin, predictive entropy, mutual information
-(BALD), inter-member variance, Mahalanobis distance~\cite{lee2018mahalanobis} in
-ConvNeXt-Tiny penultimate feature space (class means and a Ledoit--Wolf tied covariance
-fitted on the training split only, shrinkage $0.031$), and an entropy $+$ Mahalanobis
-combination. All seven are written as \emph{uncertainty} scores, larger meaning less
-reliable; the top-two margin is therefore $1 - (p_{(1)} - p_{(2)})$, which is largest when
-the two leading classes are closest. It won on validation and is used throughout. Abstention
-thresholds are the corresponding validation quantiles at target rates of $5/10/15/20\%$, and
-a case is deferred when its score exceeds the threshold.
-
-Conformal sets use split conformal with three score functions --- LAC~\cite{sadinle2019lac},
-APS~\cite{romano2020aps}, RAPS~\cite{angelopoulos2021raps} --- under three calibration
-schemes and at $\alpha \in \{0.10, 0.05\}$. The first two are marginal and Mondrian
-class-conditional~\cite{vovk2012conditional}. The third, which we call \emph{bipartite},
-groups calibration points by the pair (age band, escalation requirement), i.e.\ by
-$(\mathrm{band}(x_i),\, \mathbf{1}[y_i \in \mathcal{E}])$, giving six cells. It is an instance
-of equalised coverage~\cite{romano2020equalized}: coverage is conditioned on an attribute of
-the patient as well as on the label. We do not use the full $3 \times 7$ product of band and
-class, because at $21$ escalating under-$40$ cases several of its cells cannot certify a
-finite threshold at all; where a cell is degenerate our implementation returns $+\infty$
-honestly, and we report that rather than clipping it. Validation is split into a tuning half ($770$ images) and a calibration
-half ($762$), grouped by lesion; RAPS hyperparameters ($k_{\mathrm{reg}}$, $\lambda$) are
-chosen on the tuning half only, and all conformal quantiles come from the calibration half.
-The Dirichlet calibrator underlying the conformal score is likewise fitted on the tuning half
-only, so that the score function has not seen its own calibration data --- without this, the
-exchangeability the coverage guarantee relies on is violated.
-
-\textbf{The OOF-calibrated variant buys sample size and loses the theorem, and we say which.}
-Calibrating conformal quantiles on the $6{,}981$ OOF rows raises the rarest class from $11$
-calibration points to $45$ and eliminates all six degenerate class-conditional cells at
-$\alpha=0.05$ (Table~\ref{tab:oof_vs_val}). It also breaks the exchangeability the
-finite-sample guarantee requires: split conformal needs calibration and test scores to come
-from \emph{one fixed} score function, while OOF scores come from five fold models and the
-test scores from the full-train ensemble. An OOF-calibrated quantile applied to full-train
-test scores therefore carries \emph{no} exact finite-sample guarantee. We treat its coverage
-as an empirical quantity to be audited against nominal $1-\alpha$ and never assert it, and we
-retain the validation-fitted variant, which does keep the exact guarantee at $n=24/22$ per
-rare class, as the configuration in which the marginal-versus-conditional argument of
-Sec.~\ref{sec:results-conformal} is made. Cross-conformal or CV+ would restore a
-$(1-2\alpha)$ guarantee, but requires scoring the test split with all five fold models, which
-is a second read of the test set and out of scope under our test-set protocol; we note it as
-the rigorous follow-up.
 
 \subsection{The age-conditional escalation rule}
 \label{sec:agerule}
@@ -567,93 +379,8 @@ pooled $0.65$ for the small number of records with no recorded age. The under-$4
 touching zero is the honest reading of $64$ positives and is the reason this rung was
 pre-registered two-sided.
 
-\subsection{Statistical protocol and frozen artifacts}
-\label{sec:frozen}
-\textbf{Interval rule, fixed in advance.} Two interval constructions are used and the choice
-between them is made once, by rule, so that it cannot be made per number. A \emph{proportion}
-with fewer than $30$ events in the numerator --- subgroup sensitivity, miss-rescue rate,
-false reassurance rate, conformal coverage --- takes the exact Clopper--Pearson interval.
-Everything else --- Macro-F1, balanced accuracy, ECE, AUC, per-class F1, and proportions with
-larger numerators --- takes a $1000\times$ (or, for quantities added in this round,
-$2000\times$) bootstrap percentile interval that resamples \emph{lesions, not images}. Both
-are computed for every proportion and the leading one is named in the table.
 
-Neither half of this rule is cosmetic. Lesion resampling matters because the $1{,}502$ test
-images sit on $1{,}121$ lesions, one of them contributing six views; resampling images would
-treat correlated views as independent evidence and produce intervals that are too narrow. The
-exact interval matters because at the paper's smallest and most consequential count --- $3$
-of $21$ escalating lesions caught in the under-$40$ band --- the percentile bootstrap returns
-$[0.000, 0.286]$ against the exact $[0.030, 0.363]$. The bootstrap interval is visibly too
-narrow and cannot reach the upper tail, and this is exactly the number that must not be
-reported with understated uncertainty.
-
-\textbf{Paired tests and declared comparison families.} Paired comparisons between rungs that
-share the $N=1502$ denominator use McNemar's test~\cite{dietterich1998} on raw
-correct/incorrect outcomes and, per class, DeLong's test~\cite{delong1988} on one-vs-rest
-ROC-AUC, computed with the fast structural-component algorithm~\cite{sun2014fastdelong}.
-Multiplicity is handled by declaring the families in advance rather than by adjusting after
-the fact. Seven families are enumerated in
-\texttt{results/comparison\_families.json}: four confirmatory, which are Holm--Bonferroni
-corrected \emph{within} family and whose adjusted $p$-values are the ones quoted, and three
-exploratory, which are reported as intervals only and are never described as significant.
-The confirmatory families are the $42$ DeLong tests (six structural comparisons $\times$ seven
-classes), the six ladder McNemar tests, the single pre-specified age-band comparison, and the
-two new pre-registered rungs of Sec.~\ref{sec:results-exhaustion}. Two consequences are worth
-stating plainly. First, the six McNemar tests were reported unadjusted in an earlier version
-of this work and are corrected here; the ensembling result survives comfortably (Holm-adjusted
-$p = 2.0\times10^{-4}$). Second, when new comparisons were added in this round they were
-declared as a \emph{separate} pre-specified family before the rungs existed, rather than
-folded into the $42$-test family, because their estimand differs and because absorbing them
-would retrospectively penalise an earlier result for a later session's additions. Silently
-enlarging a family under an unchanged correction is the most common route by which an honest
-statistical section becomes a dishonest one.
-
-\textbf{Frozen artifacts.} The development log \texttt{research/experiments.csv} records the
-full run history across nine working sessions, much of it test-split evaluation. To be
-explicit about what this means for the numbers in this paper: \textbf{all reported test
-results derive from frozen artifact sets} --- the $34$ per-image prediction matrices under
-\texttt{research/predictions/} and \texttt{research/predictions\_tta/}, hashed into
-\texttt{results/frozen\_artifacts.json} before the statistical analysis was written --- and
-every table and figure below is regenerated from those files by the scripts named in that
-declaration. Re-deriving a metric from a frozen prediction matrix is not an additional look
-at the test set. The remainder of the experiment log is a development record and no number in
-this manuscript is taken from it directly.
-
-\textbf{A frozen analysis plan, and one pass over the test split.} This round adds a
-substantial number of new test-set quantities: two ladder rungs, the age-conditional rule at
-its fitted $\lambda$, NNB, FRR and the $\alpha$ that bounds it, bipartite coverage,
-per-band calibration, intersectional cells and the attribution fraction. Read incrementally,
-each would be a selection opportunity. We therefore wrote \texttt{results/analysis\_plan.json}
-before any of this round's code touched the test split. It names all $19$ quantities, gives
-the formula for each, records the split every fitted parameter came from and the hash of the
-file it is frozen in, fixes the interval rule quoted above, and states the reference
-prevalence, the age-band edges, the escalating class set and the $\alpha$ grid. It is
-self-hashed and that hash is recorded alongside the frozen-artifact declaration. The plan is
-then \emph{executed}: a single runner emits all $19$ quantities and raises on any identifier
-the plan does not contain, so the restriction is enforced by the code rather than asserted in
-prose. Execution appends to \texttt{results/test\_pass\_receipt.json}, which records the plan
-hash, the input file hashes, the stage, and the quantities emitted, and which refuses a
-repeated execution unless a reason is supplied and permanently recorded. The pass reported
-here ran in two stages --- $18$ tabular quantities and one GPU attribution quantity --- with
-no repeat and no stated reason on either. As a reproduction check, the published rung A7
-recomputed inside that pass matched its frozen value of $0.8047238$ to zero drift.
-
-Any quantity that occurred to us after seeing these numbers is not in this paper.
-
-Reporting completeness is documented against the $44$-item CLAIM 2024
-checklist~\cite{tejani2024claim}, given in Appendix~\ref{app:claim} with a per-item pointer
-into the manuscript or the results directory. We record $33$ items met, $7$ partial, $2$ not
-met and $2$ not applicable, and the shortfalls are named rather than left blank: the study
-is not registered --- for which the frozen analysis plan of the preceding paragraph is an
-imperfect substitute, since it is not a public pre-registration --- and inter-rater
-variability cannot be computed, because neither source dataset releases per-rater labels. A
-second cross-walk against the $23$ reporting domains of TRIPOD+AI~\cite{collins2024tripodai},
-the standard that covers model transportability specifically, is given in
-Appendix~\ref{app:tripod}. Both checklists are pointer indices into this paper rather than
-results, which is why they are held back to the appendices; Appendix~\ref{app:atlas} carries a
-qualitative atlas of the lesions the age rule rescues.
-
-% =====================================================================
+\textit{The remaining apparatus --- the out-of-fold protocol, metric definitions, backbone training, ensembling, test-time augmentation and calibration, selective prediction and conformal set construction, and the statistical protocol with its frozen-artifact declaration --- is specified in Appendix~\ref{app:extmethods}. It is held back for length, not because it is optional: every number in this paper depends on it.}
 \section{Results}
 
 \begin{figure*}[t]
@@ -666,143 +393,6 @@ abstention gate and a Mondrian class-conditional conformal set constructor. Ever
 component downstream of the backbones is fitted on validation data only.}
 \label{fig:architecture}
 \end{figure*}
-
-\subsection{The ablation ladder}
-\label{sec:results-ladder}
-
-Table~\ref{tab:ablation} reports the full ladder. Block A is at full coverage
-($N=1502$); Block B abstains and is discussed separately in
-Sec.~\ref{sec:results-selective}. Two further rungs, added in this round and pre-registered
-before the test split was read, are reported in Sec.~\ref{sec:results-exhaustion}.
-
-\input{tables/ablation_table.tex}
-
-\textbf{Architecture barely matters.} The spread across single models is narrow and
-statistically unresolvable. ConvNeXt-Tiny ($0.7459$, CI $[0.6928, 0.7806]$) improves on
-ResNet-50 ($0.7058$, CI $[0.6470, 0.7501]$) by $+0.040$ Macro-F1, but the paired bootstrap
-difference interval $[-0.005, +0.086]$ crosses zero and McNemar gives $p=0.42$. SwinV2-Tiny
-($0.7273$) does not beat the best CNN; the paired difference is $-0.019$, $p=0.38$. The
-gated metadata-fusion model ($0.7411$) does not either ($-0.005$, $p=0.17$). The two
-imbalance-targeted losses likewise fail to improve on the cross-entropy baseline:
-LDAM-DRW reaches $0.7256$ and ASL $0.7305$, both below plain ConvNeXt-Tiny.
-
-\textbf{Ensembling is the only rung that clears the significance bar.} The uniform soft-vote
-over six CNNs reaches $0.7718$ (CI $[0.7201, 0.8118]$), and McNemar against the best single
-model is decisively significant ($\chi^2 = 17.20$, $p = 3.4\times10^{-5}$; $85$ cases
-correct only for the ensemble against $38$ only for ConvNeXt-Tiny). The McNemar $p$-values
-quoted in this subsection are raw; Holm correction inside the six-member ladder family leaves
-this comparison significant at $p=2.0\times10^{-4}$ and every other comparison in the family
-non-significant, so the correction changes no conclusion here. After Holm correction across
-all $42$ DeLong tests, exactly one per-class AUC comparison survives: the ensemble
-improves \textsc{bkl} one-vs-rest AUC from $0.9195$ to $0.9572$ ($z=3.61$, raw $p=3.1\times
-10^{-4}$, Holm-adjusted $p=0.013$).
-
-It is worth noting explicitly that the McNemar result and the Macro-F1 bootstrap interval
-disagree in appearance: the paired Macro-F1 difference is $+0.026$ with interval
-$[-0.011, +0.062]$, which crosses zero. This is not a contradiction. McNemar tests raw
-correct/incorrect outcomes, which on this split are dominated by the $1{,}004$ \textsc{nv}
-images, whereas Macro-F1 weights all seven classes equally and therefore inherits the wide
-sampling variance of the twenty-image \textsc{df} class. The two statistics answer different
-questions and both are reported.
-
-\textbf{TTA and calibration are consistent but individually unresolvable.} TTA adds $+0.014$
-($0.7859$, $p=0.10$) and Dirichlet calibration a further $+0.019$ ($0.8047$, $p=0.66$).
-Neither is individually significant; their cumulative effect over the soft-vote baseline is
-$+0.033$ Macro-F1.
-
-\textbf{A negative result we chose to report.} Non-negative ridge stacking on flattened
-per-class logits achieves the best test Macro-F1 of any ensembling method we tried
-($0.7815$) and simultaneously the \emph{worst} out-of-fold validation score
-($0.7583$, against $0.7911$ for the uniform soft-vote). Reporting $0.7815$ as the value of
-the ``stacking'' rung would have been selection on the test set. We report the
-validation-selected winner, $0.7718$, and record the stacker as a negative result. The
-generalisation gaps (validation-OOF minus test) support the reading: $+0.019$ for
-soft-voting, $+0.011$ for Caruana greedy, and $-0.023$ for ridge, the only negative value in
-the set. The same discipline governs the choice of ``best single model'': MaxViT-Tiny attains
-a higher test Macro-F1 ($0.7525$) than ConvNeXt-Tiny ($0.7459$), but a lower validation score
-($0.7176$ against $0.7482$), so ConvNeXt-Tiny remains rung A2.
-
-\subsection{Five combination levers, five negative results}
-\label{sec:results-exhaustion}
-
-Rung A7 reaches Macro-F1 $0.8047$. The obvious next question is whether anything cheap gets
-past it. We tested five candidates and none did. Table~\ref{tab:exhaustion} collects them,
-together with the companion calibration rung A7-oof.
-
-\begin{table}[t]
-\centering
-\caption{Combination levers evaluated beyond rung A7. The first block is fitted and evaluated
-on validation with lesion-grouped cross-fitting and never touched the test split; two numbers
-separated by a slash are the two cross-fitting arms. The second block is two rungs declared
-in the pre-registered analysis plan before they existed and evaluated in the single test
-pass, with Holm correction inside their own two-member family.}
-\label{tab:exhaustion}
-\begin{tabular}{llc}
-\toprule
-Lever & Held-out result & Verdict \\
-\midrule
-\multicolumn{3}{l}{\textit{Post-hoc recombination, cross-fitted on validation}} \\
-$+$ SwinV2 $+$ MaxViT ($K{=}8$ vote) & $0.7981$ vs $0.7986$ & wash \\
-Caruana greedy over $K{=}8$ & $0.7640/0.7839$ vs $0.7945$ & worse \\
-Global prior correction $p/\pi^{\tau}$ & $-0.0035 / -0.0061$ & dead \\
-Per-class Macro-F1 offsets & $+0.0009$, sign flips & noise \\
-\midrule
-\multicolumn{3}{l}{\textit{Pre-registered rungs, single test pass}} \\
-A7-oof (OOF-fitted Dirichlet) & $-0.0176$ $[-0.0451, +0.0054]$ & negative \\
-A8 ($30$-member fold bag) & $-0.0237$ $[-0.0625, +0.0043]$ & negative \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\textbf{Adding the transformers to the ensemble is a wash.} An eight-member soft-vote that
-adds SwinV2-Tiny and MaxViT-Tiny to the six CNNs scores $0.7981$ against $0.7986$ for the
-six-CNN vote on the same cross-fitted validation protocol. This closes a gap an earlier
-version of this work listed as future work; the answer is that it does nothing.
-
-\textbf{Member selection overfits.} Caruana greedy selection with replacement over the
-eight-member library scores $0.7640$ and $0.7839$ on the two cross-fitting arms against
-$0.7945$ for the uniform vote. Selecting members on a held-out split of this size costs more
-in variance than it recovers in fit --- the winner's curse in its most ordinary
-form~\cite{sculley2018winners}.
-
-\textbf{Prior correction is inert, and the reason is mechanical.} Dividing by a tempered class
-prior, $p/\pi^{\tau}$, is the standard post-hoc long-tail remedy~\cite{menon2021logitadjust,
-saerens2002adjusting}. Here the optimal temperature is $\tau \approx 0$ and both cross-fitting
-arms lose ($-0.0035$, $-0.0061$). Per-class Macro-F1 offsets fare no better: a mean gain of
-$+0.0009$ whose sign disagrees across folds. The null has an explanation rather than being
-merely recorded: training already applies effective-number class
-weighting~\cite{cui2019classbalanced}, so the model's implicit prior is not the empirical
-label prior, and correcting by the empirical prior a second time over-corrects.
-
-\textbf{Fold-bagging, the one lever with a real mechanism behind it, also fails.} The $30$
-fold models of Sec.~\ref{sec:oof} form a natural bagged ensemble with five times the member
-count of the deployed system. It was the last credible Macro-F1 path after the four levers
-above, and was declared in the analysis plan as rung A8 before it existed. On the single test
-pass it scores $0.7810$ $[0.7207, 0.8258]$, a paired difference of $-0.0237$
-$[-0.0625, +0.0043]$ against A7 with Holm-adjusted $p=0.242$: not significant, and negative in
-point estimate. It does catch one more escalating lesion ($77$ missed against $78$), the
-direction bagging was expected to help, but nothing here is resolvable. One caveat is
-pre-registered and we restate it: A8 reuses the six-member OOF Dirichlet map rather than one
-fitted for a $30$-member bag, and a $30$-member vote is more hedged than a six-member one, so
-A8 is under-sharpened by construction. It is a lower bound on fold-bagging, not a refutation
-of it.
-
-\textbf{The companion rung, A7-oof, is also negative --- and was pre-registered two-sided for
-exactly that reason.} Fitting the Dirichlet map on $6{,}981$ OOF rows instead of $1{,}532$
-validation rows scores $0.7871$ $[0.7315, 0.8295]$, a difference of $-0.0176$ $[-0.0451,
-+0.0054]$, Holm $p=0.242$. A validation-arm measurement made before the test read had
-already put the cost at $0.011$ Macro-F1, so this was expected rather than surprising. What
-OOF fitting buys is not accuracy: it is calibration sample size, and specifically the
-elimination of every degenerate rare-class conformal cell at $\alpha=0.05$
-(Table~\ref{tab:oof_vs_val}).
-
-\input{tables/oof_vs_val.tex}
-
-\textbf{Taken together this is a result, not a gap.} Five levers, five negative outcomes, each
-one selected or fitted without touching the test split. Macro-F1 $0.8047$ is the ceiling of
-these six frozen checkpoints under every post-hoc recombination we could construct. That is
-the empirical form of this paper's argument: the informative axis has moved off aggregate
-accuracy, and the rest of the Results section is about the axis it moved onto.
 
 \subsection{Calibration and decision rules}
 \label{sec:results-calibration}
@@ -915,73 +505,6 @@ curve comparing the ensemble with its best single member and with a treat-all po
 comparison is already settled, and settled more precisely, by the ablation ladder. The
 clinically live question is whether the escalation rule of Sec.~\ref{sec:agerule} earns the
 extra referrals it buys, and Fig.~\ref{fig:dca} answers that one.
-
-\subsection{Selective classification}
-\label{sec:results-selective}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.86\textwidth]{figure4_selective.png}
-\caption{Selective classification on the test split. \textbf{(a)} Risk--coverage curves for
-the seven uncertainty scores. The three probability-based scores (margin, MSP, entropy) are
-mutually indistinguishable; the disagreement-based scores (mutual information, ensemble
-variance) are consistently worse, and Mahalanobis feature distance is worst by a clear
-margin across the whole operating range. The margin was selected on validation AURC, but its
-advantage over MSP and entropy is not resolvable on test. \textbf{(b)} The aggregate
-safety/workload trade-off for the selected score: Macro-F1 and escalation sensitivity on the
-retained cases rise monotonically with the deferral rate while missed serious cases fall from
-$78$ to $36$. Panel~(b) is well behaved at every operating point, which is precisely why the
-subgroup breakdown in Table~\ref{tab:agegap} --- and not this figure --- is what exposes the
-under-$40$ failure.}
-\label{fig:selective}
-\end{figure*}
-
-Ranked by validation AURC, the top-two margin wins ($0.02563$), followed by MSP
-($0.02671$), entropy ($0.02714$), entropy $+$ Mahalanobis ($0.02795$), mutual information
-($0.03226$), inter-member variance ($0.03371$) and Mahalanobis distance ($0.03558$). The
-ordering holds on test (margin E-AURC $0.02242$; Mahalanobis $0.03097$).
-
-\textbf{Mahalanobis distance ranks last, and this is the expected result.} Feature-space
-distance answers the question ``is this input unlike anything seen in training?''. Every
-image in this test split is HAM10000 dermoscopy drawn from the same acquisition process as
-the training set, so there is no distribution shift for it to detect. What abstention needs
-to rank here is \emph{in-distribution difficulty} --- genuinely ambiguous lesions near a
-decision boundary but comfortably inside the feature manifold --- and the probability vector
-measures exactly that. Consistent with this reading, combining Mahalanobis with entropy is
-worse than entropy alone. We regard the Mahalanobis score as untested rather than refuted:
-the honest venue for it is an out-of-distribution stream such as smartphone clinical
-photography, which this split by construction does not contain.
-
-Block B of Table~\ref{tab:ablation} gives the selective results. Deferring the $10.8\%$ of
-cases with the smallest gap between their top two class probabilities raises Macro-F1 on the
-retained set from $0.8047$ to $0.8577$
-and cuts missed serious cases from $78$ to $54$; at $22.1\%$ deferral the retained Macro-F1
-reaches $0.8957$ with $36$ missed. We emphasise that these rows have a different denominator
-($1{,}340$ and $1{,}170$ images against $1{,}502$) and are not like-for-like with Block A:
-the classifier is being handed an easier subset, not becoming a better classifier. This is
-why they occupy a separate, coverage-annotated block, and why Fig.~\ref{fig:selective}(a)
-rather than the table carries the substantive claim.
-
-One systematic effect is worth recording. Requested abstention rates of $5/10/15/20\%$ yield
-realised test coverages of $0.954/0.892/0.836/0.779$ --- roughly one percentage point more
-abstention than the validation quantile promised, consistently at every operating point.
-That is the expected signature of a threshold fitted on data the backbones were themselves
-optimised against, and it bounds the optimism of our validation-derived operating points at
-approximately one point of coverage.
-
-\textbf{Refitting the gate out-of-fold changes which score wins, which is itself informative.}
-Selecting the uncertainty score by AURC on the $6{,}981$ OOF rows rather than the $1{,}532$
-validation rows promotes maximum softmax probability over the top-two margin
-(Table~\ref{tab:oof_vs_val}). The two are statistically indistinguishable on test
-(Fig.~\ref{fig:selective}(a)), so this is a coin landing the other way rather than a
-correction; but it means the two arms' abstention thresholds live on different scales and
-their numerical values are not comparable across arms. The OOF-fitted gate is the one used
-for the orthogonality analysis in Sec.~\ref{sec:results-utility}, where at a $10\%$ target it
-retains $89.9\%$ of cases, raises retained Macro-F1 from $0.7871$ to $0.8444$, and cuts
-missed serious cases from $78$ to $57$. Substituting one probability-based score for another
-does not change the paper's conclusions, and we checked specifically that it does not change
-the under-$40$ finding: the confidently-wrong pattern reproduces under MSP as it does under
-margin.
 
 \subsection{Conformal prediction}
 \label{sec:results-conformal}
@@ -1312,180 +835,6 @@ Whether that trade is acceptable is a question for a care pathway and not for us
 analysis provides is the exchange rate, priced in the currency clinicians already use, with the definitions fixed in advance in
 Sec.~\ref{sec:metrics}.
 
-\subsection{Intersectional slices, and the cells we decline to report}
-\label{sec:results-intersectional}
-
-Age is not the only axis, and disparities can compound. We slice age band $\times$ sex on the
-test split under the same power gates the rest of our subgroup analysis uses: at least $30$
-images and at least $10$ true escalating cases before a sensitivity is reported at all. Five
-of the eight cells clear both gates.
-
-Escalation sensitivity is $0.848$ $[0.681, 0.949]$ for women aged $40$--$59$ and $0.784$
-$[0.618, 0.902]$ for men in the same band; $0.697$ $[0.551, 0.833]$ for women aged $60+$ and
-$0.797$ $[0.709, 0.874]$ for men. The one reportable under-$40$ cell, women, is $0.250$
-$[0.055, 0.572]$ on twelve escalating lesions. Across the reportable cells the
-equalised-odds true-positive-rate gap is $0.598$, the demographic-parity gap $0.339$, and the
-gap in referral burden $0.129$. The dominant structure is the age gap; sex modulates it
-within bands by substantially less than age separates the bands, and at these interval widths
-we do not claim a resolved sex effect.
-
-Three cells are suppressed and we name them rather than dropping them. Two hold patients with
-no recorded age or sex ($n=3$ and $n=9$). The third is men under $40$: it has nine escalating
-lesions against our floor of ten, so it fails the gate by one case. It is, predictably, the
-cell a reader most wants to see, and it is exactly the cell at which a point estimate would be
-least trustworthy; its raw counts are in the results file, and we decline to attach a
-sensitivity or an interval to it here. Reporting a gate and then quietly stepping over it for
-the interesting cell would defeat the purpose of having set one.
-
-\subsection{Explainability}
-\label{sec:results-gradcam}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.90\textwidth]{figure7_gradcam.png}
-\caption{Grad-CAM attributions for ConvNeXt-Tiny on the test split. Top row: the
-highest-confidence correct case for four classes the model handles well. Bottom row: the
-highest-confidence \emph{error} for four classes it confuses, including both directions of
-the \textsc{mel}/\textsc{bkl} confusion. Each panel prints true $\rightarrow$ predicted and
-the softmax value; panels are selected deterministically by confidence from
-\texttt{gradcam\_stats.csv}. These are the model's \emph{most} confident errors, which at
-$0.59$--$0.85$ still straddle its mean confidence of $0.7048$, so the row illustrates the
-failure mode rather than quantifying it. Read the maps as illustration only: over all
-$1{,}502$ test images the lesion-interior mass fraction is $0.523$, and it is \emph{higher}
-for errors than for correct predictions --- a predicted-class artefact analysed in the text,
-not evidence that errors are the better localised.}
-\label{fig:gradcam}
-\end{figure*}
-
-Grad-CAM~\cite{selvaraju2017gradcam} overlays were generated for the ConvNeXt-Tiny model on
-$28$ test images, four per class, split between correct and incorrect predictions
-(Fig.~\ref{fig:gradcam}).
-
-An earlier version of this analysis used only a \emph{border mass fraction} --- the share of
-heatmap activation falling in the outer $15\%$ of the frame --- as a proxy for whether the
-model was responding to vignetting rather than to the lesion. That is an image-frame
-heuristic, not a lesion boundary. Using Tschandl's binary lesion segmentations for
-HAM10000~\cite{tschandl2020segmentations} we can instead compute the quantity of interest
-directly, over all $1{,}502$ test images with no missing mask: the fraction of Grad-CAM
-activation mass falling \emph{inside} the annotated lesion. It is $0.523$ $[0.509, 0.536]$,
-against a mean lesion area of $0.256$ of the frame --- a concentration ratio of $3.45$. Roughly
-half the attribution mass lands on a quarter of the image, so the model is attending to the
-lesion far more than area alone would predict.
-
-We are explicit that this is a supporting check and not evidence of mechanism, for two
-reasons. Saliency maps fail known sanity checks~\cite{adebayo2018sanity}. And more
-specifically, the metric is confounded here in a way that is visible in our own numbers:
-\emph{misclassified} images score \emph{higher} on lesion-interior fraction ($0.570$ $[0.533,
-0.611]$) than correct ones ($0.513$ $[0.499, 0.528]$). That is not evidence that errors are
-better localised. For a misclassified image the map is taken with respect to the
-\emph{predicted} class logit, so landing on the lesion is close to automatic, and the
-per-class breakdown confirms the artefact: the fraction is lowest for \textsc{nv} ($0.477$),
-the class the model over-predicts. Attribution here shows \emph{where} the network looked, not
-that melanoma-relevant features were extracted.
-
-The mechanistic claim in this paper is therefore carried by the escalation-mass AUC of
-Sec.~\ref{sec:results-fairness}, not by these maps. That statistic is a direct, threshold-free
-measurement of whether the discriminative information survived into the probability vector,
-which is the question at issue; a saliency map cannot answer it.
-
-\subsection{External evaluation: smartphone clinical photography}
-\label{sec:results-external}
-
-\input{tables/external_table_safety_nets.tex}
-
-We finally apply the frozen system --- six backbones, the uniform vote, the HAM-fitted
-Dirichlet map and the out-of-fold-fitted age rule, all unmodified --- to the external cohort
-of Sec.~\ref{sec:external-data}, all $2{,}106$ PAD-UFES-20
-images~\cite{pacheco2020padufes}. This follows the standard protocol for
-evaluating uncertainty under dataset shift~\cite{ovadia2019shift,
-lakshminarayanan2017deepensembles}. Nothing was fitted or tuned on PAD.
-
-\textbf{The system does not transfer, and the ensemble transfers worst.} Individual members
-reach Macro-F1 $0.124$--$0.188$. The uniform six-CNN soft-vote reaches $0.167$ --- \emph{below
-its own best member} (ConvNeXt-Small, $0.188$). The diversity that makes ensembling the one
-significant rung in-distribution disappears under domain shift, because the members' errors
-become correlated: they fail on the same images for the same reason. Applying the frozen
-HAM-fitted Dirichlet map on top makes matters worse still ($0.167 \rightarrow 0.130$,
-escalation sensitivity $0.356 \rightarrow 0.221$), which is the expected behaviour of a
-calibration map transported to a distribution whose class prior is inverted. Nothing in this
-paper licenses pointing a dermoscopy-trained classifier at phone photographs.
-
-\textbf{How much of that collapse is the prior, and how much is the optics?} Panel~B of
-Table~\ref{tab:external_battery} decomposes it. The system's implicit source prior --- the
-mean of its own predictions over the out-of-fold panel --- is $\textsc{nv}\ 0.510$,
-$\textsc{mel}\ 0.100$, $\textsc{bcc}\ 0.069$; PAD's true prior is close to its inverse
-($\textsc{bcc}\ 0.401$, $\textsc{akiec}\ 0.347$, $\textsc{nv}\ 0.116$). Handed PAD's true
-class frequencies, the same frozen network reaches Macro-F1 $0.253$ against $0.167$ raw, a
-$52\%$ relative gain: prior shift is a real and substantial part of the failure. It is not
-most of it. An oracle that is told the answer still lands at $0.253$, so the majority of the
-gap is optical --- the features themselves change when polarised dermoscopy becomes a phone
-camera, and no reweighting recovers that. The deployable version of the correction is worse
-than useless. Saerens EM~\cite{saerens2002adjusting}, which estimates the target prior
-without labels, converges in $109$ iterations to $\textsc{df}\ 0.481$ where the truth is
-$0.000$ and $\textsc{bcc}\ 0.125$ where the truth is $0.401$, and Macro-F1 falls to $0.102$.
-Its pre-registered confirmatory test is significant \emph{in the wrong direction}
-($\chi^2 = 98.73$, $p = 2.89\times10^{-23}$; $321$ cases are correct only without the
-correction against $113$ only with it). EM assumes the class-conditional likelihoods survive
-the shift. Here they do not, so the algorithm converges to a fixed point that is internally
-consistent with the model's beliefs and externally wrong --- a useful negative result, since
-label-free prior correction is the obvious thing a deployer would reach for.
-
-\textbf{The age rule does no harm and plausibly helps, but this is not a replication and we
-will not call it one.} Applied on top, the frozen $\lambda$ lifts escalation sensitivity from
-$0.221$ to $0.568$, melanoma recall from $0.115$ to $0.327$, missed serious cases from
-$1{,}268$ to $703$, and Macro-F1 from $0.130$ to $0.172$. Read carelessly this looks like
-external validation of the mitigation. It is not. PAD's escalating prevalence is
-approximately $77\%$, the \emph{inverse} of HAM10000's $19\%$, so a constant additive bonus on
-escalating classes must help mechanically under this prior shift, whether or not the specific
-under-$40$ mechanism we identified is what is firing. We report it as a directional,
-non-pre-registered probe showing the intervention causes no harm and plausibly helps under
-extreme prior shift --- strictly weaker evidence than a same-modality replication, which
-remains outstanding. And even with the rule, Macro-F1 ($0.172$) stays below the best raw
-single member ($0.188$): PAD is a different domain, not a rescued deployment.
-
-\textbf{Mahalanobis distance, given the shift it was designed for, works, and the conformal
-sets widen when it fires.} Ranked last of seven uncertainty scores on the in-distribution
-test split (Sec.~\ref{sec:results-selective}), the same class-conditional Mahalanobis score
---- fitted on HAM training features and not refitted --- separates in-distribution HAM
-validation ($n=1{,}532$) from shifted PAD ($n=2{,}106$) at AUROC $0.913$, with median scores
-of $485$ against $8{,}717$, an $18\times$ separation
-(Table~\ref{tab:external_safety}, panel~A). Its in-distribution failure was not a defect of
-the score but a mis-specified task: there was no shift to detect. The two results together
-are the argument for pairing a boundary-based score for in-distribution abstention with a
-density-based score for shift detection, rather than choosing between them. The same panel
-audits what the conformal machinery does under that shift, and the answer is two-sided: the
-sets widen as they should --- APS-Mondrian at $\alpha=0.05$ goes from a mean $2.49$ labels in
-distribution to $4.06$ under shift, and its singleton rate collapses from $0.141$ to $0.035$,
-so silent point errors become visible ambiguity --- but serious-class coverage still falls
-from $0.950$ to $0.591$. Widening is a warning light, not a guarantee. Nothing about
-exchangeability survives a change of imaging modality, and we report the external coverage as
-an empirical audit with no finite-sample claim attached.
-
-\textbf{Skin tone: what PAD can and cannot say.} PAD carries a Fitzpatrick label for $1{,}302$
-of $2{,}106$ images. Four types clear our power gate --- I ($n=137$), II ($750$), III ($347$),
-IV ($59$) --- and types V ($8$) and VI ($1$) do not, and are reported as suppressed. A pooled
-equalised-odds true-positive-rate gap across all groups is $0.295$, but that figure is
-\emph{not} a skin-tone finding and must not be quoted as one: it is driven almost entirely by
-the $804$ images with no Fitzpatrick label, whose escalation sensitivity is $0.054$ against
-$0.247$--$0.349$ for every labelled type. That is a data-completeness artefact, and the
-population with missing labels differs systematically from the population with them.
-Restricted to types I--IV, the true skin-tone spread is $0.102$ and \emph{non-monotonic}
-(I $0.349$, II $0.287$, III $0.247$, IV $0.278$). Panel~B of
-Table~\ref{tab:external_safety} reports the same four strata under the three-tier triage
-taxonomy instead, where the quantity is Tier-1 sensitivity rather than escalation
-sensitivity --- a narrower positive class, so the values are lower (I $0.269$, II $0.203$,
-III $0.203$, IV $0.231$) --- and the conclusion is the same one: a spread of $0.067$, and
-still non-monotonic. The unlabelled stratum contains no Tier-1 lesion at all, which is why
-its Tier-1 rates are reported as undefined there rather than as zero, and why the pooled gap
-is a statement about which lesions get a Fitzpatrick record, not about skin tone. It does not
-reproduce the
-darker-skin-underperforms pattern reported elsewhere in dermatological
-AI~\cite{daneshjou2022disparities}, and we do not read that as evidence of absence: $n=59$ at
-type IV is thin and types V and VI are effectively absent from the cohort. The honest summary
-is that this evaluation closes the skin-tone question for types I--IV on smartphone
-photography and leaves it open for darker skin, which requires a corpus that
-contains it~\cite{groh2021fitzpatrick17k}.
-
 \subsection{Three centres: the operating point transfers, the mechanism does not}
 \label{sec:results-battery}
 
@@ -1601,31 +950,10 @@ $\pi = 0.03$ and sends $373$ of $6{,}981$ Tier-1 lesions to discharge; on PAD-UF
 configuration needs $6.3$ and its point-wise false-reassurance rate is $0.676$. The distance
 between those two columns is the entire content of the deployability claim in this paper.
 
+
+\textit{The ablation ladder, the five negative combination levers, selective classification, explainability, the intersectional slices and the smartphone clinical-photography evaluation are reported in full in Appendix~\ref{app:extresults}.}
 % =====================================================================
 \section{Discussion}
-
-\subsection{What actually moved the needle, and what did not}
-Across a ladder spanning two architecture families, two imbalance-targeted losses, metadata
-fusion, ensembling, TTA, calibration, thresholding and abstention, exactly one design choice
-produced a gain this test split can certify: ensembling (McNemar Holm-adjusted
-$p=2.0\times10^{-4}$; DeLong on \textsc{bkl} AUC, Holm-adjusted $p=0.013$). Every other rung
-is a consistent, and from A5 onward a monotone, improvement that remains individually
-unresolvable at this sample size.
-
-We then went looking for more, and did not find it. Five further combination levers --- adding
-two transformer members, greedy member selection, global prior correction, per-class offsets,
-and a $30$-member fold-bagged ensemble --- were fitted and selected without touching test, and
-all five came back negative (Sec.~\ref{sec:results-exhaustion}). The last of them,
-fold-bagging --- the only one with a real mechanism behind it --- was named in the analysis
-plan before it existed and read once, alongside its companion calibration rung A7-oof, which
-is also negative. We take
-two lessons. First, single-split comparisons of architectures on HAM10000 have exhausted their
-informational content, and papers reporting one- to three-point Macro-F1 improvements without
-interval estimates or paired tests are reporting sampling noise. Second, and more usefully:
-the interesting axis of variation has moved from \emph{how accurate} to \emph{how usable}. The
-gap between a raw ensemble and one that is calibrated, knows when to abstain, and emits
-prediction sets that are valid \emph{for the patient in front of you} is far larger, in terms
-of what a clinician can act on, than any architectural gap we measured.
 
 \subsection{Marginal guarantees are the wrong guarantee --- and class-conditional ones are
 not automatically the right one}
@@ -1757,6 +1085,8 @@ solve it. And the entire evaluation is retrospective, on a curated cohort whose 
 prevalence is four to twenty times that of primary-care screening, so every absolute utility
 figure here is an internal comparison rather than a clinical forecast.
 
+
+\textit{A subsection on which components actually moved the needle appears in Appendix~\ref{app:extdiscussion}.}
 % =====================================================================
 \section{Limitations}
 \label{sec:limitations}
@@ -2078,17 +1408,718 @@ methods,'' \emph{BMJ}, vol. 385, e078378, 2024.
 % =====================================================================
 %  Appendices
 %
-%  The reporting checklists and the case atlas, previously shipped as a separate
-%  supplementary document and merged in here so the work reads as one artifact.
-%  Generated by research/ablation/build_supplementary.py from
+%  Two kinds of material, in two column modes.
+%
+%  A-C are the apparatus moved out of the main text for length: extended methods,
+%  extended results, extended discussion. They are MOVED verbatim, not condensed, so no
+%  technical depth is lost -- and because this is one document, every \ref from the main
+%  text into them resolves normally. They stay TWO-COLUMN because the floats they carry
+%  are table*/figure*, which LaTeX drops in one-column mode.
+%
+%  The reporting checklists and the case atlas follow, and only they switch to
+%  \onecolumn -- longtable cannot break across a two-column page and the CLAIM
+%  checklist runs six pages. Nothing after that \onecolumn declares a starred float.
+%  They are generated by research/ablation/build_supplementary.py from
 %  results/CLAIM_checklist.md -- the same body that renders paper/supplementary.tex,
 %  so the two forms cannot diverge. Do not hand-edit the fragment.
-%
-%  \onecolumn is required: longtable cannot break across a two-column page.
 % =====================================================================
 \clearpage
-\onecolumn
 \appendices
+
+% The apparatus moved out of the main text for length. Two-column, because the floats
+% these subsections carry are table*/figure* and would be lost in one-column mode.
+\section{Extended Methods}
+\label{app:extmethods}
+
+\subsection{Out-of-fold predictions over the training split}
+\label{sec:oof}
+Every component downstream of the backbones has to be fitted somewhere, and fitting all of
+them on the same $1{,}532$ validation images makes that split do six jobs at once: early
+stopping and checkpoint selection for every backbone, ensemble method selection, the
+calibration map, threshold optimisation, abstention quantiles, and conformal calibration.
+None of this leaks into test, but every operating point so derived is fitted on data the
+backbones were themselves optimised against, and the rare classes supply very few calibration
+points. We therefore retrained the six backbones under $K$-fold cross-validation to obtain
+out-of-fold (OOF) predictions covering the entire training split.
+
+Folds are assigned by \texttt{StratifiedGroupKFold} ($K=5$, shuffled, seed $42$) on the
+diagnostic label with \texttt{lesion\_id} as the grouping variable. Plain grouped $K$-fold is
+not adequate here: with $51$ \textsc{df} and $69$ \textsc{vasc} lesions it can leave one fold
+with a third of the rare-class support of another, damaging precisely the class-conditional
+conformal quantile this exercise exists to improve. Each fold file presents the $\mathrm{fold}
+\neq k$ training rows as \emph{train} ($\approx 5{,}585$ images), the real validation split
+unchanged as \emph{val} --- used only for early stopping and checkpoint selection, so the fold
+recipe stays identical to that of the deployed checkpoints --- and the $\mathrm{fold}=k$ rows
+as the held-out partition. The real test images are omitted from the fold files entirely and
+are therefore physically unloadable during fold training. The lesion-disjointness assertion is
+re-run on each of the five files; every lesion falls in exactly one fold, the union of the five
+holdouts is exactly the $6{,}981$ training images with no duplicates, and no test image appears
+anywhere.
+
+Thirty fold models (six architectures $\times$ five folds) were trained under the frozen
+recipe --- identical configuration, seed, monitored metric, patience and augmentation --- and
+written to a separate checkpoint directory, so that no downstream file glob can substitute a
+fold model for a deployed one. The assembled OOF matrices carry $6{,}981$ rows per
+architecture with per-row checkpoint provenance. The rare-class yield improves substantially:
+$71$ \textsc{df} and $99$ \textsc{vasc} OOF rows against $24$ and $22$ in validation, and $64$
+escalating cases in the under-$40$ band against $22$ in validation and $21$ in test. That
+last figure is the reason the age-conditional rule of Sec.~\ref{sec:agerule} is fitted here
+and nowhere else.
+
+\textbf{The stacking mismatch, stated rather than assumed away.} OOF row $i$ is scored by a
+model trained on $5{,}585$ images, whereas every deployed validation and test prediction comes
+from a model trained on all $6{,}981$. The fold models are systematically slightly weaker and
+slightly less confident, so a calibrator fitted on OOF and handed to the stronger full-train
+model is biased towards over-sharpening. This is the classic stacking mismatch. We do not
+claim to have removed it: we measured it --- all $30$ fold models were scored over the
+untouched validation split, which no fold model saw --- before trusting anything fitted on
+OOF, and we report the validation-fitted and OOF-fitted variants \emph{side by side}
+(Table~\ref{tab:oof_vs_val}) rather than replacing one with the other. The corresponding
+ladder rungs (A7-val versus A7-oof) are likewise reported as a pair.
+
+\subsection{Metrics}
+\label{sec:metrics}
+We report three primary metrics and never use accuracy for model selection, because the
+$67\%$ \textsc{nv} majority makes it a measure of prior-matching rather than of diagnostic
+skill.
+
+\emph{Macro-F1} averages per-class F1 with equal weight, so the twenty \textsc{df} images
+count as much as the thousand \textsc{nv} images. \emph{Balanced accuracy} is the macro-averaged
+recall. \emph{Escalation sensitivity} collapses the seven-way problem into the screening
+question that matters --- does this lesion need to be seen by a clinician? --- by defining the
+positive set as $\escset$ and reporting
+\begin{equation}
+\mathrm{Sens}_{\mathrm{esc}} = \frac{|\{i : y_i \in \mathcal{E} \wedge \hat{y}_i \in \mathcal{E}\}|}
+                                     {|\{i : y_i \in \mathcal{E}\}|},
+\end{equation}
+with $\mathcal{E}$ the escalating set. Its complement in absolute terms, the count of
+\emph{missed serious cases}, is reported alongside because a rate over $290$ positives hides
+the clinical unit of harm. Calibration is measured by expected calibration error (ECE) over
+$15$ equal-width confidence bins.
+
+Two further quantities are used for the clinical-utility analysis and are defined here
+because both are easy to report misleadingly.
+
+\emph{Number Needed to Biopsy} (NNB) is the reciprocal of the positive predictive value of
+the escalate decision, $\mathrm{NNB} = (\mathrm{TP}+\mathrm{FP})/\mathrm{TP}$: how many
+lesions a clinic must escalate to catch one that needed escalating. It is
+\emph{prevalence-dependent}, and HAM10000 is a curated cohort whose escalating prevalence
+($19.3\%$ on the test split) is far above the $1$--$5\%$ typical of primary-care screening.
+An unadjusted NNB from this dataset must therefore never be compared against the
+dermatologist range quoted in the clinical literature. We report NNB re-weighted to a stated
+reference prevalence $\pi$ by importance-weighting the benign cases,
+\begin{equation}
+w \;=\; \frac{1-\pi}{\pi}\cdot\frac{p}{1-p},
+\qquad
+\mathrm{NNB}_{\pi} \;=\; 1 + w\,\frac{\mathrm{FP}}{\mathrm{TP}},
+\label{eq:nnb}
+\end{equation}
+with $p$ the observed escalating prevalence in the cohort. We use $\pi = 0.03$ throughout and
+report $\pi \in \{0.01, 0.05\}$ as a sensitivity range. Equation~\eqref{eq:nnb} assumes the
+class-conditional score distributions transfer to the lower-prevalence setting, which is
+optimistic; we state the assumption rather than hiding it inside the number.
+
+\emph{False Reassurance Rate} (FRR) is the conformal endpoint we treat as primary:
+\begin{equation}
+\mathrm{FRR} \;=\;
+\frac{|\{i : y_i \in \mathcal{E},\; \mathcal{C}(x_i) \cap \mathcal{E} = \emptyset\}|}
+     {|\{i : y_i \in \mathcal{E}\}|},
+\label{eq:frr}
+\end{equation}
+the share of truly escalating lesions whose prediction set $\mathcal{C}(x_i)$ contains no
+escalating class at all --- a formally valid shortlist that would not prompt referral. It is
+the natural endpoint for this problem precisely because marginal coverage is not
+(Sec.~\ref{sec:results-conformal}).
+
+\subsection{Backbones and training}
+Six ImageNet-pretrained CNN backbones --- ResNet-50~\cite{he2016resnet},
+DenseNet-121~\cite{huang2017densenet}, EfficientNet-B0 and
+-B3~\cite{tan2019efficientnet}, ConvNeXt-Tiny and -Small~\cite{liu2022convnext} --- are
+fine-tuned identically: $224\times224$ inputs, a two-stage schedule (three epochs with the
+backbone frozen at a head learning rate of $10^{-3}$, then full fine-tuning at $10^{-4}$),
+AdamW with weight decay $10^{-4}$, cosine annealing, batch size $32$, label smoothing
+$0.05$, gradient clipping at norm $5.0$, mixed precision, and a maximum of $30$ epochs with
+early stopping (patience $8$) on validation Macro-F1. Class imbalance is handled by
+effective-number weighting~\cite{cui2019classbalanced} with $\beta=0.999$. Augmentation is
+deliberately conservative: random resized crops (scale $[0.8,1.0]$), horizontal and vertical
+flips, $\pm20^\circ$ rotation, and only mild colour jitter (brightness/contrast $0.15$,
+saturation $0.10$, hue $0.02$), because colour is diagnostically meaningful in pigmented
+lesions and heavy colour distortion destroys signal rather than adding invariance.
+Two transformer backbones (SwinV2-Tiny~\cite{liu2022swinv2}, MaxViT-Tiny~\cite{tu2022maxvit})
+and two alternative losses (LDAM-DRW~\cite{cao2019ldam}, ASL~\cite{ridnik2021asl}) are trained
+under the same protocol. The random seed is fixed at $42$ throughout.
+
+All experiments run on Python 3.12 with PyTorch 2.11 (CUDA 12.8), \texttt{timm} for the
+pretrained backbones, and scikit-learn 1.5 for the statistical and calibration components; the
+pinned environment is in the repository.
+
+\subsection{Ensembling}
+The ensemble is a uniform arithmetic soft-vote over the six CNN members' probability
+vectors. This choice is deliberate and is itself a result. We evaluated rank averaging,
+geometric soft-voting, Nelder--Mead weight optimisation, Caruana greedy selection with
+replacement~\cite{caruana2004ensemble}, and non-negative ridge stacking on flattened
+per-class logits, all fitted out-of-fold within the validation split using
+\texttt{StratifiedGroupKFold} with lesion groups. Nelder--Mead converged to uniform weights
+$[0.167]^6$, which we read as corroboration rather than as a distinct method. Ensemble
+diversity was audited on validation: mean pairwise disagreement $0.1483$, mean Yule's $Q$
+$0.8986$, mean double-fault ratio $0.0989$.
+
+\subsection{Test-time augmentation and calibration}
+TTA pools $24$ deterministic views per image --- the eight dihedral transforms of the square
+at three scales --- using only evaluation-time transforms (resize, centre crop, normalise),
+so no training-time randomness enters inference. Views are combined by entropy-weighted
+pooling.
+
+Four calibrators were fitted on validation and compared by validation ECE: none, temperature
+scaling, matrix scaling, and Dirichlet calibration~\cite{kull2019dirichlet} with $L_2$
+regularisation. Dirichlet won on validation ECE and is used for all downstream stages.
+
+\subsection{Selective prediction and conformal sets}
+Seven uncertainty scores were compared by validation area under the risk--coverage curve
+(AURC): maximum softmax probability, top-two margin, predictive entropy, mutual information
+(BALD), inter-member variance, Mahalanobis distance~\cite{lee2018mahalanobis} in
+ConvNeXt-Tiny penultimate feature space (class means and a Ledoit--Wolf tied covariance
+fitted on the training split only, shrinkage $0.031$), and an entropy $+$ Mahalanobis
+combination. All seven are written as \emph{uncertainty} scores, larger meaning less
+reliable; the top-two margin is therefore $1 - (p_{(1)} - p_{(2)})$, which is largest when
+the two leading classes are closest. It won on validation and is used throughout. Abstention
+thresholds are the corresponding validation quantiles at target rates of $5/10/15/20\%$, and
+a case is deferred when its score exceeds the threshold.
+
+Conformal sets use split conformal with three score functions --- LAC~\cite{sadinle2019lac},
+APS~\cite{romano2020aps}, RAPS~\cite{angelopoulos2021raps} --- under three calibration
+schemes and at $\alpha \in \{0.10, 0.05\}$. The first two are marginal and Mondrian
+class-conditional~\cite{vovk2012conditional}. The third, which we call \emph{bipartite},
+groups calibration points by the pair (age band, escalation requirement), i.e.\ by
+$(\mathrm{band}(x_i),\, \mathbf{1}[y_i \in \mathcal{E}])$, giving six cells. It is an instance
+of equalised coverage~\cite{romano2020equalized}: coverage is conditioned on an attribute of
+the patient as well as on the label. We do not use the full $3 \times 7$ product of band and
+class, because at $21$ escalating under-$40$ cases several of its cells cannot certify a
+finite threshold at all; where a cell is degenerate our implementation returns $+\infty$
+honestly, and we report that rather than clipping it. Validation is split into a tuning half ($770$ images) and a calibration
+half ($762$), grouped by lesion; RAPS hyperparameters ($k_{\mathrm{reg}}$, $\lambda$) are
+chosen on the tuning half only, and all conformal quantiles come from the calibration half.
+The Dirichlet calibrator underlying the conformal score is likewise fitted on the tuning half
+only, so that the score function has not seen its own calibration data --- without this, the
+exchangeability the coverage guarantee relies on is violated.
+
+\textbf{The OOF-calibrated variant buys sample size and loses the theorem, and we say which.}
+Calibrating conformal quantiles on the $6{,}981$ OOF rows raises the rarest class from $11$
+calibration points to $45$ and eliminates all six degenerate class-conditional cells at
+$\alpha=0.05$ (Table~\ref{tab:oof_vs_val}). It also breaks the exchangeability the
+finite-sample guarantee requires: split conformal needs calibration and test scores to come
+from \emph{one fixed} score function, while OOF scores come from five fold models and the
+test scores from the full-train ensemble. An OOF-calibrated quantile applied to full-train
+test scores therefore carries \emph{no} exact finite-sample guarantee. We treat its coverage
+as an empirical quantity to be audited against nominal $1-\alpha$ and never assert it, and we
+retain the validation-fitted variant, which does keep the exact guarantee at $n=24/22$ per
+rare class, as the configuration in which the marginal-versus-conditional argument of
+Sec.~\ref{sec:results-conformal} is made. Cross-conformal or CV+ would restore a
+$(1-2\alpha)$ guarantee, but requires scoring the test split with all five fold models, which
+is a second read of the test set and out of scope under our test-set protocol; we note it as
+the rigorous follow-up.
+
+\subsection{Statistical protocol and frozen artifacts}
+\label{sec:frozen}
+\textbf{Interval rule, fixed in advance.} Two interval constructions are used and the choice
+between them is made once, by rule, so that it cannot be made per number. A \emph{proportion}
+with fewer than $30$ events in the numerator --- subgroup sensitivity, miss-rescue rate,
+false reassurance rate, conformal coverage --- takes the exact Clopper--Pearson interval.
+Everything else --- Macro-F1, balanced accuracy, ECE, AUC, per-class F1, and proportions with
+larger numerators --- takes a $1000\times$ (or, for quantities added in this round,
+$2000\times$) bootstrap percentile interval that resamples \emph{lesions, not images}. Both
+are computed for every proportion and the leading one is named in the table.
+
+Neither half of this rule is cosmetic. Lesion resampling matters because the $1{,}502$ test
+images sit on $1{,}121$ lesions, one of them contributing six views; resampling images would
+treat correlated views as independent evidence and produce intervals that are too narrow. The
+exact interval matters because at the paper's smallest and most consequential count --- $3$
+of $21$ escalating lesions caught in the under-$40$ band --- the percentile bootstrap returns
+$[0.000, 0.286]$ against the exact $[0.030, 0.363]$. The bootstrap interval is visibly too
+narrow and cannot reach the upper tail, and this is exactly the number that must not be
+reported with understated uncertainty.
+
+\textbf{Paired tests and declared comparison families.} Paired comparisons between rungs that
+share the $N=1502$ denominator use McNemar's test~\cite{dietterich1998} on raw
+correct/incorrect outcomes and, per class, DeLong's test~\cite{delong1988} on one-vs-rest
+ROC-AUC, computed with the fast structural-component algorithm~\cite{sun2014fastdelong}.
+Multiplicity is handled by declaring the families in advance rather than by adjusting after
+the fact. Seven families are enumerated in
+\texttt{results/comparison\_families.json}: four confirmatory, which are Holm--Bonferroni
+corrected \emph{within} family and whose adjusted $p$-values are the ones quoted, and three
+exploratory, which are reported as intervals only and are never described as significant.
+The confirmatory families are the $42$ DeLong tests (six structural comparisons $\times$ seven
+classes), the six ladder McNemar tests, the single pre-specified age-band comparison, and the
+two new pre-registered rungs of Sec.~\ref{sec:results-exhaustion}. Two consequences are worth
+stating plainly. First, the six McNemar tests were reported unadjusted in an earlier version
+of this work and are corrected here; the ensembling result survives comfortably (Holm-adjusted
+$p = 2.0\times10^{-4}$). Second, when new comparisons were added in this round they were
+declared as a \emph{separate} pre-specified family before the rungs existed, rather than
+folded into the $42$-test family, because their estimand differs and because absorbing them
+would retrospectively penalise an earlier result for a later session's additions. Silently
+enlarging a family under an unchanged correction is the most common route by which an honest
+statistical section becomes a dishonest one.
+
+\textbf{Frozen artifacts.} The development log \texttt{research/experiments.csv} records the
+full run history across nine working sessions, much of it test-split evaluation. To be
+explicit about what this means for the numbers in this paper: \textbf{all reported test
+results derive from frozen artifact sets} --- the $34$ per-image prediction matrices under
+\texttt{research/predictions/} and \texttt{research/predictions\_tta/}, hashed into
+\texttt{results/frozen\_artifacts.json} before the statistical analysis was written --- and
+every table and figure below is regenerated from those files by the scripts named in that
+declaration. Re-deriving a metric from a frozen prediction matrix is not an additional look
+at the test set. The remainder of the experiment log is a development record and no number in
+this manuscript is taken from it directly.
+
+\textbf{A frozen analysis plan, and one pass over the test split.} This round adds a
+substantial number of new test-set quantities: two ladder rungs, the age-conditional rule at
+its fitted $\lambda$, NNB, FRR and the $\alpha$ that bounds it, bipartite coverage,
+per-band calibration, intersectional cells and the attribution fraction. Read incrementally,
+each would be a selection opportunity. We therefore wrote \texttt{results/analysis\_plan.json}
+before any of this round's code touched the test split. It names all $19$ quantities, gives
+the formula for each, records the split every fitted parameter came from and the hash of the
+file it is frozen in, fixes the interval rule quoted above, and states the reference
+prevalence, the age-band edges, the escalating class set and the $\alpha$ grid. It is
+self-hashed and that hash is recorded alongside the frozen-artifact declaration. The plan is
+then \emph{executed}: a single runner emits all $19$ quantities and raises on any identifier
+the plan does not contain, so the restriction is enforced by the code rather than asserted in
+prose. Execution appends to \texttt{results/test\_pass\_receipt.json}, which records the plan
+hash, the input file hashes, the stage, and the quantities emitted, and which refuses a
+repeated execution unless a reason is supplied and permanently recorded. The pass reported
+here ran in two stages --- $18$ tabular quantities and one GPU attribution quantity --- with
+no repeat and no stated reason on either. As a reproduction check, the published rung A7
+recomputed inside that pass matched its frozen value of $0.8047238$ to zero drift.
+
+Any quantity that occurred to us after seeing these numbers is not in this paper.
+
+Reporting completeness is documented against the $44$-item CLAIM 2024
+checklist~\cite{tejani2024claim}, given in Appendix~\ref{app:claim} with a per-item pointer
+into the manuscript or the results directory. We record $33$ items met, $7$ partial, $2$ not
+met and $2$ not applicable, and the shortfalls are named rather than left blank: the study
+is not registered --- for which the frozen analysis plan of the preceding paragraph is an
+imperfect substitute, since it is not a public pre-registration --- and inter-rater
+variability cannot be computed, because neither source dataset releases per-rater labels. A
+second cross-walk against the $23$ reporting domains of TRIPOD+AI~\cite{collins2024tripodai},
+the standard that covers model transportability specifically, is given in
+Appendix~\ref{app:tripod}. Both checklists are pointer indices into this paper rather than
+results, which is why they are held back to the appendices; Appendix~\ref{app:atlas} carries a
+qualitative atlas of the lesions the age rule rescues.
+
+% =====================================================================
+
+\section{Extended Results}
+\label{app:extresults}
+
+\subsection{The ablation ladder}
+\label{sec:results-ladder}
+
+Table~\ref{tab:ablation} reports the full ladder. Block A is at full coverage
+($N=1502$); Block B abstains and is discussed separately in
+Sec.~\ref{sec:results-selective}. Two further rungs, added in this round and pre-registered
+before the test split was read, are reported in Sec.~\ref{sec:results-exhaustion}.
+
+\input{tables/ablation_table.tex}
+
+\textbf{Architecture barely matters.} The spread across single models is narrow and
+statistically unresolvable. ConvNeXt-Tiny ($0.7459$, CI $[0.6928, 0.7806]$) improves on
+ResNet-50 ($0.7058$, CI $[0.6470, 0.7501]$) by $+0.040$ Macro-F1, but the paired bootstrap
+difference interval $[-0.005, +0.086]$ crosses zero and McNemar gives $p=0.42$. SwinV2-Tiny
+($0.7273$) does not beat the best CNN; the paired difference is $-0.019$, $p=0.38$. The
+gated metadata-fusion model ($0.7411$) does not either ($-0.005$, $p=0.17$). The two
+imbalance-targeted losses likewise fail to improve on the cross-entropy baseline:
+LDAM-DRW reaches $0.7256$ and ASL $0.7305$, both below plain ConvNeXt-Tiny.
+
+\textbf{Ensembling is the only rung that clears the significance bar.} The uniform soft-vote
+over six CNNs reaches $0.7718$ (CI $[0.7201, 0.8118]$), and McNemar against the best single
+model is decisively significant ($\chi^2 = 17.20$, $p = 3.4\times10^{-5}$; $85$ cases
+correct only for the ensemble against $38$ only for ConvNeXt-Tiny). The McNemar $p$-values
+quoted in this subsection are raw; Holm correction inside the six-member ladder family leaves
+this comparison significant at $p=2.0\times10^{-4}$ and every other comparison in the family
+non-significant, so the correction changes no conclusion here. After Holm correction across
+all $42$ DeLong tests, exactly one per-class AUC comparison survives: the ensemble
+improves \textsc{bkl} one-vs-rest AUC from $0.9195$ to $0.9572$ ($z=3.61$, raw $p=3.1\times
+10^{-4}$, Holm-adjusted $p=0.013$).
+
+It is worth noting explicitly that the McNemar result and the Macro-F1 bootstrap interval
+disagree in appearance: the paired Macro-F1 difference is $+0.026$ with interval
+$[-0.011, +0.062]$, which crosses zero. This is not a contradiction. McNemar tests raw
+correct/incorrect outcomes, which on this split are dominated by the $1{,}004$ \textsc{nv}
+images, whereas Macro-F1 weights all seven classes equally and therefore inherits the wide
+sampling variance of the twenty-image \textsc{df} class. The two statistics answer different
+questions and both are reported.
+
+\textbf{TTA and calibration are consistent but individually unresolvable.} TTA adds $+0.014$
+($0.7859$, $p=0.10$) and Dirichlet calibration a further $+0.019$ ($0.8047$, $p=0.66$).
+Neither is individually significant; their cumulative effect over the soft-vote baseline is
+$+0.033$ Macro-F1.
+
+\textbf{A negative result we chose to report.} Non-negative ridge stacking on flattened
+per-class logits achieves the best test Macro-F1 of any ensembling method we tried
+($0.7815$) and simultaneously the \emph{worst} out-of-fold validation score
+($0.7583$, against $0.7911$ for the uniform soft-vote). Reporting $0.7815$ as the value of
+the ``stacking'' rung would have been selection on the test set. We report the
+validation-selected winner, $0.7718$, and record the stacker as a negative result. The
+generalisation gaps (validation-OOF minus test) support the reading: $+0.019$ for
+soft-voting, $+0.011$ for Caruana greedy, and $-0.023$ for ridge, the only negative value in
+the set. The same discipline governs the choice of ``best single model'': MaxViT-Tiny attains
+a higher test Macro-F1 ($0.7525$) than ConvNeXt-Tiny ($0.7459$), but a lower validation score
+($0.7176$ against $0.7482$), so ConvNeXt-Tiny remains rung A2.
+
+\subsection{Five combination levers, five negative results}
+\label{sec:results-exhaustion}
+
+Rung A7 reaches Macro-F1 $0.8047$. The obvious next question is whether anything cheap gets
+past it. We tested five candidates and none did. Table~\ref{tab:exhaustion} collects them,
+together with the companion calibration rung A7-oof.
+
+\begin{table}[t]
+\centering
+\caption{Combination levers evaluated beyond rung A7. The first block is fitted and evaluated
+on validation with lesion-grouped cross-fitting and never touched the test split; two numbers
+separated by a slash are the two cross-fitting arms. The second block is two rungs declared
+in the pre-registered analysis plan before they existed and evaluated in the single test
+pass, with Holm correction inside their own two-member family.}
+\label{tab:exhaustion}
+\begin{tabular}{llc}
+\toprule
+Lever & Held-out result & Verdict \\
+\midrule
+\multicolumn{3}{l}{\textit{Post-hoc recombination, cross-fitted on validation}} \\
+$+$ SwinV2 $+$ MaxViT ($K{=}8$ vote) & $0.7981$ vs $0.7986$ & wash \\
+Caruana greedy over $K{=}8$ & $0.7640/0.7839$ vs $0.7945$ & worse \\
+Global prior correction $p/\pi^{\tau}$ & $-0.0035 / -0.0061$ & dead \\
+Per-class Macro-F1 offsets & $+0.0009$, sign flips & noise \\
+\midrule
+\multicolumn{3}{l}{\textit{Pre-registered rungs, single test pass}} \\
+A7-oof (OOF-fitted Dirichlet) & $-0.0176$ $[-0.0451, +0.0054]$ & negative \\
+A8 ($30$-member fold bag) & $-0.0237$ $[-0.0625, +0.0043]$ & negative \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Adding the transformers to the ensemble is a wash.} An eight-member soft-vote that
+adds SwinV2-Tiny and MaxViT-Tiny to the six CNNs scores $0.7981$ against $0.7986$ for the
+six-CNN vote on the same cross-fitted validation protocol. This closes a gap an earlier
+version of this work listed as future work; the answer is that it does nothing.
+
+\textbf{Member selection overfits.} Caruana greedy selection with replacement over the
+eight-member library scores $0.7640$ and $0.7839$ on the two cross-fitting arms against
+$0.7945$ for the uniform vote. Selecting members on a held-out split of this size costs more
+in variance than it recovers in fit --- the winner's curse in its most ordinary
+form~\cite{sculley2018winners}.
+
+\textbf{Prior correction is inert, and the reason is mechanical.} Dividing by a tempered class
+prior, $p/\pi^{\tau}$, is the standard post-hoc long-tail remedy~\cite{menon2021logitadjust,
+saerens2002adjusting}. Here the optimal temperature is $\tau \approx 0$ and both cross-fitting
+arms lose ($-0.0035$, $-0.0061$). Per-class Macro-F1 offsets fare no better: a mean gain of
+$+0.0009$ whose sign disagrees across folds. The null has an explanation rather than being
+merely recorded: training already applies effective-number class
+weighting~\cite{cui2019classbalanced}, so the model's implicit prior is not the empirical
+label prior, and correcting by the empirical prior a second time over-corrects.
+
+\textbf{Fold-bagging, the one lever with a real mechanism behind it, also fails.} The $30$
+fold models of Sec.~\ref{sec:oof} form a natural bagged ensemble with five times the member
+count of the deployed system. It was the last credible Macro-F1 path after the four levers
+above, and was declared in the analysis plan as rung A8 before it existed. On the single test
+pass it scores $0.7810$ $[0.7207, 0.8258]$, a paired difference of $-0.0237$
+$[-0.0625, +0.0043]$ against A7 with Holm-adjusted $p=0.242$: not significant, and negative in
+point estimate. It does catch one more escalating lesion ($77$ missed against $78$), the
+direction bagging was expected to help, but nothing here is resolvable. One caveat is
+pre-registered and we restate it: A8 reuses the six-member OOF Dirichlet map rather than one
+fitted for a $30$-member bag, and a $30$-member vote is more hedged than a six-member one, so
+A8 is under-sharpened by construction. It is a lower bound on fold-bagging, not a refutation
+of it.
+
+\textbf{The companion rung, A7-oof, is also negative --- and was pre-registered two-sided for
+exactly that reason.} Fitting the Dirichlet map on $6{,}981$ OOF rows instead of $1{,}532$
+validation rows scores $0.7871$ $[0.7315, 0.8295]$, a difference of $-0.0176$ $[-0.0451,
++0.0054]$, Holm $p=0.242$. A validation-arm measurement made before the test read had
+already put the cost at $0.011$ Macro-F1, so this was expected rather than surprising. What
+OOF fitting buys is not accuracy: it is calibration sample size, and specifically the
+elimination of every degenerate rare-class conformal cell at $\alpha=0.05$
+(Table~\ref{tab:oof_vs_val}).
+
+\input{tables/oof_vs_val.tex}
+
+\textbf{Taken together this is a result, not a gap.} Five levers, five negative outcomes, each
+one selected or fitted without touching the test split. Macro-F1 $0.8047$ is the ceiling of
+these six frozen checkpoints under every post-hoc recombination we could construct. That is
+the empirical form of this paper's argument: the informative axis has moved off aggregate
+accuracy, and the rest of the Results section is about the axis it moved onto.
+
+\subsection{Selective classification}
+\label{sec:results-selective}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.86\textwidth]{figure4_selective.png}
+\caption{Selective classification on the test split. \textbf{(a)} Risk--coverage curves for
+the seven uncertainty scores. The three probability-based scores (margin, MSP, entropy) are
+mutually indistinguishable; the disagreement-based scores (mutual information, ensemble
+variance) are consistently worse, and Mahalanobis feature distance is worst by a clear
+margin across the whole operating range. The margin was selected on validation AURC, but its
+advantage over MSP and entropy is not resolvable on test. \textbf{(b)} The aggregate
+safety/workload trade-off for the selected score: Macro-F1 and escalation sensitivity on the
+retained cases rise monotonically with the deferral rate while missed serious cases fall from
+$78$ to $36$. Panel~(b) is well behaved at every operating point, which is precisely why the
+subgroup breakdown in Table~\ref{tab:agegap} --- and not this figure --- is what exposes the
+under-$40$ failure.}
+\label{fig:selective}
+\end{figure*}
+
+Ranked by validation AURC, the top-two margin wins ($0.02563$), followed by MSP
+($0.02671$), entropy ($0.02714$), entropy $+$ Mahalanobis ($0.02795$), mutual information
+($0.03226$), inter-member variance ($0.03371$) and Mahalanobis distance ($0.03558$). The
+ordering holds on test (margin E-AURC $0.02242$; Mahalanobis $0.03097$).
+
+\textbf{Mahalanobis distance ranks last, and this is the expected result.} Feature-space
+distance answers the question ``is this input unlike anything seen in training?''. Every
+image in this test split is HAM10000 dermoscopy drawn from the same acquisition process as
+the training set, so there is no distribution shift for it to detect. What abstention needs
+to rank here is \emph{in-distribution difficulty} --- genuinely ambiguous lesions near a
+decision boundary but comfortably inside the feature manifold --- and the probability vector
+measures exactly that. Consistent with this reading, combining Mahalanobis with entropy is
+worse than entropy alone. We regard the Mahalanobis score as untested rather than refuted:
+the honest venue for it is an out-of-distribution stream such as smartphone clinical
+photography, which this split by construction does not contain.
+
+Block B of Table~\ref{tab:ablation} gives the selective results. Deferring the $10.8\%$ of
+cases with the smallest gap between their top two class probabilities raises Macro-F1 on the
+retained set from $0.8047$ to $0.8577$
+and cuts missed serious cases from $78$ to $54$; at $22.1\%$ deferral the retained Macro-F1
+reaches $0.8957$ with $36$ missed. We emphasise that these rows have a different denominator
+($1{,}340$ and $1{,}170$ images against $1{,}502$) and are not like-for-like with Block A:
+the classifier is being handed an easier subset, not becoming a better classifier. This is
+why they occupy a separate, coverage-annotated block, and why Fig.~\ref{fig:selective}(a)
+rather than the table carries the substantive claim.
+
+One systematic effect is worth recording. Requested abstention rates of $5/10/15/20\%$ yield
+realised test coverages of $0.954/0.892/0.836/0.779$ --- roughly one percentage point more
+abstention than the validation quantile promised, consistently at every operating point.
+That is the expected signature of a threshold fitted on data the backbones were themselves
+optimised against, and it bounds the optimism of our validation-derived operating points at
+approximately one point of coverage.
+
+\textbf{Refitting the gate out-of-fold changes which score wins, which is itself informative.}
+Selecting the uncertainty score by AURC on the $6{,}981$ OOF rows rather than the $1{,}532$
+validation rows promotes maximum softmax probability over the top-two margin
+(Table~\ref{tab:oof_vs_val}). The two are statistically indistinguishable on test
+(Fig.~\ref{fig:selective}(a)), so this is a coin landing the other way rather than a
+correction; but it means the two arms' abstention thresholds live on different scales and
+their numerical values are not comparable across arms. The OOF-fitted gate is the one used
+for the orthogonality analysis in Sec.~\ref{sec:results-utility}, where at a $10\%$ target it
+retains $89.9\%$ of cases, raises retained Macro-F1 from $0.7871$ to $0.8444$, and cuts
+missed serious cases from $78$ to $57$. Substituting one probability-based score for another
+does not change the paper's conclusions, and we checked specifically that it does not change
+the under-$40$ finding: the confidently-wrong pattern reproduces under MSP as it does under
+margin.
+
+\subsection{Explainability}
+\label{sec:results-gradcam}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.90\textwidth]{figure7_gradcam.png}
+\caption{Grad-CAM attributions for ConvNeXt-Tiny on the test split. Top row: the
+highest-confidence correct case for four classes the model handles well. Bottom row: the
+highest-confidence \emph{error} for four classes it confuses, including both directions of
+the \textsc{mel}/\textsc{bkl} confusion. Each panel prints true $\rightarrow$ predicted and
+the softmax value; panels are selected deterministically by confidence from
+\texttt{gradcam\_stats.csv}. These are the model's \emph{most} confident errors, which at
+$0.59$--$0.85$ still straddle its mean confidence of $0.7048$, so the row illustrates the
+failure mode rather than quantifying it. Read the maps as illustration only: over all
+$1{,}502$ test images the lesion-interior mass fraction is $0.523$, and it is \emph{higher}
+for errors than for correct predictions --- a predicted-class artefact analysed in the text,
+not evidence that errors are the better localised.}
+\label{fig:gradcam}
+\end{figure*}
+
+Grad-CAM~\cite{selvaraju2017gradcam} overlays were generated for the ConvNeXt-Tiny model on
+$28$ test images, four per class, split between correct and incorrect predictions
+(Fig.~\ref{fig:gradcam}).
+
+An earlier version of this analysis used only a \emph{border mass fraction} --- the share of
+heatmap activation falling in the outer $15\%$ of the frame --- as a proxy for whether the
+model was responding to vignetting rather than to the lesion. That is an image-frame
+heuristic, not a lesion boundary. Using Tschandl's binary lesion segmentations for
+HAM10000~\cite{tschandl2020segmentations} we can instead compute the quantity of interest
+directly, over all $1{,}502$ test images with no missing mask: the fraction of Grad-CAM
+activation mass falling \emph{inside} the annotated lesion. It is $0.523$ $[0.509, 0.536]$,
+against a mean lesion area of $0.256$ of the frame --- a concentration ratio of $3.45$. Roughly
+half the attribution mass lands on a quarter of the image, so the model is attending to the
+lesion far more than area alone would predict.
+
+We are explicit that this is a supporting check and not evidence of mechanism, for two
+reasons. Saliency maps fail known sanity checks~\cite{adebayo2018sanity}. And more
+specifically, the metric is confounded here in a way that is visible in our own numbers:
+\emph{misclassified} images score \emph{higher} on lesion-interior fraction ($0.570$ $[0.533,
+0.611]$) than correct ones ($0.513$ $[0.499, 0.528]$). That is not evidence that errors are
+better localised. For a misclassified image the map is taken with respect to the
+\emph{predicted} class logit, so landing on the lesion is close to automatic, and the
+per-class breakdown confirms the artefact: the fraction is lowest for \textsc{nv} ($0.477$),
+the class the model over-predicts. Attribution here shows \emph{where} the network looked, not
+that melanoma-relevant features were extracted.
+
+The mechanistic claim in this paper is therefore carried by the escalation-mass AUC of
+Sec.~\ref{sec:results-fairness}, not by these maps. That statistic is a direct, threshold-free
+measurement of whether the discriminative information survived into the probability vector,
+which is the question at issue; a saliency map cannot answer it.
+
+\subsection{Intersectional slices, and the cells we decline to report}
+\label{sec:results-intersectional}
+
+Age is not the only axis, and disparities can compound. We slice age band $\times$ sex on the
+test split under the same power gates the rest of our subgroup analysis uses: at least $30$
+images and at least $10$ true escalating cases before a sensitivity is reported at all. Five
+of the eight cells clear both gates.
+
+Escalation sensitivity is $0.848$ $[0.681, 0.949]$ for women aged $40$--$59$ and $0.784$
+$[0.618, 0.902]$ for men in the same band; $0.697$ $[0.551, 0.833]$ for women aged $60+$ and
+$0.797$ $[0.709, 0.874]$ for men. The one reportable under-$40$ cell, women, is $0.250$
+$[0.055, 0.572]$ on twelve escalating lesions. Across the reportable cells the
+equalised-odds true-positive-rate gap is $0.598$, the demographic-parity gap $0.339$, and the
+gap in referral burden $0.129$. The dominant structure is the age gap; sex modulates it
+within bands by substantially less than age separates the bands, and at these interval widths
+we do not claim a resolved sex effect.
+
+Three cells are suppressed and we name them rather than dropping them. Two hold patients with
+no recorded age or sex ($n=3$ and $n=9$). The third is men under $40$: it has nine escalating
+lesions against our floor of ten, so it fails the gate by one case. It is, predictably, the
+cell a reader most wants to see, and it is exactly the cell at which a point estimate would be
+least trustworthy; its raw counts are in the results file, and we decline to attach a
+sensitivity or an interval to it here. Reporting a gate and then quietly stepping over it for
+the interesting cell would defeat the purpose of having set one.
+
+\subsection{External evaluation: smartphone clinical photography}
+\label{sec:results-external}
+
+\input{tables/external_table_safety_nets.tex}
+
+We finally apply the frozen system --- six backbones, the uniform vote, the HAM-fitted
+Dirichlet map and the out-of-fold-fitted age rule, all unmodified --- to the external cohort
+of Sec.~\ref{sec:external-data}, all $2{,}106$ PAD-UFES-20
+images~\cite{pacheco2020padufes}. This follows the standard protocol for
+evaluating uncertainty under dataset shift~\cite{ovadia2019shift,
+lakshminarayanan2017deepensembles}. Nothing was fitted or tuned on PAD.
+
+\textbf{The system does not transfer, and the ensemble transfers worst.} Individual members
+reach Macro-F1 $0.124$--$0.188$. The uniform six-CNN soft-vote reaches $0.167$ --- \emph{below
+its own best member} (ConvNeXt-Small, $0.188$). The diversity that makes ensembling the one
+significant rung in-distribution disappears under domain shift, because the members' errors
+become correlated: they fail on the same images for the same reason. Applying the frozen
+HAM-fitted Dirichlet map on top makes matters worse still ($0.167 \rightarrow 0.130$,
+escalation sensitivity $0.356 \rightarrow 0.221$), which is the expected behaviour of a
+calibration map transported to a distribution whose class prior is inverted. Nothing in this
+paper licenses pointing a dermoscopy-trained classifier at phone photographs.
+
+\textbf{How much of that collapse is the prior, and how much is the optics?} Panel~B of
+Table~\ref{tab:external_battery} decomposes it. The system's implicit source prior --- the
+mean of its own predictions over the out-of-fold panel --- is $\textsc{nv}\ 0.510$,
+$\textsc{mel}\ 0.100$, $\textsc{bcc}\ 0.069$; PAD's true prior is close to its inverse
+($\textsc{bcc}\ 0.401$, $\textsc{akiec}\ 0.347$, $\textsc{nv}\ 0.116$). Handed PAD's true
+class frequencies, the same frozen network reaches Macro-F1 $0.253$ against $0.167$ raw, a
+$52\%$ relative gain: prior shift is a real and substantial part of the failure. It is not
+most of it. An oracle that is told the answer still lands at $0.253$, so the majority of the
+gap is optical --- the features themselves change when polarised dermoscopy becomes a phone
+camera, and no reweighting recovers that. The deployable version of the correction is worse
+than useless. Saerens EM~\cite{saerens2002adjusting}, which estimates the target prior
+without labels, converges in $109$ iterations to $\textsc{df}\ 0.481$ where the truth is
+$0.000$ and $\textsc{bcc}\ 0.125$ where the truth is $0.401$, and Macro-F1 falls to $0.102$.
+Its pre-registered confirmatory test is significant \emph{in the wrong direction}
+($\chi^2 = 98.73$, $p = 2.89\times10^{-23}$; $321$ cases are correct only without the
+correction against $113$ only with it). EM assumes the class-conditional likelihoods survive
+the shift. Here they do not, so the algorithm converges to a fixed point that is internally
+consistent with the model's beliefs and externally wrong --- a useful negative result, since
+label-free prior correction is the obvious thing a deployer would reach for.
+
+\textbf{The age rule does no harm and plausibly helps, but this is not a replication and we
+will not call it one.} Applied on top, the frozen $\lambda$ lifts escalation sensitivity from
+$0.221$ to $0.568$, melanoma recall from $0.115$ to $0.327$, missed serious cases from
+$1{,}268$ to $703$, and Macro-F1 from $0.130$ to $0.172$. Read carelessly this looks like
+external validation of the mitigation. It is not. PAD's escalating prevalence is
+approximately $77\%$, the \emph{inverse} of HAM10000's $19\%$, so a constant additive bonus on
+escalating classes must help mechanically under this prior shift, whether or not the specific
+under-$40$ mechanism we identified is what is firing. We report it as a directional,
+non-pre-registered probe showing the intervention causes no harm and plausibly helps under
+extreme prior shift --- strictly weaker evidence than a same-modality replication, which
+remains outstanding. And even with the rule, Macro-F1 ($0.172$) stays below the best raw
+single member ($0.188$): PAD is a different domain, not a rescued deployment.
+
+\textbf{Mahalanobis distance, given the shift it was designed for, works, and the conformal
+sets widen when it fires.} Ranked last of seven uncertainty scores on the in-distribution
+test split (Sec.~\ref{sec:results-selective}), the same class-conditional Mahalanobis score
+--- fitted on HAM training features and not refitted --- separates in-distribution HAM
+validation ($n=1{,}532$) from shifted PAD ($n=2{,}106$) at AUROC $0.913$, with median scores
+of $485$ against $8{,}717$, an $18\times$ separation
+(Table~\ref{tab:external_safety}, panel~A). Its in-distribution failure was not a defect of
+the score but a mis-specified task: there was no shift to detect. The two results together
+are the argument for pairing a boundary-based score for in-distribution abstention with a
+density-based score for shift detection, rather than choosing between them. The same panel
+audits what the conformal machinery does under that shift, and the answer is two-sided: the
+sets widen as they should --- APS-Mondrian at $\alpha=0.05$ goes from a mean $2.49$ labels in
+distribution to $4.06$ under shift, and its singleton rate collapses from $0.141$ to $0.035$,
+so silent point errors become visible ambiguity --- but serious-class coverage still falls
+from $0.950$ to $0.591$. Widening is a warning light, not a guarantee. Nothing about
+exchangeability survives a change of imaging modality, and we report the external coverage as
+an empirical audit with no finite-sample claim attached.
+
+\textbf{Skin tone: what PAD can and cannot say.} PAD carries a Fitzpatrick label for $1{,}302$
+of $2{,}106$ images. Four types clear our power gate --- I ($n=137$), II ($750$), III ($347$),
+IV ($59$) --- and types V ($8$) and VI ($1$) do not, and are reported as suppressed. A pooled
+equalised-odds true-positive-rate gap across all groups is $0.295$, but that figure is
+\emph{not} a skin-tone finding and must not be quoted as one: it is driven almost entirely by
+the $804$ images with no Fitzpatrick label, whose escalation sensitivity is $0.054$ against
+$0.247$--$0.349$ for every labelled type. That is a data-completeness artefact, and the
+population with missing labels differs systematically from the population with them.
+Restricted to types I--IV, the true skin-tone spread is $0.102$ and \emph{non-monotonic}
+(I $0.349$, II $0.287$, III $0.247$, IV $0.278$). Panel~B of
+Table~\ref{tab:external_safety} reports the same four strata under the three-tier triage
+taxonomy instead, where the quantity is Tier-1 sensitivity rather than escalation
+sensitivity --- a narrower positive class, so the values are lower (I $0.269$, II $0.203$,
+III $0.203$, IV $0.231$) --- and the conclusion is the same one: a spread of $0.067$, and
+still non-monotonic. The unlabelled stratum contains no Tier-1 lesion at all, which is why
+its Tier-1 rates are reported as undefined there rather than as zero, and why the pooled gap
+is a statement about which lesions get a Fitzpatrick record, not about skin tone. It does not
+reproduce the
+darker-skin-underperforms pattern reported elsewhere in dermatological
+AI~\cite{daneshjou2022disparities}, and we do not read that as evidence of absence: $n=59$ at
+type IV is thin and types V and VI are effectively absent from the cohort. The honest summary
+is that this evaluation closes the skin-tone question for types I--IV on smartphone
+photography and leaves it open for darker skin, which requires a corpus that
+contains it~\cite{groh2021fitzpatrick17k}.
+
+
+\section{Extended Discussion}
+\label{app:extdiscussion}
+
+\subsection{What actually moved the needle, and what did not}
+Across a ladder spanning two architecture families, two imbalance-targeted losses, metadata
+fusion, ensembling, TTA, calibration, thresholding and abstention, exactly one design choice
+produced a gain this test split can certify: ensembling (McNemar Holm-adjusted
+$p=2.0\times10^{-4}$; DeLong on \textsc{bkl} AUC, Holm-adjusted $p=0.013$). Every other rung
+is a consistent, and from A5 onward a monotone, improvement that remains individually
+unresolvable at this sample size.
+
+We then went looking for more, and did not find it. Five further combination levers --- adding
+two transformer members, greedy member selection, global prior correction, per-class offsets,
+and a $30$-member fold-bagged ensemble --- were fitted and selected without touching test, and
+all five came back negative (Sec.~\ref{sec:results-exhaustion}). The last of them,
+fold-bagging --- the only one with a real mechanism behind it --- was named in the analysis
+plan before it existed and read once, alongside its companion calibration rung A7-oof, which
+is also negative. We take
+two lessons. First, single-split comparisons of architectures on HAM10000 have exhausted their
+informational content, and papers reporting one- to three-point Macro-F1 improvements without
+interval estimates or paired tests are reporting sampling noise. Second, and more usefully:
+the interesting axis of variation has moved from \emph{how accurate} to \emph{how usable}. The
+gap between a raw ensemble and one that is calibrated, knows when to abstain, and emits
+prediction sets that are valid \emph{for the patient in front of you} is far larger, in terms
+of what a clinician can act on, than any architectural gap we measured.
+
+
+% From here the checklists need \onecolumn: longtable cannot break across a
+% two-column page. Nothing below declares a starred float.
+\clearpage
+\onecolumn
 \input{tables/appendix_checklists.tex}
 
 \end{document}
