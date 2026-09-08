@@ -1,0 +1,901 @@
+% =====================================================================
+%  When Safety Nets Fail: Subgroup-Conditional Calibration, Conformal
+%  Guarantees, and Age-Stratified Blind Spots in Dermoscopy Ensembles
+%
+%  Downsized edition. Every quantitative claim is a verbatim transfer from
+%  paper/manuscript.tex or from a file under results/ -- see
+%  research/ablation/audit_manuscript.py --target paper/manuscript_edited.tex.
+%  The abstract, contributions list and Discussion are placeholders for a
+%  later session; everything else is complete.
+%
+%  Build:  pdflatex manuscript_edited && bibtex manuscript_edited && pdflatex manuscript_edited x2
+% =====================================================================
+\documentclass[journal]{IEEEtran}
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{balance}
+
+\graphicspath{{figures/}}
+
+\newcommand{\escset}{\{\textsc{akiec},\,\textsc{bcc},\,\textsc{mel}\}}
+
+\begin{document}
+
+\title{When Safety Nets Fail: An Ablation-Grounded Evaluation of Calibration,\\
+Conformal Safety, and Subgroup Blind Spots in Skin-Lesion Ensembles}
+
+\author{Rajrup%
+\thanks{Manuscript submitted \today. \emph{(Corresponding author: Rajrup.)}}%
+\thanks{The author is with the School of Computing Science and Engineering,
+VIT Bhopal University, Kothri Kalan, Madhya Pradesh 466114, India
+(e-mail: rajrup.23bai10213@vitbhopal.ac.in).}%
+\thanks{Code, the frozen prediction matrices behind every reported number, and the scripts
+that regenerate all tables and figures are available at
+\url{https://github.com/Rajrup910/Backend-S4D-}.}%
+\thanks{This work used the HAM10000 dataset, which is publicly available under CC BY-NC 4.0;
+no new human-subjects data were collected.}}
+
+\markboth{IEEE TRANSACTIONS ON MEDICAL IMAGING, VOL.~XX, NO.~X, MONTH~2026}%
+{Rajrup: When Safety Nets Fail}
+
+\maketitle
+
+% =====================================================================
+\begin{abstract}
+Aggregate discrimination metrics on dermoscopic benchmarks have saturated: the gap between
+our weakest and strongest backbone ($0.7058$ versus $0.7459$ Macro-F1) is not significant,
+and only ensembling clears a paired test. Meanwhile the properties that decide whether such a
+system can be placed in a clinical pathway --- calibration, conformal safety, subgroup
+reliability --- are rarely measured per subgroup. We measure them on HAM10000 ($10{,}015$ images,
+$7{,}470$ lesions, lesion-grouped split, one pre-registered test pass) and find an
+age-stratified blind spot: escalation sensitivity is $0.143$ $[0.030, 0.363]$ in patients
+under~$40$ against $0.764$ $[0.683, 0.836]$ at $60+$ (difference $-0.621$, Holm $p<0.001$),
+with eighteen escalating lesions classified as ordinary nevi. Both standard safety nets fail
+against it: margin-based abstention defers only $11\%$ of those misses because the errors are
+confidently wrong, and marginal conformal coverage reads $90.1\%$ while under-$40$ malignant
+coverage is $0.238$. Two subgroup-conditional repairs narrow the gap without closing it:
+bipartite equalised conformal calibration lifts under-$40$ malignant coverage from $0.238$ to
+$0.952$, and a frozen one-parameter age rule raises all-ages escalation sensitivity from
+$0.731$ to $0.831$ at NNB $3.0\rightarrow6.2$ ($\pi=0.03$), though under~$40$ it reaches
+only $0.238$ $[0.082, 0.472]$ --- the blind spot is mitigated, not closed. Carried frozen to
+$14{,}885$ lesions across two further dermoscopic centres (nothing re-fitted), the operating
+point transfers while both pre-registered mechanistic claims fail: the explanation does not
+transport, and one fails backwards.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Skin lesion classification, dermoscopy, model calibration, conformal prediction, selective
+classification, ensemble methods, algorithmic fairness, hidden stratification, HAM10000.
+\end{IEEEkeywords}
+
+% =====================================================================
+\section{Introduction}
+\IEEEPARstart{A}{utomated} classification of dermoscopic images has been among the most
+visible successes of deep learning in medicine. Since the demonstration that a convolutional
+network could match board-certified dermatologists on biopsy-proven lesion
+classification~\cite{esteva2017}, the field has converged on a small number of public
+benchmarks --- principally the HAM10000 collection~\cite{tschandl2018ham10000} and the ISIC
+challenge series~\cite{codella2018isic} --- and on a reporting convention centred on
+aggregate discrimination: accuracy, macro-averaged F1, and area under the ROC curve.
+
+That convention has outlived its usefulness. On HAM10000 the marginal returns to
+architecture are now small and, as we show, statistically unresolvable at the size of a
+standard held-out split: the gap between the weakest and strongest backbone we train
+($0.7058$ versus $0.7459$ Macro-F1) is not significant under a paired test. Meanwhile the
+properties that decide whether such a system can be safely integrated into a clinical pathway
+are usually left unmeasured: calibration, selective deferral, clinically targeted conformal
+validity, and subgroup reliability. Crucially, these dimensions address orthogonal failure
+modes: calibration evaluates whether confidences reflect true probabilities; selective prediction
+identifies when to defer; conformal inference constructs set-valued predictions with statistical
+validity; and subgroup auditing checks demographic parity. Evaluated only in aggregate, each
+mechanism appears reassuring. In a dataset where two thirds of images are benign nevi, however,
+aggregate metrics are purchased from the majority, leaving the vulnerable minority unprotected.
+This paper is organised around the principle that \emph{deployability is an empirical
+subpopulation property}, that measuring it changes which design choices matter, and that
+measuring it \emph{in aggregate} conceals catastrophic failure modes.
+
+\subsection{Contributions}
+This paper shifts the focus from architectural tuning on public benchmarks to an empirical
+evaluation of medical AI safety nets under subgroup heterogeneity and distribution shift:
+
+\begin{enumerate}
+\item \textbf{A subgroup safety blind spot, and the failure of both standard safety nets
+against it.} We document an age-stratified escalation-sensitivity collapse that no aggregate
+metric reveals ($0.143$ under~$40$ versus $0.764$ at $60+$), characterise it as a
+\emph{confidently wrong} failure driven by the training prior, and show that both selective
+classification and marginal conformal prediction fail in the affected subgroup
+(Secs.~\ref{sec:results-fairness},~\ref{sec:results-conformal}).
+\item \textbf{Subgroup-conditional mitigations, priced in clinical cost.} We supply two
+repairs --- bipartite equalised conformal calibration and a frozen one-parameter
+age-conditional decision rule --- and price the latter in Number Needed to Biopsy at a stated
+reference prevalence ($\pi=0.03$), with the measured caveat that the two mechanisms are not
+independent in the band that matters most
+(Secs.~\ref{sec:results-conformal},~\ref{sec:results-utility}).
+\item \textbf{Multi-centre replication and a transportability paradox.} We carry the frozen
+system and its mitigation to two further dermoscopic centres ($14{,}885$ lesions, nothing
+re-fitted) and report the result against its own pre-registered contingency: the operating
+point transfers with zero re-tuning while the causal prior-skew mechanism not only fails to
+replicate but fails in the reverse direction (Sec.~\ref{sec:results-battery}).
+\end{enumerate}
+
+% =====================================================================
+\section{Related Work}
+
+\textbf{Backbones and the imbalance they hide.} Convolutional baselines on HAM10000 and ISIC
+are well established~\cite{esteva2017,codella2018isic,tschandl2018ham10000}, and the
+architectural frontier has moved through residual~\cite{he2016resnet},
+densely-connected~\cite{huang2017densenet}, compound-scaled~\cite{tan2019efficientnet} and
+modernised-convolutional~\cite{liu2022convnext} designs, and more recently to hierarchical
+Vision Transformers~\cite{liu2022swinv2,tu2022maxvit}. Reported gains between these families
+on a single benchmark split are typically one to three F1 points --- smaller, as our
+confidence intervals show, than the sampling variation of the split itself. HAM10000 is
+dominated by melanocytic nevi ($\sim67\%$), so accuracy is an actively misleading selection
+criterion; the standard remedies are re-weighting by effective number of
+samples~\cite{cui2019classbalanced}, margin-based losses such as LDAM-DRW~\cite{cao2019ldam},
+asymmetric focal variants~\cite{ridnik2021asl}, and post-hoc logit adjustment by the label
+prior~\cite{menon2021logitadjust,saerens2002adjusting}. We find none of these improves on a
+plain cross-entropy baseline once effective-number weighting is already applied
+(Sec.~\ref{sec:results-ladder}).
+
+\textbf{Calibration, uncertainty and abstention.} Modern single networks are systematically
+overconfident~\cite{guo2017calibration}; temperature scaling is the standard one-parameter
+remedy, and Dirichlet calibration~\cite{kull2019dirichlet} generalises it to full
+class-conditional recalibration. Our soft-vote ensemble is miscalibrated in the
+\emph{opposite} direction: mean confidence $0.7048$ against accuracy $0.8609$ (signed gap
+$-0.156$), because averaging six probability vectors that disagree about the runner-up class
+pulls the maximum probability down. This is why a one-parameter temperature is the wrong
+remedy here, and Dirichlet calibration --- which cuts test ECE from $0.1575$ to $0.0206$ ---
+is used throughout instead. Group-wise notions such as
+multicalibration~\cite{hebertjohnson2018multicalibration} go further, requiring the property
+to hold within subpopulations rather than on average; our per-band residuals, which disagree
+in sign across age bands even after a global Dirichlet map, are a direct empirical argument
+for one (Sec.~\ref{sec:results-conformal}). Selective classification has a long
+history~\cite{elyaniv2010selective,geifman2017selectivenet}; we use a probability-margin
+abstention gate throughout.
+
+\textbf{Hidden stratification and conformal coverage.} Split conformal
+prediction~\cite{vovk2005algorithmic} converts non-conformity scores into valid set-valued
+predictions with finite-sample coverage. LAC~\cite{sadinle2019lac} minimises set size;
+APS~\cite{romano2020aps} and RAPS~\cite{angelopoulos2021raps} trade size for conditional
+validity. The distinction between marginal and class-conditional (Mondrian)
+coverage~\cite{vovk2012conditional} is, in our reading, under-emphasised in medical imaging,
+where it is precisely the clinically relevant distinction; conditioning on a clinically
+salient attribute rather than on the label --- equalised
+coverage~\cite{romano2020equalized} --- is the construction our bipartite (age band
+$\times$ escalation requirement) calibrator instantiates. Oakden-Rayner \emph{et
+al.}~\cite{oakdenrayner2020hidden} define \emph{hidden stratification} as a clinically
+meaningful subclass systematically mishandled while aggregate metrics stay healthy;
+Seyyed-Kalantari \emph{et al.}~\cite{seyyedkalantari2021underdiagnosis} report the closest
+prior result, underdiagnosis across patient groups in chest radiography. The mechanism here is
+a shortcut in the sense of Geirhos \emph{et al.}~\cite{geirhos2020shortcut}: ``young patient,
+therefore nevus'', sourced in the training prior we report in
+Sec.~\ref{sec:results-fairness}. Our delta over this lineage is to measure the mechanism with a
+threshold-free within-band statistic, to show the safety mechanisms themselves are inoperative
+in the affected subgroup, and to price a mitigation --- a group-specific threshold in the
+sense of Hardt \emph{et al.}~\cite{hardt2016equality} --- in Number Needed to Biopsy rather
+than as an accuracy delta.
+
+% =====================================================================
+\section{Materials and Methods}
+\label{sec:methods}
+
+\subsection{Data and cohorts}
+All experiments use HAM10000~\cite{tschandl2018ham10000}: $10{,}015$ dermoscopic images of
+$7{,}470$ distinct lesions across seven diagnostic categories. Because the collection contains
+multiple images of the same lesion, an image-level split leaks; we therefore split by
+\texttt{lesion\_id} at a $70/15/15$ ratio, stratified by diagnosis, giving $6{,}981$ training
+images ($5{,}229$ lesions), $1{,}532$ validation images ($1{,}120$ lesions) and $1{,}502$ test
+images ($1{,}121$ lesions), with a machine-checked assertion that no lesion identifier appears
+in more than one split. For the pre-registered same-modality replication of
+Sec.~\ref{sec:results-battery} we use two further dermoscopic centres from
+ISIC-2019~\cite{combalia2019bcn20000,codella2018isic}, BCN-20000 and MSKCC, held in a
+lesion-grouped split of $14{,}885$ records. Squamous-cell carcinoma is excluded by
+pre-registration, since it has no HAM10000 counterpart and the frozen head cannot emit it;
+that removes $431$ BCN-20000 images and leaves $11{,}982$ against MSKCC's $2{,}903$. MSKCC's
+label space holds only \textsc{nv}, \textsc{mel} and \textsc{bkl}, so seven-class Macro-F1 is
+undefined there. Both cohorts are scored by the same six frozen HAM10000-only checkpoints under
+the same test-time augmentation, ensemble, calibrator and age-conditional rule described below;
+no parameter anywhere in this paper is fitted on BCN-20000 or MSKCC.
+
+\subsection{Backbones, ensembling and calibration}
+Six ImageNet-pretrained CNN backbones --- ResNet-50~\cite{he2016resnet},
+DenseNet-121~\cite{huang2017densenet}, EfficientNet-B0 and
+-B3~\cite{tan2019efficientnet}, ConvNeXt-Tiny and -Small~\cite{liu2022convnext} --- are
+fine-tuned identically under effective-number class weighting~\cite{cui2019classbalanced}, a
+two-stage schedule and conservative augmentation; two transformer backbones
+(SwinV2-Tiny~\cite{liu2022swinv2}, MaxViT-Tiny~\cite{tu2022maxvit}) and two alternative losses
+(LDAM-DRW~\cite{cao2019ldam}, ASL~\cite{ridnik2021asl}) are trained under the same protocol.
+The deployed ensemble is a uniform arithmetic soft-vote over the six CNN members' probability
+vectors, chosen over rank averaging, Nelder--Mead weighting, Caruana greedy
+selection~\cite{caruana2004ensemble} and ridge stacking, all fitted out-of-fold on validation.
+Test-time augmentation pools $24$ deterministic dihedral views per image using only
+evaluation-time transforms. Four calibrators were fitted on validation and compared by
+validation ECE --- none, temperature scaling, matrix scaling, and Dirichlet
+calibration~\cite{kull2019dirichlet} with $L_2$ regularisation; Dirichlet wins and is used for
+all downstream stages.
+
+\subsection{Out-of-fold protocol, abstention and conformal sets}
+\label{sec:oof}
+Fitting every downstream component on the $1{,}532$-image validation split makes it do six jobs
+at once and starves rare classes of calibration support. We therefore retrain the six backbones
+under $5$-fold \texttt{StratifiedGroupKFold} cross-validation (lesion-grouped, seed $42$) to
+obtain out-of-fold (OOF) predictions covering the entire training split, which raises rare-class
+yield to $71$ \textsc{df} and $99$ \textsc{vasc} rows (against $24$ and $22$ in validation) and
+to $64$ escalating under-$40$ cases (against $22$), at the cost of a stacking mismatch we
+measure but do not remove: OOF row $i$ is scored by a model trained on $80\%$ of the data,
+whereas every deployed prediction comes from a model trained on all of it.
+
+Selective prediction uses the top-two margin as the uncertainty score, selected by validation
+area under the risk--coverage curve over seven candidates; a case is deferred when its score
+exceeds the validation quantile at the target abstention rate. Conformal sets use split
+conformal with three score functions --- LAC~\cite{sadinle2019lac}, APS~\cite{romano2020aps},
+RAPS~\cite{angelopoulos2021raps} --- under three calibration schemes: marginal, Mondrian
+class-conditional~\cite{vovk2012conditional}, and \emph{bipartite}, which groups calibration
+points by the pair (age band, escalation requirement) and is an instance of equalised
+coverage~\cite{romano2020equalized}. Calibrating conformal quantiles on the OOF rows instead of
+the validation split raises the rarest class's calibration count from $11$ to $45$ and the
+total calibration pool from $762$ to $3{,}468$ rows, eliminating every degenerate
+class-conditional cell at $\alpha=0.05$ --- at the cost of the exact finite-sample guarantee,
+since calibration and test scores then come from different score functions (five fold models
+versus the full-train ensemble); we audit OOF-calibrated coverage empirically against nominal
+$1-\alpha$ and never assert it as guaranteed.
+
+Two clinical-utility quantities are used throughout and defined here. \emph{Number Needed to
+Biopsy} (NNB) is $(\mathrm{TP}+\mathrm{FP})/\mathrm{TP}$, re-weighted to a stated reference
+prevalence $\pi$ by importance-weighting the benign cases,
+\begin{equation}
+w = \frac{1-\pi}{\pi}\cdot\frac{p}{1-p}, \qquad
+\mathrm{NNB}_{\pi} = 1 + w\,\frac{\mathrm{FP}}{\mathrm{TP}},
+\label{eq:nnb}
+\end{equation}
+with $p$ the cohort's observed escalating prevalence; we use $\pi=0.03$ throughout. \emph{False
+Reassurance Rate} (FRR) is the share of truly escalating lesions whose conformal set contains
+no escalating class at all,
+\begin{equation}
+\mathrm{FRR} = \frac{|\{i : y_i \in \mathcal{E},\ \mathcal{C}(x_i)\cap\mathcal{E}=\emptyset\}|}
+                    {|\{i : y_i \in \mathcal{E}\}|},
+\label{eq:frr}
+\end{equation}
+with $\mathcal{E}$ the escalating set $\escset$.
+
+\subsection{The age-conditional escalation rule}
+\label{sec:agerule}
+Sec.~\ref{sec:results-fairness} shows that in the under-$40$ band the escalating-class
+probability mass carries usable signal that the $\arg\max$ rule discards. The mitigation is
+therefore a decision rule, not a retrained model, kept to one parameter per age band $b(x)$:
+\begin{equation}
+\hat{y}(x) \;=\; \arg\max_{c}\;\bigl(p_c(x) + \lambda_{b(x)}\,\mathbf{1}[c \in \mathcal{E}]\bigr),
+\label{eq:lambda}
+\end{equation}
+equivalent to per-class thresholds $\theta_c=-\lambda_b$ on the escalating classes and $0$
+elsewhere --- the group-specific threshold construction of Hardt \emph{et
+al.}~\cite{hardt2016equality}, applied to an age band. Each $\lambda_b$ is chosen by exhaustive
+grid search to minimise expected clinical cost subject to a per-band escalation-specificity
+floor of $0.85$; a band with fewer than $30$ true escalating cases falls back to the pooled
+value, which is why the rule is fitted on OOF and nowhere else --- validation has $22$
+escalating under-$40$ cases and OOF has $64$. Fitting uses cross-fitted Dirichlet-calibrated
+OOF probabilities, so the calibrator has not seen the rows its own $\lambda$ is tuned on. The
+frozen values are $\lambda_{<40}=0.26$ (bootstrap CI touching zero, $[0.00,0.61]$),
+$\lambda_{40\text{--}59}=0.74$, $\lambda_{60+}=0.33$.
+
+\subsection{Statistical protocol}
+\label{sec:frozen}
+A proportion with fewer than $30$ events in the numerator takes the exact Clopper--Pearson
+interval; everything else takes a lesion-grouped bootstrap percentile interval, because the
+$1{,}502$ test images sit on $1{,}121$ lesions and resampling images would treat correlated
+views as independent evidence. Paired comparisons that share the $N=1502$ denominator use
+McNemar's test~\cite{dietterich1998}; per-class discrimination uses DeLong's
+test~\cite{delong1988} with the fast structural-component algorithm~\cite{sun2014fastdelong}.
+Seven families are declared in advance and Holm--Bonferroni corrected within family: four
+confirmatory, whose adjusted $p$-values are the ones quoted, and three exploratory, reported as
+intervals only. The confirmatory families are the $42$ DeLong tests, the six ladder McNemar
+tests, the single pre-specified age-band comparison, and the two rungs of
+Sec.~\ref{sec:results-ladder} evaluated beyond A7. Every reported test result derives from
+frozen artifact sets --- $34$ per-image prediction matrices, hashed before the statistical
+analysis was written --- and every new quantity this round added (two ladder rungs, the age
+rule, NNB, FRR, bipartite coverage, intersectional cells) was named in a pre-registered
+$19$-item analysis plan \emph{before} the test split was read, then emitted by a single runner
+that raises on any identifier the plan does not contain. The pass reported here ran in two
+stages with no repeat and no stated rerun reason; as a reproduction check, rung A7 recomputed
+inside that pass matched its frozen value to zero drift. Reporting completeness against the
+$44$-item CLAIM 2024 checklist~\cite{tejani2024claim} is $33$ items met, $7$ partial, $2$ not
+met and $2$ not applicable, with every shortfall named in the project repository rather than
+left blank.
+
+% =====================================================================
+\section{Results}
+
+\subsection{What does benchmark discrimination establish? The ablation ladder}
+\label{sec:results-ladder}
+
+\input{tables_edited/ablation_table_edited.tex}
+
+Table~\ref{tab:ablation_edited} reports the consolidated ladder. \textbf{Architecture barely
+matters.} ConvNeXt-Tiny ($0.7459$, CI $[0.6928, 0.7806]$) improves on ResNet-50 ($0.7058$, CI
+$[0.6470, 0.7501]$) by $+0.040$ Macro-F1, but the paired bootstrap interval crosses zero and
+McNemar gives $p=0.42$; SwinV2-Tiny ($0.7273$) and gated metadata fusion ($0.7411$) do not beat
+it either, and the two imbalance-targeted losses (LDAM-DRW $0.7256$, ASL $0.7305$) fail to
+improve on the cross-entropy baseline. \textbf{Ensembling is the only rung that clears
+significance.} The uniform soft-vote over six CNNs reaches $0.7718$ (CI $[0.7201, 0.8118]$),
+and McNemar against the best single model is decisive ($\chi^2=17.20$,
+$p=3.4\times10^{-5}$, $85$ cases correct only for the ensemble against $38$ only for
+ConvNeXt-Tiny); Holm correction inside the six-member ladder family leaves this comparison
+significant at $p=2.0\times10^{-4}$ and every other comparison non-significant. After Holm
+correction across all $42$ DeLong tests, exactly one per-class AUC comparison survives: the
+ensemble improves \textsc{bkl} AUC from $0.9195$ to $0.9572$ ($z=3.61$, Holm $p=0.013$). The
+McNemar result and the Macro-F1 bootstrap interval disagree in appearance because they answer
+different questions --- McNemar tests raw correct/incorrect outcomes, dominated by the
+$1{,}004$ \textsc{nv} images, while Macro-F1 weights all seven classes equally and inherits the
+wide sampling variance of the rare classes. TTA adds $+0.014$ ($0.7859$) and Dirichlet
+calibration a further $+0.019$ ($0.8047$), neither individually significant. Margin abstention
+(Block B) trades coverage for retained quality: requested deferral rates of $5/10/15/20\%$
+yield realised test coverages of $0.954/0.892/0.836/0.779$ --- deferring $10.8\%$ of cases
+raises retained Macro-F1 to $0.8577$ on the retained $1{,}340$-image subset, and deferring
+$22.1\%$ raises it to $0.8957$ on the retained $1{,}170$-image subset while cutting missed
+serious cases to $36$.
+
+\label{sec:results-exhaustion}
+\textbf{Exhaustion: five further levers, five negative results.} Beyond rung A7 we tested five
+combination levers under lesion-grouped cross-fitting or a pre-registered single test pass, and
+none beats it. An eight-member vote adding both transformers is a wash ($0.7981$ against
+$0.7986$ for the six-CNN vote); Caruana greedy selection~\cite{caruana2004ensemble} over eight
+members overfits ($0.7640$/$0.7839$ against $0.7945$); tempered prior correction and per-class
+Macro-F1 offsets are both inert or noisy. The two pre-registered rungs beyond A7 (Block C) are
+also negative: OOF-fitted Dirichlet calibration (A7-oof, raw Macro-F1 $0.7871$ $[0.7315,
+0.8295]$) costs $-0.0176$ $[-0.0451,+0.0054]$, Holm $p=0.242$ against A7, buying calibration
+sample size rather than accuracy; a $30$-member fold-bagged ensemble (A8, raw Macro-F1
+$0.7810$ $[0.7207, 0.8258]$), the one lever with a real mechanism behind it, costs $-0.0237$
+$[-0.0625,+0.0043]$, Holm $p=0.242$, though it is under-sharpened by construction (it
+reuses the six-member OOF Dirichlet map) and so is a lower bound on fold-bagging rather than a
+refutation. Macro-F1 $0.8047$ is the ceiling of these checkpoints under every post-hoc
+recombination we could find; ridge stacking would have produced our best test number
+($0.7815$) but the \emph{worst} out-of-fold validation score ($0.7583$ against $0.7911$ for the
+deployed vote), so we report it as a negative result rather than select it on the test set.
+
+\subsection{Does aggregate conformal coverage imply clinically relevant protection?}
+\label{sec:results-conformal}
+
+\input{tables_edited/conformal_coverage_edited.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figure5_conformal_coverage.png}
+\caption{Per-class empirical coverage for APS at $\alpha=0.10$ under marginal and Mondrian
+class-conditional calibration, against the $90\%$ target. Marginal calibration (blue) buys its
+average from \textsc{nv} and \textsc{df} while under-covering two of the three escalating
+classes, worst on \textsc{mel} at $0.796$; \textsc{akiec} lands only just at target, not below
+it. Class-conditional calibration (orange) brings every class to or above target. LAC shows the
+same pattern more severely (\textsc{mel} $0.671$).}
+\label{fig:conformal}
+\end{figure}
+
+Fig.~\ref{fig:conformal} shows the per-class coverage profile behind these numbers. Aggregate ECE conceals structure that matters for calibration and for coverage alike. Sliced by
+age band on the deployed TTA ensemble, the per-band ECE spread is $0.084$ before Dirichlet
+calibration and $0.029$ after --- narrowed, not closed --- and out-of-fold, the under-$40$ band
+is simultaneously the most ``accurate'' ($0.930$, dominated by easy nevi) and the most
+under-confident of the three ($-0.229$ against $-0.190$ and $-0.119$); after calibration the
+$60+$ band is pushed into over-confidence (val $+0.030$, OOF $+0.041$) while the under-$40$
+band remains under-confident (OOF $-0.027$). One global affine map cannot be simultaneously
+correct for a band it must sharpen and a band it must soften.
+
+Table~\ref{tab:conformal_edited} shows the coverage consequence. At $\alpha=0.10$, LAC under
+marginal calibration attains $90.1\%$ overall coverage --- the guarantee holds exactly as
+advertised --- while covering only $73.4\%$ of genuinely malignant lesions and just $23.8\%$
+of malignant lesions in patients under $40$, against nominal $0.90$. Mondrian
+class-conditional calibration repairs the aggregate malignant coverage to $0.886$--$0.903$ but
+lifts the under-$40$ malignant figure only to $0.571$--$0.667$: conditioning on the label
+fixes the label imbalance and leaves the patient imbalance untouched. Calibrating on the pair
+(age band, escalation requirement) --- the bipartite scheme --- closes it, to $0.952$ (LAC)
+and $0.857$ (RAPS) at $\alpha=0.10$, with aggregate serious coverage at or above the
+class-conditional value and a mean set size that is smaller, not larger. Out-of-fold
+calibration of these conformal quantiles raises the rarest class's calibration count from $11$
+to $45$ and the pool from $762$ to $3{,}468$ rows, eliminating every degenerate cell at
+$\alpha=0.05$, at the cost of the exact finite-sample guarantee stated in
+Sec.~\ref{sec:oof}.
+
+\textbf{False reassurance (Eq.~\eqref{eq:frr}) is the endpoint we report, and we report the
+$\alpha$ that bounds it
+rather than one chosen in advance.} Under marginal calibration FRR reaches $0.228$ at
+$\alpha=0.10$; RAPS with bipartite calibration at $\alpha=0.05$ is the best configuration
+measured, FRR $0.0138$ $[0.0038, 0.0349]$ with serious coverage $0.955$ and mean set size
+$1.87$. Bounding FRR below $0.05$ needs $\alpha=0.05$ (set size $1.87$), below $0.02$ needs
+$\alpha=0.02$ (set size $3.25$), and \textbf{no $\alpha$ in our grid bounds FRR below $0.01$}
+under any of the eighteen configurations we evaluated --- reported as unreachable rather than
+quietly clipped.
+
+\subsection{Does reliability persist across patient subgroups? An age-stratified blind spot}
+\label{sec:results-fairness}
+
+\input{tables_edited/table_agegap_edited.tex}
+
+Every aggregate number reported so far is consistent with a competent system; stratifying by
+patient age shows it is not, uniformly. On test, patients aged $60$ and over have $76.4\%$ of
+escalating lesions caught and the $40$--$59$ band $81.4\%$; patients under $40$ have $14.3\%$
+--- three of twenty-one --- with eighteen lesions requiring escalation, most of them
+melanomas, classified as ordinary nevi. The single pre-specified confirmatory comparison,
+under $40$ against $60+$, gives a difference of $-0.621$ $[-0.786,-0.386]$, Holm $p<0.001$. The
+point estimate $0.143$ rests on twenty-one positives and should never be quoted bare; the same
+quantity is $0.545$ on validation and $0.547$ out-of-fold, and the pre-specified confirmatory
+comparison on the better-powered out-of-fold split gives $-0.187$ $[-0.370,-0.016]$, Holm
+$p=0.036$ --- the same sign and significance at a smaller magnitude. What is stable across all
+three splits is the ordering: under-$40$ is the worst band every time.
+
+\textbf{The mechanism is both a decision rule and lost information.} A threshold-free
+diagnostic asks how well the escalating-class probability mass $\sum_{c\in\mathcal{E}}p_c(x)$
+ranks truly escalating lesions above benign ones within a band, using no threshold and no
+calibration. On test the under-$40$ within-band AUC is $0.810$, against $0.975$ at $40$--$59$
+and $0.933$ at $60+$ on the same split, where under-$40$ also ranks worst rather than
+comparably. The probability vector still ranks escalating lesions under $40$ far above chance,
+so a decision rule can recover part of the gap, but its ranking in that band is genuinely
+weaker, so no threshold recovers all of it. \textbf{The source is the training prior.} In the
+training split, $4.9\%$ of lesions in patients under $40$ require escalation, against $35.5\%$
+at $60+$; a model trained to minimise a class-weighted loss over this distribution learns that
+a pigmented lesion on a young patient is a nevus, correctly with respect to the training
+objective and catastrophically with respect to the clinical one.
+
+\textbf{The gap compounds with sex, within the limits our power gates allow.} Slicing age band
+$\times$ sex under the same gates (at least $30$ images and $10$ true escalating cases before a
+sensitivity is reported), escalation sensitivity is $0.848$ $[0.681,0.949]$ for women aged
+$40$--$59$ and $0.784$ $[0.618,0.902]$ for men in the same band, $0.697$ $[0.551,0.833]$ for
+women at $60+$ and $0.797$ $[0.709,0.874]$ for men; the one reportable under-$40$ cell, women,
+is $0.250$ $[0.055,0.572]$ on twelve escalating lesions. Across the reportable cells the
+equalised-odds TPR gap is $0.598$, the demographic-parity gap $0.339$, and the referral-burden
+gap $0.129$. Men under $40$ hold nine escalating lesions against our floor of ten, so it fails the gate by one case; we name it as suppressed rather than dropping it silently. Age is the
+dominant axis here; we do not claim a resolved sex effect at these interval widths.
+
+\subsection{Can subgroup-conditional rules mitigate the blind spot, and at what clinical cost?}
+\label{sec:results-utility}
+
+We apply the rule of Eq.~\eqref{eq:lambda} at the $\lambda_b$ frozen from out-of-fold fitting,
+on top of rung A7-oof, and read it once on test (Table~\ref{tab:agegap_edited}). Overall
+escalation sensitivity rises from $0.731$ to $0.831$ and missed serious cases fall from $78$ to
+$49$, at a referral rate rising from $0.178$ to $0.268$ and a Macro-F1 cost of $-0.038$
+($0.7871\rightarrow0.7492$). The rule helps every band and helps the $40$--$59$ band most
+dramatically ($0.814\rightarrow0.971$, referral $0.109\rightarrow0.234$) and the under-$40$
+band least ($0.143\rightarrow0.238$, referral $0.028\rightarrow0.066$), exactly the ordering the
+escalation-mass diagnostic predicted. At $60+$ the rule moves sensitivity $0.764\rightarrow0.844$
+at a referral cost of $0.350\rightarrow0.423$. Read against a stated reference prevalence
+$\pi=0.03$ (Eq.~\eqref{eq:nnb}), overall NNB moves from $3.0$ to $6.2$: roughly six lesions
+escalated per escalation-warranting lesion found, against three before, for twenty-nine fewer
+missed serious cases; by band, NNB moves $5.2\rightarrow8.1$ under $40$, $2.1\rightarrow5.9$ at
+$40$--$59$, and $5.3\rightarrow7.6$ at $60+$. The range is wide at other reference prevalences
+($7.1\rightarrow16.9$ at $\pi=0.01$, $2.2\rightarrow4.1$ at $\pi=0.05$), which is itself the
+point: an NNB quoted without its prevalence is not a number a clinician can use. Under-$40$
+escalation sensitivity remains poor in absolute terms after the intervention, and we do not
+present this as a solved problem.
+
+\textbf{Is it redundant with abstention? In the band it was built for, yes.} The orthogonality
+check below uses the OOF-refit margin gate, which at a $10\%$ target retains $89.9\%$ of cases,
+raising retained Macro-F1 from $0.7871$ to $0.8444$ and cutting missed serious cases from $78$
+to $57$. Intersecting the escalating lesions plain $\arg\max$ misses with the cases each
+mechanism rescues: under $40$, of $18$ misses the abstention gate defers $2$ and the age rule
+catches the same $2$ --- a Jaccard overlap of $1.00$, the rule reaches no case abstention does
+not already reach, in the very band it targets. At $40$--$59$ the two are complementary: of
+$13$ misses, abstention defers $2$ and the rule catches $11$, overlapping on $2$, Jaccard
+$0.18$. At $60+$ they largely coincide (Jaccard $0.83$: of $47$ misses, abstention defers $17$
+and the rule catches $16$). Pooled, of $78$ missed escalating lesions abstention defers $21$
+and the rule catches $29$, Jaccard $0.61$ --- an aggregate that conceals total redundancy in
+the band that matters most. Per-band miss-rescue rates are $11.1\%$ under $40$, $15.4\%$ at
+$40$--$59$ and $36.2\%$ at $60+$ ($26.9\%$ pooled); the abstention gate itself defers only
+$6.2\%$ of under-$40$ cases against $17.3\%$ at $60+$, because confidence is highest precisely
+where the errors are. This is a negative result inside the paper's own headline contribution,
+and we report it as measured: sixteen confidently wrong under-$40$ misses are reached by
+neither mechanism, a gap we return to in Sec.~\ref{sec:limitations}.
+
+\subsection{Does the operating rule transport across external centres?}
+\label{sec:results-battery}
+
+\input{tables_edited/external_table_validity_battery.tex}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.78\textwidth]{external_figure_dose_response.png}
+\caption{The pre-registered dose--response test, and its outcome. \textbf{(a)} Claim~B
+predicted that under-$40$ escalation sensitivity would fall as the training prior's age skew
+rises, so BCN-20000 --- the least skewed centre --- would score highest. The observed ordering
+is the exact reverse, and the HAM10000 and BCN-20000 intervals do not overlap. \textbf{(b)}
+Claim~A predicted a cohort-invariant escalation-mass AUC; the under-$40$ spread across centres
+is $0.105$, and within MSKCC the under-$40$ band is the \emph{best}-ranked band rather than the
+worst. Error bars are lesion-grouped bootstrap intervals on the under-$40$ band, the
+pre-registered quantity. Both pre-registered claims fail, and the contingency declared before
+the data were seen was to report the three estimates with intervals, drop the trend language,
+and offer no post-hoc explanation.}
+\label{fig:dose_response}
+\end{figure*}
+
+A modality change confounds every explanation at once, so the narrower same-modality question
+is asked separately: does the under-$40$ finding reproduce in dermoscopy acquired elsewhere?
+We score two further ISIC-2019 centres~\cite{combalia2019bcn20000,codella2018isic} ---
+BCN-20000 ($11{,}982$ images) and MSKCC ($2{,}903$) --- with the identical frozen system
+described in Sec.~\ref{sec:methods}, fitting nothing on either. Table~\ref{tab:external_battery}
+reports the full battery. Two claims were pre-registered. \textbf{Both fail, and Claim~B
+fails backwards.} Under-$40$ escalation-mass AUC is $0.895$ on HAM10000, $0.791$ on BCN-20000
+and $0.790$ on MSKCC --- a spread of $0.105$, which is not invariance; within MSKCC, under-$40$
+is the \emph{best}-ranked band ($0.790$ against $0.694$ at $40$--$59$), the opposite of the
+HAM10000 pattern. Claim~B predicted BCN-20000 $>$ MSKCC $\approx$ HAM10000 in under-$40$
+sensitivity; the observed order is HAM10000 $0.547$ $>$ MSKCC $0.333$ $>$ BCN-20000 $0.279$,
+the exact reverse, with non-overlapping HAM10000/BCN-20000 intervals. The dose variable is
+entangled with transfer quality --- BCN-20000 has the lowest skew \emph{and} is the centre the
+system transfers to worst, all-ages Macro-F1 $0.402$ against HAM10000's $0.784$ --- so the
+experiment is non-decisive rather than a clean refutation, and we record that as a design
+limitation rather than grounds to retain the hypothesis.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.88\textwidth]{external_figure_decision_curve.png}
+\caption{Decision curve analysis~\cite{vickers2006dca} for the frozen age-conditional rule: net benefit against threshold
+probability $p_t$ for biopsy-all, biopsy-none, argmax triage, the frozen $\lambda$-rule, and a
+risk model thresholding escalation mass directly. The $\lambda$-rule and argmax are fixed
+operating points --- they refer the same cases at every $p_t$ --- but their net benefit still
+declines in $p_t$ because the false-positive term carries the odds weight $p_t/(1-p_t)$.
+\textbf{Left}: the full panel, where the rule dominates argmax across the plausible range.
+\textbf{Centre}: the under-$40$ band, where the two are indistinguishable and the ordering
+inverts by $p_t=0.20$.}
+\label{fig:dca}
+\end{figure*}
+
+\textbf{What does transfer is the operating point.} The frozen per-band $\lambda$ of
+Sec.~\ref{sec:agerule}, carried
+across with no target tuning, raises under-$40$ escalation sensitivity at all three centres:
+$0.547\rightarrow0.625$ on HAM10000, $0.279\rightarrow0.352$ on BCN-20000,
+$0.333\rightarrow0.389$ on MSKCC, at referral costs of $+0.024$, $+0.026$ and $+0.019$
+(Fig.~\ref{fig:dose_response}). The
+pre-registered confirmatory member --- an exact McNemar test of the rule against argmax in
+BCN-20000's under-$40$ band --- is significant ($p=1.49\times10^{-8}$); because $\lambda\ge0$
+can only add escalating predictions, the test is structurally one-sided and certifies that
+$27$ cases were rescued, not that the rule is net-beneficial. A target-fitted sweep, descriptive
+only, puts the under-$40$ optimum at $\lambda=0.24$ on HAM10000 (a sanity check against the
+frozen $0.26$) but at $0.12$ on MSKCC and $0.91$ on BCN-20000: the direction exports, the exact
+threshold does not. Across all ages the $\lambda$-rule beats argmax triage at every threshold
+we examined, by $+0.0228$ $[+0.0178,+0.0282]$ in net benefit at $p_t=0.10$; within the
+under-$40$ band the same difference is null at every threshold ($+0.0015$ $[-0.0015,+0.0053]$
+at $p_t=0.10$, Fig.~\ref{fig:dca}) and turns negative by $p_t=0.20$ --- the same shape as
+Sec.~\ref{sec:results-utility}'s internal result. Read as a clinical action, in distribution the
+system needs $3.0$ biopsies per malignancy found at $\pi=0.03$ and sends $373$ of Tier-1
+lesions to discharge under calibrated triage.
+
+% =====================================================================
+\section{Discussion}
+
+\subsection{Summary of empirical claims and non-claims}
+To maintain rigorous claim discipline and prevent over-interpretation of retrospective benchmark results, we delineate what our evidence establishes versus what it disclaims:
+
+\textbf{What the study establishes:}
+(i)~\emph{Benchmark saturation:} returns to single architectures have saturated; only ensembling yields a certifiable gain ($+0.0259$ Macro-F1, Holm $p=2.0\times10^{-4}$, ceiling $0.8047$).
+(ii)~\emph{Calibration separation:} Dirichlet recalibration cuts test ECE from $0.1575$ to $0.0206$ without altering discriminative rankings.
+(iii)~\emph{Selective deferral failure:} standard margin abstention defers only $11\%$ of under-$40$ escalating misses because errors are confidently wrong.
+(iv)~\emph{Marginal conformal failure:} marginal $90.1\%$ coverage masks serious-lesion coverage of $73.4\%$ and under-$40$ malignant coverage of $23.8\%$.
+(v)~\emph{Subgroup blind spot:} escalation sensitivity collapses from $0.764$ ($60+$) to $0.143$ (under $40$, difference $-0.621$, Holm $p<0.001$).
+(vi)~\emph{Priced mitigation:} a frozen age rule raises all-ages sensitivity ($0.731\to0.831$) at NNB $3.0\to6.2$ ($\pi=0.03$), but reaches only $0.238$ under $40$.
+(vii)~\emph{Transportability separation:} on $14{,}885$ external lesions, the operating point transfers while the causal prior-skew explanation fails.
+
+\textbf{What the study does not establish:}
+(i)~\emph{No clinical readiness:} the system is not clinically validated and must not operate autonomously (under-$40$ sensitivity is $0.238$).
+(ii)~\emph{No universal causal mechanism:} the age-prior skew hypothesis is non-universal; its ordering reversed across external centres.
+(iii)~\emph{No universally optimal threshold:} the direction of the age rule transfers, but its exact scalar requires local site recalibration.
+(iv)~\emph{No global benchmark invalidation:} findings demonstrate benchmark discrimination is insufficient evidence of deployment reliability, not that benchmark models are invalid.
+
+\subsection{Aggregate conformal coverage conceals clinically relevant failure}
+The conformal result generalises beyond this dataset. Any screening problem with a dominant
+benign class allows a marginal coverage guarantee to be met almost entirely by the majority,
+and the more imbalanced the problem, the more comprehensively the guarantee can be satisfied
+while failing the patients it exists to protect. Our $\alpha=0.10$ LAC configuration is
+formally valid, empirically on-target at $90.1\%$, and leaves roughly one malignant lesion in
+four with a shortlist containing nothing that would prompt referral. Conditioning on the
+label --- Mondrian class-conditional calibration --- restores aggregate malignant coverage and
+still leaves malignant lesions in patients under~$40$ covered at $0.571$--$0.667$:
+label-conditional validity is blind to patient-level structure. Conditioning jointly on age
+band and escalation requirement, an instance of equalised
+coverage~\cite{romano2020equalized}, raises that to $0.952$ at no cost in set size, because
+six well-populated cells estimate their quantiles more sharply than seven cells two of which
+are nearly empty. Medical applications of conformal prediction should report coverage
+conditioned on the clinically positive set \emph{and} on the subgroups the system is meant to
+serve, with the false reassurance rate (Eq.~\eqref{eq:frr}) as a primary reporting endpoint.
+
+\subsection{Confidently wrong errors: why selective prediction fails}
+The selective-classification literature rests on the premise that a model's uncertainty
+correlates with its errors, and our aggregate risk--coverage curves support that premise. The
+age analysis shows where it breaks: in the under-$40$ band the model's errors carry no
+elevated uncertainty, and the abstention gate defers a \emph{smaller} fraction of that band
+($6.2\%$) than of the $60+$ band ($17.3\%$), so the safety net thins out exactly where it is
+needed. The probability vector does carry signal --- within-band escalation-mass AUC is
+$0.810$ --- but every standard safety mechanism reads a summary of it that discards the
+escalating-mass direction, which is where the residual signal lives. Our one-parameter rule
+reads exactly that direction and recovers part of the gap ($0.143 \rightarrow 0.238$) where
+abstention recovers almost none. Only part, though: the within-band AUC is also genuinely
+lower under~$40$ than in the older bands, so some of the gap is lost ranking ability that no
+decision rule reading this probability vector can recover.
+
+\subsection{What exports is the intervention, not the explanation}
+Carrying the frozen system to three centres separates whether the \emph{finding} generalises
+from whether the \emph{fix} does. The fix generalises: a per-band $\lambda$ fitted once on
+HAM10000 out-of-fold data raises under-$40$ escalation sensitivity at both external centres,
+with nothing re-fitted. The explanation does not: neither pre-registered claim survived ---
+escalation-mass AUC is not cohort-invariant (spread $0.105$), and under-$40$ sensitivity
+tracked the training prior's age skew in reverse. The honest reading is that we have a
+transportable \emph{operating point} and a non-transportable \emph{mechanism}. A
+group-conditional threshold encodes a policy that survives a change of cohort in a way that
+causal stories about why the base rate misleads do not. The corollary for deployment: the
+\emph{direction} of the correction can be imported, but its magnitude cannot --- a
+target-fitted sweep puts the under-$40$ optimum at $\lambda=0.12$ in one external centre and
+$0.91$ in the other, against $0.26$ frozen from the source. A site adopting this rule should
+inherit its form and re-fit its scalar on local data. That costs us a causal claim and buys a
+deployable intervention --- a trade worth making explicit rather than papering over.
+
+\subsection{Subgroup heterogeneity and delta over prior hidden-stratification work}
+Oakden-Rayner \emph{et al.}~\cite{oakdenrayner2020hidden} named hidden stratification;
+Seyyed-Kalantari \emph{et al.}~\cite{seyyedkalantari2021underdiagnosis} demonstrated
+underdiagnosis across patient groups in chest radiography; the training prior we identify
+makes this a shortcut in the sense of Geirhos \emph{et
+al.}~\cite{geirhos2020shortcut}. What we add, as a delta rather than a displacement, is three
+things prior work did not measure: first, a threshold-free within-band statistic separating
+``the representation cannot see it'' from ``the decision rule throws it away'', with the
+finding that on these data it is both; second, that the safety mechanisms themselves ---
+abstention, calibration, conformal coverage --- are inoperative in the affected subgroup,
+which is a stronger statement than that the classifier is worse there; third, a mitigation
+priced in clinical cost (Number Needed to Biopsy at a stated reference prevalence) rather than
+as an accuracy delta~\cite{hardt2016equality}.
+
+\subsection{Clinical positioning and non-autonomous evaluation}
+We do not claim this system is deployable. Even after mitigation, under-$40$ escalation
+sensitivity is $0.238$; this system must not run autonomously for young patients. The analysis
+identifies a problem and prices a partial remedy, it does not solve it. The configuration we
+would put forward for prospective evaluation under specialist oversight is the TTA ensemble
+with Dirichlet calibration, the age-conditional rule of Eq.~\eqref{eq:lambda}, a
+probability-based abstention gate at roughly $10\%$ deferral, and RAPS conformal sets under
+bipartite calibration as the output format --- a shortlist, not a diagnosis. The entire
+evaluation is retrospective, on a curated cohort, so every absolute utility figure here is an
+internal comparison rather than a clinical forecast.
+
+% =====================================================================
+\section{Limitations}
+\label{sec:limitations}
+
+\textbf{Data: one training cohort, and a scope decision.} All training is on HAM10000, and the
+same-modality replication of Sec.~\ref{sec:results-battery} is the external evidence this paper
+relies on; BCN-20000 is the centre the frozen system transfers to worst and MSKCC's label space
+holds only three of our seven classes. We scope this paper to same-modality dermoscopy because a
+change of imaging modality confounds every explanation at once: a cross-modality probe on the
+smartphone cohort PAD-UFES-20 ($2{,}106$ images, an inverted class prior of roughly $77\%$
+escalating against HAM10000's $19\%$) was run under the identical frozen system, the ensemble
+did not transfer (Macro-F1 $0.167$, below its own best individual member), and that result on
+PAD-UFES-20~\cite{pacheco2020padufes} is reported in the project repository rather than here. On skin tone, this paper's three cohorts
+--- HAM10000, BCN-20000 and MSKCC --- carry no Fitzpatrick labels, and an image-derived
+individual-typology-angle proxy is documented elsewhere in this project as invalid on
+dermoscopy (vignetting and erythema dominate the measured angle), so we report neither here; a
+genuine Fitzpatrick slice exists only for the smartphone cohort scoped out above, so this paper
+has nothing to say about skin tone within the dermoscopic cohorts it covers.
+
+\textbf{Protocol: the out-of-fold move closes one problem and opens two.} Out-of-fold
+calibration is fitted by models trained on $80\%$ of the data and applied to a model trained on
+all of it, a stacking mismatch we measure but cannot remove; rung A7-oof is $0.018$ Macro-F1
+below its validation-fitted counterpart on an earlier validation-only check. Out-of-fold
+conformal calibration forfeits the exact finite-sample guarantee, because calibration and test
+scores no longer come from one fixed score function; we audit its coverage empirically and
+never assert it. Every test quantity in this paper was named before it was computed under the
+frozen analysis plan and statistical protocol of Sec.~\ref{sec:frozen}, executed as a single
+test pass with no rerun reason recorded; that is the intended cost of the discipline, not an
+oversight.
+
+\textbf{The mitigation: right form, locally wrong magnitude, and not orthogonal where it
+matters.} Each $\lambda_b$ minimises expected cost under a per-band specificity floor rather
+than the cleaner target of equality of opportunity~\cite{hardt2016equality}; the under-$40$
+$\lambda$ has a bootstrap interval touching zero, the least certain of the three. The external
+centres sharpen the point: the frozen value helps everywhere, but a target-fitted sweep puts the
+under-$40$ optimum at $0.12$ and $0.91$ in the two external cohorts against $0.26$ frozen from
+the source, so a site adopting this rule should inherit its form and re-fit its scalar locally.
+The two safety mechanisms are not independent where it counts: at the $10\%$ operating point
+the age rule and the abstention gate rescue the same two of eighteen under-$40$ misses, and
+sixteen confidently wrong under-$40$ misses are reached by neither; we have no proposal that
+reaches them.
+
+\textbf{Evidence quality: two attributions corrected.} The \emph{level} of Macro-F1 is dragged
+down by \textsc{akiec} ($F_1=0.697$) and \textsc{mel} ($0.699$) --- the two lowest per-class
+scores on test, one of them the clinically decisive class --- and not by \textsc{df} ($0.791$)
+or \textsc{vasc} ($0.842$); the \emph{variance} is dominated by \textsc{df} and \textsc{vasc},
+whose intervals are $0.389$ and $0.308$ wide on twenty and twenty-one images. Rare-class
+scarcity widens the intervals; melanoma performance holds the point estimate down. Separately,
+a Grad-CAM lesion-interior attribution check over all test images, using Tschandl's binary
+lesion segmentations~\cite{tschandl2020segmentations}, finds $0.523$ of activation mass falling
+inside the annotated lesion against a mean lesion area of $0.256$ of the frame; but
+misclassified images score \emph{higher} on this fraction ($0.570$) than correct ones
+($0.513$), because for a misclassified image the map~\cite{selvaraju2017gradcam} is taken with
+respect to the \emph{predicted} class, so landing on the lesion is close to automatic. This is
+a supporting check, not evidence of mechanism; the mechanistic claim in this paper is carried
+by the threshold-free within-band escalation-mass AUC of Sec.~\ref{sec:results-fairness}
+instead.
+
+\textbf{Age is a proxy for something we do not observe.} We stratify by recorded patient age
+because it is what the metadata contains; the underlying clinical structure --- lesion
+presentation, nevus count, sun-exposure history --- is unobserved. The three-centre replication
+makes this concrete: the same age label indexes a different case mix at every site, which is
+one reason the mitigation transported and the mechanism did not.
+
+% =====================================================================
+\section{Conclusion}
+
+We built a dermoscopic lesion classifier as an ablation ladder under a strict leak-free
+protocol --- lesion-grouped splits, no downstream component fitted on test, out-of-fold
+predictions where validation was doing too many jobs, and one pre-registered pass over the test
+split --- and found that among the design choices evaluated, only ensembling produced a
+statistically certifiable gain in Macro-F1; five further combination levers were all negative.
+Macro-F1 $0.8047$ is the ceiling of these checkpoints, and we report that as a result rather
+than a gap. The system's deployability properties moved substantially: calibration error fell
+by a factor of seven, an age-conditional decision rule raised escalation sensitivity from
+$0.731$ to $0.831$ at a Number Needed to Biopsy of $6.2$ at a $3\%$ reference prevalence, and
+subgroup-conditional conformal calibration cut the false reassurance rate to $0.0138$
+$[0.0038,0.0349]$. Three findings should outlast the specific numbers. Marginal conformal
+coverage is satisfiable and misleading in any imbalanced screening problem, and class-conditional
+coverage is not automatically the fix, because conditioning on the label leaves patient-level
+structure untouched. A model can be confidently wrong about an entire patient subgroup ---
+escalation sensitivity $0.143$ $[0.030,0.363]$ under $40$ against $0.764$ $[0.683,0.836]$ at
+$60+$ --- in a way no aggregate metric, risk--coverage curve or marginal conformal guarantee
+reveals. And carrying a fitted mitigation to two further centres separates what generalises from
+what does not: the operating point transported to both, while the mechanistic explanation for
+why it was needed did not survive either pre-registered test. Subgroup-conditional evaluation of
+the safety mechanism, not only of the classifier, should be a reporting requirement.
+
+% =====================================================================
+\section*{Acknowledgment}
+The author thanks the maintainers of the datasets this study depends on: the
+HAM10000 collection~\cite{tschandl2018ham10000} and its lesion-level segmentation
+masks~\cite{tschandl2020segmentations}, and the ISIC archive together with the
+BCN-20000~\cite{combalia2019bcn20000} and MSKCC contributions released through the ISIC-2019
+challenge~\cite{codella2018isic}. Neither dataset was collected for this study, and both are
+used under their published licences. All training, inference and analysis reported here ran on
+a single laptop-class NVIDIA GPU with $8$\,GB of memory.
+
+% =====================================================================
+\balance
+\begin{thebibliography}{99}
+
+\bibitem{esteva2017} A. Esteva \emph{et al.}, ``Dermatologist-level classification of skin
+cancer with deep neural networks,'' \emph{Nature}, vol. 542, no. 7639, pp. 115--118, 2017.
+
+\bibitem{tschandl2018ham10000} P. Tschandl, C. Rosendahl, and H. Kittler, ``The HAM10000
+dataset, a large collection of multi-source dermatoscopic images of common pigmented skin
+lesions,'' \emph{Scientific Data}, vol. 5, 180161, 2018.
+
+\bibitem{codella2018isic} N. C. F. Codella \emph{et al.}, ``Skin lesion analysis toward
+melanoma detection: A challenge at the 2017 ISBI, hosted by the ISIC,'' in \emph{Proc. IEEE
+ISBI}, 2018, pp. 168--172.
+
+\bibitem{combalia2019bcn20000} M. Combalia \emph{et al.}, ``BCN20000: Dermoscopic lesions in
+the wild,'' \emph{arXiv:1908.02288}, 2019.
+
+\bibitem{he2016resnet} K. He, X. Zhang, S. Ren, and J. Sun, ``Deep residual learning for
+image recognition,'' in \emph{Proc. IEEE CVPR}, 2016, pp. 770--778.
+
+\bibitem{huang2017densenet} G. Huang, Z. Liu, L. van der Maaten, and K. Q. Weinberger,
+``Densely connected convolutional networks,'' in \emph{Proc. IEEE CVPR}, 2017, pp.
+4700--4708.
+
+\bibitem{tan2019efficientnet} M. Tan and Q. V. Le, ``EfficientNet: Rethinking model scaling
+for convolutional neural networks,'' in \emph{Proc. ICML}, 2019, pp. 6105--6114.
+
+\bibitem{liu2022convnext} Z. Liu \emph{et al.}, ``A ConvNet for the 2020s,'' in \emph{Proc.
+IEEE CVPR}, 2022, pp. 11976--11986.
+
+\bibitem{liu2022swinv2} Z. Liu \emph{et al.}, ``Swin Transformer V2: Scaling up capacity and
+resolution,'' in \emph{Proc. IEEE CVPR}, 2022, pp. 12009--12019.
+
+\bibitem{tu2022maxvit} Z. Tu \emph{et al.}, ``MaxViT: Multi-axis Vision Transformer,'' in
+\emph{Proc. ECCV}, 2022, pp. 459--479.
+
+\bibitem{cui2019classbalanced} Y. Cui, M. Jia, T.-Y. Lin, Y. Song, and S. Belongie,
+``Class-balanced loss based on effective number of samples,'' in \emph{Proc. IEEE CVPR},
+2019, pp. 9268--9277.
+
+\bibitem{cao2019ldam} K. Cao, C. Wei, A. Gaidon, N. Arechiga, and T. Ma, ``Learning
+imbalanced datasets with label-distribution-aware margin loss,'' in \emph{Proc. NeurIPS},
+2019.
+
+\bibitem{ridnik2021asl} T. Ridnik \emph{et al.}, ``Asymmetric loss for multi-label
+classification,'' in \emph{Proc. IEEE ICCV}, 2021, pp. 82--91.
+
+\bibitem{guo2017calibration} C. Guo, G. Pleiss, Y. Sun, and K. Q. Weinberger, ``On
+calibration of modern neural networks,'' in \emph{Proc. ICML}, 2017, pp. 1321--1330.
+
+\bibitem{kull2019dirichlet} M. Kull \emph{et al.}, ``Beyond temperature scaling: Obtaining
+well-calibrated multi-class probabilities with Dirichlet calibration,'' in \emph{Proc.
+NeurIPS}, 2019.
+
+\bibitem{caruana2004ensemble} R. Caruana, A. Niculescu-Mizil, G. Crew, and A. Ksikes,
+``Ensemble selection from libraries of models,'' in \emph{Proc. ICML}, 2004.
+
+\bibitem{elyaniv2010selective} R. El-Yaniv and Y. Wiener, ``On the foundations of
+noise-free selective classification,'' \emph{J. Mach. Learn. Res.}, vol. 11, pp. 1605--1641,
+2010.
+
+\bibitem{geifman2017selectivenet} Y. Geifman and R. El-Yaniv, ``Selective classification for
+deep neural networks,'' in \emph{Proc. NeurIPS}, 2017.
+
+\bibitem{vovk2005algorithmic} V. Vovk, A. Gammerman, and G. Shafer, \emph{Algorithmic
+Learning in a Random World}. New York, NY, USA: Springer, 2005.
+
+\bibitem{vovk2012conditional} V. Vovk, ``Conditional validity of inductive conformal
+predictors,'' in \emph{Proc. ACML}, 2012, pp. 475--490.
+
+\bibitem{sadinle2019lac} M. Sadinle, J. Lei, and L. Wasserman, ``Least ambiguous set-valued
+classifiers with bounded error levels,'' \emph{J. Amer. Statist. Assoc.}, vol. 114, no. 525,
+pp. 223--234, 2019.
+
+\bibitem{romano2020aps} Y. Romano, M. Sesia, and E. Cand\`{e}s, ``Classification with valid
+and adaptive coverage,'' in \emph{Proc. NeurIPS}, 2020.
+
+\bibitem{angelopoulos2021raps} A. N. Angelopoulos, S. Bates, M. Jordan, and J. Malik,
+``Uncertainty sets for image classifiers using conformal prediction,'' in \emph{Proc. ICLR},
+2021.
+
+\bibitem{delong1988} E. R. DeLong, D. M. DeLong, and D. L. Clarke-Pearson, ``Comparing the
+areas under two or more correlated receiver operating characteristic curves: A nonparametric
+approach,'' \emph{Biometrics}, vol. 44, no. 3, pp. 837--845, 1988.
+
+\bibitem{sun2014fastdelong} X. Sun and W. Xu, ``Fast implementation of DeLong's algorithm for
+comparing the areas under correlated receiver operating characteristic curves,'' \emph{IEEE
+Signal Process. Lett.}, vol. 21, no. 11, pp. 1389--1393, 2014.
+
+\bibitem{vickers2006dca} A. J. Vickers and E. B. Elkin, ``Decision curve analysis: A novel
+method for evaluating prediction models,'' \emph{Med. Decis. Making}, vol. 26, no. 6, pp.
+565--574, 2006.
+
+\bibitem{selvaraju2017gradcam} R. R. Selvaraju \emph{et al.}, ``Grad-CAM: Visual explanations
+from deep networks via gradient-based localization,'' in \emph{Proc. IEEE ICCV}, 2017, pp.
+618--626.
+
+\bibitem{oakdenrayner2020hidden} L. Oakden-Rayner, J. Dunnmon, G. Carneiro, and C. R\'{e},
+``Hidden stratification causes clinically meaningful failures in machine learning for medical
+imaging,'' in \emph{Proc. ACM Conf. Health, Inference, and Learning (CHIL)}, 2020, pp.
+151--159.
+
+\bibitem{seyyedkalantari2021underdiagnosis} L. Seyyed-Kalantari, H. Zhang, M. B. A.
+McDermott, I. Y. Chen, and M. Ghassemi, ``Underdiagnosis bias of artificial intelligence
+algorithms applied to chest radiographs in under-served patient populations,'' \emph{Nature
+Medicine}, vol. 27, no. 12, pp. 2176--2182, 2021.
+
+\bibitem{geirhos2020shortcut} R. Geirhos \emph{et al.}, ``Shortcut learning in deep neural
+networks,'' \emph{Nature Machine Intelligence}, vol. 2, no. 11, pp. 665--673, 2020.
+
+\bibitem{hardt2016equality} M. Hardt, E. Price, and N. Srebro, ``Equality of opportunity in
+supervised learning,'' in \emph{Proc. NeurIPS}, 2016, pp. 3315--3323.
+
+\bibitem{hebertjohnson2018multicalibration} \'{U}. H\'{e}bert-Johnson, M. P. Kim, O.
+Reingold, and G. N. Rothblum, ``Multicalibration: Calibration for the
+(computationally-identifiable) masses,'' in \emph{Proc. ICML}, 2018, pp. 1939--1948.
+
+\bibitem{romano2020equalized} Y. Romano, R. F. Barber, C. Sabatti, and E. Cand\`{e}s, ``With
+malice toward none: Assessing uncertainty via equalized coverage,'' \emph{Harvard Data
+Science Review}, vol. 2, no. 2, 2020.
+
+\bibitem{menon2021logitadjust} A. K. Menon, S. Jayasumana, A. S. Rawat, H. Jain, A. Veit, and
+S. Kumar, ``Long-tail learning via logit adjustment,'' in \emph{Proc. ICLR}, 2021.
+
+\bibitem{saerens2002adjusting} M. Saerens, P. Latinne, and C. Decaestecker, ``Adjusting the
+outputs of a classifier to new a priori probabilities: A simple procedure,'' \emph{Neural
+Computation}, vol. 14, no. 1, pp. 21--41, 2002.
+
+\bibitem{dietterich1998} T. G. Dietterich, ``Approximate statistical tests for comparing
+supervised classification learning algorithms,'' \emph{Neural Computation}, vol. 10, no. 7,
+pp. 1895--1923, 1998.
+
+\bibitem{pacheco2020padufes} A. G. C. Pacheco \emph{et al.}, ``PAD-UFES-20: A skin lesion
+dataset composed of patient data and clinical images collected from smartphones,'' \emph{Data
+in Brief}, vol. 32, 106221, 2020.
+
+\bibitem{tschandl2020segmentations} P. Tschandl, ``HAM10000 lesion segmentations,'' Harvard
+Dataverse, V1, 2020, doi: 10.7910/DVN/DBW86T.
+
+\bibitem{tejani2024claim} A. S. Tejani \emph{et al.}, ``Checklist for Artificial Intelligence
+in Medical Imaging (CLAIM): 2024 update,'' \emph{Radiology: Artificial Intelligence}, vol. 6,
+no. 4, e240300, 2024.
+
+\end{thebibliography}
+
+\end{document}
