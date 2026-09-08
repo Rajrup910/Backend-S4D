@@ -224,3 +224,8 @@ prompt_*.md
 *.pem
 secrets.json
 credentials.json
+
+# Temporary scratch and PDF raster directories
+tmp/
+scratch/
+
