@@ -229,3 +229,10 @@ credentials.json
 tmp/
 scratch/
 
+# Personal reference and viva deliverables (kept local only)
+output/
+review1_infographic.html
+scripts/build_viva_package.py
+*viva*
+
+
