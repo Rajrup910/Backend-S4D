@@ -212,15 +212,31 @@ APPENDIX = r"""
 \clearpage
 \section*{S2. TRIPOD+AI (2024) cross-walk}
 
-The cross-walk below covers the $23$ reporting domains of TRIPOD+AI, the standard for
-prediction models developed or validated with artificial intelligence. It is reported here
-rather than in the main text because every item resolves to a section of the manuscript or to
-a named artifact, and the table is a pointer index rather than a result.
+The cross-walk below is given in Table~\ref{tab:tripod_ai} and covers the $23$ reporting
+domains of TRIPOD+AI, the standard for prediction models developed or validated with
+artificial intelligence. It is reported here rather than in the main text because every item
+resolves to a section of the manuscript or to a named artifact, and the table is a pointer
+index rather than a result. Several rows point at tables that appear in the main manuscript
+rather than in this standalone document; they are reproduced below (Table~\ref{tab:agegap},
+Table~\ref{tab:external_battery}, Table~\ref{tab:external_safety}) so that this file is
+readable on its own.
 
 \input{tables/appendix_table_tripod_ai.tex}
 
 \clearpage
+\section*{S2a. Tables cited by the cross-walk}
+
+\input{tables/table4_agegap.tex}
+
+\input{tables/external_table_validity_battery.tex}
+
+\input{tables/external_table_safety_nets.tex}
+
+\clearpage
 \section*{S3. Case atlas: lesions the age-conditional rule rescues}
+
+Fig.~\ref{fig:case_atlas} shows exemplar lesions whose predicted class changes under the
+frozen age-conditional rule.
 
 \begin{figure}[h]
 \centering
@@ -263,10 +279,10 @@ FRAGMENT_TAIL = r"""
 \section{TRIPOD+AI (2024) Cross-Walk}
 \label{app:tripod}
 
-The cross-walk below covers the $23$ reporting domains of TRIPOD+AI, the standard for
-prediction models developed or validated with artificial intelligence. Every item resolves to
-a section of this paper or to a named artifact, so the table is a pointer index rather than a
-result.
+The cross-walk is given in Table~\ref{tab:tripod_ai} and covers the $23$ reporting domains of
+TRIPOD+AI, the standard for prediction models developed or validated with artificial
+intelligence. Every item resolves to a section of this paper or to a named artifact, so the
+table is a pointer index rather than a result.
 
 \input{tables/appendix_table_tripod_ai.tex}
 
