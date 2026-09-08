@@ -1,0 +1,26 @@
+\begin{table*}[t]
+\caption{Two-tier triage simulation. Every arm is reported beside an \emph{iso-referral} line that spends the same specialist capacity ranking by escalation mass alone, because a protocol that refers more lesions raises sensitivity by construction. HAM10000 is in-distribution out-of-fold; BCN-20000 and MSKCC are zero-shot transfer, so discharge rates are not like for like. The confidence and escalation-mass gates are chosen, not fitted ($0.65$, $0.15$).}
+\label{tab:clinical_simulation}
+\centering
+\footnotesize
+\begin{tabular}{llcccccc}
+\toprule
+\textbf{Cohort} & \textbf{Rule} & \textbf{Referred} & \textbf{Sens.} & \textbf{95\% CI} & \textbf{$<40$ Sens.} & \textbf{Missed} & \textbf{NNB($\pi=0.03$)} \\
+\midrule
+HAM10000 (oof, $N=6,981$) & argmax & 17.0\% & 0.692 & [0.660, 0.724] & 0.547 & 417 & 3.0 \\
+ & $\lambda$ rule & 25.8\% & 0.844 & [0.819, 0.868] & 0.625 & 212 & 5.5 \\
+ & two-tier protocol & 31.0\% & 0.910 & [0.890, 0.929] & 0.703 & 122 & 6.9 \\
+ & \quad iso-referral ($S_{\mathrm{esc}}$) & 31.0\% & 0.917 & [0.897, 0.935] & 0.734 & 113 & 6.8 \\
+\midrule
+BCN-20000 (external, $N=11,982$) & argmax & 22.5\% & 0.388 & [0.366, 0.409] & 0.279 & 3921 & 4.2 \\
+ & $\lambda$ rule & 39.4\% & 0.596 & [0.572, 0.618] & 0.352 & 2588 & 9.8 \\
+ & two-tier protocol & 51.3\% & 0.746 & [0.727, 0.764] & 0.591 & 1626 & 11.6 \\
+ & \quad iso-referral ($S_{\mathrm{esc}}$) & 51.3\% & 0.756 & [0.737, 0.775] & 0.610 & 1560 & 11.0 \\
+\midrule
+MSKCC (external, $N=2,903$) & argmax & 9.0\% & 0.270 & [0.233, 0.308] & 0.333 & 403 & 6.7 \\
+ & $\lambda$ rule & 20.3\% & 0.428 & [0.385, 0.467] & 0.389 & 316 & 12.3 \\
+ & two-tier protocol & 28.5\% & 0.534 & [0.491, 0.578] & 0.528 & 257 & 14.7 \\
+ & \quad iso-referral ($S_{\mathrm{esc}}$) & 28.5\% & 0.563 & [0.521, 0.607] & 0.528 & 241 & 13.6 \\
+\bottomrule
+\end{tabular}
+\end{table*}

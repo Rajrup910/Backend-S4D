@@ -1,0 +1,305 @@
+{
+  "provisional_parameters": {
+    "min_confidence": 0.65,
+    "max_escalation_mass": 0.15,
+    "status": "chosen, not fitted; not declared in any pre-registration",
+    "omitted_layer": "Mahalanobis OOD gate not implemented -- no OOD score exists for the external cohorts"
+  },
+  "pipeline": "uniform 6-arch soft vote + deployed HAM-OOF Dirichlet map (research/selective/results_oof/fit_state.json)",
+  "cohorts": [
+    {
+      "cohort": "HAM10000",
+      "split": "oof",
+      "n_total": 6981,
+      "n_escalating": 1356,
+      "n_escalating_under40": 64,
+      "arms": [
+        {
+          "rule": "argmax",
+          "referral_rate": 0.16974645466265578,
+          "discharge_rate": 0.8302535453373442,
+          "sensitivity": 0.6924778761061947,
+          "sensitivity_ci": [
+            0.659697925812116,
+            0.7240148684808401
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.546875,
+          "under40_sensitivity_ci": [
+            0.390625,
+            0.7083786231884056
+          ],
+          "under40_sensitivity_ci_kind": "grouped_bootstrap",
+          "missed_escalating": 417,
+          "specificity": 0.9562666666666667,
+          "nnb_observed": 1.2619808306709266,
+          "nnb_at_reference_prevalence": 3.042006673766418
+        },
+        {
+          "rule": "age_rule",
+          "referral_rate": 0.25827245380318004,
+          "discharge_rate": 0.7417275461968199,
+          "sensitivity": 0.8436578171091446,
+          "sensitivity_ci": [
+            0.8192215312298735,
+            0.8675837211741838
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.625,
+          "under40_sensitivity_ci": [
+            0.45450994318181825,
+            0.7838320463320461
+          ],
+          "under40_sensitivity_ci_kind": "grouped_bootstrap",
+          "missed_escalating": 212,
+          "specificity": 0.8828444444444444,
+          "nnb_observed": 1.576048951048951,
+          "nnb_at_reference_prevalence": 5.490007148407148
+        },
+        {
+          "rule": "two_tier_protocol",
+          "referral_rate": 0.31041398080504223,
+          "discharge_rate": 0.6895860191949578,
+          "sensitivity": 0.9100294985250738,
+          "sensitivity_ci": [
+            0.8898656709218946,
+            0.9294662172251532
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.703125,
+          "under40_sensitivity_ci": [
+            0.5479258206254847,
+            0.8448336571151044
+          ],
+          "under40_sensitivity_ci_kind": "grouped_bootstrap",
+          "missed_escalating": 122,
+          "specificity": 0.8341333333333333,
+          "nnb_observed": 1.7560777957860616,
+          "nnb_at_reference_prevalence": 6.893239978390059
+        },
+        {
+          "rule": "iso_referral_escalation_mass",
+          "referral_rate": 0.31041398080504223,
+          "discharge_rate": 0.6895860191949578,
+          "sensitivity": 0.9166666666666666,
+          "sensitivity_ci": [
+            0.8970460757592722,
+            0.9348650257985205
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.734375,
+          "under40_sensitivity_ci": [
+            0.59375,
+            0.8620689655172413
+          ],
+          "under40_sensitivity_ci_kind": "grouped_bootstrap",
+          "missed_escalating": 113,
+          "specificity": 0.8357333333333333,
+          "nnb_observed": 1.7433628318584071,
+          "nnb_at_reference_prevalence": 6.794133333333333
+        }
+      ],
+      "protocol_minus_iso_referral": {
+        "sensitivity": -0.006637168141592875,
+        "under40_sensitivity": -0.03125,
+        "matched_referral_rate": 0.31041398080504223
+      }
+    },
+    {
+      "cohort": "BCN-20000",
+      "split": "external",
+      "n_total": 11982,
+      "n_escalating": 6403,
+      "n_escalating_under40": 369,
+      "arms": [
+        {
+          "rule": "argmax",
+          "referral_rate": 0.22492071440494074,
+          "discharge_rate": 0.7750792855950592,
+          "sensitivity": 0.3876307980634078,
+          "sensitivity_ci": [
+            0.36589160773914986,
+            0.4091491366566655
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.2791327913279133,
+          "under40_sensitivity_ci": [
+            0.1792702027047378,
+            0.3820605700712588
+          ],
+          "under40_sensitivity_ci_kind": "grouped_bootstrap",
+          "missed_escalating": 3921,
+          "specificity": 0.9618211148951425,
+          "nnb_observed": 1.0858178887993553,
+          "nnb_at_reference_prevalence": 4.18460407314814
+        },
+        {
+          "rule": "age_rule",
+          "referral_rate": 0.3936738440994826,
+          "discharge_rate": 0.6063261559005174,
+          "sensitivity": 0.5958144619709511,
+          "sensitivity_ci": [
+            0.5724906297721479,
+            0.6179799535225982
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.3523035230352303,
+          "under40_sensitivity_ci": [
+            0.24449750830564784,
+            0.45873419290850476
+          ],
+          "under40_sensitivity_ci_kind": "grouped_bootstrap",
+          "missed_escalating": 2588,
+          "specificity": 0.8383222799784907,
+          "nnb_observed": 1.236435124508519,
+          "nnb_at_reference_prevalence": 9.773838078276905
+        },
+        {
+          "rule": "two_tier_protocol",
+          "referral_rate": 0.5128526122517109,
+          "discharge_rate": 0.4871473877482891,
+          "sensitivity": 0.7460565359987505,
+          "sensitivity_ci": [
+            0.726854276788181,
+            0.764085843196408
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.5907859078590786,
+          "under40_sensitivity_ci": [
+            0.4798714021088629,
+            0.6820616113744076
+          ],
+          "under40_sensitivity_ci_kind": "grouped_bootstrap",
+          "missed_escalating": 1626,
+          "specificity": 0.7547947660871124,
+          "nnb_observed": 1.286372200125602,
+          "nnb_at_reference_prevalence": 11.626946056534036
+        },
+        {
+          "rule": "iso_referral_escalation_mass",
+          "referral_rate": 0.5128526122517109,
+          "discharge_rate": 0.4871473877482891,
+          "sensitivity": 0.7563642042792441,
+          "sensitivity_ci": [
+            0.7371899392451002,
+            0.7747876082148046
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.6097560975609756,
+          "under40_sensitivity_ci": [
+            0.49992857142857156,
+            0.7025050675675676
+          ],
+          "under40_sensitivity_ci_kind": "grouped_bootstrap",
+          "missed_escalating": 1560,
+          "specificity": 0.766624843161857,
+          "nnb_observed": 1.2688416270906462,
+          "nnb_at_reference_prevalence": 10.976406465397417
+        }
+      ],
+      "protocol_minus_iso_referral": {
+        "sensitivity": -0.010307668280493565,
+        "under40_sensitivity": -0.01897018970189701,
+        "matched_referral_rate": 0.5128526122517109
+      }
+    },
+    {
+      "cohort": "MSKCC",
+      "split": "external",
+      "n_total": 2903,
+      "n_escalating": 552,
+      "n_escalating_under40": 36,
+      "arms": [
+        {
+          "rule": "argmax",
+          "referral_rate": 0.0895625215294523,
+          "discharge_rate": 0.9104374784705477,
+          "sensitivity": 0.26992753623188404,
+          "sensitivity_ci": [
+            0.23271990171990173,
+            0.307695810564663
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.3333333333333333,
+          "under40_sensitivity_ci": [
+            0.18556180982592121,
+            0.5097025466518912
+          ],
+          "under40_sensitivity_ci_kind": "clopper_pearson",
+          "missed_escalating": 403,
+          "specificity": 0.9527860484900043,
+          "nnb_observed": 1.74496644295302,
+          "nnb_at_reference_prevalence": 6.655534272150363
+        },
+        {
+          "rule": "age_rule",
+          "referral_rate": 0.20254908715122288,
+          "discharge_rate": 0.7974509128487771,
+          "sensitivity": 0.427536231884058,
+          "sensitivity_ci": [
+            0.38475491047869126,
+            0.467278634722678
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.3888888888888889,
+          "under40_sensitivity_ci": [
+            0.2314244016621428,
+            0.5653619525515745
+          ],
+          "under40_sensitivity_ci_kind": "clopper_pearson",
+          "missed_escalating": 316,
+          "specificity": 0.8502764780944279,
+          "nnb_observed": 2.4915254237288136,
+          "nnb_at_reference_prevalence": 12.323158554960383
+        },
+        {
+          "rule": "two_tier_protocol",
+          "referral_rate": 0.2845332414743369,
+          "discharge_rate": 0.7154667585256631,
+          "sensitivity": 0.5344202898550725,
+          "sensitivity_ci": [
+            0.4910386207163302,
+            0.5778985507246377
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.5277777777777778,
+          "under40_sensitivity_ci": [
+            0.35486379853731004,
+            0.6959494112837337
+          ],
+          "under40_sensitivity_ci_kind": "clopper_pearson",
+          "missed_escalating": 257,
+          "specificity": 0.7741386643981285,
+          "nnb_observed": 2.8,
+          "nnb_at_reference_prevalence": 14.664993619736283
+        },
+        {
+          "rule": "iso_referral_escalation_mass",
+          "referral_rate": 0.2845332414743369,
+          "discharge_rate": 0.7154667585256631,
+          "sensitivity": 0.5634057971014492,
+          "sensitivity_ci": [
+            0.5214266649720387,
+            0.6072790811339198
+          ],
+          "sensitivity_ci_kind": "grouped_bootstrap",
+          "under40_sensitivity": 0.5277777777777778,
+          "under40_sensitivity_ci": [
+            0.35486379853731004,
+            0.6959494112837337
+          ],
+          "under40_sensitivity_ci_kind": "clopper_pearson",
+          "missed_escalating": 241,
+          "specificity": 0.7809442790301999,
+          "nnb_observed": 2.6559485530546625,
+          "nnb_at_reference_prevalence": 13.571403562279718
+        }
+      ],
+      "protocol_minus_iso_referral": {
+        "sensitivity": -0.02898550724637672,
+        "under40_sensitivity": 0.0,
+        "matched_referral_rate": 0.2845332414743369
+      }
+    }
+  ]
+}

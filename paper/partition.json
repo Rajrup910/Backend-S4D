@@ -1,0 +1,38 @@
+{
+  "target_pages": 10.0,
+  "_rationale": "Route A: the main text is the clinical argument only -- the blind spot, the rule, the guarantee, the transfer. Everything that answers 'how was this built and what else did you try' moves to the supplement, which has no page limit. Costed by research.ablation.plan_partition.",
+  "move_subsections": [
+    "Materials and Methods / Statistical protocol and frozen artifacts",
+    "Materials and Methods / Out-of-fold predictions over the training split",
+    "Materials and Methods / Selective prediction and conformal sets",
+    "Materials and Methods / Metrics",
+    "Materials and Methods / Backbones and training",
+    "Materials and Methods / Ensembling",
+    "Materials and Methods / Test-time augmentation and calibration",
+    "Results / The ablation ladder",
+    "Results / Five combination levers, five negative results",
+    "Results / Selective classification",
+    "Results / Explainability",
+    "Results / Intersectional slices, and the cells we decline to report",
+    "Results / External evaluation: smartphone clinical photography",
+    "Discussion / What actually moved the needle, and what did not"
+  ],
+  "move_floats": [
+    "tab:external_battery",
+    "tab:classes"
+  ],
+  "demote_floats": [
+    "fig:reliability",
+    "fig:dca"
+  ],
+  "trim_subsections": {
+    "Related Work / (lead)": 0.45,
+    "Introduction / Contributions": 0.7,
+    "Results / Subgroup analysis: an age-stratified blind spot": 0.8,
+    "Results / Calibration and decision rules": 0.65,
+    "Results / Three centres: the operating point transfers, the mechanis": 0.6,
+    "Discussion / Marginal guarantees are the wrong guarantee --- and class-": 0.7,
+    "Discussion / Confidently wrong is a distinct failure mode --- and the m": 0.75,
+    "Limitations / (lead)": 0.35
+  }
+}
