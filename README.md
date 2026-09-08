@@ -38,30 +38,11 @@ This repository hosts a publication-grade research framework and safety audit pi
 5. **Mitigation Priced in Biopsy Burden**: An out-of-fold cross-fitted age-conditional decision rule ($\hat{y} = \arg\max_c [p_c + \lambda_{b} \mathbf{1}_{c \in \mathcal{E}}]$) raises all-ages sensitivity from **0.731 $\to$ 0.831**, cutting missed malignancies from 78 to 49. In clinical currency, this increases the Number Needed to Biopsy (NNB) from **$3.0 \to 6.2$** at 3% reference prevalence. Under-40 sensitivity improves to **0.238 [0.082, 0.472]**—mitigating, but not closing, the blind spot.
 6. **Multi-Centre External Generalization**: Frozen evaluation across **11,982 BCN20000** and **2,903 MSKCC** external dermoscopy lesions reveals a transportability paradox: the $\lambda$-rule operating point transports (consistently lifting under-40 sensitivity across all centres), but pre-registered causal prior-shift hypotheses fail: **the operating policy transports, but the explanation does not**.
 
----
-
-## Capstone Review 1 & Viva Defense Deliverables
-
-This repository is organized for complete examination review, featuring a dedicated examination suite and interactive dashboard:
-
-| Deliverable | Location | Description |
-|---|---|---|
-| **Interactive Infographic** | [`review1_infographic.html`](review1_infographic.html) | Standalone interactive visual dashboard summarizing research questions, ladder results, blind spots, and multi-centre transportability. |
-| **Viva Study Guide** | [`output/viva_package/viva_study_guide.html`](output/viva_package/viva_study_guide.html) | Single-file interactive HTML revision console with search, accordion deep dives, and quick revision cards. |
-| **Executive Summary** | [`output/viva_package/01_EXECUTIVE_SUMMARY.md`](output/viva_package/01_EXECUTIVE_SUMMARY.md) | High-level synthesis, examiner pitches (30s, 2m, 5m), and the complete problem-to-conclusion logical chain. |
-| **Research Story** | [`output/viva_package/02_RESEARCH_STORY.md`](output/viva_package/02_RESEARCH_STORY.md) | Chronological development narrative from Phase 0 baselines through multi-centre replication and discrepancy audits. |
-| **Method Deep Dive** | [`output/viva_package/03_METHOD_DEEP_DIVE.md`](output/viva_package/03_METHOD_DEEP_DIVE.md) | In-depth mathematical formalisms for ensembling, Dirichlet logit calibration, bipartite conformal sets, and $\lambda$-rules. |
-| **Results Deep Dive** | [`output/viva_package/04_RESULTS_DEEP_DIVE.md`](output/viva_package/04_RESULTS_DEEP_DIVE.md) | Exhaustive breakdown of numbers, statistical tests (McNemar, DeLong, Holm correction), and bootstrap CIs. |
-| **Claim Audit & Boundaries**| [`output/viva_package/05_CLAIM_AUDIT.md`](output/viva_package/05_CLAIM_AUDIT.md) | Precise evidentiary boundaries: what is supported, what is qualified, and what claims are strictly rejected. |
-| **Limitations** | [`output/viva_package/06_LIMITATIONS.md`](output/viva_package/06_LIMITATIONS.md) | Unvarnished assessment of sample size limits, demographic proxies, and clinical simulation boundaries. |
-| **Viva Questions & Answers**| [`output/viva_package/07_VIVA_QUESTIONS.md`](output/viva_package/07_VIVA_QUESTIONS.md) | 20 high-yield defense questions spanning architecture, calibration, fairness, conformal theory, and clinical economics. |
-| **Presentation Scripts** | [`output/viva_package/08_PRESENTATION_SCRIPT.md`](output/viva_package/08_PRESENTATION_SCRIPT.md) | Rehearsed spoken scripts for slide presentations and viva defense pitches. |
-| **Visual Plan** | [`output/viva_package/11_VISUAL_PLAN.md`](output/viva_package/11_VISUAL_PLAN.md) | Layout guide and slide-by-slide choreography for the Capstone Review 1 presentation. |
-| **Viva Cheatsheet** | [`output/viva_package/VIVA_CHEATSHEET.md`](output/viva_package/VIVA_CHEATSHEET.md) | Quick-reference formula, metric, and finding sheet for viva examiners. |
 
 ---
 
 ## End-to-End System Architecture
+
 
 ```
                                               ┌──────────────────────────────────────────────┐
@@ -228,14 +209,10 @@ Backend-S4D-/
 │   ├── tables/                        # Generated LaTeX tables for full manuscript
 │   ├── tables_edited/                 # Formatted LaTeX tables for 11-page edited paper
 │   └── figures/                       # Vector & high-res PNG camera-ready figures
-├── output/                             # Capstone Review 1 & Viva Deliverables
-│   └── viva_package/                  # Complete 15-document viva preparation suite
 ├── results/                            # Frozen JSON, CSV, and ledger experimental artifacts
 ├── scripts/                            # Utility Scripts
-│   ├── build_viva_package.py          # Generator for viva documentation suite
 │   ├── verify_env.py                  # CUDA kernel launch & package environment verifier
 │   └── sample_predict.py              # CLI sample inference and triage verification
-├── review1_infographic.html            # Standalone interactive infographic for Review 1
 ├── CHANGELOG.md                        # Exhaustive session-by-session research ledger (S0–S27)
 └── README.md                           # This document
 ```
@@ -314,19 +291,27 @@ This project prepares two companion manuscripts for academic dissemination:
 
 ---
 
-## Citation & Contact
+## Citation & Authors
 
 If you utilize this codebase, benchmark protocols, or safety audit pipelines in your research, please cite:
 
 ```bibtex
-@article{rajrup2026safetynets,
+@article{chhabra2026safetynets,
   title={When Safety Nets Fail: Subgroup-Conditional Calibration, Conformal Guarantees, and Age-Stratified Blind Spots in Dermoscopy Ensembles},
-  author={Rajrup},
+  author={Chhabra, Prateek and Roy Chowdhury, Rajrup and Srivastava, Aditya and Sonare, Kanak Pravin and Gupta, Manishka and Gupta, Uddhav},
   journal={IEEE Transactions on Medical Imaging (Under Review)},
   year={2026},
   publisher={IEEE}
 }
 ```
 
-*Author: Rajrup | School of Computing Science and Engineering, VIT Bhopal University*  
+**Project Authors (Team 193):**
+- **Prateek Chhabra** (23BAI10169) — Ensembling & TTA
+- **Rajrup Roy Chowdhury** (23BAI10213, *Corresponding Author*) — Backbones & Calibration
+- **Aditya Srivastava** (23BAI10303) — Vision Transformers
+- **Kanak Pravin Sonare** (23BAI11369) — Data & Zero-Leakage Shield
+- **Manishka Gupta** (23BAI11303) — Multimodal Metadata Fusion
+- **Uddhav Gupta** (23BAI10146) — Statistical Audits & Bootstrapping
+
+*Affiliation: School of Computing Science and Engineering, VIT Bhopal University*  
 *Repository: [Rajrup910/Backend-S4D-](https://github.com/Rajrup910/Backend-S4D-)*
