@@ -135,8 +135,8 @@ def _float_height_lines(body: str, wide: bool) -> float:
     return height + FLOAT_PADDING
 
 
-def analyse() -> dict:
-    source = resolve(MANUSCRIPT).read_text(encoding="utf-8")
+def analyse(target: str = MANUSCRIPT) -> dict:
+    source = resolve(target).read_text(encoding="utf-8")
 
     # inline the \input tables so they are measured where they land
     def _inline(match: re.Match) -> str:
@@ -210,11 +210,13 @@ def main(argv: list[str] | None = None) -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--target", type=float, default=11.0,
                         help="page budget to report the gap against")
+    parser.add_argument("--manuscript", default=MANUSCRIPT,
+                        help=f"manuscript .tex to measure (default: {MANUSCRIPT})")
     parser.add_argument("--verbose", action="store_true",
                         help="list every float and section with its estimated cost")
     args = parser.parse_args(argv)
 
-    report = analyse()
+    report = analyse(args.manuscript)
     page = 2 * report["lines_per_column"]
 
     # The two constants this model is most sensitive to are the average glyph width and the
@@ -227,7 +229,7 @@ def main(argv: list[str] | None = None) -> int:
         for leading in (10.5, 11.5):
             GLYPH_RATIO, BASELINE = glyph, leading
             LINES_PER_COLUMN = TEXT_HEIGHT / BASELINE
-            band.append(analyse()["pages"])
+            band.append(analyse(args.manuscript)["pages"])
     GLYPH_RATIO, BASELINE = base_glyph, base_leading
     LINES_PER_COLUMN = TEXT_HEIGHT / BASELINE
 
