@@ -13,7 +13,7 @@
 3b & Specific study aims and validation objectives & Formal hypothesis: argmax decision failure vs. information failure & Section~I, Section~II \\
 4a & Study design and cohort origins & Multi-center: Vienna/Queensland (HAM), Barcelona (BCN), NY (MSK), Brazil (PAD) & Section~III-A, Section~V-F \\
 4b & Setting and eligibility criteria & Lesion deduplication, age availability, SCC exclusion documented & Section~III-A, Table~I \\
-5a & Target clinical outcome definitions & 7-class dermatopathology ground truth + 3-tier actionability hierarchy & Section~III-B, Table~\ref{tab:clinical_triage} \\
+5a & Target clinical outcome definitions & 7-class dermatopathology ground truth + 3-tier actionability hierarchy & Section~III-B, Table~\ref{tab:external_battery}, panel~(C) \\
 6a & Input predictors and image acquisitions & Polarized contact dermoscopy (HAM/BCN/MSK) and smartphone photos (PAD) & Section~III-A \\
 7 & Sample size and power calculations & Gate 0 power check ($\ge 100$ under-40 escalating lesions in BCN; $N=115$) & Section~V-F, \texttt{power\_report.md} \\
 8 & Missing data handling & Missing age excluded from age-sliced metrics; null lesion IDs grouped & Section~III-A, Rule 6 \\
@@ -24,10 +24,10 @@
 12 & Stratified subgroup evaluation & Stratified by age ($<40$, $40$--$59$, $60+$) and sex with cluster CIs & Section~V-C, Table~\ref{tab:agegap} \\
 13a & External validation cohort specification & Multi-center Level 1 (BCN-20000, MSKCC) and Level 2 (PAD-UFES-20) & Section~V-F, Section~V-G \\
 13b & Zero-target tuning discipline & Zero parameter fitting on external cohorts; HAM-OOF parameters frozen & Section~V-F, Hard Rule 3 \\
-14 & Prior shift decoupling & Decomposed Bayesian prior shift from optical shift using Saerens EM & Section~V-G, Table~\ref{tab:pad_prior_shift} \\
-15 & Clinical decision curve analysis & Net Benefit evaluated across clinical thresholds $p_t \in [0.05, 0.20]$ & Section~V-E, Table~\ref{tab:decision_curve} \\
-16 & Algorithmic fairness assessment & Stratified by Fitzpatrick skin types I--IV; V/VI suppressed per power gates & Section~V-G, Table~\ref{tab:fitzpatrick_fairness} \\
-17 & Shift detection and safety nets & Mahalanobis OOD distance ($\mathrm{AUROC}=0.9148$) and conformal set widening & Section~V-G, Table~\ref{tab:conformal_shift} \\
+14 & Prior shift decoupling & Decomposed Bayesian prior shift from optical shift using Saerens EM & Section~V-G, Table~\ref{tab:external_battery}, panel~(B) \\
+15 & Clinical decision curve analysis & Net Benefit evaluated across clinical thresholds $p_t \in [0.05, 0.20]$ & Section~V-E, Table~\ref{tab:external_battery}, panel~(D) \\
+16 & Algorithmic fairness assessment & Stratified by Fitzpatrick skin types I--IV; V/VI suppressed per power gates & Section~V-G, Table~\ref{tab:external_safety}, panel~(B) \\
+17 & Shift detection and safety nets & Mahalanobis OOD distance ($\mathrm{AUROC}=0.9148$) and conformal set widening & Section~V-G, Table~\ref{tab:external_safety}, panel~(A) \\
 18 & Risk of bias and data leakage & Strict lesion-grouped split verification (\texttt{assert\_no\_leakage()}) & Section~III-A \\
 19 & Interpretation of mechanistic findings & Argmax fails due to prior skew, not feature representation failure & Section~VI-A \\
 20 & Causal validation via comparison arm & \emph{Withdrawn.} The arm requires retraining on BCN+MSK; the published checkpoints are frozen, so it was never run. Entered into the Holm family at $p=1.0$ & Section~VI-C (Limitations) \\

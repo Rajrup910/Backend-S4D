@@ -385,7 +385,7 @@ pre-registered two-sided.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.74\textwidth]{figure1_architecture.png}
+\includegraphics[width=0.68\textwidth]{figure1_architecture.png}
 \caption{System overview. Six frozen CNN backbones produce probability vectors that are
 pooled by uniform soft-vote over $24$ deterministic TTA views, recalibrated by a Dirichlet
 map fitted on validation, and passed to two parallel decision layers: a margin-based
@@ -397,9 +397,9 @@ component downstream of the backbones is fitted on validation data only.}
 \subsection{Calibration and decision rules}
 \label{sec:results-calibration}
 
-\begin{figure*}[t]
+\begin{figure*}[b]
 \centering
-\includegraphics[width=0.72\textwidth]{figure2_reliability.png}
+\includegraphics[width=0.66\textwidth]{figure2_reliability.png}
 \caption{Reliability diagrams for the six-CNN soft-vote ensemble before (a) and after
 (b) Dirichlet calibration, fitted on validation and evaluated on the held-out test split.
 Test ECE falls from $0.1575$ to $0.0206$. Note the direction: the uncalibrated bars sit
@@ -842,7 +842,7 @@ Sec.~\ref{sec:metrics}.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.82\textwidth]{external_figure_dose_response.png}
+\includegraphics[width=0.78\textwidth]{external_figure_dose_response.png}
 \caption{The pre-registered dose--response test, and its outcome. \textbf{(a)} Claim~B
 predicted that under-$40$ escalation sensitivity would fall as the training prior's age skew
 rises, so that BCN-20000 --- the least skewed centre --- would score highest. The observed
@@ -913,9 +913,9 @@ against the frozen $0.26$ --- a reassuring sanity check --- but at $0.12$ on MSK
 on BCN-20000, which is the honest version of the same point: the direction exports, the exact
 threshold does not.
 
-\begin{figure*}[t]
+\begin{figure*}[b]
 \centering
-\includegraphics[width=0.94\textwidth]{external_figure_decision_curve.png}
+\includegraphics[width=0.88\textwidth]{external_figure_decision_curve.png}
 \caption{Decision curves for the frozen age-conditional rule. Net benefit against threshold
 probability $p_t$ for biopsy-all, biopsy-none, argmax triage, the frozen $\lambda$-rule, and a
 risk model that thresholds the escalation mass $S_{\mathrm{esc}}$ directly. The $\lambda$-rule
