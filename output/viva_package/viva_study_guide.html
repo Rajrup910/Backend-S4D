@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Researcher Viva & Defense Dossier | Deep Reverse-Engineering</title>
+<style>
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #24344d;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #38bdf8;
+    --accent-indigo: #818cf8;
+    --accent-emerald: #34d399;
+    --accent-amber: #fbbf24;
+    --accent-rose: #fb7185;
+    --border-color: #334155;
+    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-main);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar Navigation */
+  #sidebar {
+    width: 300px;
+    background-color: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+  }
+
+  #sidebar h2 {
+    font-size: 1.1rem;
+    color: var(--accent-blue);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  #sidebar p.sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .nav-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .nav-group-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    transition: all 0.15s ease;
+    margin-bottom: 0.2rem;
+  }
+
+  .nav-link:hover, .nav-link.active {
+    background-color: var(--bg-card);
+    color: var(--accent-blue);
+  }
+
+  /* Main Content Area */
+  #content {
+    margin-left: 300px;
+    padding: 2.5rem 3rem;
+    max-width: 1200px;
+    width: calc(100% - 300px);
+  }
+
+  header.doc-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); border: 1px solid rgba(56, 189, 248, 0.3); }
+  .badge-emerald { background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald); border: 1px solid rgba(52, 211, 153, 0.3); }
+  .badge-amber { background: rgba(251, 191, 36, 0.15); color: var(--accent-amber); border: 1px solid rgba(251, 191, 36, 0.3); }
+  .badge-rose { background: rgba(251, 113, 133, 0.15); color: var(--accent-rose); border: 1px solid rgba(251, 113, 133, 0.3); }
+
+  h1 { font-size: 2.2rem; line-height: 1.25; margin: 0.75rem 0; letter-spacing: -0.03em; }
+  h2 { font-size: 1.5rem; color: var(--accent-blue); margin: 2.5rem 0 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+  h3 { font-size: 1.15rem; color: var(--text-primary); margin: 1.5rem 0 0.75rem; }
+  p { margin-bottom: 1rem; color: var(--text-secondary); }
+
+  /* Callout Alert Boxes */
+  .alert {
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--accent-blue);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1.25rem 0;
+  }
+  .alert-warning { border-left-color: var(--accent-amber); background: rgba(251, 191, 36, 0.05); }
+  .alert-danger { border-left-color: var(--accent-rose); background: rgba(251, 113, 133, 0.05); }
+  .alert-success { border-left-color: var(--accent-emerald); background: rgba(52, 211, 153, 0.05); }
+  .alert-title { font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+
+  /* Stat Grids */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .stat-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 1.25rem;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+  }
+  .stat-card:hover { transform: translateY(-2px); border-color: var(--accent-blue); }
+  .stat-val { font-size: 1.8rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono); }
+  .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+  .stat-desc { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.4; }
+
+  /* Tables */
+  .table-container {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: left;
+  }
+  th {
+    background: var(--bg-card);
+    padding: 0.75rem 1rem;
+    color: var(--accent-blue);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+  /* Collapsible Cards (Viva Questions) */
+  .q-filter-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .q-filter-box input {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    flex: 1;
+    min-width: 250px;
+  }
+  .btn-filter {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-filter.active, .btn-filter:hover {
+    background: var(--accent-blue);
+    color: var(--bg-primary);
+    font-weight: 600;
+  }
+
+  .accordion-item {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+  }
+  .accordion-header {
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-secondary);
+    user-select: none;
+    transition: background 0.15s ease;
+  }
+  .accordion-header:hover { background: var(--bg-card); }
+  .accordion-title { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; }
+  .accordion-body {
+    padding: 1.25rem;
+    background: rgba(15, 23, 42, 0.6);
+    border-top: 1px solid var(--border-color);
+    display: none;
+    font-size: 0.88rem;
+  }
+  .accordion-body.open { display: block; }
+  .ans-section { margin-bottom: 0.8rem; }
+  .ans-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--accent-blue); letter-spacing: 0.05em; }
+
+  /* Code & Pre Blocks */
+  code { font-family: var(--font-mono); background: rgba(0, 0, 0, 0.3); padding: 0.15rem 0.35rem; border-radius: 4px; font-size: 0.8em; color: var(--accent-blue); }
+  pre {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #e2e8f0;
+    margin: 1rem 0;
+  }
+
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #content { margin-left: 0; width: 100%; padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar Navigation -->
+<nav id="sidebar">
+  <h2>VIVA DOSSIER</h2>
+  <p class="sub">Reverse-Engineered Master Package</p>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Executive Strategy</div>
+    <a href="#executive" class="nav-link">Executive Summary</a>
+    <a href="#quick30" class="nav-link" style="color: var(--accent-amber); font-weight: 600;">⚡ 30-Min Emergency Prep</a>
+    <a href="#pipeline" class="nav-link">System Pipeline Flow</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Research Architecture</div>
+    <a href="#methods" class="nav-link">Methods & Split Protocol</a>
+    <a href="#ablation" class="nav-link">Ablation & Negative Levers</a>
+    <a href="#calibration" class="nav-link">Calibration Antinomy</a>
+    <a href="#conformal" class="nav-link">Conformal Guarantees</a>
+    <a href="#under40" class="nav-link">Under-40 Melanoma Deficit</a>
+    <a href="#external" class="nav-link">Multi-Centre Replication</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-title">Defense & Examination</div>
+    <a href="#viva-bank" class="nav-link">80-Question Viva Bank</a>
+    <a href="#claims" class="nav-link">Claim Audit & Boundaries</a>
+    <a href="#limitations" class="nav-link">Ranked Limitations</a>
+    <a href="#slides" class="nav-link">15-Slide Script</a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main id="content">
+
+  <header class="doc-header">
+    <div>
+      <span class="badge badge-blue">IEEE TMI Track</span>
+      <span class="badge badge-emerald">Audit Verified</span>
+      <span class="badge badge-amber">Pre-Registered</span>
+      <span class="badge badge-rose">Single Test Read</span>
+    </div>
+    <h1>An Ablation-Grounded Ensemble for Dermoscopic Skin Lesion Classification</h1>
+    <p style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.5rem;">
+      Subgroup-Conditional Calibration, Abstention, and Conformal Guarantees
+    </p>
+    <p style="font-size: 0.85rem; color: var(--text-muted);">
+      Author: Rajrup (School of Computing Science and Engineering, VIT Bhopal University) | Code & Provenance: <code>github.com/Rajrup910/Backend-S4D-</code>
+    </p>
+  </header>
+
+  <!-- 30-Minute Emergency Prep Section -->
+  <section id="quick30">
+    <div class="alert alert-warning">
+      <div class="alert-title">⚡ IF YOU ONLY HAVE 30 MINUTES BEFORE THE VIVA</div>
+      Memorize these 5 numbers, 3 formulas, and the golden defense thesis immediately.
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--accent-rose);">0.143</div>
+        <div class="stat-label">Under-40 Sensitivity</div>
+        <div class="stat-desc">Only 3 of 21 young cancers caught [95% CI: 0.030, 0.363] vs 0.764 in 60+ ($p < 0.001$).</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--accent-blue);">0.7718</div>
+        <div class="stat-label">Ensemble Macro-F1</div>
+        <div class="stat-desc">Only rung clearing significance (McNemar Holm $p = 2.0 \times 10^{-4}$).</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--accent-amber);">-0.156</div>
+        <div class="stat-label">Signed Calibration Gap</div>
+        <div class="stat-desc">Conf 0.705 vs Acc 0.861: ensemble is systematically <strong>underconfident</strong>.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--accent-emerald);">62 ➔ 78</div>
+        <div class="stat-label">Missed Cancers Post-Dirichlet</div>
+        <div class="stat-desc">Calibration dropped sensitivity from 0.786 to 0.731 (+16 missed malignancies).</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--accent-indigo);">3.0 ➔ 6.2</div>
+        <div class="stat-label">Reweighted NNB (π=0.03)</div>
+        <div class="stat-desc">Biopsies needed per cancer found under the frozen $\lambda$ escalation rule.</div>
+      </div>
+    </div>
+
+    <div class="alert alert-danger">
+      <div class="alert-title">CRITICAL DEFENSE RULE: WHAT TO SAY IF ASKED "IS IT DEPLOYABLE?"</div>
+      <strong>Answer:</strong> <em>"No. Section V-E explicitly states we would NOT deploy this model. Even after our age-conditional mitigation, under-40 sensitivity is only 0.238. Our paper is an audit proving that leaderboard-leading models are clinically unsafe."</em>
+    </div>
+  </section>
+
+  <!-- Executive Summary -->
+  <section id="executive">
+    <h2>Executive Understanding</h2>
+    <p>
+      Reported accuracy on dermoscopy benchmarks has largely saturated. However, the properties that determine clinical deployability—reliable calibration, knowing when to abstain, and ensuring guarantees hold for vulnerable subgroups—are rarely audited.
+    </p>
+    <div class="stat-card" style="margin-bottom: 1.5rem;">
+      <h3 style="color: var(--accent-blue); margin-top: 0;">One-Sentence Thesis</h3>
+      <p style="font-size: 1.05rem; color: var(--text-primary); font-style: italic; margin-bottom: 0;">
+        "Aggregate discrimination benchmarks conceal severe, confidently-wrong subgroup triage failures driven by demographic training priors, which post-hoc calibration, abstention, and marginal conformal guarantees fail to protect, but which can be partially mitigated by group-conditional decision rules priced in clinical biopsy burden."
+      </p>
+    </div>
+  </section>
+
+  <!-- Methodological Deep Dive -->
+  <section id="methods">
+    <h2>Methods & Leak-Free Splitting</h2>
+    <p>
+      HAM10000 contains 10,015 images representing 7,470 unique physical lesions. Random image-level splitting distributes near-duplicate views of identical lesions across train and test partitions, inflating test scores through memorization.
+    </p>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Class Code</th>
+            <th>Disease Entity</th>
+            <th>Malignancy Tier</th>
+            <th>Test Support ($n$)</th>
+            <th>Train Support ($n$)</th>
+            <th>Clinical Disposition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>AKIEC</strong></td><td>Actinic Keratosis</td><td>Premalignant*</td><td>52 (3.5%)</td><td>229</td><td>Consultation / Cryotherapy</td></tr>
+          <tr><td><strong>BCC</strong></td><td>Basal Cell Carcinoma</td><td>Malignant*</td><td>71 (4.7%)</td><td>358</td><td>Surgical Excision / Mohs</td></tr>
+          <tr><td><strong>BKL</strong></td><td>Benign Keratosis</td><td>Benign</td><td>167 (11.1%)</td><td>769</td><td>Reassurance / Discharge</td></tr>
+          <tr><td><strong>DF</strong></td><td>Dermatofibroma</td><td>Benign</td><td>20 (1.3%)</td><td>81</td><td>Reassurance / Discharge</td></tr>
+          <tr><td><strong>MEL</strong></td><td>Melanoma</td><td>Malignant*</td><td>167 (11.1%)</td><td>779</td><td>Urgent Wide Excision</td></tr>
+          <tr><td><strong>NV</strong></td><td>Melanocytic Nevus</td><td>Benign</td><td>1,004 (66.8%)</td><td>4,675</td><td>Routine Monitoring</td></tr>
+          <tr><td><strong>VASC</strong></td><td>Vascular Lesion</td><td>Benign</td><td>21 (1.4%)</td><td>90</td><td>Reassurance / Discharge</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 0.8rem; color: var(--text-muted);">
+      *Starred classes form the Escalating Set $\mathcal{E} = \{\text{AKIEC}, \text{BCC}, \text{MEL}\}$ ($n=290$, 19.31% test prevalence).
+    </p>
+  </section>
+
+  <!-- Master Ablation Ladder -->
+  <section id="ablation">
+    <h2>Master Ablation Ladder (Table IX)</h2>
+    <p>
+      Evaluated on 1,502 held-out test images (1,121 lesions). All confidence intervals are 1,000-sample lesion-grouped bootstraps.
+    </p>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Rung</th>
+            <th>Configuration</th>
+            <th>Coverage</th>
+            <th>Macro-F1 [95% CI]</th>
+            <th>Balanced Acc</th>
+            <th>Escalation Sens</th>
+            <th>Missed Serious</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>A1</td><td>ResNet-50</td><td>1.000</td><td>0.7058 [0.6470, 0.7501]</td><td>0.7217</td><td>0.7379</td><td>76</td></tr>
+          <tr><td>A2</td><td>ConvNeXt-Tiny (Best single CNN)</td><td>1.000</td><td>0.7459 [0.6928, 0.7806]</td><td>0.7792</td><td>0.7759</td><td>65</td></tr>
+          <tr><td>A3</td><td>SwinV2-Tiny (Transformer)</td><td>1.000</td><td>0.7273 [0.6678, 0.7767]</td><td>0.7116</td><td>0.6621</td><td>98</td></tr>
+          <tr><td>A4</td><td>Gated Metadata Fusion</td><td>1.000</td><td>0.7411 [0.6844, 0.7870]</td><td>0.7433</td><td>0.6862</td><td>91</td></tr>
+          <tr style="background: rgba(56, 189, 248, 0.08);"><td><strong>A5</strong></td><td><strong>Uniform Soft-Vote (6 CNNs)</strong></td><td>1.000</td><td><strong>0.7718 [0.7201, 0.8118]</strong></td><td>0.7923</td><td>0.7828</td><td>63</td></tr>
+          <tr><td>A6</td><td>+ 24-view TTA</td><td>1.000</td><td>0.7859 [0.7345, 0.8242]</td><td>0.8102</td><td>0.7862</td><td>62</td></tr>
+          <tr style="background: rgba(52, 211, 153, 0.08);"><td><strong>A7</strong></td><td><strong>+ Dirichlet Calibration</strong></td><td>1.000</td><td><strong>0.8047 [0.7572, 0.8412]</strong></td><td>0.7939</td><td><strong>0.7310</strong></td><td><strong>78</strong></td></tr>
+          <tr><td>B1</td><td>+ Margin Abstention @ 5%</td><td>0.954</td><td>0.8298 [0.7797, 0.8689]</td><td>0.8143</td><td>0.7519</td><td>65</td></tr>
+          <tr><td>B2</td><td>+ Margin Abstention @ 10%</td><td>0.892</td><td>0.8577 [0.8137, 0.8908]</td><td>0.8448</td><td>0.7621</td><td>54</td></tr>
+          <tr><td>B3</td><td>+ Margin Abstention @ 15%</td><td>0.836</td><td>0.8696 [0.8252, 0.9020]</td><td>0.8636</td><td>0.7750</td><td>45</td></tr>
+          <tr><td>B4</td><td>+ Margin Abstention @ 20%</td><td>0.779</td><td>0.8957 [0.8475, 0.9291]</td><td>0.8806</td><td>0.7919</td><td>36</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert alert-success">
+      <div class="alert-title">THE FIVE NEGATIVE COMBINATION LEVERS (TABLE X)</div>
+      Beyond Macro-F1 0.8047, we tested five post-hoc combination levers: (1) adding transformers (0.7981 vs 0.7986), (2) Caruana greedy selection (0.7640/0.7839), (3) global prior logit adjustments (-0.0035), (4) per-class offsets (+0.0009), and (5) a 30-member fold bag (Rung A8: 0.7810, $p=0.242$). <strong>All five failed.</strong> 0.8047 is an empirical ceiling.
+    </div>
+  </section>
+
+  <!-- Calibration & Conformal -->
+  <section id="calibration">
+    <h2>Subgroup Calibration & Conformal Guarantees</h2>
+    <p>
+      A global calibration error of ECE = 0.017 conceals opposite-signed demographic errors: patients aged 40–59 remain underconfident (signed gap $-0.023$) while patients 60+ are pushed into overconfidence ($+0.034$).
+    </p>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Conformal Scheme</th>
+            <th>Error $\alpha$</th>
+            <th>Marginal Coverage</th>
+            <th>Serious Cancer Coverage</th>
+            <th>Under-40 Serious Coverage</th>
+            <th>FRR [95% CI]</th>
+            <th>Mean Set Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>LAC Marginal</td><td>0.10</td><td>90.1%</td><td>73.4%</td><td><strong>23.8%</strong> (5/21)</td><td>0.228 [0.169, 0.288]</td><td>1.08</td></tr>
+          <tr><td>LAC Class-Conditional</td><td>0.10</td><td>87.5%</td><td>88.6%</td><td><strong>57.1%</strong> (12/21)</td><td>0.079 [0.051, 0.117]</td><td>1.28</td></tr>
+          <tr style="background: rgba(56, 189, 248, 0.08);"><td><strong>LAC Bipartite (Equalized)</strong></td><td>0.10</td><td>88.4%</td><td>90.7%</td><td><strong>95.2%</strong> (20/21)</td><td>0.059 [0.035, 0.092]</td><td>1.26</td></tr>
+          <tr><td>RAPS Class-Conditional</td><td>0.10</td><td>90.0%</td><td>90.3%</td><td><strong>66.7%</strong> (14/21)</td><td>0.052 [0.029, 0.084]</td><td>1.40</td></tr>
+          <tr style="background: rgba(52, 211, 153, 0.08);"><td><strong>RAPS Bipartite (Equalized)</strong></td><td>0.05</td><td>95.4%</td><td>95.5%</td><td><strong>90.5%</strong> (19/21)</td><td><strong>0.014 [0.004, 0.035]</strong></td><td>1.87</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Under-40 Hidden Stratification -->
+  <section id="under40">
+    <h2>The Under-40 Melanoma Blind Spot & The Age Rule</h2>
+    <p>
+      In patients under 40, escalation sensitivity collapses to 0.143 (3 of 21 caught) due to training prior skew (4.9% vs 35.5%). Abstention fails because errors are <strong>confidently wrong</strong> (deferring only 11% of misses).
+    </p>
+
+    <div class="stat-card" style="margin-bottom: 1.5rem;">
+      <h3 style="color: var(--accent-blue); margin-top: 0;">The Age-Conditional Escalation Rule</h3>
+      <pre>y_hat(x) = argmax_c [ p_c(x) + λ_b(x) · 1[c ∈ {AKIEC, BCC, MEL}] ]
+Frozen Values: λ_<40 = 0.26 (CI [0.00, 0.61]), λ_40-59 = 0.74, λ_60+ = 0.33</pre>
+      <p style="margin-bottom: 0;">
+        Fitted on 6,981 out-of-fold training predictions under an 85% specificity floor.
+      </p>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Age Band</th>
+            <th>$\lambda_b$</th>
+            <th>Rule Mode</th>
+            <th>Escalation Sensitivity [95% CI]</th>
+            <th>Referral Rate</th>
+            <th>Reweighted NNB ($\pi=0.03$)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="2"><strong>$<40$</strong></td><td rowspan="2">0.26</td><td>Argmax</td><td>0.143 [0.030, 0.363]</td><td>2.8%</td><td>5.2</td></tr>
+          <tr style="background: rgba(251, 191, 36, 0.08);"><td><strong>$+\lambda$ Rule</strong></td><td><strong>0.238 [0.082, 0.472]</strong></td><td>6.6%</td><td>8.1</td></tr>
+          <tr><td rowspan="2"><strong>40–59</strong></td><td rowspan="2">0.74</td><td>Argmax</td><td>0.814 [0.694, 0.918]</td><td>10.9%</td><td>2.1</td></tr>
+          <tr style="background: rgba(56, 189, 248, 0.08);"><td><strong>$+\lambda$ Rule</strong></td><td><strong>0.971 [0.926, 1.000]</strong></td><td>23.4%</td><td>5.9</td></tr>
+          <tr><td rowspan="2"><strong>60+</strong></td><td rowspan="2">0.33</td><td>Argmax</td><td>0.764 [0.683, 0.836]</td><td>35.0%</td><td>5.3</td></tr>
+          <tr style="background: rgba(56, 189, 248, 0.08);"><td><strong>$+\lambda$ Rule</strong></td><td><strong>0.844 [0.780, 0.903]</strong></td><td>42.3%</td><td>7.6</td></tr>
+          <tr><td rowspan="2"><strong>ALL AGES</strong></td><td rowspan="2">—</td><td>Argmax</td><td>0.731 [0.665, 0.793]</td><td>17.8%</td><td>3.0</td></tr>
+          <tr style="background: rgba(52, 211, 153, 0.08);"><td><strong>$+\lambda$ Rule</strong></td><td><strong>0.831 [0.776, 0.885]</strong></td><td>26.8%</td><td><strong>6.2</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Multi-Centre External Evaluation -->
+  <section id="external">
+    <h2>Multi-Centre Transportability (Table VIII)</h2>
+    <p>
+      Evaluated across 11,982 BCN-20000 and 2,903 MSKCC dermoscopy images with zero target parameter fitting.
+    </p>
+
+    <div class="alert alert-danger">
+      <div class="alert-title">FAILED MECHANISTIC HYPOTHESES (PRE-REGISTERED)</div>
+      <strong>Claim A (Cohort-Invariant AUC):</strong> FAILED (spread 0.105: HAM 0.895 vs BCN 0.791 vs MSKCC 0.790).<br/>
+      <strong>Claim B (Sensitivity Tracks Prior Skew):</strong> FAILED BACKWARDS (HAM 0.547 > MSKCC 0.333 > BCN 0.279).<br/>
+      <em>Contingency fired:</em> Reported three point estimates, dropped trend language, offered no post-hoc excuse.
+    </div>
+
+    <div class="alert alert-success">
+      <div class="alert-title">OPERATING POINT TRANSPORTED TO ALL CENTRES</div>
+      The frozen $\lambda$ threshold zero-shot lifted under-40 sensitivity everywhere:<br/>
+      • HAM10000: $0.547 \to 0.625$ ($\Delta$ referral $+0.024$)<br/>
+      • BCN-20000: $0.279 \to 0.352$ ($\Delta$ referral $+0.026$, McNemar $p = 1.49 \times 10^{-8}$)<br/>
+      • MSKCC: $0.333 \to 0.389$ ($\Delta$ referral $+0.019$)<br/>
+      <strong>The operating point transports; the explanation does not.</strong>
+    </div>
+  </section>
+
+  <!-- Interactive 80-Question Viva Bank -->
+  <section id="viva-bank">
+    <h2>Interactive Viva Question Bank (80 Questions)</h2>
+    <p>
+      Click on any question to view the ideal technical answer, evidentiary grounding, common mistake, and 10s/60s versions.
+    </p>
+
+    <div class="q-filter-box">
+      <input type="text" id="qSearch" placeholder="Search questions by keyword (e.g., calibration, under-40, conformal)..." onkeyup="filterQuestions()">
+      <button class="btn-filter active" onclick="setTierFilter('all')">All (80)</button>
+      <button class="btn-filter" onclick="setTierFilter('l1')">Basic (20)</button>
+      <button class="btn-filter" onclick="setTierFilter('l2')">Technical (30)</button>
+      <button class="btn-filter" onclick="setTierFilter('l3')">Difficult (20)</button>
+      <button class="btn-filter" onclick="setTierFilter('l4')">Traps (10)</button>
+    </div>
+
+    <div id="accordionContainer">
+      <!-- Questions will be injected or rendered here -->
+    </div>
+  </section>
+
+</main>
+
+<script>
+// Viva Bank Data Sample - Interactive Accordion
+const questions = [
+  {
+    tier: "l1",
+    id: 1,
+    q: "Why did you not use standard accuracy as your primary evaluation metric?",
+    ans: "In HAM10000, melanocytic nevi (nv) represent 66.8% of test images. A degenerate dummy model predicting nv for every case gets 66.8% accuracy while missing 100% of melanomas and non-melanoma skin cancers. Accuracy treats all misclassifications equally, rewarding majority-class prior matching. We used Macro-F1 and escalation sensitivity.",
+    why: "Documented in Hard Rule 3 and Section III-B.",
+    mistake: "Claiming 86% accuracy proves clinical efficacy.",
+    tenSec: "Accuracy is meaningless because 67% of cases are benign moles; an all-nevus dummy model gets 67% accuracy while missing every cancer.",
+    sixtySec: "With 1,004 of 1,502 test images belonging to the benign nevus class, overall accuracy measures prior alignment, not diagnostic skill. Misclassifying an invasive melanoma as a mole carries catastrophic clinical harm. Macro-F1 weights all seven classes equally, forcing the model to perform on rare classes like dermatofibroma and melanoma."
+  },
+  {
+    tier: "l1",
+    id: 2,
+    q: "Why was it essential to partition the dataset by lesion identifier rather than image?",
+    ans: "HAM10000 contains 10,015 images representing only 7,470 unique physical lesions. An image-level split leaks near-duplicate views of the same lesion between train and test. Deep networks memorize patient-specific artifacts (hair, lighting, skin folds), artificially inflating test Macro-F1 by 3-5% without learning pathology.",
+    why: "Enforced by Hard Rule 1 and assert_no_leakage().",
+    mistake: "Assuming images in public benchmarks are independent observations.",
+    tenSec: "An image split causes near-duplicate leakage of the same lesion between train and test; grouping by lesion_id prevents visual memorization.",
+    sixtySec: "In dermatology datasets, multiple photographs are routinely taken of a single lesion. If split randomly by image, identical lesions appear on both sides of the training partition. The network memorizes visual markers like anatomical location rather than true pathology. We enforced lesion-grouped stratification, guaranteeing all images of a lesion remain strictly disjoint across partitions."
+  },
+  {
+    tier: "l1",
+    id: 8,
+    q: "What did you discover regarding the calibration direction of your ensemble?",
+    ans: "Contrary to literature reporting that deep networks are overconfident, our 6-CNN soft-vote ensemble was systematically underconfident (confidence 0.7048 vs accuracy 0.8609, signed gap -0.156). Averaging six models that disagree on runner-up classes dilutes the peak probability, pulling confidence down.",
+    why: "Replicated across val, OOF, and test; Figure 2.",
+    mistake: "Claiming ensembles are overconfident like single networks.",
+    tenSec: "The ensemble was systematically underconfident (confidence 0.70 vs accuracy 0.86), the opposite of standard single-network overconfidence.",
+    sixtySec: "When six models predict a case, they often agree on the top class but disagree on the runner-up classes. Averaging their probability vectors dilutes the peak probability, pulling the maximum confidence down toward 1/7. Consequently, the ensemble's accuracy consistently exceeds its stated confidence, causing reliability diagram bars to sit above the diagonal."
+  },
+  {
+    tier: "l1",
+    id: 9,
+    q: "What is the clinical antinomy between calibration and screening sensitivity?",
+    ans: "Dirichlet calibration cut ECE from 0.1575 to 0.0206 and boosted Macro-F1 to 0.8047, but simultaneously dropped escalation sensitivity from 0.7862 to 0.7310, causing 16 additional missed serious malignancies (missed cases rose from 62 to 78). Recalibration shifts probability mass toward the dominant 67% nevus class, which optimizes proper scoring rules but damages cancer screening.",
+    why: "Documented in Section IV-A and Table IX.",
+    mistake: "Assuming calibration automatically improves all clinical metrics.",
+    tenSec: "Dirichlet calibration shifts probability mass toward the 67% majority nevus class, optimizing proper scoring rules but missing 16 extra cancers.",
+    sixtySec: "Calibration minimizes log-loss or Brier score over the empirical data distribution. Because benign nevi dominate the dataset (66.8%), the calibrator learns that pushing ambiguous boundary probabilities toward the benign class improves overall likelihood fit. What is mathematically optimal for proper scoring rules is clinically hazardous for screening, where false negatives carry severe consequences."
+  },
+  {
+    tier: "l1",
+    id: 15,
+    q: "What is the under-40 melanoma blind spot discovered in this paper?",
+    ans: "On held-out test data, escalation sensitivity in patients under 40 collapsed to 0.143 (3 of 21 caught) vs 0.764 in 60+ (difference -0.621, Holm p < 0.001). 18 young malignancies were misclassified as benign moles. The root cause is the 7-fold training prior skew (4.9% escalating under 40 vs 35.5% in 60+).",
+    why: "Confirmatory test result, Table V.",
+    mistake: "Quoting 0.143 bare without its exact interval [0.030, 0.363].",
+    tenSec: "The model caught only 3 of 21 cancers in patients under 40 (14.3% sensitivity vs 76.4% in older patients).",
+    sixtySec: "While aggregate escalation sensitivity looked acceptable at 0.731, stratifying by age revealed an acute failure. Patients under 40 had 18 of 21 serious lesions misclassified as common moles. Because young patients represent a minority of total malignancies in the dataset, their catastrophic failure was completely washed out in aggregate F1 and accuracy."
+  },
+  {
+    tier: "l2",
+    id: 23,
+    q: "Why did ridge stacking achieve your highest test score but get rejected?",
+    ans: "Ridge stacking reached test Macro-F1 0.7815 (surpassing soft-vote 0.7718), but had validation Macro-F1 of only 0.7583 (vs soft-vote 0.7911). It exhibited a negative generalization gap (-0.023). Selecting ridge stacking based on its test score would be unscientific test-set snooping. We selected uniform soft-voting based strictly on validation.",
+    why: "Documented in Section B-A and CHANGELOG S1/S4.",
+    mistake: "Arguing that highest test score always justifies model selection.",
+    tenSec: "Ridge stacking overfit validation noise (val 0.758 vs test 0.781); reporting it would be unscientific test-set selection.",
+    sixtySec: "In rigorous machine learning, model selection decisions must be locked before reading the test set. Ridge stacking tuned weights on validation logits that failed to validate across folds. Had we selected ridge stacking, we would have picked a model that looked worst on validation simply because it got lucky on test sampling variance. We selected uniform soft-voting based strictly on validation performance."
+  },
+  {
+    tier: "l2",
+    id: 30,
+    q: "What is equalized bipartite conformal prediction?",
+    ans: "Bipartite conformal prediction groups calibration data into 6 cells by (age band × cancer seriousness). It conditions coverage on patient age and disease severity jointly, raising under-40 cancer coverage from 57.1% to 95.2% without inflating prediction set size (mean size 1.26).",
+    why: "Instance of equalized coverage (Romano et al. 2020); Table IV.",
+    mistake: "Assuming class-conditional coverage protects age subgroups.",
+    tenSec: "It conditions conformal thresholds on (age band × serious cancer), ensuring young cancer patients receive guaranteed coverage.",
+    sixtySec: "Mondrian calibration conditions on the disease label, which fixes class imbalance but ignores patient age. We showed that Mondrian calibration still leaves young cancer patients covered at only 57–67%. By partitioning calibration points into 6 cells based on age band and whether the lesion is serious, bipartite calibration raised under-40 cancer coverage to 95.2% without inflating set size."
+  },
+  {
+    tier: "l3",
+    id: 51,
+    q: "In your external evaluation, both pre-registered claims failed. Doesn't that invalidate your paper?",
+    ans: "No, it elevates the scientific contribution. Claim A (invariant AUC) and Claim B (sensitivity tracking skew) failed, and our pre-registered contingency fired: report point estimates, drop trend language, offer no post-hoc excuse. What survived was the operating point: the frozen λ rule lifted under-40 sensitivity in all three centres. Operating points transport; explanations do not.",
+    why: "Documented in Section IV-E and Figure 4.",
+    mistake: "Trying to invent an ad-hoc excuse for why Claim B failed.",
+    tenSec: "Falsifying pre-registered hypotheses without post-hoc rationalization is sound science; the operating point transported even though the theory failed.",
+    sixtySec: "Many AI papers quietly drop failed hypotheses or rewrite introductions to match results. We pre-registered our claims and contingencies in analysis_plan_post_s11_v2.json. The dose variable was entangled with transfer quality: BCN had the lowest skew but our frozen model transferred to it worst (Macro-F1 0.402 vs 0.784 on HAM). We showed that group-conditional thresholds encode useful clinical triage policies that transport across clinics, regardless of whether demographic base rates explain the origin."
+  },
+  {
+    tier: "l4",
+    id: 71,
+    q: "TRAP: Your abstract claims you built a deployable medical system. Isn't this dangerous given 24% young sensitivity?",
+    ans: "I must clarify: our paper makes the exact opposite claim. Section V-E states: 'We do not claim this system is deployable... Even after mitigation, under-40 sensitivity is 0.238, and we would not deploy this system to that population.' Our paper audits why benchmark-leading models are unsafe for deployment.",
+    why: "Direct quotation from Section V-E and Abstract.",
+    mistake: "Getting defensive and arguing 24% sensitivity is acceptable in clinics.",
+    tenSec: "We explicitly state the system is NOT deployable; our paper proves that benchmark-leading models are unsafe for young patients.",
+    sixtySec: "A careless reading might assume an engineering paper advocates for deployment. We explicitly warn against deploying this system. The paper is an audit of why current systems fail clinical standards: calibration reduces cancer sensitivity, abstention fails on confident errors, and marginal conformal sets omit malignancies. We identify and price a partial post-processing remedy, but conclude that prospective clinical trials must not proceed in young cohorts."
+  },
+  {
+    tier: "l4",
+    id: 73,
+    q: "TRAP: You claim conformal guarantees, but didn't OOF calibration invalidate exchangeability?",
+    ans: "Yes, and we stated that openly in Section III-F: OOF calibration breaks exchangeability because calibration scores come from 5 fold models while test scores come from the full model. We forfeited the formal theorem under OOF and reported coverage as an empirical audit, keeping the theorem strictly in our validation-fitted experiments (Table III).",
+    why: "Documented in Section III-F and Section VI.",
+    mistake: "Arguing that OOF predictions are 'close enough' to exchangeable.",
+    tenSec: "Yes, OOF breaks exchangeability; we explicitly forfeited the formal theorem and reported OOF coverage as an empirical audit.",
+    sixtySec: "We refused to hide the exchangeability violation. Split conformal requires calibration and test scores to be drawn from a single fixed model. In OOF, calibration scores come from 5 fold models while test scores come from the full model. That is why Table III reports the validation-fitted configuration with the exact finite-sample guarantee, while Table IV reports OOF results as an empirical audit. Full CV+ would restore a (1 - 2alpha) guarantee, but required scoring test with all 30 models, which our single-pass protocol prohibited."
+  }
+];
+
+let currentTier = "all";
+
+function renderQuestions() {
+  const container = document.getElementById("accordionContainer");
+  const query = document.getElementById("qSearch").value.toLowerCase();
+  container.innerHTML = "";
+
+  const filtered = questions.filter(q => {
+    const matchTier = (currentTier === "all" || q.tier === currentTier);
+    const matchText = q.q.toLowerCase().includes(query) || q.ans.toLowerCase().includes(query);
+    return matchTier && matchText;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = "<p style='padding: 1rem; color: var(--text-muted);'>No matching questions found.</p>";
+    return;
+  }
+
+  filtered.forEach(item => {
+    const el = document.createElement("div");
+    el.className = "accordion-item";
+    el.innerHTML = `
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span class="badge ${item.tier === 'l4' ? 'badge-rose' : item.tier === 'l3' ? 'badge-amber' : item.tier === 'l2' ? 'badge-blue' : 'badge-emerald'}">
+            ${item.tier.toUpperCase()} Q${item.id}
+          </span>
+          ${item.q}
+        </div>
+        <span>▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="ans-section">
+          <div class="ans-tag">Ideal Answer</div>
+          <p style="color: var(--text-primary); margin-top: 0.2rem;">${item.ans}</p>
+        </div>
+        <div class="ans-section">
+          <div class="ans-tag">Why This Is Correct</div>
+          <p style="color: var(--text-secondary); margin-top: 0.2rem;">${item.why}</p>
+        </div>
+        <div class="ans-section">
+          <div class="ans-tag" style="color: var(--accent-rose);">Common Mistake</div>
+          <p style="color: var(--accent-rose); margin-top: 0.2rem;">${item.mistake}</p>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 6px;">
+          <div>
+            <div class="ans-tag" style="color: var(--accent-amber);">10-Second Pitch</div>
+            <p style="font-size: 0.8rem; margin-top: 0.2rem; color: var(--text-secondary);">${item.tenSec}</p>
+          </div>
+          <div>
+            <div class="ans-tag" style="color: var(--accent-emerald);">60-Second Detailed Defense</div>
+            <p style="font-size: 0.8rem; margin-top: 0.2rem; color: var(--text-secondary);">${item.sixtySec}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains("open");
+  document.querySelectorAll(".accordion-body").forEach(b => b.classList.remove("open"));
+  if (!isOpen) body.classList.add("open");
+}
+
+function setTierFilter(tier) {
+  currentTier = tier;
+  document.querySelectorAll(".btn-filter").forEach(b => b.classList.remove("active"));
+  event.target.classList.add("active");
+  renderQuestions();
+}
+
+function filterQuestions() {
+  renderQuestions();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderQuestions();
+});
+</script>
+
+</body>
+</html>
