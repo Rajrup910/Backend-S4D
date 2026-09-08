@@ -27,13 +27,32 @@ Usage:
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import re
 
 from ml.paths import resolve
 
-SRC = resolve("paper/manuscript.tex").read_text(encoding="utf-8")
+DEFAULT_TARGET = "paper/manuscript.tex"
+
+# Parsed here, at module import time, because SRC and every check below is built from it. The
+# rest of the file stays a flat sequence of module-level assertions -- this is the minimal
+# change that lets `python -m research.ablation.audit_manuscript --target ...` point the whole
+# script at a different document without restructuring it into functions.
+_arg_parser = argparse.ArgumentParser(add_help=True)
+_arg_parser.add_argument("--target", default=DEFAULT_TARGET,
+                         help=f"manuscript .tex to audit (default: {DEFAULT_TARGET})")
+TARGET = _arg_parser.parse_args().target
+
+#: True for any manuscript other than the published one -- e.g. paper/manuscript_edited.tex,
+#: the downsized paper that deliberately drops the PAD-UFES-20 track, the CLAIM/TRIPOD
+#: checklist appendices, the Grad-CAM figure and the case atlas. Checks tied to that dropped
+#: content are recorded with `skip()` rather than run, so their absence is never confused with
+#: a silent failure.
+EDITED = TARGET != DEFAULT_TARGET
+
+SRC = resolve(TARGET).read_text(encoding="utf-8")
 
 ladder = {}
 with open(resolve("results/ablation_table.csv"), encoding="utf-8") as fh:
@@ -44,6 +63,7 @@ comparisons = json.load(open(resolve("results/mcnemar_delong.json"), encoding="u
 by_pair = {(c["a"], c["b"]): c for c in comparisons}
 
 failures = []
+skipped = []
 checks = 0
 
 
@@ -61,6 +81,20 @@ def quoted(text):
     checks += 1
     if text not in SRC:
         failures.append(f"string not found in manuscript: {text!r}")
+
+
+def skip(label, reason):
+    """Record a check deliberately not run because `--target` dropped its content.
+
+    Used only for content the edited manuscript is known to have removed on purpose (the
+    PAD-UFES-20 track, the CLAIM/TRIPOD checklist appendices, the Grad-CAM figure). A check
+    that just silently passed over missing content would be indistinguishable from one that
+    silently failed to catch a regression -- this makes the omission a named, counted line in
+    the report instead.
+    """
+    global checks
+    checks += 1
+    skipped.append(f"{label}: {reason}")
 
 
 # --- Ladder Macro-F1 values quoted in prose -------------------------------------------
@@ -191,11 +225,34 @@ for text in ["6{,}981", "1{,}532", "1{,}502", "7{,}470", "10{,}015", "5{,}229",
 
 import pandas as pd  # noqa: E402
 
+
+def _input_paths(tex: str) -> list[str]:
+    """Every `\\input{...}` path in `tex`, relative to paper/, resolved recursively.
+
+    Was a hardcoded 5-name tuple naming the tables `manuscript.tex` inputs. That list is
+    specific to one document; `--target` needs the equivalent set for whatever manuscript is
+    passed (e.g. `paper/tables_edited/*.tex` for the edited paper), so this discovers it the
+    same way `build_overleaf_bundle.dependencies()` does, one level further: it also follows
+    `\\input`s nested inside the tables themselves (`appendix_checklists.tex` pulls in
+    `appendix_table_tripod_ai.tex` this way).
+    """
+    seen: list[str] = []
+    queue = list(re.findall(r"\\input\{([^}]+)\}", tex))
+    while queue:
+        rel = queue.pop(0)
+        rel = rel if rel.endswith(".tex") else rel + ".tex"
+        if rel in seen:
+            continue
+        seen.append(rel)
+        target = resolve(f"paper/{rel}")
+        if target.is_file():
+            queue += re.findall(r"\\input\{([^}]+)\}", target.read_text(encoding="utf-8"))
+    return seen
+
+
 _TABLES = "".join(
-    resolve("paper/tables/%s" % name).read_text(encoding="utf-8")
-    for name in ("ablation_table.tex", "oof_vs_val.tex", "table4_agegap.tex",
-                 # S16: the two composite external floats the manuscript now inputs.
-                 "external_table_validity_battery.tex", "external_table_safety_nets.tex")
+    resolve(f"paper/{rel}").read_text(encoding="utf-8")
+    for rel in _input_paths(SRC) if resolve(f"paper/{rel}").is_file()
 )
 FULL = SRC + _TABLES
 NORM = " ".join(FULL.split())
@@ -303,18 +360,31 @@ for _col in ("nnb_at_0.01", "nnb_at_0.05"):
 
 # tab:agerule reconstructed row for row -- sensitivity, referral and NNB share a row, so a
 # per-value check would not catch a cell landing in the wrong band.
+# The edited manuscript's "merged age blind spot + rule recovery" table
+# (paper/tables_edited/table_agegap_edited.tex) carries sensitivity by band and split in a
+# different layout (val/OOF/test columns, not per-rule rows) and does not carry NNB or
+# referral rate at all -- those are reported in prose (Sec. IV-D) instead of reproducing
+# tab:agerule's row shape as a fifth table.
 _TEXBAND = {"<40": "$<40$", "40-59": "$40$--$59$", "60+": "$60+$", "ALL": "All"}
-for _b in ("<40", "40-59", "60+", "ALL"):
-    for _r, _texrule in (("argmax", r"$\arg\max$"), ("lambda_rule", r"$+\lambda$")):
-        _a = _ar[(_ar["band"] == _b) & (_ar["rule"] == _r)].iloc[0]
-        _nb = _nnb[(_nnb["cohort"] == _b) & (_nnb["rule"] == _r)].iloc[0]
-        _cell = "%s [%s, %s]" % (_f(_a["escalation_sensitivity"], 3),
-                                 _f(_a["sens_ci_lo"], 3), _f(_a["sens_ci_hi"], 3))
-        if (_b, _r) == ("ALL", "lambda_rule"):
-            _cell = r"\textbf{%s}" % _cell
-        row(f"agerule {_b} {_r}",
-            [_texrule, _cell, _f(_a["referral_rate"], 3), _f(_nb["nnb_reference"], 1)],
-            S9 + "agerule_test.csv + nnb_test.csv")
+if EDITED:
+    for _b in ("<40", "40-59", "60+", "ALL"):
+        for _r in ("argmax", "lambda_rule"):
+            skip(f"tab:agerule row {_b} {_r}",
+                 "the edited manuscript reports sensitivity via table_agegap_edited.tex and "
+                 "NNB/referral in prose, not as a reproduced tab:agerule row (outside its "
+                 "four-table budget)")
+else:
+    for _b in ("<40", "40-59", "60+", "ALL"):
+        for _r, _texrule in (("argmax", r"$\arg\max$"), ("lambda_rule", r"$+\lambda$")):
+            _a = _ar[(_ar["band"] == _b) & (_ar["rule"] == _r)].iloc[0]
+            _nb = _nnb[(_nnb["cohort"] == _b) & (_nnb["rule"] == _r)].iloc[0]
+            _cell = "%s [%s, %s]" % (_f(_a["escalation_sensitivity"], 3),
+                                     _f(_a["sens_ci_lo"], 3), _f(_a["sens_ci_hi"], 3))
+            if (_b, _r) == ("ALL", "lambda_rule"):
+                _cell = r"\textbf{%s}" % _cell
+            row(f"agerule {_b} {_r}",
+                [_texrule, _cell, _f(_a["referral_rate"], 3), _f(_nb["nnb_reference"], 1)],
+                S9 + "agerule_test.csv + nnb_test.csv")
 
 
 # --- Orthogonality of the rule and the abstention gate ----------------------------------
@@ -340,15 +410,25 @@ assert _ort.loc["<40", "jaccard_overlap"] == 1.0, \
     "under-40 orthogonality is no longer total -- Sec. IV-G and Limitations both overstate it"
 
 # tab:ortho reconstructed row for row.
-for _tex, _b, _bold in (("$<40$", "<40", True), ("$40$--$59$", "40-59", False),
-                        ("$60+$", "60+", False), ("All", "ALL", False)):
-    _r = _ort.loc[_b]
-    _j = _f(_r["jaccard_overlap"], 2)
-    row(f"ortho row {_b}",
-        [_tex, str(int(_r["n_missed_by_argmax"])), str(int(_r["n_missed_referred"])),
-         str(int(_r["n_missed_caught_by_lambda"])),
-         (r"\textbf{%s}" % _j) if _bold else _j],
-        S9 + "orthogonality_test.csv")
+# The edited manuscript condenses this table into prose (the same four numbers per band,
+# without a float) rather than reproducing tab:ortho -- it is not one of its four permitted
+# tables. The individual present() checks above already require every one of those numbers to
+# appear in the edited manuscript; only the exact tabular row structure is skipped here.
+if EDITED:
+    for _b in ("<40", "40-59", "60+", "ALL"):
+        skip(f"tab:ortho row {_b}",
+             "the edited manuscript reports the orthogonality numbers in prose, not as a "
+             "reproduced float (outside its four-table budget)")
+else:
+    for _tex, _b, _bold in (("$<40$", "<40", True), ("$40$--$59$", "40-59", False),
+                            ("$60+$", "60+", False), ("All", "ALL", False)):
+        _r = _ort.loc[_b]
+        _j = _f(_r["jaccard_overlap"], 2)
+        row(f"ortho row {_b}",
+            [_tex, str(int(_r["n_missed_by_argmax"])), str(int(_r["n_missed_referred"])),
+             str(int(_r["n_missed_caught_by_lambda"])),
+             (r"\textbf{%s}" % _j) if _bold else _j],
+            S9 + "orthogonality_test.csv")
 
 
 # --- Conformal: coverage, the under-40 column, FRR --------------------------------------
@@ -356,23 +436,35 @@ _cf = _csv(S9 + "conformal_test.csv")
 _CAL = {"marginal": "marginal", "class_conditional": "class-cond.", "bipartite": "bipartite"}
 _BOLD_U40 = {("LAC", "bipartite", 0.10), ("LAC", "bipartite", 0.05)}
 _BOLD_FRR = {("RAPS", "bipartite", 0.05)}
-for _m, _c, _a in [("LAC", "marginal", 0.10), ("LAC", "class_conditional", 0.10),
+_CONFORMAL_ROWS = [("LAC", "marginal", 0.10), ("LAC", "class_conditional", 0.10),
                    ("LAC", "bipartite", 0.10), ("LAC", "bipartite", 0.05),
                    ("RAPS", "marginal", 0.10), ("RAPS", "class_conditional", 0.10),
                    ("RAPS", "bipartite", 0.10), ("RAPS", "marginal", 0.05),
-                   ("RAPS", "bipartite", 0.05)]:
-    _r = _cf[(_cf["method"] == _m) & (_cf["calibrator"] == _c)
-             & (_cf["alpha"].round(3) == _a)].iloc[0]
-    _u40 = _f(_r["under40_escalating_coverage"], 3)
-    if (_m, _c, _a) in _BOLD_U40:
-        _u40 = r"\textbf{%s}" % _u40
-    _frr = "%s [%s, %s]" % (_f(_r["frr"], 3), _f(_r["frr_ci_lo"], 3), _f(_r["frr_ci_hi"], 3))
-    if (_m, _c, _a) in _BOLD_FRR:
-        _frr = r"\textbf{%s}" % _frr
-    row(f"conformal {_m}/{_c}/a{_a:.2f}",
-        ["%.2f" % _a, _CAL[_c], _f(_r["marginal_coverage"], 3),
-         _f(_r["escalating_coverage"], 3), _u40, _frr, _f(_r["mean_set_size"], 2)],
-        S9 + "conformal_test.csv")
+                   ("RAPS", "bipartite", 0.05)]
+# The edited manuscript's conformal table (paper/tables_edited/conformal_coverage_edited.tex)
+# is a condensed 3-calibrator x 2-alpha grid without the <40-restricted column tab:bipartite
+# carries -- that breakdown is reported in prose instead (Sec. IV-B), which the present()-style
+# checks elsewhere in this block already require. Only the exact 7-cell tab:bipartite row
+# reconstruction is skipped for the edited target.
+if EDITED:
+    for _m, _c, _a in _CONFORMAL_ROWS:
+        skip(f"conformal {_m}/{_c}/a{_a:.2f} row",
+             "the edited manuscript's conformal table omits the <40-restricted column and "
+             "reports it in prose instead (outside its four-table budget)")
+else:
+    for _m, _c, _a in _CONFORMAL_ROWS:
+        _r = _cf[(_cf["method"] == _m) & (_cf["calibrator"] == _c)
+                 & (_cf["alpha"].round(3) == _a)].iloc[0]
+        _u40 = _f(_r["under40_escalating_coverage"], 3)
+        if (_m, _c, _a) in _BOLD_U40:
+            _u40 = r"\textbf{%s}" % _u40
+        _frr = "%s [%s, %s]" % (_f(_r["frr"], 3), _f(_r["frr_ci_lo"], 3), _f(_r["frr_ci_hi"], 3))
+        if (_m, _c, _a) in _BOLD_FRR:
+            _frr = r"\textbf{%s}" % _frr
+        row(f"conformal {_m}/{_c}/a{_a:.2f}",
+            ["%.2f" % _a, _CAL[_c], _f(_r["marginal_coverage"], 3),
+             _f(_r["escalating_coverage"], 3), _u40, _frr, _f(_r["mean_set_size"], 2)],
+            S9 + "conformal_test.csv")
 
 # The paper's sharpest new claim: class-conditional calibration does NOT repair the under-40
 # subgroup and bipartite does. Asserted, not trusted.
@@ -408,13 +500,22 @@ def _bcell(src, grp, col, nd=3):
     return "$%s$" % _f(_v, nd)
 
 
-for _tex, _grp in (("$<40$", "<40"), ("$40$--$59$", "40-59"), ("$60+$", "60+"), ("All", "ALL")):
-    _n = int(_bc[(_bc["source"] == "dirichlet") & (_bc["group"] == _grp)].iloc[0]["n"])
-    row(f"bandcal {_grp}",
-        [_tex, str(_n), _bcell("uncalibrated", _grp, "signed_gap"),
-         _bcell("uncalibrated", _grp, "ece"), _bcell("dirichlet", _grp, "signed_gap"),
-         _bcell("dirichlet", _grp, "ece")],
-        S9 + "band_calibration_test.csv")
+# tab:bandcal reconstructed row for row. The edited manuscript is not required to carry the
+# per-band calibration table (not one of its four permitted floats); the sign-disagreement
+# finding it exists to support is reported in prose from the same source instead.
+if EDITED:
+    for _grp in ("<40", "40-59", "60+", "ALL"):
+        skip(f"tab:bandcal row {_grp}",
+             "the edited manuscript does not reproduce the per-band calibration table "
+             "(outside its four-table budget)")
+else:
+    for _tex, _grp in (("$<40$", "<40"), ("$40$--$59$", "40-59"), ("$60+$", "60+"), ("All", "ALL")):
+        _n = int(_bc[(_bc["source"] == "dirichlet") & (_bc["group"] == _grp)].iloc[0]["n"])
+        row(f"bandcal {_grp}",
+            [_tex, str(_n), _bcell("uncalibrated", _grp, "signed_gap"),
+             _bcell("uncalibrated", _grp, "ece"), _bcell("dirichlet", _grp, "signed_gap"),
+             _bcell("dirichlet", _grp, "ece")],
+            S9 + "band_calibration_test.csv")
 
 _gaps = _json(S9 + "band_calibration_gaps_test.json")
 present("ece gap uncalibrated", _f(_gaps["test/uncalibrated"]["ece_gap"], 3),
@@ -480,19 +581,32 @@ claim("fairness positives gate", 10, MIN_POSITIVES)
 quoted("so it fails the gate by one case")
 
 # --- Grad-CAM attribution against the Tschandl masks --------------------------------------
-_att = _json(S9 + "attribution_summary_test.json")
-for _k, _nd in (("interior_fraction_mean", 3), ("interior_fraction_ci_lo", 3),
-                ("interior_fraction_ci_hi", 3), ("lesion_area_fraction_mean", 3),
-                ("concentration_ratio_mean", 2)):
-    present(f"attribution {_k}", _f(_att[_k], _nd), S9 + "attribution_summary_test.json")
-for _g in ("correct", "incorrect", "true=nv"):
-    _b = [x for x in _att["breakdown"] if x["group"] == _g][0]
-    present(f"attribution {_g}", _f(_b["mean"], 3), S9 + "attribution_summary_test.json")
-claim("attribution missing masks", 0, int(_att["n_missing_masks"]))
-# The paper explains the predicted-class artefact by pointing at errors scoring HIGHER.
-_c_mean = [x for x in _att["breakdown"] if x["group"] == "correct"][0]["mean"]
-_i_mean = [x for x in _att["breakdown"] if x["group"] == "incorrect"][0]["mean"]
-assert _i_mean > _c_mean, "errors no longer score higher -- Sec. IV-I's caveat needs rewriting"
+# The edited manuscript drops the Grad-CAM figure and its explainability subsection entirely,
+# so none of these literals are expected to appear in it.
+if EDITED:
+    _att = _json(S9 + "attribution_summary_test.json")
+    for _k in ("interior_fraction_mean", "interior_fraction_ci_lo", "interior_fraction_ci_hi",
+               "lesion_area_fraction_mean", "concentration_ratio_mean"):
+        skip(f"attribution {_k}", "Grad-CAM figure and explainability subsection dropped")
+    for _g in ("correct", "incorrect", "true=nv"):
+        skip(f"attribution {_g}", "Grad-CAM figure and explainability subsection dropped")
+    skip("attribution missing masks", "Grad-CAM figure and explainability subsection dropped")
+    skip("attribution errors-score-higher (directional)",
+         "Grad-CAM figure and explainability subsection dropped")
+else:
+    _att = _json(S9 + "attribution_summary_test.json")
+    for _k, _nd in (("interior_fraction_mean", 3), ("interior_fraction_ci_lo", 3),
+                    ("interior_fraction_ci_hi", 3), ("lesion_area_fraction_mean", 3),
+                    ("concentration_ratio_mean", 2)):
+        present(f"attribution {_k}", _f(_att[_k], _nd), S9 + "attribution_summary_test.json")
+    for _g in ("correct", "incorrect", "true=nv"):
+        _b = [x for x in _att["breakdown"] if x["group"] == _g][0]
+        present(f"attribution {_g}", _f(_b["mean"], 3), S9 + "attribution_summary_test.json")
+    claim("attribution missing masks", 0, int(_att["n_missing_masks"]))
+    # The paper explains the predicted-class artefact by pointing at errors scoring HIGHER.
+    _c_mean = [x for x in _att["breakdown"] if x["group"] == "correct"][0]["mean"]
+    _i_mean = [x for x in _att["breakdown"] if x["group"] == "incorrect"][0]["mean"]
+    assert _i_mean > _c_mean, "errors no longer score higher -- Sec. IV-I's caveat needs rewriting"
 
 # --- Selective classification at the OOF-fitted gate ---------------------------------------
 _sel = _csv(S9 + "selective_test.csv").set_index("target_abstention")
@@ -502,68 +616,86 @@ present("sel 10% macro_f1", _f(_s10["macro_f1"], 4), S9 + "selective_test.csv")
 present("sel 10% missed", str(int(_s10["missed_serious"])), S9 + "selective_test.csv")
 
 # --- External evaluation on PAD-UFES-20 ----------------------------------------------------
-# The per-member Macro-F1 values still come from the S8b sweep, the only run that scored the
-# six checkpoints individually. Everything the calibrator touches now comes from
-# `pad_age_rule_deployed.json` instead: S8b applied the *calibration* OOF Dirichlet fit rather
-# than the deployed one, and S16 put the two in the same paper, at which point the third
-# decimal stopped being a curiosity (missed serious 1,264 against 1,268).
-_X = "research/xdomain/results/"
-_pad = _csv(_X + "ensemble_on_pad.csv").set_index("method")
-for _m in ("pad_ensemble_softvote", "pad_member_convnext_small", "pad_member_efficientnet_b3"):
-    present(f"PAD macro_f1 {_m}", _f(_pad.loc[_m, "macro_f1"], 3), _X + "ensemble_on_pad.csv")
+# The edited manuscript drops the entire PAD-UFES-20 smartphone track, so none of the S8b /
+# Fitzpatrick / Mahalanobis-on-PAD literals below are expected in it.
+if EDITED:
+    for _m in ("pad_ensemble_softvote", "pad_member_convnext_small", "pad_member_efficientnet_b3"):
+        skip(f"PAD macro_f1 {_m}", "PAD-UFES-20 smartphone track dropped")
+    for _arm in ("dirichlet", "dirichlet_plus_age_rule"):
+        for _q in ("macro_f1", "esc sens", "mel recall", "missed"):
+            skip(f"PAD {_q} {_arm} (deployed map)", "PAD-UFES-20 smartphone track dropped")
+    skip("PAD rule agreement / repoint sanity checks", "PAD-UFES-20 smartphone track dropped")
+    skip("PAD ensemble-worse-than-best-member (directional)",
+         "PAD-UFES-20 smartphone track dropped")
+    for _g in ("I", "II", "III", "IV", "unknown"):
+        skip(f"fitzpatrick sens/n {_g}", "PAD-UFES-20 smartphone track dropped")
+    skip("fitzpatrick pooled tpr gap", "PAD-UFES-20 smartphone track dropped")
+    skip("fitzpatrick I-IV spread", "PAD-UFES-20 smartphone track dropped")
+    for _q in ("auroc", "id median", "shift median", "separation"):
+        skip(f"mahalanobis {_q}", "PAD-UFES-20 smartphone track dropped (shift cohort was PAD)")
+else:
+    # The per-member Macro-F1 values still come from the S8b sweep, the only run that scored the
+    # six checkpoints individually. Everything the calibrator touches now comes from
+    # `pad_age_rule_deployed.json` instead: S8b applied the *calibration* OOF Dirichlet fit rather
+    # than the deployed one, and S16 put the two in the same paper, at which point the third
+    # decimal stopped being a curiosity (missed serious 1,264 against 1,268).
+    _X = "research/xdomain/results/"
+    _pad = _csv(_X + "ensemble_on_pad.csv").set_index("method")
+    for _m in ("pad_ensemble_softvote", "pad_member_convnext_small", "pad_member_efficientnet_b3"):
+        present(f"PAD macro_f1 {_m}", _f(_pad.loc[_m, "macro_f1"], 3), _X + "ensemble_on_pad.csv")
 
-_PADRULE = "results/external/pad_age_rule_deployed.json"
-_padr = _json(_PADRULE)
-assert _padr["rule_implementations_agree"], \
-    "frozen_params and run_session8b implement different age rules on PAD"
-assert (_padr["superseded_s8b"]["dirichlet"]["missed_serious"]
-        != _padr["deployed"]["dirichlet"]["missed_serious"]), \
-    "the two Dirichlet maps no longer differ on PAD -- the S16 repoint is moot, simplify it"
-for _arm in ("dirichlet", "dirichlet_plus_age_rule"):
-    _row = _padr["deployed"][_arm]
-    present(f"PAD macro_f1 {_arm} (deployed map)", _f(_row["macro_f1"], 3), _PADRULE)
-    present(f"PAD esc sens {_arm} (deployed map)", _f(_row["escalation_sens"], 3), _PADRULE)
-    present(f"PAD mel recall {_arm} (deployed map)", _f(_row["mel_recall"], 3), _PADRULE)
-    present(f"PAD missed {_arm} (deployed map)",
-            "{:,}".format(int(_row["missed_serious"])).replace(",", "{,}"), _PADRULE)
-# the frozen rule must still trade referrals for sensitivity in the same direction as on HAM
-assert (_padr["deployed"]["dirichlet_plus_age_rule"]["escalation_sens"]
-        > _padr["deployed"]["dirichlet"]["escalation_sens"]), \
-    "the frozen rule no longer raises PAD escalation sensitivity -- Sec. IV-J is wrong"
+    _PADRULE = "results/external/pad_age_rule_deployed.json"
+    _padr = _json(_PADRULE)
+    assert _padr["rule_implementations_agree"], \
+        "frozen_params and run_session8b implement different age rules on PAD"
+    assert (_padr["superseded_s8b"]["dirichlet"]["missed_serious"]
+            != _padr["deployed"]["dirichlet"]["missed_serious"]), \
+        "the two Dirichlet maps no longer differ on PAD -- the S16 repoint is moot, simplify it"
+    for _arm in ("dirichlet", "dirichlet_plus_age_rule"):
+        _row = _padr["deployed"][_arm]
+        present(f"PAD macro_f1 {_arm} (deployed map)", _f(_row["macro_f1"], 3), _PADRULE)
+        present(f"PAD esc sens {_arm} (deployed map)", _f(_row["escalation_sens"], 3), _PADRULE)
+        present(f"PAD mel recall {_arm} (deployed map)", _f(_row["mel_recall"], 3), _PADRULE)
+        present(f"PAD missed {_arm} (deployed map)",
+                "{:,}".format(int(_row["missed_serious"])).replace(",", "{,}"), _PADRULE)
+    # the frozen rule must still trade referrals for sensitivity in the same direction as on HAM
+    assert (_padr["deployed"]["dirichlet_plus_age_rule"]["escalation_sens"]
+            > _padr["deployed"]["dirichlet"]["escalation_sens"]), \
+        "the frozen rule no longer raises PAD escalation sensitivity -- Sec. IV-J is wrong"
 
-# "the ensemble is worse than its own best member" is the paper's cross-domain claim
-_members = [i for i in _pad.index if i.startswith("pad_member_")]
-assert _pad.loc["pad_ensemble_softvote", "macro_f1"] < _pad.loc[_members, "macro_f1"].max(), \
-    "the PAD soft-vote no longer trails its best member -- Sec. IV-J overstates"
+    # "the ensemble is worse than its own best member" is the paper's cross-domain claim
+    _members = [i for i in _pad.index if i.startswith("pad_member_")]
+    assert _pad.loc["pad_ensemble_softvote", "macro_f1"] < _pad.loc[_members, "macro_f1"].max(), \
+        "the PAD soft-vote no longer trails its best member -- Sec. IV-J overstates"
 
-_fitz = _csv(_X + "fitzpatrick_slice.csv")
-_fitz = _fitz[_fitz["group"] != "ALL"].set_index("group")
-for _g in ("I", "II", "III", "IV"):
-    present(f"fitzpatrick sens {_g}", _f(_fitz.loc[_g, "escalation_sensitivity"], 3),
+    _fitz = _csv(_X + "fitzpatrick_slice.csv")
+    _fitz = _fitz[_fitz["group"] != "ALL"].set_index("group")
+    for _g in ("I", "II", "III", "IV"):
+        present(f"fitzpatrick sens {_g}", _f(_fitz.loc[_g, "escalation_sensitivity"], 3),
+                _X + "fitzpatrick_slice.csv")
+        present(f"fitzpatrick n {_g}", str(int(_fitz.loc[_g, "n"])), _X + "fitzpatrick_slice.csv")
+    present("fitzpatrick unknown sens", _f(_fitz.loc["unknown", "escalation_sensitivity"], 3),
             _X + "fitzpatrick_slice.csv")
-    present(f"fitzpatrick n {_g}", str(int(_fitz.loc[_g, "n"])), _X + "fitzpatrick_slice.csv")
-present("fitzpatrick unknown sens", _f(_fitz.loc["unknown", "escalation_sensitivity"], 3),
-        _X + "fitzpatrick_slice.csv")
-present("fitzpatrick unknown n", str(int(_fitz.loc["unknown", "n"])), _X + "fitzpatrick_slice.csv")
-present("fitzpatrick pooled tpr gap", _f(_json(_X + "fitzpatrick_gaps.json")["equalized_odds_tpr_gap"], 3),
-        _X + "fitzpatrick_gaps.json")
-_iiv = _fitz.loc[["I", "II", "III", "IV"], "escalation_sensitivity"]
-present("fitzpatrick I-IV spread", _f(_iiv.max() - _iiv.min(), 3),
-        _X + "fitzpatrick_slice.csv (derived)")
-# The manuscript says the I-IV pattern is NON-monotonic; that is the whole point of the
-# paragraph, so it is asserted rather than described.
-assert not (_iiv.is_monotonic_increasing or _iiv.is_monotonic_decreasing), \
-    "the Fitzpatrick I-IV spread is now monotonic -- Sec. IV-J's reading changes"
+    present("fitzpatrick unknown n", str(int(_fitz.loc["unknown", "n"])), _X + "fitzpatrick_slice.csv")
+    present("fitzpatrick pooled tpr gap", _f(_json(_X + "fitzpatrick_gaps.json")["equalized_odds_tpr_gap"], 3),
+            _X + "fitzpatrick_gaps.json")
+    _iiv = _fitz.loc[["I", "II", "III", "IV"], "escalation_sensitivity"]
+    present("fitzpatrick I-IV spread", _f(_iiv.max() - _iiv.min(), 3),
+            _X + "fitzpatrick_slice.csv (derived)")
+    # The manuscript says the I-IV pattern is NON-monotonic; that is the whole point of the
+    # paragraph, so it is asserted rather than described.
+    assert not (_iiv.is_monotonic_increasing or _iiv.is_monotonic_decreasing), \
+        "the Fitzpatrick I-IV spread is now monotonic -- Sec. IV-J's reading changes"
 
-_mah = _json(_X + "mahalanobis_shift.json")
-present("mahalanobis auroc", _f(_mah["auroc_id_vs_shift"], 3), _X + "mahalanobis_shift.json")
-present("mahalanobis id median", "%d" % round(_mah["median_score_id_val"]),
-        _X + "mahalanobis_shift.json")
-present("mahalanobis shift median",
-        "{:,}".format(round(_mah["median_score_shift_pad"])).replace(",", "{,}"),
-        _X + "mahalanobis_shift.json")
-present("mahalanobis separation", "%d" % round(_mah["separation_ratio_median"]),
-        _X + "mahalanobis_shift.json")
+    _mah = _json(_X + "mahalanobis_shift.json")
+    present("mahalanobis auroc", _f(_mah["auroc_id_vs_shift"], 3), _X + "mahalanobis_shift.json")
+    present("mahalanobis id median", "%d" % round(_mah["median_score_id_val"]),
+            _X + "mahalanobis_shift.json")
+    present("mahalanobis shift median",
+            "{:,}".format(round(_mah["median_score_shift_pad"])).replace(",", "{,}"),
+            _X + "mahalanobis_shift.json")
+    present("mahalanobis separation", "%d" % round(_mah["separation_ratio_median"]),
+            _X + "mahalanobis_shift.json")
 
 # --- OOF-vs-val diagnostics quoted in Methods and Sec. IV-E --------------------------------
 _ovv = _csv("results/oof_vs_val_comparison.csv")
@@ -629,20 +761,29 @@ for _e in _receipt["executions"]:
         "the test split was re-read with a stated reason -- the manuscript claims one pass"
 
 # --- CLAIM 2024 checklist, and the supplementary that renders it ---------------------------
-# The manuscript quotes the checklist outcome, so the checklist is the artifact and the
-# manuscript is the claim -- exactly the direction hard rule 4 wants.
-_claim = resolve("results/CLAIM_checklist.md").read_text(encoding="utf-8")
-_counts = dict(re.findall(r"^\| (Met|Partial|Not met|N/A) \| (\d+) \|$", _claim, flags=re.M))
-claim("CLAIM items met", 33, int(_counts["Met"]))
-claim("CLAIM items partial", 7, int(_counts["Partial"]))
-claim("CLAIM items not met", 2, int(_counts["Not met"]))
-claim("CLAIM items N/A", 2, int(_counts["N/A"]))
-claim("CLAIM total", 44, sum(int(v) for v in _counts.values()))
-claim("CLAIM rows present", 44, len(re.findall(r"^\| \d+ \|", _claim, flags=re.M)))
-quoted("$33$ items met, $7$ partial, $2$ not")
-# The supplement is generated from that Markdown; if it is missing the bundle ships without it.
-assert resolve("paper/supplementary.tex").is_file(), \
-    "paper/supplementary.tex is missing -- run research.ablation.build_supplementary"
+# The edited manuscript drops the CLAIM/TRIPOD checklist appendices altogether.
+if EDITED:
+    for _q in ("items met", "items partial", "items not met", "items N/A", "total",
+               "rows present"):
+        skip(f"CLAIM {_q}", "CLAIM/TRIPOD checklist appendices dropped")
+    skip("CLAIM summary sentence quoted", "CLAIM/TRIPOD checklist appendices dropped")
+    skip("paper/supplementary.tex existence",
+         "the edited manuscript's supplement, if any, is that session's own concern")
+else:
+    # The manuscript quotes the checklist outcome, so the checklist is the artifact and the
+    # manuscript is the claim -- exactly the direction hard rule 4 wants.
+    _claim = resolve("results/CLAIM_checklist.md").read_text(encoding="utf-8")
+    _counts = dict(re.findall(r"^\| (Met|Partial|Not met|N/A) \| (\d+) \|$", _claim, flags=re.M))
+    claim("CLAIM items met", 33, int(_counts["Met"]))
+    claim("CLAIM items partial", 7, int(_counts["Partial"]))
+    claim("CLAIM items not met", 2, int(_counts["Not met"]))
+    claim("CLAIM items N/A", 2, int(_counts["N/A"]))
+    claim("CLAIM total", 44, sum(int(v) for v in _counts.values()))
+    claim("CLAIM rows present", 44, len(re.findall(r"^\| \d+ \|", _claim, flags=re.M)))
+    quoted("$33$ items met, $7$ partial, $2$ not")
+    # The supplement is generated from that Markdown; if it is missing the bundle ships without it.
+    assert resolve("paper/supplementary.tex").is_file(), \
+        "paper/supplementary.tex is missing -- run research.ablation.build_supplementary"
 
 
 # --- S16: the three-centre external battery (E1) ----------------------------------------
@@ -724,73 +865,100 @@ assert _u4020["delta_nb"] < 0, "the under-40 curve no longer turns negative by p
 assert _E6["test_read"] is False, "the decision-curve report now declares a test read"
 
 # --- S16: prior-shift decomposition on PAD (E2) -----------------------------------------
-_E2 = _json("results/external/pad_prior_decoupling_report.json")
-_variants = {v["variant"]: v for v in _E2["results"]}
-_raw = _variants["Raw Ensemble (Soft-Vote)"]
-_oracle = _variants["Oracle Prior Correction"]
-_em = _variants["Deployable EM Prior (Saerens et al.)"]
-present("E2 oracle macro_f1", _f(_oracle["macro_f1"]), "pad_prior_decoupling_report.json")
-present("E2 EM macro_f1", _f(_em["macro_f1"]), "pad_prior_decoupling_report.json")
-present("E2 EM iterations", str(int(_E2["em_iterations"])), "pad_prior_decoupling_report.json")
-present("E2 EM df prior", _f(_E2["em_estimated_prior_pi_t"]["df"]),
-        "pad_prior_decoupling_report.json")
-present("E2 oracle bcc prior", _f(_E2["oracle_target_prior_pi_t"]["bcc"]),
-        "pad_prior_decoupling_report.json")
-present("E2 source nv prior", _f(_E2["implicit_source_prior_pi_s"]["nv"]),
-        "pad_prior_decoupling_report.json")
-assert _oracle["macro_f1"] > _raw["macro_f1"], \
-    "the oracle prior no longer beats raw -- the prior-shift half of the decomposition is void"
-assert _em["macro_f1"] < _raw["macro_f1"], \
-    "label-free EM no longer hurts -- Sec. IV-J reports it as a negative result"
-_e2c = _E2["confirmatory"]
-assert _e2c["only_raw_correct"] > _e2c["only_em_correct"], \
-    "the E2 confirmatory member is no longer significant in the wrong direction"
-present("E2 McNemar chi2", "%.2f" % _e2c["mcnemar_statistic"], "pad_prior_decoupling_report.json")
-present("E2 only-raw-correct", str(int(_e2c["only_raw_correct"])),
-        "pad_prior_decoupling_report.json")
-present("E2 only-EM-correct", str(int(_e2c["only_em_correct"])),
-        "pad_prior_decoupling_report.json")
+# E2 is a PAD-only workstream (prior-shift decoupling has no meaning outside PAD's inverted
+# class prior); the edited manuscript drops it along with the rest of the PAD track.
+if EDITED:
+    for _q in ("oracle macro_f1", "EM macro_f1", "EM iterations", "EM df prior",
+               "oracle bcc prior", "source nv prior", "McNemar chi2", "only-raw-correct",
+               "only-EM-correct"):
+        skip(f"E2 {_q}", "PAD-UFES-20 smartphone track dropped (E2 is PAD-only)")
+    skip("E2 directional checks (oracle>raw, EM<raw, confirmatory direction)",
+         "PAD-UFES-20 smartphone track dropped (E2 is PAD-only)")
+else:
+    _E2 = _json("results/external/pad_prior_decoupling_report.json")
+    _variants = {v["variant"]: v for v in _E2["results"]}
+    _raw = _variants["Raw Ensemble (Soft-Vote)"]
+    _oracle = _variants["Oracle Prior Correction"]
+    _em = _variants["Deployable EM Prior (Saerens et al.)"]
+    present("E2 oracle macro_f1", _f(_oracle["macro_f1"]), "pad_prior_decoupling_report.json")
+    present("E2 EM macro_f1", _f(_em["macro_f1"]), "pad_prior_decoupling_report.json")
+    present("E2 EM iterations", str(int(_E2["em_iterations"])), "pad_prior_decoupling_report.json")
+    present("E2 EM df prior", _f(_E2["em_estimated_prior_pi_t"]["df"]),
+            "pad_prior_decoupling_report.json")
+    present("E2 oracle bcc prior", _f(_E2["oracle_target_prior_pi_t"]["bcc"]),
+            "pad_prior_decoupling_report.json")
+    present("E2 source nv prior", _f(_E2["implicit_source_prior_pi_s"]["nv"]),
+            "pad_prior_decoupling_report.json")
+    assert _oracle["macro_f1"] > _raw["macro_f1"], \
+        "the oracle prior no longer beats raw -- the prior-shift half of the decomposition is void"
+    assert _em["macro_f1"] < _raw["macro_f1"], \
+        "label-free EM no longer hurts -- Sec. IV-J reports it as a negative result"
+    _e2c = _E2["confirmatory"]
+    assert _e2c["only_raw_correct"] > _e2c["only_em_correct"], \
+        "the E2 confirmatory member is no longer significant in the wrong direction"
+    present("E2 McNemar chi2", "%.2f" % _e2c["mcnemar_statistic"], "pad_prior_decoupling_report.json")
+    present("E2 only-raw-correct", str(int(_e2c["only_raw_correct"])),
+            "pad_prior_decoupling_report.json")
+    present("E2 only-EM-correct", str(int(_e2c["only_em_correct"])),
+            "pad_prior_decoupling_report.json")
 
 # --- S16: triage and the safety nets under shift (E3, E4, E5) ---------------------------
+# E3's HAM row survives in the edited paper (the row-filtered triage panel keeps HAM/BCN/MSKCC);
+# only its PAD row and the PAD-vs-HAM comparison are dropped. E4 (shift = PAD) and E5
+# (Fitzpatrick, PAD-only) are PAD end to end and drop wholesale.
 _E3 = {r["cohort"]: r for r in _json("results/external/clinical_triage_report.json")}
 _ham_cal = _E3["HAM10000 OOF (Calibrated Ensemble, N=6,981)"]
-_pad_cal = _E3["PAD-UFES-20 (Calibrated Ensemble)"]
 present("E3 HAM NNB", "%.1f" % _ham_cal["nnb_pi_03"], "clinical_triage_report.json")
-present("E3 PAD NNB", "%.1f" % _pad_cal["nnb_pi_03"], "clinical_triage_report.json")
 present("E3 HAM missed T1", str(int(_ham_cal["missed_tier1_as_tier3"])),
         "clinical_triage_report.json")
-present("E3 PAD point-FRR", _f(_pad_cal["point_frr"]), "clinical_triage_report.json")
-assert _pad_cal["nnb_pi_03"] > _ham_cal["nnb_pi_03"], \
-    "PAD no longer costs more biopsies per malignancy than HAM"
+if EDITED:
+    skip("E3 PAD NNB", "PAD-UFES-20 smartphone track dropped")
+    skip("E3 PAD point-FRR", "PAD-UFES-20 smartphone track dropped")
+    skip("E3 PAD-costs-more-than-HAM (directional)", "PAD-UFES-20 smartphone track dropped")
+    for _label in ("ID", "shift"):
+        for _q in ("set size", "singleton", "serious coverage"):
+            skip(f"E4 APS {_label} {_q}", "PAD-UFES-20 smartphone track dropped (E4 shift cohort is PAD)")
+    skip("E4 widening/degradation-under-shift (directional)",
+         "PAD-UFES-20 smartphone track dropped (E4 shift cohort is PAD)")
+    skip("E5 tier-1 sens by Fitzpatrick group", "PAD-UFES-20 smartphone track dropped (E5 is PAD-only)")
+    skip("E5 I-IV spread", "PAD-UFES-20 smartphone track dropped (E5 is PAD-only)")
+    skip("E5 non-monotonicity / unlabelled-stratum checks",
+         "PAD-UFES-20 smartphone track dropped (E5 is PAD-only)")
+else:
+    _pad_cal = _E3["PAD-UFES-20 (Calibrated Ensemble)"]
+    present("E3 PAD NNB", "%.1f" % _pad_cal["nnb_pi_03"], "clinical_triage_report.json")
+    present("E3 PAD point-FRR", _f(_pad_cal["point_frr"]), "clinical_triage_report.json")
+    assert _pad_cal["nnb_pi_03"] > _ham_cal["nnb_pi_03"], \
+        "PAD no longer costs more biopsies per malignancy than HAM"
 
-_E4 = _json("results/external/conformal_shift_audit.json")
-_aps = {r["cohort"]: r for r in _E4["conformal_audit"]
-        if r["method"] == "APS" and r["mondrian"] and abs(r["alpha"] - 0.05) < 1e-9}
-_id, _shift = _aps["HAM OOF tuning half (L0: ID)"], _aps["PAD-UFES-20 (L2: Shift)"]
-for _label, _rec in (("ID", _id), ("shift", _shift)):
-    present(f"E4 APS {_label} set size", "%.2f" % _rec["mean_set_size"],
-            "conformal_shift_audit.json")
-    present(f"E4 APS {_label} singleton", _f(_rec["singleton_rate"], 3),
-            "conformal_shift_audit.json")
-    present(f"E4 APS {_label} serious coverage", _f(_rec["serious_coverage"], 3),
-            "conformal_shift_audit.json")
-assert _shift["mean_set_size"] > _id["mean_set_size"], \
-    "conformal sets no longer widen under shift -- the safety-net argument in Sec. IV-J is void"
-assert _shift["serious_coverage"] < _id["serious_coverage"], \
-    "serious-class coverage no longer degrades under shift -- Sec. V overstates the caveat"
+    _E4 = _json("results/external/conformal_shift_audit.json")
+    _aps = {r["cohort"]: r for r in _E4["conformal_audit"]
+            if r["method"] == "APS" and r["mondrian"] and abs(r["alpha"] - 0.05) < 1e-9}
+    _id, _shift = _aps["HAM OOF tuning half (L0: ID)"], _aps["PAD-UFES-20 (L2: Shift)"]
+    for _label, _rec in (("ID", _id), ("shift", _shift)):
+        present(f"E4 APS {_label} set size", "%.2f" % _rec["mean_set_size"],
+                "conformal_shift_audit.json")
+        present(f"E4 APS {_label} singleton", _f(_rec["singleton_rate"], 3),
+                "conformal_shift_audit.json")
+        present(f"E4 APS {_label} serious coverage", _f(_rec["serious_coverage"], 3),
+                "conformal_shift_audit.json")
+    assert _shift["mean_set_size"] > _id["mean_set_size"], \
+        "conformal sets no longer widen under shift -- the safety-net argument in Sec. IV-J is void"
+    assert _shift["serious_coverage"] < _id["serious_coverage"], \
+        "serious-class coverage no longer degrades under shift -- Sec. V overstates the caveat"
 
-_E5 = [r for r in _json("results/external/fitzpatrick_slices.json")
-       if r["powered"] and int(r["n_tier1"]) > 0]
-_sens5 = [r["tier1_sensitivity"] for r in _E5]
-for _rec in _E5:
-    present(f"E5 tier-1 sens {_rec['group']}", _f(_rec["tier1_sensitivity"]),
-            "fitzpatrick_slices.json")
-present("E5 I-IV spread", _f(max(_sens5) - min(_sens5)), "fitzpatrick_slices.json")
-assert _sens5 != sorted(_sens5) and _sens5 != sorted(_sens5, reverse=True), \
-    "Fitzpatrick I-IV Tier-1 sensitivity is now monotonic -- the fairness paragraph is wrong"
-assert all(int(r["n_tier1"]) == 0 for r in _json("results/external/fitzpatrick_slices.json")
-           if r["group"] == "Unknown"), \
-    "the unlabelled stratum now holds Tier-1 lesions -- its rates are no longer undefined"
+    _E5 = [r for r in _json("results/external/fitzpatrick_slices.json")
+           if r["powered"] and int(r["n_tier1"]) > 0]
+    _sens5 = [r["tier1_sensitivity"] for r in _E5]
+    for _rec in _E5:
+        present(f"E5 tier-1 sens {_rec['group']}", _f(_rec["tier1_sensitivity"]),
+                "fitzpatrick_slices.json")
+    present("E5 I-IV spread", _f(max(_sens5) - min(_sens5)), "fitzpatrick_slices.json")
+    assert _sens5 != sorted(_sens5) and _sens5 != sorted(_sens5, reverse=True), \
+        "Fitzpatrick I-IV Tier-1 sensitivity is now monotonic -- the fairness paragraph is wrong"
+    assert all(int(r["n_tier1"]) == 0 for r in _json("results/external/fitzpatrick_slices.json")
+               if r["group"] == "Unknown"), \
+        "the unlabelled stratum now holds Tier-1 lesions -- its rates are no longer undefined"
 
 
 # --- S19 regression guards: defects that no numeric comparison can catch -----------------------
@@ -863,11 +1031,46 @@ if "from research.external import frozen_params" not in _S8B_CODE:
 absent("conformal caption overstatement", "while under-covering the escalating classes",
        "akiec is at target under marginal calibration, so only two of the three are under-covered")
 
+# 6. (manuscript_edited.tex only) Quoting the all-ages age-rule sensitivity 0.831 anywhere in
+#    the abstract without the under-40 figure 0.238 in the *same sentence* is the exact defect
+#    S19 had to fix once already (guard 1, above, only checks the two appear somewhere in the
+#    same abstract -- this is the stricter version the task asked for, scoped to the edited
+#    paper specifically rather than to every non-default target).
+if TARGET.endswith("manuscript_edited.tex"):
+    _sentences = re.split(r"(?<=[.!?])\s+", " ".join(_ABSTRACT.split()))
+    _with_0831 = [s for s in _sentences if "0.831" in s]
+    checks += 1
+    if not _with_0831:
+        failures.append("manuscript_edited.tex abstract: 0.831 not found at all -- if the "
+                        "all-ages age-rule sensitivity is no longer quoted this guard is moot "
+                        "and should be removed, not left silently passing")
+    else:
+        checks += 1
+        if any("0.238" not in s for s in _with_0831):
+            failures.append("manuscript_edited.tex abstract: 0.831 appears in a sentence "
+                            "without the under-40 figure 0.238 alongside it")
+        checks += 1
+        if len(_with_0831) > 1:
+            failures.append("manuscript_edited.tex abstract: 0.831 appears outside the "
+                            "sentence that also carries 0.238 -- quote it once, with the caveat")
+
 
 # --- Bibliography grew as the Related Work rewrite requires ------------------------------------
-claim("bibliography size", 49, SRC.count("\\bibitem{"))
+if EDITED:
+    skip("bibliography size", "the edited manuscript drops whole sections and cites fewer "
+                              "works; its own reference count is not audited here")
+else:
+    claim("bibliography size", 49, SRC.count("\\bibitem{"))
 
-print(f"{checks} checks run")
+n_passed = checks - len(failures) - len(skipped)
+print(f"target: {TARGET}")
+print(f"{checks} checks run -- {n_passed} passed, {len(skipped)} skipped, {len(failures)} failed")
+
+if skipped:
+    print(f"\n{len(skipped)} SKIPPED (content deliberately dropped from this target):")
+    for s in skipped:
+        print("  -", s)
+
 if failures:
     print(f"\n{len(failures)} FAILURES:")
     for f in failures:

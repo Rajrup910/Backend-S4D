@@ -7,60 +7,94 @@ difference between that script's 83 checks and the ~100+ the plan calls for.
 """
 # original note:
 # Structural validation of paper/manuscript.tex -- no LaTeX toolchain on this machine.
+import argparse
 import io
 import os
 import re
 import sys
 
 ROOT = "paper"
-P = os.path.join(ROOT, "manuscript.tex")
-s = io.open(P, encoding="utf-8").read()
 
-# splice \input files so labels/refs across them resolve
-inputs = re.findall(r"\\input\{([^}]+)\}", s)
-full = s
-for rel in inputs:
-    path = os.path.join(ROOT, rel if rel.endswith(".tex") else rel + ".tex")
-    if not os.path.isfile(path):
-        print("MISSING \\input: %s" % path)
-        continue
-    full += "\n" + io.open(path, encoding="utf-8").read()
+_arg_parser = argparse.ArgumentParser(add_help=True)
+_arg_parser.add_argument("--manuscript", default="manuscript.tex",
+                         help="manuscript .tex under paper/ to validate (default: %(default)s)")
+_ARGS = _arg_parser.parse_args()
+
+P = os.path.join(ROOT, _ARGS.manuscript)
+s = io.open(P, encoding="utf-8").read()
 
 problems = []
 
-# ---- citations
-bibitems = set(re.findall(r"\\bibitem\{([^}]+)\}", full))
-cited = set()
-for group in re.findall(r"\\cite\{([^}]+)\}", full):
-    for k in group.split(","):
-        cited.add(k.strip())
-undefined = sorted(cited - bibitems)
-unused = sorted(bibitems - cited)
-if undefined:
-    problems.append("undefined citations: %s" % undefined)
-if unused:
-    problems.append("uncited bibitems: %s" % unused)
 
-# ---- labels / refs
-labels = re.findall(r"\\label\{([^}]+)\}", full)
-dupes = sorted({l for l in labels if labels.count(l) > 1})
-if dupes:
-    problems.append("duplicate labels: %s" % dupes)
-refs = set()
-for group in re.findall(r"\\(?:ref|eqref)\{([^}]+)\}", full):
-    refs.add(group.strip())
-dangling = sorted(refs - set(labels))
-if dangling:
-    problems.append("dangling refs: %s" % dangling)
-unreferenced = sorted(set(labels) - refs)
-if unreferenced:
-    problems.append("labels never referenced: %s" % unreferenced)
+def expand_inputs(text, root):
+    """Splice every \\input{...} into `text`, recursively, so labels/refs defined several
+    \\input levels deep (e.g. manuscript -> appendix_checklists -> appendix_table_tripod_ai)
+    still resolve. A one-level splice missed exactly that case: it reported zero dangling
+    refs while the compiled PDF showed five "??", because the file holding the dangling
+    \\ref{} was never spliced in to begin with.
+    """
+    full = text
+    seen = set()
+    changed = True
+    while changed:
+        changed = False
+        for rel in re.findall(r"\\input\{([^}]+)\}", full):
+            if rel in seen:
+                continue
+            seen.add(rel)
+            changed = True
+            path = os.path.join(root, rel if rel.endswith(".tex") else rel + ".tex")
+            if not os.path.isfile(path):
+                problems.append("MISSING \\input: %s" % path)
+                continue
+            full += "\n" + io.open(path, encoding="utf-8").read()
+    return full, seen
 
-# ---- graphics
-gpaths = re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", full)
-for g in gpaths:
-    if not os.path.isfile(os.path.join(ROOT, "figures", g)):
-        problems.append("missing graphic: figures/%s" % g)
+
+full, inputs = expand_inputs(s, ROOT)
+
+def check_cites_labels_refs_graphics(name, full):
+    """Citations, labels, refs and graphics are each scoped to one compiled document, so this
+    runs once per document (manuscript.tex's own tree, then supplementary.tex's own tree) over
+    its recursively-expanded text.
+    """
+    bibitems = set(re.findall(r"\\bibitem\{([^}]+)\}", full))
+    cited = set()
+    for group in re.findall(r"\\cite\{([^}]+)\}", full):
+        for k in group.split(","):
+            cited.add(k.strip())
+    undefined = sorted(cited - bibitems)
+    unused = sorted(bibitems - cited)
+    if undefined:
+        problems.append("%s: undefined citations: %s" % (name, undefined))
+    if unused:
+        problems.append("%s: uncited bibitems: %s" % (name, unused))
+
+    labels = re.findall(r"\\label\{([^}]+)\}", full)
+    dupes = sorted({l for l in labels if labels.count(l) > 1})
+    if dupes:
+        problems.append("%s: duplicate labels: %s" % (name, dupes))
+    refs = set()
+    for group in re.findall(r"\\(?:ref|eqref)\{([^}]+)\}", full):
+        refs.add(group.strip())
+    dangling = sorted(refs - set(labels))
+    if dangling:
+        problems.append("%s: dangling refs: %s" % (name, dangling))
+    unreferenced = sorted(set(labels) - refs)
+    if unreferenced:
+        problems.append("%s: labels never referenced: %s" % (name, unreferenced))
+
+    gpaths = re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", full)
+    for g in gpaths:
+        if not os.path.isfile(os.path.join(ROOT, "figures", g)):
+            problems.append("%s: missing graphic: figures/%s" % (name, g))
+    return {"cited": cited, "bibitems": bibitems, "labels": labels,
+            "refs": refs, "gpaths": gpaths}
+
+
+manuscript_stats = check_cites_labels_refs_graphics("manuscript.tex", full)
+cited, bibitems = manuscript_stats["cited"], manuscript_stats["bibitems"]
+labels, refs, gpaths = manuscript_stats["labels"], manuscript_stats["refs"], manuscript_stats["gpaths"]
 
 # ---- environments
 opens = re.findall(r"\\begin\{([a-zA-Z*]+)\}", full)
@@ -161,8 +195,11 @@ for phrase in stale:
 # ---- supplementary document (generated from results/CLAIM_checklist.md)
 SUPP = os.path.join(ROOT, "supplementary.tex")
 supp_stats = ""
+full_supp = ""
 if os.path.isfile(SUPP):
     sup = io.open(SUPP, encoding="utf-8").read()
+    full_supp, _ = expand_inputs(sup, ROOT)
+    check_cites_labels_refs_graphics("supplementary.tex", full_supp)
 
     s_opens = re.findall(r"\\begin\{([a-zA-Z*]+)\}", sup)
     s_closes = re.findall(r"\\end\{([a-zA-Z*]+)\}", sup)
@@ -223,7 +260,7 @@ else:
 BUILD_INPUTS = {"figure4_risk_coverage.png", "figure6_abstention_tradeoff.png"}
 
 _used_tables, _used_figs = set(), set()
-for _doc in (s, sup if os.path.isfile(SUPP) else ""):
+for _doc in (full, full_supp):
     _body = re.sub(r"(?m)^%.*$", "", _doc)
     _used_tables |= {os.path.basename(m) for m in re.findall(r"\\input\{([^}]+)\}", _body)}
     _used_figs |= {os.path.basename(m) for m in

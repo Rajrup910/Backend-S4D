@@ -34,8 +34,28 @@ captions:
     skew -- the axis the dose-response hypothesis is actually about -- instead of three
     stacked sub-panels that make the ordering hard to read off.
 
+Session (tooling): a `--exclude-pad` mode renders a second, PAD-free copy of these tables into
+`paper/tables_edited/`, for the downsized `paper/manuscript_edited.tex` that drops the whole
+PAD-UFES-20 smartphone track. Three things had to be handled row- or panel-level rather than by
+skipping a file:
+
+  * The safety-nets table is ENTIRELY PAD (shift detection uses PAD as the shifted cohort;
+    Fitzpatrick is a PAD-only slice) -- under `--exclude-pad` it is not emitted at all, and
+    nothing in `paper/tables_edited/` references it.
+  * The validity battery's panel (B) (PAD prior decoupling, `panel_b_pad_prior`) is dropped
+    wholesale and the remaining panels re-letter: (A) dose-response, (B) triage, (C) decision
+    curve.
+  * Panel (C) triage (`panel_c_triage`) is filtered by row, not dropped by panel: it reads
+    `clinical_triage_report.json`'s `cohort` field and keeps every row whose cohort does not
+    start with "PAD-UFES-20". Today that source file's non-PAD rows are HAM10000 only; the
+    filter is written against the cohort label rather than a hardcoded HAM/PAD split so a
+    future update that adds more non-PAD cohorts to that report is picked up for free.
+  * `validity_caption()` quotes `pad_prior_decoupling_report.json` and describes panel (B) by
+    name -- both regenerated for the reduced panel set, not hand-edited.
+
 Usage:
     python -m research.external.render_composite_tables [--check]
+    python -m research.external.render_composite_tables --exclude-pad [--check]
 """
 
 from __future__ import annotations
@@ -54,6 +74,10 @@ EXTERNAL = "results/external"
 
 VALIDITY_TABLE = "paper/tables/external_table_validity_battery.tex"
 SAFETY_TABLE = "paper/tables/external_table_safety_nets.tex"
+
+#: --exclude-pad targets. The safety-nets table has no PAD-free counterpart at all (see
+#: module docstring), so it is simply absent from this map.
+VALIDITY_TABLE_EDITED = "paper/tables_edited/external_table_validity_battery.tex"
 
 #: Cohort keys in the E1 report, and how they are named in the paper.
 COHORT_LABEL = {
@@ -157,6 +181,11 @@ def _span(text: str, width: int) -> str:
     return r"\multicolumn{%d}{@{}l}{%s} \\" % (width, text)
 
 
+def _banner(text: str, width: int) -> str:
+    """A full-width section header that wraps within the table's linewidth."""
+    return r"\multicolumn{%d}{@{}p{\linewidth}@{}}{%s} \\" % (width, text)
+
+
 # ---------------------------------------------------------------------------------------
 # Table: external validity battery  (9 columns)
 # ---------------------------------------------------------------------------------------
@@ -170,9 +199,9 @@ def panel_a_dose_response() -> list[str]:
     by_cohort = {row["cohort"]: row for row in e1["dose_response"]["rows"]}
 
     lines = [
-        _span(r"\textbf{(A) Three-centre dose--response of the under-40 escalation failure "
-              r"(E1).} Centres ordered by ascending prior skew. No parameter is fitted on "
-              r"BCN-20000 or MSKCC.", VALIDITY_COLS),
+        _banner(r"\textbf{(A) Three-centre dose--response of the under-40 escalation failure "
+                r"(E1).} Centres ordered by ascending prior skew. No parameter is fitted on "
+                r"BCN-20000 or MSKCC.", VALIDITY_COLS),
         r"\addlinespace[0.2em]",
         r"Cohort & Skew & \multicolumn{3}{c}{Escalation-mass AUC by age band} & "
         r"\multicolumn{4}{c}{Under-40 escalation sensitivity} \\",
@@ -207,9 +236,9 @@ def panel_b_pad_prior() -> list[str]:
     e2 = _json("pad_prior_decoupling_report.json")
     lines = [
         r"\midrule",
-        _span(r"\textbf{(B) PAD-UFES-20 prior decoupling (E2).} All $N=2{,}106$ images, no "
-              r"weights retrained. \textsc{oracle} uses the true target prior and is a "
-              r"ceiling, not a deployable system.", VALIDITY_COLS),
+        _banner(r"\textbf{(B) PAD-UFES-20 prior decoupling (E2).} All $N=2{,}106$ images, no "
+                r"weights retrained. \textsc{oracle} uses the true target prior and is a "
+                r"ceiling, not a deployable system.", VALIDITY_COLS),
         r"\addlinespace[0.2em]",
         _row(["Variant", "Deployable", "Macro-F1", r"Bal.\ acc.", "Accuracy",
               r"Esc.\ sens.", r"Mel.\ recall", "Missed serious"], VALIDITY_COLS),
@@ -232,18 +261,33 @@ def panel_b_pad_prior() -> list[str]:
     return lines
 
 
-def panel_c_triage() -> list[str]:
-    """(C) E3: the same system read as a three-tier clinical action."""
+def _is_pad_cohort(cohort: str) -> bool:
+    return cohort.startswith("PAD-UFES-20")
+
+
+def panel_c_triage(panel_letter: str = "C", exclude_pad: bool = False) -> list[str]:
+    """(C) E3: the same system read as a three-tier clinical action.
+
+    Under `exclude_pad`, rows are filtered by cohort label rather than the panel being
+    dropped: `clinical_triage_report.json` mixes HAM10000 and PAD-UFES-20 cohorts in one flat
+    list, and only the PAD ones are out of scope for the edited manuscript.
+    """
     rows = _json("clinical_triage_report.json")
+    if exclude_pad:
+        rows = [r for r in rows if not _is_pad_cohort(r["cohort"])]
+        if not rows:
+            raise ValueError("panel_c_triage: excluding PAD leaves no rows to render -- "
+                             "clinical_triage_report.json may now be PAD-only")
     lines = [
         r"\midrule",
-        _span(r"\textbf{(C) Three-tier clinical actionability (E3).} Tier~1 urgent biopsy "
-              r"(\textsc{mel}, \textsc{bcc}, \textsc{scc}); Tier~2 consult (\textsc{akiec}); "
-              r"Tier~3 discharge.", VALIDITY_COLS),
+        _banner(r"\textbf{(%s) Three-tier clinical actionability (E3).} Tier~1 urgent biopsy "
+                r"(\textsc{mel}, \textsc{bcc}, \textsc{scc}); Tier~2 consult (\textsc{akiec}); "
+                r"Tier~3 discharge." % panel_letter, VALIDITY_COLS),
         r"\addlinespace[0.2em]",
         r"Cohort / configuration & Tier acc. & T1 sens. & T1 spec. & point-FRR & "
-        r"Missed T1 & \multicolumn{3}{c}{NNB at $\pi = 0.01/0.03/0.05$} \\",
-        r"\cmidrule(l{0.4em}){7-9}",
+        r"Missed T1 & \multicolumn{3}{c}{NNB at reference $\pi$} \\",
+        r"\cmidrule(lr){7-9}",
+        r" & & & & & & $\pi{=}0.01$ & $\pi{=}0.03$ & $\pi{=}0.05$ \\",
         r"\midrule",
     ]
     for row in rows:
@@ -261,7 +305,7 @@ def panel_c_triage() -> list[str]:
     return lines
 
 
-def panel_d_decision_curve() -> list[str]:
+def panel_d_decision_curve(panel_letter: str = "D") -> list[str]:
     """(D) E6: net benefit of the frozen rule against argmax and biopsy-all."""
     e6 = _json("decision_curve_report.json")
     anchor = e6["ham_test_anchor_from_s9"]
@@ -269,15 +313,21 @@ def panel_d_decision_curve() -> list[str]:
         ("All ages", e6["panels"]["HAM10000 OOF (N=6,981)"], anchor["ALL"]),
         (r"Age $<$40", e6["panels"][r"HAM10000 OOF, age $<$40"], anchor["<40"]),
     ]
+    header_d = " & ".join([
+        r"$p_t$", "Biopsy all", "Argmax", r"$\lambda$-rule",
+        "Risk model", r"$\Delta$", r"95\% CI",
+        r"\multicolumn{2}{c}{Test $\Delta^{\dagger}$}",
+    ]) + r" \\"
+
     lines = [
         r"\midrule",
-        _span(r"\textbf{(D) Decision-curve net benefit of the frozen age rule (E6).} "
-              r"$\mathrm{NB} = \mathrm{TP}/N - (\mathrm{FP}/N)\,p_t/(1-p_t)$; "
-              r"$\Delta$ is $\lambda$-rule minus argmax under a lesion-grouped paired "
-              r"bootstrap, bold where the interval excludes zero.", VALIDITY_COLS),
+        _banner(r"\textbf{(%s) Decision-curve net benefit of the frozen age rule (E6).} "
+                r"$\mathrm{NB} = \mathrm{TP}/N - (\mathrm{FP}/N)\,p_t/(1-p_t)$; "
+                r"$\Delta$ is $\lambda$-rule minus argmax under a lesion-grouped paired "
+                r"bootstrap, bold where the interval excludes zero." % panel_letter,
+                VALIDITY_COLS),
         r"\addlinespace[0.2em]",
-        _row([r"$p_t$", "Biopsy all", "Argmax", r"$\lambda$-rule", "Risk model",
-              r"$\Delta$", r"95\% CI", r"Test $\Delta^{\dagger}$"], VALIDITY_COLS),
+        header_d,
         r"\midrule",
     ]
     for title, panel, anchor_band in panels:
@@ -297,21 +347,28 @@ def panel_d_decision_curve() -> list[str]:
                 _f(point["net_benefit_risk_model"], 4),
                 (r"\textbf{%s}" % delta) if excludes_zero else delta,
                 f"[{_signed(point['ci_low'], 4)}, {_signed(point['ci_high'], 4)}]",
-                _signed(delta_test, 4),
+                r"\multicolumn{2}{c}{%s}" % _signed(delta_test, 4),
             ], VALIDITY_COLS))
     return lines
 
 
-def validity_caption() -> str:
-    """One caption carrying every note the four superseded tables kept in parbox blocks."""
+def validity_caption(exclude_pad: bool = False) -> str:
+    """One caption carrying every note the four superseded tables kept in parbox blocks.
+
+    Under `exclude_pad` panel (B) (PAD prior decoupling) is dropped and the remaining panels
+    re-letter to (A) dose-response, (B) triage, (C) decision curve; the sentence describing
+    panel (B)'s confirmatory member is regenerated away rather than deleted by hand, since it
+    quotes `pad_prior_decoupling_report.json` and would otherwise silently go stale.
+    """
     e1 = _json("age_rule_transfer_report.json")
-    e2 = _json("pad_prior_decoupling_report.json")
     conf = e1["confirmatory"][e1["confirmatory"]["primary_cohort"]]
-    e2c = e2["confirmatory"]
-    return (
-        r"External validity battery. All four panels score the deployed system unmodified "
-        r"-- uniform six-CNN soft-vote, 24-view TTA, frozen HAM10000-OOF Dirichlet map "
-        r"(\texttt{selective/results\_oof/fit\_state.json}) and frozen per-band $\lambda$ "
+    n_panels = "three" if exclude_pad else "four"
+    triage_letter, decision_letter = ("B", "C") if exclude_pad else ("C", "D")
+
+    text = (
+        f"External validity battery. All {n_panels} panels score the deployed system "
+        r"unmodified -- uniform six-CNN soft-vote, 24-view TTA, frozen HAM10000-OOF Dirichlet "
+        r"map (\texttt{selective/results\_oof/fit\_state.json}) and frozen per-band $\lambda$ "
         r"(" + ", ".join(r"%s: $%s$" % (label, e1["lambda_by_band"][band])
                          for band, label in ((r"<40", r"$<$40"), ("40-59", "40--59"),
                                              ("60+", "60+"))) + r") "
@@ -332,32 +389,46 @@ def validity_caption() -> str:
         r"one-sided by construction and certifies that cases were rescued, not that the "
         r"rule is net-beneficial --- that trade is the last two columns. MSKCC's label "
         r"space holds only \textsc{nv}, \textsc{mel} and \textsc{bkl}, so seven-class "
-        r"Macro-F1 is undefined there. Panel~(B) confirmatory member "
-        r"\texttt{E2\_em\_macro\_f1\_vs\_raw} is significant in the "
-        f"\\emph{{wrong}} direction ($\\chi^2 = {e2c['mcnemar_statistic']:.2f}$, "
-        f"$p = {_sci(e2c['p_value'])}$, "
-        f"{int(e2c['only_raw_correct'])} cases correct only without the correction against "
-        f"{int(e2c['only_em_correct'])} only with it). "
-        r"Panel~(C) point-FRR is the fraction of malignant Tier-1 lesions predicted Tier~3; "
-        r"NNB is the number needed to biopsy at reference prevalence $\pi$. "
-        r"$^{\dagger}$Panel~(D)'s test column is reconstructed from the frozen Session~9 "
-        r"artifacts (\texttt{results/session9/agerule\_test.csv}: TP, FP and $N$ only) and "
-        r"involves no new read of the test split."
+        r"Macro-F1 is undefined there. "
     )
+    if not exclude_pad:
+        e2 = _json("pad_prior_decoupling_report.json")
+        e2c = e2["confirmatory"]
+        text += (
+            r"Panel~(B) confirmatory member "
+            r"\texttt{E2\_em\_macro\_f1\_vs\_raw} is significant in the "
+            f"\\emph{{wrong}} direction ($\\chi^2 = {e2c['mcnemar_statistic']:.2f}$, "
+            f"$p = {_sci(e2c['p_value'])}$, "
+            f"{int(e2c['only_raw_correct'])} cases correct only without the correction against "
+            f"{int(e2c['only_em_correct'])} only with it). "
+        )
+    text += (
+        f"Panel~({triage_letter}) point-FRR is the fraction of malignant Tier-1 lesions "
+        r"predicted Tier~3; NNB is the number needed to biopsy at reference prevalence $\pi$. "
+        f"$^{{\\dagger}}$Panel~({decision_letter})'s test column is reconstructed from the "
+        r"frozen Session~9 artifacts (\texttt{results/session9/agerule\_test.csv}: TP, FP and "
+        r"$N$ only) and involves no new read of the test split."
+    )
+    return text
 
 
-def build_validity_table() -> str:
+def build_validity_table(exclude_pad: bool = False) -> str:
     body: list[str] = []
     body += panel_a_dose_response()
-    body += panel_b_pad_prior()
-    body += panel_c_triage()
-    body += panel_d_decision_curve()
+    triage_letter, decision_letter = ("B", "C") if exclude_pad else ("C", "D")
+    if not exclude_pad:
+        body += panel_b_pad_prior()
+    body += panel_c_triage(panel_letter=triage_letter, exclude_pad=exclude_pad)
+    body += panel_d_decision_curve(panel_letter=decision_letter)
     return "\n".join([
         GENERATED_BY.rstrip("\n"),
         r"\begin{table*}[t]",
         r"\centering",
-        r"\caption{%s}" % validity_caption(),
+        r"\caption{%s}" % validity_caption(exclude_pad=exclude_pad),
         r"\label{tab:external_battery}",
+        # The caption ends with the dagger-footnote sentence for the last panel; without a gap
+        # it and the table's \toprule can run together. \smallskip separates them.
+        r"\smallskip",
         r"\scriptsize",
         r"\setlength{\tabcolsep}{3.2pt}",
         r"\begin{tabular}{@{}l" + "c" * (VALIDITY_COLS - 1) + r"@{}}",
@@ -549,12 +620,20 @@ def main(argv: list[str] | None = None) -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--check", action="store_true",
                         help="render in memory and report drift without writing the files")
+    parser.add_argument("--exclude-pad", action="store_true",
+                        help="render the PAD-free variants into paper/tables_edited/ instead "
+                             "(no safety-nets table is emitted -- see module docstring)")
     args = parser.parse_args(argv)
 
-    outputs = {
-        VALIDITY_TABLE: (build_validity_table(), VALIDITY_COLS),
-        SAFETY_TABLE: (build_safety_table(), SAFETY_COLS),
-    }
+    if args.exclude_pad:
+        outputs = {
+            VALIDITY_TABLE_EDITED: (build_validity_table(exclude_pad=True), VALIDITY_COLS),
+        }
+    else:
+        outputs = {
+            VALIDITY_TABLE: (build_validity_table(), VALIDITY_COLS),
+            SAFETY_TABLE: (build_safety_table(), SAFETY_COLS),
+        }
 
     problems: list[str] = []
     for path, (tex, width) in outputs.items():
