@@ -253,3 +253,6 @@ results/**/*_STATUS.md
 results/v2/S3[4-9]_*.md
 results/v2/stale_artifacts.md
 results/v2/synthetic_validation.md
+
+# Narrative record kept locally only (CLAUDE.md standing rule), not published
+CHANGELOG.md
