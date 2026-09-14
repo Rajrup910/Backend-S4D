@@ -103,6 +103,12 @@ This repository hosts a publication-grade research framework and safety audit pi
                                               └──────────────────────────────────────────────┘
 ```
 
+> **This pipeline is unchanged by Phase 6.** The falsification programme tested four candidate
+> modifications — multi-archive training, head refitting, fold-bagging and adversarial
+> age-invariance — and **none was adopted**, because none cleared its pre-registered gate. The
+> deployed system remains the 6-CNN soft-vote with TTA, Dirichlet calibration, bipartite conformal
+> sets and the frozen $\lambda$ rule.
+
 ---
 
 ## Empirical Benchmark Results
@@ -170,6 +176,78 @@ Evaluating the frozen HAM-trained ensemble and age-conditional decision rule acr
 | **PAD-UFES-20**| Clinical Smartphone Photography | 2,298 | 0.000 (Mel. Recall) | 0.625 (Warm-Start) | +0.625 | Modality collapse; OOD detected |
 
 > **Takeaway**: Class-conditional Mahalanobis distance separates dermoscopy from smartphone clinical photography with **AUROC 0.913**, providing a reliable tripwire against unintended modality shift.
+
+> **Note on scope.** In Sections 1–4 above, BCN20000 and MSKCC serve as **frozen external
+> evaluation** cohorts only. Section 5 promotes them to **training archives** — a distinct
+> capability introduced by the multi-archive corpus below.
+
+---
+
+### 5. Multi-Archive Training Corpus (`ml/data/manifest_v3.csv`)
+
+A unified **24,900-image / 13,809-lesion** corpus spanning three dermoscopy archives, built for the
+Phase 6 experiments. Image IDs and lesion IDs were checked for collisions across archives rather
+than assumed disjoint (HAM images also live in the ISIC archive), and MSKCC's 2,084 null lesion IDs
+become **singleton** clusters rather than one shared "unknown" group.
+
+| Archive | Images | Role before Phase 6 | Role in Phase 6 |
+|---|--:|---|---|
+| **HAM10000** | 10,015 | train / val / test | train / val / test (inherited byte-identically) |
+| **BCN20000** | 11,982 | external evaluation | **training archive** + held-out |
+| **MSKCC** | 2,903 | external evaluation | **training archive** + held-out |
+| **Total** | **24,900** | — | 13,809 lesion clusters |
+
+Four training conditions isolate *sample size* from *domain breadth*. **Every condition validates
+on the same fixed 1,532-image HAM val set**, so no condition selects against a different target and
+the differences are attributable to training composition alone. No external image ever enters val
+or test.
+
+| Condition | Train images | Added | HAM-val Macro-F1 [95% CI] | ECE raw → Dirichlet | External Macro-F1 |
+|---|--:|---|:---:|:---:|:---:|
+| `ham_only` *(control)* | 6,981 | — | 0.7509 [0.699, 0.791] | 0.1178 → 0.0626 | 0.3564 |
+| `ham_mskcc` | 9,010 | +2,029 MSKCC | **0.7869** [0.736, 0.826] | 0.1072 → **0.0392** | 0.3958 |
+| `ham_bcn` | 15,396 | +8,415 BCN | 0.7614 [0.708, 0.804] | **0.0647** → 0.0420 | 0.5517 |
+| `all_three` | 17,425 | +both | 0.7421 [0.685, 0.784] | 0.0796 → 0.0545 | **0.5754** |
+
+> **Reading this table correctly.** `ham_mskcc` is the *nominal* winner, but it does **not** survive
+> Holm correction over the declared family of three ($0.0220 \times 3 = 0.0660$), and it was not the
+> pre-registered arm. `all_three`'s strong external column is **in-domain fit**, not robustness —
+> the external holdout is 80% BCN. **No condition is certified better than the control**, which is
+> why the safety stack was refit for all four rather than for a chosen winner.
+
+```
+                    PHASE 6 EXPERIMENTAL DESIGN — what each arm tests
+  ┌──────────────────────────────────────────────────────────────────────────────────┐
+  │  HAM10000 (10,015)      BCN20000 (11,982)         MSKCC (2,903)                   │
+  └───────────┬──────────────────────┬──────────────────────┬────────────────────────┘
+              │                      │                      │
+              ▼                      ▼                      ▼
+      ┌───────────────────────────────────────────────────────────┐
+      │   manifest_v3.csv — 24,900 images / 13,809 lesion clusters │
+      │   collision-checked · lesion-grouped · val+test frozen     │
+      └───────────────────────────┬───────────────────────────────┘
+                                  │
+        ┌─────────────┬───────────┴───────────┬─────────────┐
+        ▼             ▼                       ▼             ▼
+   ┌─────────┐  ┌───────────┐          ┌───────────┐  ┌───────────┐
+   │ham_only │  │ham_mskcc  │          │ ham_bcn   │  │all_three  │   PHASE C
+   │ control │  │+sample sz │          │+rare class│  │ deployable│   (H4, H5)
+   └────┬────┘  └─────┬─────┘          └─────┬─────┘  └─────┬─────┘
+        └─────────────┴──────────┬───────────┴──────────────┘
+                                 ▼
+                 ┌───────────────────────────────┐
+                 │  SAME fixed HAM val (1,532)   │  ← gate: +0.03 Macro-F1, CI excl. 0
+                 │  + external holdout (2,232)   │  ← split by cohort: in-domain vs zero-shot
+                 └───────────────┬───────────────┘
+                                 │  gate NOT met
+                                 ▼
+                 ┌───────────────────────────────┐
+                 │  PHASE D — age-invariance     │   H6: remove the certified
+                 │  gradient reversal on z(768)  │       entanglement and re-measure
+                 └───────────────┬───────────────┘
+                                 ▼
+                    under-40 ranking AUC 0.8249 → 0.7201   ✗ worse
+```
 
 ---
 
