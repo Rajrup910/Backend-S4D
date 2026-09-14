@@ -1,0 +1,6 @@
+probe,metric,chance,value,ci_lo,ci_hi,n,encodes,reading,entangled,k,within_modality_only,exterior_carries_signal
+age_band,macro_ovr_auc,0.5,0.6921880515145523,0.6637992663004054,0.7186841726439731,6981.0,True,the representation encodes age band,,,,
+age_residual,class_stratified_spearman,0.0,0.12255836600448483,0.09239990172035523,0.151287391229608,,,"escalation score tracks predicted age at fixed true class -- a demographic shortcut at the representation, which no band-constant logit offset can repair (S36 verify_losses check 7)",True,,,
+manifold,knn_purity_k10_lesion_excluded,,0.8083082652915056,,,,,,,10.0,,
+archive,macro_ovr_auc,0.5,1.0,1.0,1.0,9087.0,,"separable, but the set spans imaging modalities -- this measures modality, not within-modality acquisition entanglement",True,,False,
+lesion_vs_context,escalation_auc,0.5,,,,,,escalation signal is available outside the lesion mask,,,,True

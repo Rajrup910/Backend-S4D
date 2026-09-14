@@ -1,0 +1,391 @@
+{
+  "session": "S42",
+  "phase": "B2",
+  "generated_at": "2026-09-13T20:52:05.440029+00:00",
+  "n_boot": 2000,
+  "seed": 42,
+  "probes": [
+    {
+      "probe": "age_band",
+      "metric": "macro_ovr_auc",
+      "chance": 0.5,
+      "value": 0.6921880515145523,
+      "ci_lo": 0.6637992663004054,
+      "ci_hi": 0.7186841726439731,
+      "n": 6981,
+      "classes": [
+        "40-59",
+        "60+",
+        "<40",
+        "unknown"
+      ],
+      "encodes": true,
+      "reading": "the representation encodes age band"
+    },
+    {
+      "probe": "age_residual",
+      "metric": "class_stratified_spearman",
+      "chance": 0.0,
+      "value": 0.12255836600448483,
+      "ci_lo": 0.09239990172035523,
+      "ci_hi": 0.151287391229608,
+      "per_class": [
+        {
+          "class_index": 0,
+          "class_code": "SkinClass(index=0, code='akiec', name_en='Actinic keratosis / intraepithelial carcinoma', name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 / \u0907\u0902\u091f\u094d\u0930\u093e\u090f\u092a\u093f\u0925\u0947\u0932\u093f\u092f\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Actinic keratosis', short_name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A rough, scaly patch caused by long-term sun exposure. It is not cancer yet, but it can develop into cancer if left untreated.', plain_language_hi='\u0932\u0902\u092c\u0947 \u0938\u092e\u092f \u0924\u0915 \u0927\u0942\u092a \u092e\u0947\u0902 \u0930\u0939\u0928\u0947 \u0938\u0947 \u0939\u094b\u0928\u0947 \u0935\u093e\u0932\u093e \u0916\u0941\u0930\u0926\u0930\u093e, \u092a\u092a\u0921\u093c\u0940\u0926\u093e\u0930 \u0927\u092c\u094d\u092c\u093e\u0964 \u092f\u0939 \u0905\u092d\u0940 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0915\u0948\u0902\u0938\u0930 \u092e\u0947\u0902 \u092c\u0926\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964', malignancy='premalignant')",
+          "n": 222,
+          "spearman": 0.03340730428687784
+        },
+        {
+          "class_index": 1,
+          "class_code": "SkinClass(index=1, code='bcc', name_en='Basal cell carcinoma', name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Basal cell carcinoma', short_name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', plain_language_en='The most common form of skin cancer. It grows slowly and rarely spreads to other parts of the body, but it does need medical treatment.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u0938\u092c\u0938\u0947 \u0906\u092e \u0930\u0942\u092a\u0964 \u092f\u0939 \u0927\u0940\u0930\u0947-\u0927\u0940\u0930\u0947 \u092c\u0922\u093c\u0924\u093e \u0939\u0948 \u0914\u0930 \u0936\u093e\u092f\u0926 \u0939\u0940 \u0915\u092d\u0940 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932\u0924\u093e \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0938\u0915\u093e \u091a\u093f\u0915\u093f\u0924\u094d\u0938\u0915\u0940\u092f \u0907\u0932\u093e\u091c \u091c\u093c\u0930\u0942\u0930\u0940 \u0939\u0948\u0964', malignancy='malignant')",
+          "n": 361,
+          "spearman": 0.19952003062908516
+        },
+        {
+          "class_index": 2,
+          "class_code": "SkinClass(index=2, code='bkl', name_en='Benign keratosis-like lesion', name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 \u091c\u0948\u0938\u093e \u0918\u093e\u0935', short_name_en='Benign keratosis', short_name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A harmless growth on the skin, often related to age or sun exposure. It is not cancer.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092a\u0930 \u090f\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0935\u0943\u0926\u094d\u0927\u093f, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0909\u092e\u094d\u0930 \u092f\u093e \u0927\u0942\u092a \u0915\u0947 \u0938\u0902\u092a\u0930\u094d\u0915 \u0938\u0947 \u091c\u0941\u0921\u093c\u0940 \u0939\u094b\u0924\u0940 \u0939\u0948\u0964 \u092f\u0939 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964', malignancy='benign')",
+          "n": 772,
+          "spearman": 0.12829236163637017
+        },
+        {
+          "class_index": 3,
+          "class_code": "SkinClass(index=3, code='df', name_en='Dermatofibroma', name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', short_name_en='Dermatofibroma', short_name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', plain_language_en='A small, firm, harmless bump under the skin, often appearing after a minor injury such as an insect bite.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0947 \u0928\u0940\u091a\u0947 \u090f\u0915 \u091b\u094b\u091f\u0940, \u0915\u0920\u094b\u0930, \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0917\u093e\u0902\u0920, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0915\u0940\u0921\u093c\u0947 \u0915\u0947 \u0915\u093e\u091f\u0928\u0947 \u091c\u0948\u0938\u0940 \u092e\u093e\u092e\u0942\u0932\u0940 \u091a\u094b\u091f \u0915\u0947 \u092c\u093e\u0926 \u0926\u093f\u0916\u093e\u0908 \u0926\u0947\u0924\u0940 \u0939\u0948\u0964', malignancy='benign')",
+          "n": 71,
+          "spearman": 0.42233400402414484
+        },
+        {
+          "class_index": 4,
+          "class_code": "SkinClass(index=4, code='mel', name_en='Melanoma', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', short_name_en='Melanoma', short_name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', plain_language_en='A serious form of skin cancer that can spread to other parts of the body if not treated early. Early treatment matters a great deal.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u090f\u0915 \u0917\u0902\u092d\u0940\u0930 \u0930\u0942\u092a, \u091c\u094b \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964 \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u092c\u0939\u0941\u0924 \u092e\u093e\u092f\u0928\u0947 \u0930\u0916\u0924\u093e \u0939\u0948\u0964', malignancy='malignant')",
+          "n": 773,
+          "spearman": 0.20892614712234264
+        },
+        {
+          "class_index": 5,
+          "class_code": "SkinClass(index=5, code='nv', name_en='Melanocytic nevus', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u0938\u093e\u0907\u091f\u093f\u0915 \u0928\u0940\u0935\u0938 (\u0924\u093f\u0932)', short_name_en='Mole', short_name_hi='\u0924\u093f\u0932', plain_language_en='An ordinary mole. Most people have several and they are almost always harmless.', plain_language_hi='\u090f\u0915 \u0938\u093e\u092e\u093e\u0928\u094d\u092f \u0924\u093f\u0932\u0964 \u0905\u0927\u093f\u0915\u093e\u0902\u0936 \u0932\u094b\u0917\u094b\u0902 \u0915\u0947 \u0936\u0930\u0940\u0930 \u092a\u0930 \u0915\u0908 \u0924\u093f\u0932 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902 \u0914\u0930 \u092f\u0947 \u0932\u0917\u092d\u0917 \u0939\u092e\u0947\u0936\u093e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902\u0964', malignancy='benign')",
+          "n": 4683,
+          "spearman": 0.10494974916839454
+        },
+        {
+          "class_index": 6,
+          "class_code": "SkinClass(index=6, code='vasc', name_en='Vascular lesion', name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0938\u0902\u092c\u0902\u0927\u0940 \u0918\u093e\u0935', short_name_en='Vascular lesion', short_name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0918\u093e\u0935', plain_language_en='A mark formed by small blood vessels in the skin, such as a cherry angioma or a birthmark. Usually harmless.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092e\u0947\u0902 \u091b\u094b\u091f\u0940 \u0930\u0915\u094d\u0924 \u0935\u093e\u0939\u093f\u0915\u093e\u0913\u0902 \u0938\u0947 \u092c\u0928\u093e \u0928\u093f\u0936\u093e\u0928, \u091c\u0948\u0938\u0947 \u091a\u0947\u0930\u0940 \u090f\u0902\u091c\u093f\u092f\u094b\u092e\u093e \u092f\u093e \u091c\u0928\u094d\u092e\u091a\u093f\u0939\u094d\u0928\u0964 \u0906\u092e\u0924\u094c\u0930 \u092a\u0930 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924\u0964', malignancy='benign')",
+          "n": 99,
+          "spearman": -0.05929499072356215
+        }
+      ],
+      "entangled": true,
+      "reading": "escalation score tracks predicted age at fixed true class -- a demographic shortcut at the representation, which no band-constant logit offset can repair (S36 verify_losses check 7)"
+    },
+    {
+      "probe": "manifold",
+      "metric": "knn_purity_k10_lesion_excluded",
+      "value": 0.8083082652915056,
+      "k": 10,
+      "cells": [
+        {
+          "class_index": 0,
+          "class_code": "SkinClass(index=0, code='akiec', name_en='Actinic keratosis / intraepithelial carcinoma', name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 / \u0907\u0902\u091f\u094d\u0930\u093e\u090f\u092a\u093f\u0925\u0947\u0932\u093f\u092f\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Actinic keratosis', short_name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A rough, scaly patch caused by long-term sun exposure. It is not cancer yet, but it can develop into cancer if left untreated.', plain_language_hi='\u0932\u0902\u092c\u0947 \u0938\u092e\u092f \u0924\u0915 \u0927\u0942\u092a \u092e\u0947\u0902 \u0930\u0939\u0928\u0947 \u0938\u0947 \u0939\u094b\u0928\u0947 \u0935\u093e\u0932\u093e \u0916\u0941\u0930\u0926\u0930\u093e, \u092a\u092a\u0921\u093c\u0940\u0926\u093e\u0930 \u0927\u092c\u094d\u092c\u093e\u0964 \u092f\u0939 \u0905\u092d\u0940 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0915\u0948\u0902\u0938\u0930 \u092e\u0947\u0902 \u092c\u0926\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964', malignancy='premalignant')",
+          "band": "40-59",
+          "n": 43,
+          "knn_purity": 0.5976744186046511,
+          "chance": 0.0318,
+          "lift": 18.794,
+          "underpowered": false
+        },
+        {
+          "class_index": 0,
+          "class_code": "SkinClass(index=0, code='akiec', name_en='Actinic keratosis / intraepithelial carcinoma', name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 / \u0907\u0902\u091f\u094d\u0930\u093e\u090f\u092a\u093f\u0925\u0947\u0932\u093f\u092f\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Actinic keratosis', short_name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A rough, scaly patch caused by long-term sun exposure. It is not cancer yet, but it can develop into cancer if left untreated.', plain_language_hi='\u0932\u0902\u092c\u0947 \u0938\u092e\u092f \u0924\u0915 \u0927\u0942\u092a \u092e\u0947\u0902 \u0930\u0939\u0928\u0947 \u0938\u0947 \u0939\u094b\u0928\u0947 \u0935\u093e\u0932\u093e \u0916\u0941\u0930\u0926\u0930\u093e, \u092a\u092a\u0921\u093c\u0940\u0926\u093e\u0930 \u0927\u092c\u094d\u092c\u093e\u0964 \u092f\u0939 \u0905\u092d\u0940 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0915\u0948\u0902\u0938\u0930 \u092e\u0947\u0902 \u092c\u0926\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964', malignancy='premalignant')",
+          "band": "60+",
+          "n": 178,
+          "knn_purity": 0.5067415730337079,
+          "chance": 0.0318,
+          "lift": 15.935,
+          "underpowered": false
+        },
+        {
+          "class_index": 0,
+          "class_code": "SkinClass(index=0, code='akiec', name_en='Actinic keratosis / intraepithelial carcinoma', name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 / \u0907\u0902\u091f\u094d\u0930\u093e\u090f\u092a\u093f\u0925\u0947\u0932\u093f\u092f\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Actinic keratosis', short_name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A rough, scaly patch caused by long-term sun exposure. It is not cancer yet, but it can develop into cancer if left untreated.', plain_language_hi='\u0932\u0902\u092c\u0947 \u0938\u092e\u092f \u0924\u0915 \u0927\u0942\u092a \u092e\u0947\u0902 \u0930\u0939\u0928\u0947 \u0938\u0947 \u0939\u094b\u0928\u0947 \u0935\u093e\u0932\u093e \u0916\u0941\u0930\u0926\u0930\u093e, \u092a\u092a\u0921\u093c\u0940\u0926\u093e\u0930 \u0927\u092c\u094d\u092c\u093e\u0964 \u092f\u0939 \u0905\u092d\u0940 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0915\u0948\u0902\u0938\u0930 \u092e\u0947\u0902 \u092c\u0926\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964', malignancy='premalignant')",
+          "band": "all",
+          "n": 222,
+          "knn_purity": 0.5265765765765766,
+          "chance": 0.0318,
+          "lift": 16.559,
+          "underpowered": false
+        },
+        {
+          "class_index": 1,
+          "class_code": "SkinClass(index=1, code='bcc', name_en='Basal cell carcinoma', name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Basal cell carcinoma', short_name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', plain_language_en='The most common form of skin cancer. It grows slowly and rarely spreads to other parts of the body, but it does need medical treatment.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u0938\u092c\u0938\u0947 \u0906\u092e \u0930\u0942\u092a\u0964 \u092f\u0939 \u0927\u0940\u0930\u0947-\u0927\u0940\u0930\u0947 \u092c\u0922\u093c\u0924\u093e \u0939\u0948 \u0914\u0930 \u0936\u093e\u092f\u0926 \u0939\u0940 \u0915\u092d\u0940 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932\u0924\u093e \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0938\u0915\u093e \u091a\u093f\u0915\u093f\u0924\u094d\u0938\u0915\u0940\u092f \u0907\u0932\u093e\u091c \u091c\u093c\u0930\u0942\u0930\u0940 \u0939\u0948\u0964', malignancy='malignant')",
+          "band": "<40",
+          "n": 12,
+          "knn_purity": 0.8833333333333333,
+          "chance": 0.0517,
+          "lift": 17.082,
+          "underpowered": true
+        },
+        {
+          "class_index": 1,
+          "class_code": "SkinClass(index=1, code='bcc', name_en='Basal cell carcinoma', name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Basal cell carcinoma', short_name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', plain_language_en='The most common form of skin cancer. It grows slowly and rarely spreads to other parts of the body, but it does need medical treatment.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u0938\u092c\u0938\u0947 \u0906\u092e \u0930\u0942\u092a\u0964 \u092f\u0939 \u0927\u0940\u0930\u0947-\u0927\u0940\u0930\u0947 \u092c\u0922\u093c\u0924\u093e \u0939\u0948 \u0914\u0930 \u0936\u093e\u092f\u0926 \u0939\u0940 \u0915\u092d\u0940 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932\u0924\u093e \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0938\u0915\u093e \u091a\u093f\u0915\u093f\u0924\u094d\u0938\u0915\u0940\u092f \u0907\u0932\u093e\u091c \u091c\u093c\u0930\u0942\u0930\u0940 \u0939\u0948\u0964', malignancy='malignant')",
+          "band": "40-59",
+          "n": 74,
+          "knn_purity": 0.7716216216216216,
+          "chance": 0.0517,
+          "lift": 14.922,
+          "underpowered": false
+        },
+        {
+          "class_index": 1,
+          "class_code": "SkinClass(index=1, code='bcc', name_en='Basal cell carcinoma', name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Basal cell carcinoma', short_name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', plain_language_en='The most common form of skin cancer. It grows slowly and rarely spreads to other parts of the body, but it does need medical treatment.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u0938\u092c\u0938\u0947 \u0906\u092e \u0930\u0942\u092a\u0964 \u092f\u0939 \u0927\u0940\u0930\u0947-\u0927\u0940\u0930\u0947 \u092c\u0922\u093c\u0924\u093e \u0939\u0948 \u0914\u0930 \u0936\u093e\u092f\u0926 \u0939\u0940 \u0915\u092d\u0940 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932\u0924\u093e \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0938\u0915\u093e \u091a\u093f\u0915\u093f\u0924\u094d\u0938\u0915\u0940\u092f \u0907\u0932\u093e\u091c \u091c\u093c\u0930\u0942\u0930\u0940 \u0939\u0948\u0964', malignancy='malignant')",
+          "band": "60+",
+          "n": 275,
+          "knn_purity": 0.6898181818181818,
+          "chance": 0.0517,
+          "lift": 13.34,
+          "underpowered": false
+        },
+        {
+          "class_index": 1,
+          "class_code": "SkinClass(index=1, code='bcc', name_en='Basal cell carcinoma', name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Basal cell carcinoma', short_name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', plain_language_en='The most common form of skin cancer. It grows slowly and rarely spreads to other parts of the body, but it does need medical treatment.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u0938\u092c\u0938\u0947 \u0906\u092e \u0930\u0942\u092a\u0964 \u092f\u0939 \u0927\u0940\u0930\u0947-\u0927\u0940\u0930\u0947 \u092c\u0922\u093c\u0924\u093e \u0939\u0948 \u0914\u0930 \u0936\u093e\u092f\u0926 \u0939\u0940 \u0915\u092d\u0940 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932\u0924\u093e \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0938\u0915\u093e \u091a\u093f\u0915\u093f\u0924\u094d\u0938\u0915\u0940\u092f \u0907\u0932\u093e\u091c \u091c\u093c\u0930\u0942\u0930\u0940 \u0939\u0948\u0964', malignancy='malignant')",
+          "band": "all",
+          "n": 361,
+          "knn_purity": 0.7130193905817174,
+          "chance": 0.0517,
+          "lift": 13.788,
+          "underpowered": false
+        },
+        {
+          "class_index": 2,
+          "class_code": "SkinClass(index=2, code='bkl', name_en='Benign keratosis-like lesion', name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 \u091c\u0948\u0938\u093e \u0918\u093e\u0935', short_name_en='Benign keratosis', short_name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A harmless growth on the skin, often related to age or sun exposure. It is not cancer.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092a\u0930 \u090f\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0935\u0943\u0926\u094d\u0927\u093f, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0909\u092e\u094d\u0930 \u092f\u093e \u0927\u0942\u092a \u0915\u0947 \u0938\u0902\u092a\u0930\u094d\u0915 \u0938\u0947 \u091c\u0941\u0921\u093c\u0940 \u0939\u094b\u0924\u0940 \u0939\u0948\u0964 \u092f\u0939 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964', malignancy='benign')",
+          "band": "<40",
+          "n": 23,
+          "knn_purity": 0.7782608695652175,
+          "chance": 0.1106,
+          "lift": 7.038,
+          "underpowered": true
+        },
+        {
+          "class_index": 2,
+          "class_code": "SkinClass(index=2, code='bkl', name_en='Benign keratosis-like lesion', name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 \u091c\u0948\u0938\u093e \u0918\u093e\u0935', short_name_en='Benign keratosis', short_name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A harmless growth on the skin, often related to age or sun exposure. It is not cancer.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092a\u0930 \u090f\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0935\u0943\u0926\u094d\u0927\u093f, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0909\u092e\u094d\u0930 \u092f\u093e \u0927\u0942\u092a \u0915\u0947 \u0938\u0902\u092a\u0930\u094d\u0915 \u0938\u0947 \u091c\u0941\u0921\u093c\u0940 \u0939\u094b\u0924\u0940 \u0939\u0948\u0964 \u092f\u0939 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964', malignancy='benign')",
+          "band": "40-59",
+          "n": 187,
+          "knn_purity": 0.5807486631016042,
+          "chance": 0.1106,
+          "lift": 5.252,
+          "underpowered": false
+        },
+        {
+          "class_index": 2,
+          "class_code": "SkinClass(index=2, code='bkl', name_en='Benign keratosis-like lesion', name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 \u091c\u0948\u0938\u093e \u0918\u093e\u0935', short_name_en='Benign keratosis', short_name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A harmless growth on the skin, often related to age or sun exposure. It is not cancer.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092a\u0930 \u090f\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0935\u0943\u0926\u094d\u0927\u093f, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0909\u092e\u094d\u0930 \u092f\u093e \u0927\u0942\u092a \u0915\u0947 \u0938\u0902\u092a\u0930\u094d\u0915 \u0938\u0947 \u091c\u0941\u0921\u093c\u0940 \u0939\u094b\u0924\u0940 \u0939\u0948\u0964 \u092f\u0939 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964', malignancy='benign')",
+          "band": "60+",
+          "n": 557,
+          "knn_purity": 0.5843806104129264,
+          "chance": 0.1106,
+          "lift": 5.284,
+          "underpowered": false
+        },
+        {
+          "class_index": 2,
+          "class_code": "SkinClass(index=2, code='bkl', name_en='Benign keratosis-like lesion', name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 \u091c\u0948\u0938\u093e \u0918\u093e\u0935', short_name_en='Benign keratosis', short_name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A harmless growth on the skin, often related to age or sun exposure. It is not cancer.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092a\u0930 \u090f\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0935\u0943\u0926\u094d\u0927\u093f, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0909\u092e\u094d\u0930 \u092f\u093e \u0927\u0942\u092a \u0915\u0947 \u0938\u0902\u092a\u0930\u094d\u0915 \u0938\u0947 \u091c\u0941\u0921\u093c\u0940 \u0939\u094b\u0924\u0940 \u0939\u0948\u0964 \u092f\u0939 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964', malignancy='benign')",
+          "band": "all",
+          "n": 772,
+          "knn_purity": 0.5910621761658031,
+          "chance": 0.1106,
+          "lift": 5.345,
+          "underpowered": false
+        },
+        {
+          "class_index": 3,
+          "class_code": "SkinClass(index=3, code='df', name_en='Dermatofibroma', name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', short_name_en='Dermatofibroma', short_name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', plain_language_en='A small, firm, harmless bump under the skin, often appearing after a minor injury such as an insect bite.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0947 \u0928\u0940\u091a\u0947 \u090f\u0915 \u091b\u094b\u091f\u0940, \u0915\u0920\u094b\u0930, \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0917\u093e\u0902\u0920, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0915\u0940\u0921\u093c\u0947 \u0915\u0947 \u0915\u093e\u091f\u0928\u0947 \u091c\u0948\u0938\u0940 \u092e\u093e\u092e\u0942\u0932\u0940 \u091a\u094b\u091f \u0915\u0947 \u092c\u093e\u0926 \u0926\u093f\u0916\u093e\u0908 \u0926\u0947\u0924\u0940 \u0939\u0948\u0964', malignancy='benign')",
+          "band": "<40",
+          "n": 15,
+          "knn_purity": 0.46666666666666673,
+          "chance": 0.0102,
+          "lift": 45.885,
+          "underpowered": true
+        },
+        {
+          "class_index": 3,
+          "class_code": "SkinClass(index=3, code='df', name_en='Dermatofibroma', name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', short_name_en='Dermatofibroma', short_name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', plain_language_en='A small, firm, harmless bump under the skin, often appearing after a minor injury such as an insect bite.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0947 \u0928\u0940\u091a\u0947 \u090f\u0915 \u091b\u094b\u091f\u0940, \u0915\u0920\u094b\u0930, \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0917\u093e\u0902\u0920, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0915\u0940\u0921\u093c\u0947 \u0915\u0947 \u0915\u093e\u091f\u0928\u0947 \u091c\u0948\u0938\u0940 \u092e\u093e\u092e\u0942\u0932\u0940 \u091a\u094b\u091f \u0915\u0947 \u092c\u093e\u0926 \u0926\u093f\u0916\u093e\u0908 \u0926\u0947\u0924\u0940 \u0939\u0948\u0964', malignancy='benign')",
+          "band": "40-59",
+          "n": 30,
+          "knn_purity": 0.39,
+          "chance": 0.0102,
+          "lift": 38.346,
+          "underpowered": false
+        },
+        {
+          "class_index": 3,
+          "class_code": "SkinClass(index=3, code='df', name_en='Dermatofibroma', name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', short_name_en='Dermatofibroma', short_name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', plain_language_en='A small, firm, harmless bump under the skin, often appearing after a minor injury such as an insect bite.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0947 \u0928\u0940\u091a\u0947 \u090f\u0915 \u091b\u094b\u091f\u0940, \u0915\u0920\u094b\u0930, \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0917\u093e\u0902\u0920, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0915\u0940\u0921\u093c\u0947 \u0915\u0947 \u0915\u093e\u091f\u0928\u0947 \u091c\u0948\u0938\u0940 \u092e\u093e\u092e\u0942\u0932\u0940 \u091a\u094b\u091f \u0915\u0947 \u092c\u093e\u0926 \u0926\u093f\u0916\u093e\u0908 \u0926\u0947\u0924\u0940 \u0939\u0948\u0964', malignancy='benign')",
+          "band": "60+",
+          "n": 26,
+          "knn_purity": 0.2576923076923077,
+          "chance": 0.0102,
+          "lift": 25.337,
+          "underpowered": true
+        },
+        {
+          "class_index": 3,
+          "class_code": "SkinClass(index=3, code='df', name_en='Dermatofibroma', name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', short_name_en='Dermatofibroma', short_name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', plain_language_en='A small, firm, harmless bump under the skin, often appearing after a minor injury such as an insect bite.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0947 \u0928\u0940\u091a\u0947 \u090f\u0915 \u091b\u094b\u091f\u0940, \u0915\u0920\u094b\u0930, \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0917\u093e\u0902\u0920, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0915\u0940\u0921\u093c\u0947 \u0915\u0947 \u0915\u093e\u091f\u0928\u0947 \u091c\u0948\u0938\u0940 \u092e\u093e\u092e\u0942\u0932\u0940 \u091a\u094b\u091f \u0915\u0947 \u092c\u093e\u0926 \u0926\u093f\u0916\u093e\u0908 \u0926\u0947\u0924\u0940 \u0939\u0948\u0964', malignancy='benign')",
+          "band": "all",
+          "n": 71,
+          "knn_purity": 0.3577464788732394,
+          "chance": 0.0102,
+          "lift": 35.175,
+          "underpowered": false
+        },
+        {
+          "class_index": 4,
+          "class_code": "SkinClass(index=4, code='mel', name_en='Melanoma', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', short_name_en='Melanoma', short_name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', plain_language_en='A serious form of skin cancer that can spread to other parts of the body if not treated early. Early treatment matters a great deal.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u090f\u0915 \u0917\u0902\u092d\u0940\u0930 \u0930\u0942\u092a, \u091c\u094b \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964 \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u092c\u0939\u0941\u0924 \u092e\u093e\u092f\u0928\u0947 \u0930\u0916\u0924\u093e \u0939\u0948\u0964', malignancy='malignant')",
+          "band": "<40",
+          "n": 51,
+          "knn_purity": 0.3784313725490197,
+          "chance": 0.1107,
+          "lift": 3.418,
+          "underpowered": false
+        },
+        {
+          "class_index": 4,
+          "class_code": "SkinClass(index=4, code='mel', name_en='Melanoma', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', short_name_en='Melanoma', short_name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', plain_language_en='A serious form of skin cancer that can spread to other parts of the body if not treated early. Early treatment matters a great deal.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u090f\u0915 \u0917\u0902\u092d\u0940\u0930 \u0930\u0942\u092a, \u091c\u094b \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964 \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u092c\u0939\u0941\u0924 \u092e\u093e\u092f\u0928\u0947 \u0930\u0916\u0924\u093e \u0939\u0948\u0964', malignancy='malignant')",
+          "band": "40-59",
+          "n": 280,
+          "knn_purity": 0.3882142857142858,
+          "chance": 0.1107,
+          "lift": 3.506,
+          "underpowered": false
+        },
+        {
+          "class_index": 4,
+          "class_code": "SkinClass(index=4, code='mel', name_en='Melanoma', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', short_name_en='Melanoma', short_name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', plain_language_en='A serious form of skin cancer that can spread to other parts of the body if not treated early. Early treatment matters a great deal.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u090f\u0915 \u0917\u0902\u092d\u0940\u0930 \u0930\u0942\u092a, \u091c\u094b \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964 \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u092c\u0939\u0941\u0924 \u092e\u093e\u092f\u0928\u0947 \u0930\u0916\u0924\u093e \u0939\u0948\u0964', malignancy='malignant')",
+          "band": "60+",
+          "n": 440,
+          "knn_purity": 0.4429545454545455,
+          "chance": 0.1107,
+          "lift": 4.0,
+          "underpowered": false
+        },
+        {
+          "class_index": 4,
+          "class_code": "SkinClass(index=4, code='mel', name_en='Melanoma', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', short_name_en='Melanoma', short_name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', plain_language_en='A serious form of skin cancer that can spread to other parts of the body if not treated early. Early treatment matters a great deal.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u090f\u0915 \u0917\u0902\u092d\u0940\u0930 \u0930\u0942\u092a, \u091c\u094b \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964 \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u092c\u0939\u0941\u0924 \u092e\u093e\u092f\u0928\u0947 \u0930\u0916\u0924\u093e \u0939\u0948\u0964', malignancy='malignant')",
+          "band": "all",
+          "n": 773,
+          "knn_purity": 0.41979301423027165,
+          "chance": 0.1107,
+          "lift": 3.791,
+          "underpowered": false
+        },
+        {
+          "class_index": 5,
+          "class_code": "SkinClass(index=5, code='nv', name_en='Melanocytic nevus', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u0938\u093e\u0907\u091f\u093f\u0915 \u0928\u0940\u0935\u0938 (\u0924\u093f\u0932)', short_name_en='Mole', short_name_hi='\u0924\u093f\u0932', plain_language_en='An ordinary mole. Most people have several and they are almost always harmless.', plain_language_hi='\u090f\u0915 \u0938\u093e\u092e\u093e\u0928\u094d\u092f \u0924\u093f\u0932\u0964 \u0905\u0927\u093f\u0915\u093e\u0902\u0936 \u0932\u094b\u0917\u094b\u0902 \u0915\u0947 \u0936\u0930\u0940\u0930 \u092a\u0930 \u0915\u0908 \u0924\u093f\u0932 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902 \u0914\u0930 \u092f\u0947 \u0932\u0917\u092d\u0917 \u0939\u092e\u0947\u0936\u093e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902\u0964', malignancy='benign')",
+          "band": "<40",
+          "n": 1192,
+          "knn_purity": 0.9289429530201342,
+          "chance": 0.6708,
+          "lift": 1.385,
+          "underpowered": false
+        },
+        {
+          "class_index": 5,
+          "class_code": "SkinClass(index=5, code='nv', name_en='Melanocytic nevus', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u0938\u093e\u0907\u091f\u093f\u0915 \u0928\u0940\u0935\u0938 (\u0924\u093f\u0932)', short_name_en='Mole', short_name_hi='\u0924\u093f\u0932', plain_language_en='An ordinary mole. Most people have several and they are almost always harmless.', plain_language_hi='\u090f\u0915 \u0938\u093e\u092e\u093e\u0928\u094d\u092f \u0924\u093f\u0932\u0964 \u0905\u0927\u093f\u0915\u093e\u0902\u0936 \u0932\u094b\u0917\u094b\u0902 \u0915\u0947 \u0936\u0930\u0940\u0930 \u092a\u0930 \u0915\u0908 \u0924\u093f\u0932 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902 \u0914\u0930 \u092f\u0947 \u0932\u0917\u092d\u0917 \u0939\u092e\u0947\u0936\u093e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902\u0964', malignancy='benign')",
+          "band": "40-59",
+          "n": 2464,
+          "knn_purity": 0.9525568181818184,
+          "chance": 0.6708,
+          "lift": 1.42,
+          "underpowered": false
+        },
+        {
+          "class_index": 5,
+          "class_code": "SkinClass(index=5, code='nv', name_en='Melanocytic nevus', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u0938\u093e\u0907\u091f\u093f\u0915 \u0928\u0940\u0935\u0938 (\u0924\u093f\u0932)', short_name_en='Mole', short_name_hi='\u0924\u093f\u0932', plain_language_en='An ordinary mole. Most people have several and they are almost always harmless.', plain_language_hi='\u090f\u0915 \u0938\u093e\u092e\u093e\u0928\u094d\u092f \u0924\u093f\u0932\u0964 \u0905\u0927\u093f\u0915\u093e\u0902\u0936 \u0932\u094b\u0917\u094b\u0902 \u0915\u0947 \u0936\u0930\u0940\u0930 \u092a\u0930 \u0915\u0908 \u0924\u093f\u0932 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902 \u0914\u0930 \u092f\u0947 \u0932\u0917\u092d\u0917 \u0939\u092e\u0947\u0936\u093e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902\u0964', malignancy='benign')",
+          "band": "60+",
+          "n": 996,
+          "knn_purity": 0.8986947791164658,
+          "chance": 0.6708,
+          "lift": 1.34,
+          "underpowered": false
+        },
+        {
+          "class_index": 5,
+          "class_code": "SkinClass(index=5, code='nv', name_en='Melanocytic nevus', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u0938\u093e\u0907\u091f\u093f\u0915 \u0928\u0940\u0935\u0938 (\u0924\u093f\u0932)', short_name_en='Mole', short_name_hi='\u0924\u093f\u0932', plain_language_en='An ordinary mole. Most people have several and they are almost always harmless.', plain_language_hi='\u090f\u0915 \u0938\u093e\u092e\u093e\u0928\u094d\u092f \u0924\u093f\u0932\u0964 \u0905\u0927\u093f\u0915\u093e\u0902\u0936 \u0932\u094b\u0917\u094b\u0902 \u0915\u0947 \u0936\u0930\u0940\u0930 \u092a\u0930 \u0915\u0908 \u0924\u093f\u0932 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902 \u0914\u0930 \u092f\u0947 \u0932\u0917\u092d\u0917 \u0939\u092e\u0947\u0936\u093e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902\u0964', malignancy='benign')",
+          "band": "all",
+          "n": 4683,
+          "knn_purity": 0.9349348708093103,
+          "chance": 0.6708,
+          "lift": 1.394,
+          "underpowered": false
+        },
+        {
+          "class_index": 6,
+          "class_code": "SkinClass(index=6, code='vasc', name_en='Vascular lesion', name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0938\u0902\u092c\u0902\u0927\u0940 \u0918\u093e\u0935', short_name_en='Vascular lesion', short_name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0918\u093e\u0935', plain_language_en='A mark formed by small blood vessels in the skin, such as a cherry angioma or a birthmark. Usually harmless.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092e\u0947\u0902 \u091b\u094b\u091f\u0940 \u0930\u0915\u094d\u0924 \u0935\u093e\u0939\u093f\u0915\u093e\u0913\u0902 \u0938\u0947 \u092c\u0928\u093e \u0928\u093f\u0936\u093e\u0928, \u091c\u0948\u0938\u0947 \u091a\u0947\u0930\u0940 \u090f\u0902\u091c\u093f\u092f\u094b\u092e\u093e \u092f\u093e \u091c\u0928\u094d\u092e\u091a\u093f\u0939\u094d\u0928\u0964 \u0906\u092e\u0924\u094c\u0930 \u092a\u0930 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924\u0964', malignancy='benign')",
+          "band": "<40",
+          "n": 25,
+          "knn_purity": 0.8,
+          "chance": 0.0142,
+          "lift": 56.412,
+          "underpowered": true
+        },
+        {
+          "class_index": 6,
+          "class_code": "SkinClass(index=6, code='vasc', name_en='Vascular lesion', name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0938\u0902\u092c\u0902\u0927\u0940 \u0918\u093e\u0935', short_name_en='Vascular lesion', short_name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0918\u093e\u0935', plain_language_en='A mark formed by small blood vessels in the skin, such as a cherry angioma or a birthmark. Usually harmless.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092e\u0947\u0902 \u091b\u094b\u091f\u0940 \u0930\u0915\u094d\u0924 \u0935\u093e\u0939\u093f\u0915\u093e\u0913\u0902 \u0938\u0947 \u092c\u0928\u093e \u0928\u093f\u0936\u093e\u0928, \u091c\u0948\u0938\u0947 \u091a\u0947\u0930\u0940 \u090f\u0902\u091c\u093f\u092f\u094b\u092e\u093e \u092f\u093e \u091c\u0928\u094d\u092e\u091a\u093f\u0939\u094d\u0928\u0964 \u0906\u092e\u0924\u094c\u0930 \u092a\u0930 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924\u0964', malignancy='benign')",
+          "band": "40-59",
+          "n": 34,
+          "knn_purity": 0.9176470588235295,
+          "chance": 0.0142,
+          "lift": 64.708,
+          "underpowered": false
+        },
+        {
+          "class_index": 6,
+          "class_code": "SkinClass(index=6, code='vasc', name_en='Vascular lesion', name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0938\u0902\u092c\u0902\u0927\u0940 \u0918\u093e\u0935', short_name_en='Vascular lesion', short_name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0918\u093e\u0935', plain_language_en='A mark formed by small blood vessels in the skin, such as a cherry angioma or a birthmark. Usually harmless.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092e\u0947\u0902 \u091b\u094b\u091f\u0940 \u0930\u0915\u094d\u0924 \u0935\u093e\u0939\u093f\u0915\u093e\u0913\u0902 \u0938\u0947 \u092c\u0928\u093e \u0928\u093f\u0936\u093e\u0928, \u091c\u0948\u0938\u0947 \u091a\u0947\u0930\u0940 \u090f\u0902\u091c\u093f\u092f\u094b\u092e\u093e \u092f\u093e \u091c\u0928\u094d\u092e\u091a\u093f\u0939\u094d\u0928\u0964 \u0906\u092e\u0924\u094c\u0930 \u092a\u0930 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924\u0964', malignancy='benign')",
+          "band": "60+",
+          "n": 40,
+          "knn_purity": 0.82,
+          "chance": 0.0142,
+          "lift": 57.822,
+          "underpowered": false
+        },
+        {
+          "class_index": 6,
+          "class_code": "SkinClass(index=6, code='vasc', name_en='Vascular lesion', name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0938\u0902\u092c\u0902\u0927\u0940 \u0918\u093e\u0935', short_name_en='Vascular lesion', short_name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0918\u093e\u0935', plain_language_en='A mark formed by small blood vessels in the skin, such as a cherry angioma or a birthmark. Usually harmless.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092e\u0947\u0902 \u091b\u094b\u091f\u0940 \u0930\u0915\u094d\u0924 \u0935\u093e\u0939\u093f\u0915\u093e\u0913\u0902 \u0938\u0947 \u092c\u0928\u093e \u0928\u093f\u0936\u093e\u0928, \u091c\u0948\u0938\u0947 \u091a\u0947\u0930\u0940 \u090f\u0902\u091c\u093f\u092f\u094b\u092e\u093e \u092f\u093e \u091c\u0928\u094d\u092e\u091a\u093f\u0939\u094d\u0928\u0964 \u0906\u092e\u0924\u094c\u0930 \u092a\u0930 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924\u0964', malignancy='benign')",
+          "band": "all",
+          "n": 99,
+          "knn_purity": 0.8484848484848485,
+          "chance": 0.0142,
+          "lift": 59.831,
+          "underpowered": false
+        }
+      ]
+    },
+    {
+      "probe": "archive",
+      "metric": "macro_ovr_auc",
+      "chance": 0.5,
+      "value": 1.0,
+      "ci_lo": 1.0,
+      "ci_hi": 1.0,
+      "cohorts": [
+        "ham_oof",
+        "pad"
+      ],
+      "n": 9087,
+      "within_modality_only": false,
+      "entangled": true,
+      "reading": "separable, but the set spans imaging modalities -- this measures modality, not within-modality acquisition entanglement"
+    },
+    {
+      "probe": "lesion_vs_context",
+      "metric": "escalation_auc",
+      "chance": 0.5,
+      "interior": {
+        "auc": 0.8714269600262283,
+        "ci_lo": 0.8571820937088248,
+        "ci_hi": 0.8855016574632119
+      },
+      "exterior": {
+        "auc": 0.8608360557750026,
+        "ci_lo": 0.8462219800817437,
+        "ci_hi": 0.8744023711109171
+      },
+      "exterior_carries_signal": true,
+      "reading": "escalation signal is available outside the lesion mask"
+    }
+  ]
+}

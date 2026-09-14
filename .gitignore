@@ -236,3 +236,20 @@ scripts/build_viva_package.py
 *viva*
 
 
+
+# ==============================================================================
+# SESSION NARRATIVE / HANDOFF DOCUMENTS
+# ==============================================================================
+# CHANGELOG.md is the single narrative record. Per-session checkpoints, reports,
+# runbooks and handoff write-ups are working documents, not research artifacts.
+# Every number they quote lives in results/**/*.csv|json (Hard Rule 4).
+*_SESSION_RUNBOOK.md
+results/**/*_CHECKPOINT.md
+results/**/*_REPORT.md
+results/**/*_HANDOFF.md
+results/**/*_DECISION.md
+results/**/*_VERDICT.md
+results/**/*_STATUS.md
+results/v2/S3[4-9]_*.md
+results/v2/stale_artifacts.md
+results/v2/synthetic_validation.md

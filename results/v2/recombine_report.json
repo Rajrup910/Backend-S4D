@@ -1,0 +1,196 @@
+{
+  "session": "S35",
+  "generated_at": "2026-09-12T19:14:32.916072+00:00",
+  "arm": "N1_recombine",
+  "statement": "Cross-fitted 6-architecture reweighting, fit to maximize under-40 partial AUC (FPR<=0.20) of escalation mass, lesion-grouped 5-fold CV, HAM-OOF only. Exploratory (Track B) -- not a member of any confirmatory family.",
+  "n_folds": 5,
+  "n_boot": 500,
+  "fpr_max": 0.2,
+  "mean_weights": {
+    "convnext_tiny": 0.5181727314917449,
+    "convnext_small": 0.1067779242143649,
+    "densenet121": 0.2105566529420444,
+    "efficientnet_b0": 0.0827905295511965,
+    "efficientnet_b3": 0.045853160794279986,
+    "resnet50": 0.0358490010063693
+  },
+  "per_fold_weights": [
+    {
+      "convnext_tiny": 0.6282611665915632,
+      "convnext_small": 0.14961042717264664,
+      "densenet121": 0.04439180505724372,
+      "efficientnet_b0": 0.07257692785088479,
+      "efficientnet_b3": 0.1037820443135294,
+      "resnet50": 0.0013776290141324368
+    },
+    {
+      "convnext_tiny": 0.6356317228162717,
+      "convnext_small": 0.12254068943162429,
+      "densenet121": 0.1779743535471771,
+      "efficientnet_b0": 0.009551861829805658,
+      "efficientnet_b3": 0.02294872678383017,
+      "resnet50": 0.031352645591291195
+    },
+    {
+      "convnext_tiny": 0.20434284031638525,
+      "convnext_small": 0.10182933211067567,
+      "densenet121": 0.25547652772418256,
+      "efficientnet_b0": 0.28100861651727765,
+      "efficientnet_b3": 0.06599462483851845,
+      "resnet50": 0.0913480584929605
+    },
+    {
+      "convnext_tiny": 0.3868207260574555,
+      "convnext_small": 0.09916419014353627,
+      "densenet121": 0.43752827624089774,
+      "efficientnet_b0": 0.00959374973531037,
+      "efficientnet_b3": 0.025280563820421428,
+      "resnet50": 0.04161249400237872
+    },
+    {
+      "convnext_tiny": 0.7358072016770494,
+      "convnext_small": 0.060744982213341556,
+      "densenet121": 0.13741230214072087,
+      "efficientnet_b0": 0.04122149182270414,
+      "efficientnet_b3": 0.011259844215100448,
+      "resnet50": 0.013554177931083626
+    }
+  ],
+  "band_reports": [
+    {
+      "band": "<40",
+      "n": 1319,
+      "n_escalating": 64,
+      "s_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.13144920318725103,
+        "partial_auc_mcclish": 0.8095811199645861,
+        "full_auc": 0.8953187250996015,
+        "ci_lo": 0.7239709255140605,
+        "ci_hi": 0.8808178487933734,
+        "n_boot": 500
+      },
+      "d_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.12812500000000002,
+        "partial_auc_mcclish": 0.8003472222222223,
+        "full_auc": 0.8831424302788845,
+        "ci_lo": 0.7104547634378934,
+        "ci_hi": 0.8760893434904633,
+        "n_boot": 500
+      },
+      "s_recombined": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.12732818725099604,
+        "partial_auc_mcclish": 0.798133853474989,
+        "full_auc": 0.8795941235059761,
+        "ci_lo": 0.7161032862698233,
+        "ci_hi": 0.8736187036762381,
+        "n_boot": 500
+      }
+    },
+    {
+      "band": "40-59",
+      "n": 3112,
+      "n_escalating": 397,
+      "s_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.16249866633267002,
+        "partial_auc_mcclish": 0.8958296287018611,
+        "full_auc": 0.954677577225137,
+        "ci_lo": 0.8707886582810386,
+        "ci_hi": 0.9192382066743248,
+        "n_boot": 500
+      },
+      "d_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.16051509711417586,
+        "partial_auc_mcclish": 0.8903197142060442,
+        "full_auc": 0.9499682239262238,
+        "ci_lo": 0.8639617547612203,
+        "ci_hi": 0.9152058069769533,
+        "n_boot": 500
+      },
+      "s_recombined": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.16066725116087044,
+        "partial_auc_mcclish": 0.8907423643357512,
+        "full_auc": 0.9484169948648009,
+        "ci_lo": 0.863543985756913,
+        "ci_hi": 0.915188971504356,
+        "n_boot": 500
+      }
+    },
+    {
+      "band": "60+",
+      "n": 2512,
+      "n_escalating": 893,
+      "s_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.14712370665536012,
+        "partial_auc_mcclish": 0.8531214073760003,
+        "full_auc": 0.9344839106163028,
+        "ci_lo": 0.8293043113979165,
+        "ci_hi": 0.8746250211377389,
+        "n_boot": 500
+      },
+      "d_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.1451498062965886,
+        "partial_auc_mcclish": 0.8476383508238573,
+        "full_auc": 0.9297210408039469,
+        "ci_lo": 0.8236553499546189,
+        "ci_hi": 0.8687501813577596,
+        "n_boot": 500
+      },
+      "s_recombined": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.1454235710180133,
+        "partial_auc_mcclish": 0.8483988083833702,
+        "full_auc": 0.9293274780791096,
+        "ci_lo": 0.8232881056918427,
+        "ci_hi": 0.869970829332973,
+        "n_boot": 500
+      }
+    },
+    {
+      "band": "all",
+      "n": 6981,
+      "n_escalating": 1356,
+      "s_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.15861120943952803,
+        "partial_auc_mcclish": 0.8850311373320223,
+        "full_auc": 0.9501081612586038,
+        "ci_lo": 0.8698347961127331,
+        "ci_hi": 0.8988329542715567,
+        "n_boot": 500
+      },
+      "d_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.15691602753195677,
+        "partial_auc_mcclish": 0.8803222986998799,
+        "full_auc": 0.9460582104228121,
+        "ci_lo": 0.8651234214180039,
+        "ci_hi": 0.8947838997822483,
+        "n_boot": 500
+      },
+      "s_recombined": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.15681927236971485,
+        "partial_auc_mcclish": 0.8800535343603191,
+        "full_auc": 0.9442700753851195,
+        "ci_lo": 0.864913890647979,
+        "ci_hi": 0.8936734911222805,
+        "n_boot": 500
+      }
+    }
+  ],
+  "verdict": {
+    "criterion": "recombined under-40 partial-AUC 95% CI lower bound exceeds uniform s point estimate",
+    "s_uniform_partial_auc": 0.8095811199645861,
+    "recombined_partial_auc": 0.798133853474989,
+    "recombined_ci_lo": 0.7161032862698233,
+    "result": "NOT_ESTABLISHED"
+  }
+}

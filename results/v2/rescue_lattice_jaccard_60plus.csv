@@ -1,0 +1,11 @@
+mechanism_a,mechanism_b,n_a,n_b,n_intersection,n_union,jaccard
+msp,entropy,152,152,144,160,0.9
+msp,margin,152,153,151,154,0.9805194805194806
+msp,disagreement,152,149,123,178,0.6910112359550562
+msp,lambda_rule,152,87,87,152,0.5723684210526315
+entropy,margin,152,153,144,161,0.8944099378881988
+entropy,disagreement,152,149,124,177,0.7005649717514124
+entropy,lambda_rule,152,87,87,152,0.5723684210526315
+margin,disagreement,153,149,124,178,0.6966292134831461
+margin,lambda_rule,153,87,87,153,0.5686274509803921
+disagreement,lambda_rule,149,87,76,160,0.475

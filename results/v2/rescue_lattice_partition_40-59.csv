@@ -1,0 +1,12 @@
+mechanism_subset,n_missed_cases,n_mechanisms
+none,40,0
+lambda_rule,29,1
+disagreement,1,1
+entropy+lambda_rule,5,2
+margin+lambda_rule,4,2
+disagreement+lambda_rule,3,2
+msp+margin+lambda_rule,7,3
+entropy+disagreement+lambda_rule,3,3
+msp+entropy+margin+lambda_rule,16,4
+msp+margin+disagreement+lambda_rule,8,4
+msp+entropy+margin+disagreement+lambda_rule,38,5

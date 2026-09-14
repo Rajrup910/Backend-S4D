@@ -1,0 +1,252 @@
+{
+  "alpha": 0.05,
+  "bootstrap_unit": "lesion (effective_lesion_id)",
+  "budget_rule": {
+    "cross_fitting": "F1/F2's within-cohort top-q estimates use lesion-grouped cross-fitting (fit the quantile and, for F2, the arg-max-over-U choice, on held-out lesion folds) to avoid the in-sample upward bias of fitting and evaluating the same quantile on the same data (blueprint 6.1). The plain in-sample number is still reported, separately, labelled oracle_evaluation.",
+    "definition": "For subgroup g and cohort, q_argmax,g is argmax's OWN natural referral rate in that (cohort, g) cell -- recomputed fresh every time from that cohort's panel, never a fixed number carried over from another cohort or session.",
+    "matching_construction": "Argmax has no budget parameter, so every score-based policy is compared to it via an exact-integer construction (blueprint 9): refer the r = |{argmax=1} intersect g| highest-scoring cases in g by the alternative score, ties broken by a seeded permutation (seed=42) recorded alongside the result. This makes McNemar on paired referral indicators valid and keeps 'natural argmax' and 'budget-matched comparison' from ever being silently conflated.",
+    "oracle_vs_frozen": "oracle_evaluation: the top-q cutoff is computed on the SAME cohort being evaluated (in-sample; answers 'how much information is in the score'). frozen_deployable: the cutoff is fit on one cohort (HAM-OOF) and applied UNCHANGED to a different cohort (answers 'does it transport', blueprint 9). Every policy row in every V2 output must carry a threshold_type field; the two are never mixed in one table without that column.",
+    "threshold_type_values": [
+      "oracle_evaluation",
+      "frozen_deployable",
+      "natural"
+    ]
+  },
+  "deviations": [
+    {
+      "date": "2026-09-12",
+      "id": "D-V2-1",
+      "overrides": [
+        "directive section 3",
+        "directive section 27 (E7)",
+        "directive section 28 (binary head BLOCKED)"
+      ],
+      "safeguards": [
+        "the certification test (F2) is still run in full and reported regardless of whether training proceeds, so it remains possible to say honestly whether training was scientifically motivated",
+        "Track B is contained to a strictly exploratory track (blueprint 12): it is not a Holm-corrected family, and it cannot alter F1-F4 inference",
+        "the success criterion for 'did the new model help' is frozen in this same document, before any weight update (see track_b_go_criterion below)"
+      ],
+      "statement": "The project owner authorized training new architecture arms (Track B, N1-N5) UNCONDITIONALLY, without waiting for the ranking-deficit certification (B_<40(q) > 0) that the governing directive makes a precondition for new-model training. This is recorded verbatim, not silently implemented."
+    }
+  ],
+  "families": {
+    "alpha": 0.05,
+    "families": [
+      {
+        "artifact": "results/v2/decomposition.csv",
+        "cohorts": [
+          "ham_oof",
+          "bcn20000",
+          "pad"
+        ],
+        "correction": "holm-bonferroni",
+        "estimand": "C_<40(q) = S^s_<40(q_argmax,<40) - S_argmax,<40, exact-r budget match (blueprint 6.1, 9)",
+        "kind": "confirmatory",
+        "members": [],
+        "name": "F1_compression_gap",
+        "note": "TWO-SIDED because C is a signed quantity (revision-2 correction: a constructed counterexample gives C=-1.0, so C>0 is a finding to test, not an assumption). MSKCC excluded -- 71.79% null lesion_id makes its lesion-grouped CI optimistic (S28/S29). Minimum clinically meaningful difference: 0.05 sensitivity at matched burden, applied as a reporting threshold alongside the CI, not as a change to the test itself.",
+        "question": "at argmax's own referral burden in the under-40 band, does ranking by escalation mass s(x) catch more or fewer true escalating cases than argmax itself -- i.e. is the deployed decision rule discarding usable information, or is s(x) a lossy summary argmax's shape-sensitivity exploits?",
+        "session": "v2_s34",
+        "sidedness": "two-sided",
+        "size": 3
+      },
+      {
+        "artifact": "results/v2/decomposition.csv",
+        "cohorts": [
+          "ham_oof"
+        ],
+        "correction": "holm-bonferroni",
+        "estimand": "S^u_<40(q_argmax,<40) - S^s_<40(q_argmax,<40) for each u, one-sided H1: >0 (guaranteed >=0 in the max sense since s in U, but each individual u is tested on its own, not via the max, so it can come out negative for a given u)",
+        "kind": "confirmatory",
+        "members": [
+          "d (escalation margin)",
+          "msp",
+          "entropy",
+          "disagreement"
+        ],
+        "name": "F2_ranking_certification",
+        "note": "HAM-OOF only: disagreement (ensemble_variance over per-arch member probabilities) is not computable from the assembled BCN/MSKCC ensemble file (no per-member columns) without a supplementary per-arch loader that does not exist yet -- see score_library.disagreement.availability below. Restricting to one cohort keeps the family's estimand identical across all 4 members. The certified lower bound B_<40(q) reported downstream uses only members that survive Holm correction here, so B cannot be inflated by an uncorrected max.",
+        "question": "does any alternative score in the frozen library U beat escalation mass s(x) at ranking true escalating cases in the under-40 band, at the same budget?",
+        "session": "v2_s34",
+        "sidedness": "one-sided (>0)",
+        "size": 4
+      },
+      {
+        "artifact": "results/v2/conformal_subgroup_safety.csv",
+        "cohorts": [
+          "ham_oof"
+        ],
+        "correction": "holm-bonferroni",
+        "estimand": "FRR_<40 at alpha=0.05, RAPS-Mondrian (per-class) vs RAPS-bipartite (band x escalation)",
+        "kind": "confirmatory",
+        "members": [],
+        "name": "F3_conformal_subgroup_safety",
+        "note": "HAM-OOF only in the confirmatory family: conformal calibration needs its own held-out tuning half (research.conformal.calibrate.grouped_halves), which exists for HAM; applying a HAM-fitted quantile to BCN/PAD unchanged is a frozen_deployable transport question, handled in F5 (exploratory) pending S38.",
+        "question": "does a class-conditional conformal calibration protect the under-40 escalation event better than a coarser one, measured by false-reassurance rate?",
+        "session": "v2_s37",
+        "sidedness": "two-sided",
+        "size": 2
+      },
+      {
+        "artifact": "results/v2/rescue_partitions.csv",
+        "cohorts": [
+          "ham_oof"
+        ],
+        "correction": "holm-bonferroni",
+        "estimand": "rescue rate = P(referred by abstention | Y_E=1, argmax misses, <40), matched to argmax's burden",
+        "kind": "confirmatory",
+        "members": [
+          "msp",
+          "entropy",
+          "margin (top-two)",
+          "disagreement"
+        ],
+        "name": "F4_uncertainty_rescue",
+        "note": "d (escalation margin) is deliberately excluded here -- it is a directed escalation score, not a generic uncertainty/abstention score, and belongs to F2's ranking question, not this family's rescue question.",
+        "question": "at the same referral budget argmax already uses, does an uncertainty-based abstention policy refer under-40 escalating cases argmax alone would miss?",
+        "session": "v2_s37",
+        "sidedness": "two-sided",
+        "size": 4
+      },
+      {
+        "artifact": "results/v2/secondary_comparisons.csv",
+        "cohorts": [
+          "ham_oof",
+          "ham_val",
+          "bcn20000",
+          "mskcc",
+          "pad"
+        ],
+        "correction": "none (intervals only)",
+        "estimand": "dose-response across cohorts, intersectional age x sex, per-class F1, all MSKCC results, oracle-vs-frozen transport magnitude, N1/N2 cheap architecture arms, any random-effects heterogeneity statement",
+        "kind": "exploratory",
+        "members": [],
+        "name": "F5_exploratory",
+        "note": "No significance claims. Reported as point estimate + interval. MSKCC's 72%-null lesion_id rate and 3-cohort insufficiency for meta-analysis (blueprint 8, 11) both apply here.",
+        "question": "everything not pre-registered as confirmatory above",
+        "session": "v2_s32..s39",
+        "sidedness": "n/a",
+        "size": null
+      }
+    ],
+    "n_confirmatory": 4,
+    "n_exploratory": 1,
+    "n_families": 5,
+    "rule": "Confirmatory families (F1-F4) are enumerated here, before any V2 result exists, and Holm-Bonferroni corrected within family; the adjusted p-value is the one quoted. F5 is exploratory: reported as intervals, never as 'significant'. This declaration is separate from, and does not modify, research/stats/families.py (a frozen V1 artifact)."
+  },
+  "frozen_at": "2026-09-12T15:25:22.520799+00:00",
+  "inputs": {
+    "input_hashes": "results/v2/input_hashes.json",
+    "panel_manifest": "results/v2/panel_manifest.json"
+  },
+  "mcid_applies_to": [
+    "F1_compression_gap"
+  ],
+  "mcid_sensitivity": 0.05,
+  "n_boot_confirmatory": 2000,
+  "score_library": {
+    "members": {
+      "d": {
+        "availability": [
+          "ham_oof",
+          "ham_val",
+          "bcn20000",
+          "mskcc",
+          "pad"
+        ],
+        "definition": "max_{c in E} p_c(x) - max_{c not in E} p_c(x)",
+        "name": "escalation margin",
+        "role": "the object argmax actually thresholds at 0 (blueprint 6.4); the existing age/lambda rule is exactly a threshold on d at -lambda, so this is what makes 'lambda rule vs mass' a same-object comparison",
+        "source": "research.v2.decompose.escalation_margin (to be written in S33)"
+      },
+      "disagreement": {
+        "availability": [
+          "ham_oof",
+          "ham_val",
+          "pad"
+        ],
+        "availability_note": "REQUIRES the per-architecture (N, 6, 7) probability tensor, which research/v2/panels.py does NOT store (it writes only the merged soft-vote). For ham_oof/ham_val/pad this tensor is cheaply reconstructable from the same per-arch CSVs panels.py already reads (research/predictions_oof_tta, research/predictions_tta, research/predictions_pad). For bcn20000/mskcc it is NOT available from the assembled results/external/predictions/ensemble_dirichlet_{cohort}.csv file (no per-member columns) -- it would require an additional loader reading the six per-arch results/external/predictions/{arch}_{cohort}.csv files, which does not exist yet. This is why F2 and F4 (both use disagreement) are restricted to ham_oof only, and why F1 (which does not use it) can still include bcn20000.",
+        "definition": "variance across the 6 architecture members' per-class probabilities",
+        "name": "ensemble variance",
+        "role": "ensemble-disagreement candidate member of U, and of F2/F4",
+        "source": "research.selective.scores.ensemble_variance"
+      },
+      "entropy": {
+        "availability": [
+          "ham_oof",
+          "ham_val",
+          "bcn20000",
+          "mskcc",
+          "pad"
+        ],
+        "definition": "Shannon entropy of p(x) in nats; higher = less confident",
+        "name": "predictive entropy",
+        "role": "generic uncertainty score, candidate member of U",
+        "source": "research.selective.scores.predictive_entropy"
+      },
+      "margin": {
+        "availability": [
+          "ham_oof",
+          "ham_val",
+          "bcn20000",
+          "mskcc",
+          "pad"
+        ],
+        "definition": "1 - (p_(1) - p_(2)); higher = closer race between top-2 classes",
+        "name": "top-two margin (generic, NOT escalation-specific)",
+        "role": "descriptive-only member of U (reported in the general V2 frontier sweep). Deliberately excluded from F2's confirmatory family because d already covers 'distance to the escalation decision boundary' and including both would be a redundant, uncorrected-for addition to a small confirmatory family. Distinct object from d: this is top-1-vs-top-2 over all 7 classes, d is best-escalating-vs-best-non-escalating.",
+        "source": "research.selective.scores.top_two_margin"
+      },
+      "msp": {
+        "availability": [
+          "ham_oof",
+          "ham_val",
+          "bcn20000",
+          "mskcc",
+          "pad"
+        ],
+        "definition": "1 - max_c p_c(x); higher = less confident",
+        "name": "1 - max softmax probability",
+        "role": "generic uncertainty score, candidate member of U",
+        "source": "research.selective.scores.max_softmax"
+      },
+      "s": {
+        "availability": [
+          "ham_oof",
+          "ham_val",
+          "bcn20000",
+          "mskcc",
+          "pad"
+        ],
+        "definition": "sum of predicted probability over the 3 escalating classes",
+        "name": "escalation mass",
+        "role": "the deployed ranking score; C is measured against this",
+        "source": "research.external.frozen_params.escalation_mass"
+      }
+    },
+    "orientation_rule": "Every score is used in its own natural direction, frozen here, forever. No score's sign is ever flipped after seeing results. A score that anti-ranks escalation just performs worse than s(x) in the frontier/decomposition; because F2's bound is a max over the library, a badly-oriented candidate can only fail to help, never spuriously inflate the certified bound."
+  },
+  "seed": 42,
+  "session": "S30",
+  "statement": "The V2 pre-registration. Written before any V2 result exists (S32 onward). A confirmatory claim (F1-F4) is only as strong as this document is complete and unmodified after the fact -- --check exists precisely to catch a post-hoc edit.",
+  "test_split_lock": {
+    "receipt_path": "results/test_pass_receipt.json",
+    "required_n_executions": 2,
+    "statement": "The HAM10000 held-out test split is never read by any V2 session. All confirmatory power comes from HAM-OOF (64 under-40 escalating cases), BCN-20000 (114 lesion-level / 369 image-level), and PAD-UFES-20. Any V1 test number V2 quotes is reconstructed from the frozen results/session9/* artifacts, never recomputed from research/predictions_tta/*_test.csv.",
+    "verified_by": "research.v2.audit --stage pre|post (S28)"
+  },
+  "track_b_go_criterion": {
+    "confirmatory_family_membership": "none -- Track B contributes to no Holm-corrected family (blueprint 12; revision-1's F6 is deleted)",
+    "criteria": [
+      "1. increases B_<40(q) or C_<40(q) on development data by >= the MCID (0.05 sensitivity)",
+      "2. the increase is statistically supported: lesion-grouped CI excludes 0",
+      "3. the improvement is not merely an aggregate Macro-F1 change",
+      "4. the improvement appears in the under-40 subgroup safety endpoint specifically, not only in the aggregate",
+      "5. the same DIRECTION of improvement appears on BCN-20000 (an unseen cohort)",
+      "6. the external (BCN) evaluation uses a FROZEN decision rule (threshold_type=frozen_deployable), never re-tuned on BCN",
+      "7. the gain survives the uncertainty analysis (F4) -- it is not an artifact of a single score's noise"
+    ],
+    "falsification": "An arm that improves on HAM but not on BCN, or improves BCN direction but not magnitude, is reported as 'cohort-dependent, not a real improvement' -- never silently reframed as a win. Five prior architecture/ensembling levers in this project already failed this kind of test; a sixth negative result is itself reportable evidence (blueprint 24), not a failure to hide.",
+    "statement": "An architecture arm (N3/N4/N5) supersedes the incumbent (N0) only if ALL seven conditions hold. This is frozen before any training run; the arms are trained regardless (D-V2-1), but this criterion, not post-hoc inspection, decides whether the result is reported as a genuine improvement or an exploratory negative result (blueprint 12, 24)."
+  }
+}

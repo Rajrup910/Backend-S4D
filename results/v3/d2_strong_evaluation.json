@@ -1,0 +1,264 @@
+{
+  "session": "S45_eval",
+  "arm": "D2_age_invariant",
+  "generated_at": "2026-09-14T14:03:17.700465+00:00",
+  "baseline": "all_three",
+  "mcid": 0.03,
+  "n_boot": 1000,
+  "arms": [
+    {
+      "arm": "d2_strong",
+      "macro_f1_val": 0.5999594778497068,
+      "macro_f1_val_ci_lo": 0.5344393684248246,
+      "macro_f1_val_ci_hi": 0.6418576697871264,
+      "balanced_acc_val": 0.6018583295619665,
+      "esc_sens_val": 0.5811688311688312,
+      "esc_sens_under40": 0.6818181818181818,
+      "under40_caught": 15,
+      "under40_n": 22,
+      "under40_ci_lo": 0.45127557242622957,
+      "under40_ci_hi": 0.8613534784462021,
+      "macro_f1_external": 0.5244543498309182
+    },
+    {
+      "arm": "all_three",
+      "macro_f1_val": 0.7421288085496217,
+      "macro_f1_val_ci_lo": 0.6853608922193019,
+      "macro_f1_val_ci_hi": 0.7840812282910917,
+      "balanced_acc_val": 0.7094078618232992,
+      "esc_sens_val": 0.724025974025974,
+      "esc_sens_under40": 0.5909090909090909,
+      "under40_caught": 13,
+      "under40_n": 22,
+      "under40_ci_lo": 0.36354696172973133,
+      "under40_ci_hi": 0.7929068770028508,
+      "macro_f1_external": 0.5753667574051453
+    }
+  ],
+  "primary": {
+    "metric": "macro_f1",
+    "split": "ham_val",
+    "paired": true,
+    "delta": -0.1421693306999149,
+    "ci_lo": -0.1796090435703874,
+    "ci_hi": -0.10672255314361859,
+    "p_value_two_sided": 0.0,
+    "gate_fires": false
+  },
+  "mechanism": {
+    "operationalisation": "D9 -- paired vs warm-start baseline, same rows",
+    "s42_reference_not_comparable": {
+      "age_band_auc": 0.6922,
+      "ci": [
+        0.6638,
+        0.7187
+      ],
+      "age_residual": 0.1226
+    },
+    "representation_moved": true,
+    "per_arm": {
+      "d2_strong": {
+        "age_band": {
+          "probe": "age_band",
+          "metric": "macro_ovr_auc",
+          "chance": 0.5,
+          "value": 0.6228837046451249,
+          "ci_lo": 0.573624000816171,
+          "ci_hi": 0.6866212952445137,
+          "n": 1532,
+          "classes": [
+            "40-59",
+            "60+",
+            "<40",
+            "unknown"
+          ],
+          "encodes": true,
+          "reading": "the representation encodes age band"
+        },
+        "age_residual": {
+          "probe": "age_residual",
+          "metric": "class_stratified_spearman",
+          "chance": 0.0,
+          "value": -0.0451999295346191,
+          "ci_lo": -0.10440155331038958,
+          "ci_hi": 0.013454133204430981,
+          "per_class": [
+            {
+              "class_index": 0,
+              "class_code": "SkinClass(index=0, code='akiec', name_en='Actinic keratosis / intraepithelial carcinoma', name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 / \u0907\u0902\u091f\u094d\u0930\u093e\u090f\u092a\u093f\u0925\u0947\u0932\u093f\u092f\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Actinic keratosis', short_name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A rough, scaly patch caused by long-term sun exposure. It is not cancer yet, but it can develop into cancer if left untreated.', plain_language_hi='\u0932\u0902\u092c\u0947 \u0938\u092e\u092f \u0924\u0915 \u0927\u0942\u092a \u092e\u0947\u0902 \u0930\u0939\u0928\u0947 \u0938\u0947 \u0939\u094b\u0928\u0947 \u0935\u093e\u0932\u093e \u0916\u0941\u0930\u0926\u0930\u093e, \u092a\u092a\u0921\u093c\u0940\u0926\u093e\u0930 \u0927\u092c\u094d\u092c\u093e\u0964 \u092f\u0939 \u0905\u092d\u0940 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0915\u0948\u0902\u0938\u0930 \u092e\u0947\u0902 \u092c\u0926\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964', malignancy='premalignant')",
+              "n": 53,
+              "spearman": 0.20488630865989357
+            },
+            {
+              "class_index": 1,
+              "class_code": "SkinClass(index=1, code='bcc', name_en='Basal cell carcinoma', name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Basal cell carcinoma', short_name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', plain_language_en='The most common form of skin cancer. It grows slowly and rarely spreads to other parts of the body, but it does need medical treatment.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u0938\u092c\u0938\u0947 \u0906\u092e \u0930\u0942\u092a\u0964 \u092f\u0939 \u0927\u0940\u0930\u0947-\u0927\u0940\u0930\u0947 \u092c\u0922\u093c\u0924\u093e \u0939\u0948 \u0914\u0930 \u0936\u093e\u092f\u0926 \u0939\u0940 \u0915\u092d\u0940 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932\u0924\u093e \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0938\u0915\u093e \u091a\u093f\u0915\u093f\u0924\u094d\u0938\u0915\u0940\u092f \u0907\u0932\u093e\u091c \u091c\u093c\u0930\u0942\u0930\u0940 \u0939\u0948\u0964', malignancy='malignant')",
+              "n": 82,
+              "spearman": 0.01063331918459747
+            },
+            {
+              "class_index": 2,
+              "class_code": "SkinClass(index=2, code='bkl', name_en='Benign keratosis-like lesion', name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 \u091c\u0948\u0938\u093e \u0918\u093e\u0935', short_name_en='Benign keratosis', short_name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A harmless growth on the skin, often related to age or sun exposure. It is not cancer.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092a\u0930 \u090f\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0935\u0943\u0926\u094d\u0927\u093f, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0909\u092e\u094d\u0930 \u092f\u093e \u0927\u0942\u092a \u0915\u0947 \u0938\u0902\u092a\u0930\u094d\u0915 \u0938\u0947 \u091c\u0941\u0921\u093c\u0940 \u0939\u094b\u0924\u0940 \u0939\u0948\u0964 \u092f\u0939 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964', malignancy='benign')",
+              "n": 160,
+              "spearman": -0.011114211820444078
+            },
+            {
+              "class_index": 3,
+              "class_code": "SkinClass(index=3, code='df', name_en='Dermatofibroma', name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', short_name_en='Dermatofibroma', short_name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', plain_language_en='A small, firm, harmless bump under the skin, often appearing after a minor injury such as an insect bite.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0947 \u0928\u0940\u091a\u0947 \u090f\u0915 \u091b\u094b\u091f\u0940, \u0915\u0920\u094b\u0930, \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0917\u093e\u0902\u0920, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0915\u0940\u0921\u093c\u0947 \u0915\u0947 \u0915\u093e\u091f\u0928\u0947 \u091c\u0948\u0938\u0940 \u092e\u093e\u092e\u0942\u0932\u0940 \u091a\u094b\u091f \u0915\u0947 \u092c\u093e\u0926 \u0926\u093f\u0916\u093e\u0908 \u0926\u0947\u0924\u0940 \u0939\u0948\u0964', malignancy='benign')",
+              "n": 24,
+              "spearman": 0.2278260869565217
+            },
+            {
+              "class_index": 4,
+              "class_code": "SkinClass(index=4, code='mel', name_en='Melanoma', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', short_name_en='Melanoma', short_name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', plain_language_en='A serious form of skin cancer that can spread to other parts of the body if not treated early. Early treatment matters a great deal.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u090f\u0915 \u0917\u0902\u092d\u0940\u0930 \u0930\u0942\u092a, \u091c\u094b \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964 \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u092c\u0939\u0941\u0924 \u092e\u093e\u092f\u0928\u0947 \u0930\u0916\u0924\u093e \u0939\u0948\u0964', malignancy='malignant')",
+              "n": 173,
+              "spearman": 0.2107462534359921
+            },
+            {
+              "class_index": 5,
+              "class_code": "SkinClass(index=5, code='nv', name_en='Melanocytic nevus', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u0938\u093e\u0907\u091f\u093f\u0915 \u0928\u0940\u0935\u0938 (\u0924\u093f\u0932)', short_name_en='Mole', short_name_hi='\u0924\u093f\u0932', plain_language_en='An ordinary mole. Most people have several and they are almost always harmless.', plain_language_hi='\u090f\u0915 \u0938\u093e\u092e\u093e\u0928\u094d\u092f \u0924\u093f\u0932\u0964 \u0905\u0927\u093f\u0915\u093e\u0902\u0936 \u0932\u094b\u0917\u094b\u0902 \u0915\u0947 \u0936\u0930\u0940\u0930 \u092a\u0930 \u0915\u0908 \u0924\u093f\u0932 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902 \u0914\u0930 \u092f\u0947 \u0932\u0917\u092d\u0917 \u0939\u092e\u0947\u0936\u093e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902\u0964', malignancy='benign')",
+              "n": 1018,
+              "spearman": -0.11262652547133489
+            },
+            {
+              "class_index": 6,
+              "class_code": "SkinClass(index=6, code='vasc', name_en='Vascular lesion', name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0938\u0902\u092c\u0902\u0927\u0940 \u0918\u093e\u0935', short_name_en='Vascular lesion', short_name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0918\u093e\u0935', plain_language_en='A mark formed by small blood vessels in the skin, such as a cherry angioma or a birthmark. Usually harmless.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092e\u0947\u0902 \u091b\u094b\u091f\u0940 \u0930\u0915\u094d\u0924 \u0935\u093e\u0939\u093f\u0915\u093e\u0913\u0902 \u0938\u0947 \u092c\u0928\u093e \u0928\u093f\u0936\u093e\u0928, \u091c\u0948\u0938\u0947 \u091a\u0947\u0930\u0940 \u090f\u0902\u091c\u093f\u092f\u094b\u092e\u093e \u092f\u093e \u091c\u0928\u094d\u092e\u091a\u093f\u0939\u094d\u0928\u0964 \u0906\u092e\u0924\u094c\u0930 \u092a\u0930 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924\u0964', malignancy='benign')",
+              "n": 22,
+              "spearman": -0.2941840767927725
+            }
+          ],
+          "entangled": false,
+          "reading": "age entanglement NOT CERTIFIED -- this does not certify independence"
+        }
+      },
+      "all_three": {
+        "age_band": {
+          "probe": "age_band",
+          "metric": "macro_ovr_auc",
+          "chance": 0.5,
+          "value": 0.6986038335897441,
+          "ci_lo": 0.6615956837653291,
+          "ci_hi": 0.7360518108341091,
+          "n": 1532,
+          "classes": [
+            "40-59",
+            "60+",
+            "<40",
+            "unknown"
+          ],
+          "encodes": true,
+          "reading": "the representation encodes age band"
+        },
+        "age_residual": {
+          "probe": "age_residual",
+          "metric": "class_stratified_spearman",
+          "chance": 0.0,
+          "value": 0.049110798576855755,
+          "ci_lo": -0.014801724649274659,
+          "ci_hi": 0.1077543431520835,
+          "per_class": [
+            {
+              "class_index": 0,
+              "class_code": "SkinClass(index=0, code='akiec', name_en='Actinic keratosis / intraepithelial carcinoma', name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 / \u0907\u0902\u091f\u094d\u0930\u093e\u090f\u092a\u093f\u0925\u0947\u0932\u093f\u092f\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Actinic keratosis', short_name_hi='\u090f\u0915\u094d\u091f\u093f\u0928\u093f\u0915 \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A rough, scaly patch caused by long-term sun exposure. It is not cancer yet, but it can develop into cancer if left untreated.', plain_language_hi='\u0932\u0902\u092c\u0947 \u0938\u092e\u092f \u0924\u0915 \u0927\u0942\u092a \u092e\u0947\u0902 \u0930\u0939\u0928\u0947 \u0938\u0947 \u0939\u094b\u0928\u0947 \u0935\u093e\u0932\u093e \u0916\u0941\u0930\u0926\u0930\u093e, \u092a\u092a\u0921\u093c\u0940\u0926\u093e\u0930 \u0927\u092c\u094d\u092c\u093e\u0964 \u092f\u0939 \u0905\u092d\u0940 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0915\u0948\u0902\u0938\u0930 \u092e\u0947\u0902 \u092c\u0926\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964', malignancy='premalignant')",
+              "n": 53,
+              "spearman": 0.2663653448257108
+            },
+            {
+              "class_index": 1,
+              "class_code": "SkinClass(index=1, code='bcc', name_en='Basal cell carcinoma', name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', short_name_en='Basal cell carcinoma', short_name_hi='\u092c\u0947\u0938\u0932 \u0938\u0947\u0932 \u0915\u093e\u0930\u094d\u0938\u093f\u0928\u094b\u092e\u093e', plain_language_en='The most common form of skin cancer. It grows slowly and rarely spreads to other parts of the body, but it does need medical treatment.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u0938\u092c\u0938\u0947 \u0906\u092e \u0930\u0942\u092a\u0964 \u092f\u0939 \u0927\u0940\u0930\u0947-\u0927\u0940\u0930\u0947 \u092c\u0922\u093c\u0924\u093e \u0939\u0948 \u0914\u0930 \u0936\u093e\u092f\u0926 \u0939\u0940 \u0915\u092d\u0940 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932\u0924\u093e \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 \u0907\u0938\u0915\u093e \u091a\u093f\u0915\u093f\u0924\u094d\u0938\u0915\u0940\u092f \u0907\u0932\u093e\u091c \u091c\u093c\u0930\u0942\u0930\u0940 \u0939\u0948\u0964', malignancy='malignant')",
+              "n": 82,
+              "spearman": 0.0318499116446669
+            },
+            {
+              "class_index": 2,
+              "class_code": "SkinClass(index=2, code='bkl', name_en='Benign keratosis-like lesion', name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938 \u091c\u0948\u0938\u093e \u0918\u093e\u0935', short_name_en='Benign keratosis', short_name_hi='\u0938\u094c\u092e\u094d\u092f \u0915\u0947\u0930\u093e\u091f\u094b\u0938\u093f\u0938', plain_language_en='A harmless growth on the skin, often related to age or sun exposure. It is not cancer.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092a\u0930 \u090f\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0935\u0943\u0926\u094d\u0927\u093f, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0909\u092e\u094d\u0930 \u092f\u093e \u0927\u0942\u092a \u0915\u0947 \u0938\u0902\u092a\u0930\u094d\u0915 \u0938\u0947 \u091c\u0941\u0921\u093c\u0940 \u0939\u094b\u0924\u0940 \u0939\u0948\u0964 \u092f\u0939 \u0915\u0948\u0902\u0938\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964', malignancy='benign')",
+              "n": 160,
+              "spearman": -0.04665430738763584
+            },
+            {
+              "class_index": 3,
+              "class_code": "SkinClass(index=3, code='df', name_en='Dermatofibroma', name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', short_name_en='Dermatofibroma', short_name_hi='\u0921\u0930\u094d\u092e\u0947\u091f\u094b\u092b\u093e\u0907\u092c\u094d\u0930\u094b\u092e\u093e', plain_language_en='A small, firm, harmless bump under the skin, often appearing after a minor injury such as an insect bite.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0947 \u0928\u0940\u091a\u0947 \u090f\u0915 \u091b\u094b\u091f\u0940, \u0915\u0920\u094b\u0930, \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0917\u093e\u0902\u0920, \u091c\u094b \u0905\u0915\u094d\u0938\u0930 \u0915\u0940\u0921\u093c\u0947 \u0915\u0947 \u0915\u093e\u091f\u0928\u0947 \u091c\u0948\u0938\u0940 \u092e\u093e\u092e\u0942\u0932\u0940 \u091a\u094b\u091f \u0915\u0947 \u092c\u093e\u0926 \u0926\u093f\u0916\u093e\u0908 \u0926\u0947\u0924\u0940 \u0939\u0948\u0964', malignancy='benign')",
+              "n": 24,
+              "spearman": 0.39060464765158465
+            },
+            {
+              "class_index": 4,
+              "class_code": "SkinClass(index=4, code='mel', name_en='Melanoma', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', short_name_en='Melanoma', short_name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u092e\u093e', plain_language_en='A serious form of skin cancer that can spread to other parts of the body if not treated early. Early treatment matters a great deal.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u0915\u0948\u0902\u0938\u0930 \u0915\u093e \u090f\u0915 \u0917\u0902\u092d\u0940\u0930 \u0930\u0942\u092a, \u091c\u094b \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u0928 \u0939\u094b\u0928\u0947 \u092a\u0930 \u0936\u0930\u0940\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u0939\u093f\u0938\u094d\u0938\u094b\u0902 \u092e\u0947\u0902 \u092b\u0948\u0932 \u0938\u0915\u0924\u093e \u0939\u0948\u0964 \u091c\u0932\u094d\u0926\u0940 \u0907\u0932\u093e\u091c \u092c\u0939\u0941\u0924 \u092e\u093e\u092f\u0928\u0947 \u0930\u0916\u0924\u093e \u0939\u0948\u0964', malignancy='malignant')",
+              "n": 173,
+              "spearman": 0.2832184020519696
+            },
+            {
+              "class_index": 5,
+              "class_code": "SkinClass(index=5, code='nv', name_en='Melanocytic nevus', name_hi='\u092e\u0947\u0932\u0947\u0928\u094b\u0938\u093e\u0907\u091f\u093f\u0915 \u0928\u0940\u0935\u0938 (\u0924\u093f\u0932)', short_name_en='Mole', short_name_hi='\u0924\u093f\u0932', plain_language_en='An ordinary mole. Most people have several and they are almost always harmless.', plain_language_hi='\u090f\u0915 \u0938\u093e\u092e\u093e\u0928\u094d\u092f \u0924\u093f\u0932\u0964 \u0905\u0927\u093f\u0915\u093e\u0902\u0936 \u0932\u094b\u0917\u094b\u0902 \u0915\u0947 \u0936\u0930\u0940\u0930 \u092a\u0930 \u0915\u0908 \u0924\u093f\u0932 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902 \u0914\u0930 \u092f\u0947 \u0932\u0917\u092d\u0917 \u0939\u092e\u0947\u0936\u093e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0939\u094b\u0924\u0947 \u0939\u0948\u0902\u0964', malignancy='benign')",
+              "n": 1018,
+              "spearman": 0.012824653852238636
+            },
+            {
+              "class_index": 6,
+              "class_code": "SkinClass(index=6, code='vasc', name_en='Vascular lesion', name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0938\u0902\u092c\u0902\u0927\u0940 \u0918\u093e\u0935', short_name_en='Vascular lesion', short_name_hi='\u0930\u0915\u094d\u0924\u0935\u093e\u0939\u093f\u0928\u0940 \u0918\u093e\u0935', plain_language_en='A mark formed by small blood vessels in the skin, such as a cherry angioma or a birthmark. Usually harmless.', plain_language_hi='\u0924\u094d\u0935\u091a\u093e \u092e\u0947\u0902 \u091b\u094b\u091f\u0940 \u0930\u0915\u094d\u0924 \u0935\u093e\u0939\u093f\u0915\u093e\u0913\u0902 \u0938\u0947 \u092c\u0928\u093e \u0928\u093f\u0936\u093e\u0928, \u091c\u0948\u0938\u0947 \u091a\u0947\u0930\u0940 \u090f\u0902\u091c\u093f\u092f\u094b\u092e\u093e \u092f\u093e \u091c\u0928\u094d\u092e\u091a\u093f\u0939\u094d\u0928\u0964 \u0906\u092e\u0924\u094c\u0930 \u092a\u0930 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924\u0964', malignancy='benign')",
+              "n": 22,
+              "spearman": -0.24788255223037836
+            }
+          ],
+          "entangled": false,
+          "reading": "age entanglement NOT CERTIFIED -- this does not certify independence"
+        }
+      }
+    }
+  },
+  "under40_escalation_auc": {
+    "operationalisation": "D10 -- declared before any D2 result existed; ranking AUC pooled over HAM val + external holdout for power",
+    "why": "overall Macro-F1 cannot see a fix confined to 1.4% of val rows, and thresholded under-40 sensitivity has a same-data noise floor of 5/22",
+    "per_arm": {
+      "d2_strong": {
+        "ham_val": {
+          "auc": 0.7994434137291281,
+          "ci_lo": 0.5931129300893911,
+          "ci_hi": 0.9238060170033401,
+          "n": 267,
+          "n_escalating": 22
+        },
+        "external": {
+          "auc": 0.6753613369467029,
+          "ci_lo": 0.5213427616107716,
+          "ci_hi": 0.8005793456281561,
+          "n": 382,
+          "n_escalating": 54
+        },
+        "pooled": {
+          "auc": 0.7200560301276752,
+          "ci_lo": 0.6013209266235835,
+          "ci_hi": 0.8218985279675037,
+          "n": 649,
+          "n_escalating": 76
+        }
+      },
+      "all_three": {
+        "ham_val": {
+          "auc": 0.9257884972170687,
+          "ci_lo": 0.8332096412765461,
+          "ci_hi": 0.9866172771796982,
+          "n": 267,
+          "n_escalating": 22
+        },
+        "external": {
+          "auc": 0.7559281842818428,
+          "ci_lo": 0.6140358759024293,
+          "ci_hi": 0.8594795548139981,
+          "n": 382,
+          "n_escalating": 54
+        },
+        "pooled": {
+          "auc": 0.8249288141820519,
+          "ci_lo": 0.7302927054811079,
+          "ci_hi": 0.9003889983795383,
+          "n": 649,
+          "n_escalating": 76
+        }
+      }
+    },
+    "pooled_delta_d2_minus_baseline": -0.10487278405437672,
+    "secondary": true
+  },
+  "verdict": "NEGATIVE RESULT -- invariance bought at a Macro-F1 cost (delta -0.1422); the unfavourable trade the sweep predicted",
+  "note": "HAM test never read; receipt stays at n_executions: 2"
+}

@@ -1,0 +1,134 @@
+{
+  "session": "S28",
+  "generated_at": "2026-09-13T10:10:21.931233+00:00",
+  "statement": "sha256 of every input file V2's later sessions (S29+) will read. If any of these hashes changes between sessions, downstream results were computed on a moving target and must be re-run.",
+  "files": [
+    {
+      "path": "ml/configs/splits/split_v1.csv",
+      "sha256": "2348f775dd3b9c32a2c24eb266fc9e3e20bc040a9d991b6db7710d2944e3d69b",
+      "bytes": 370029
+    },
+    {
+      "path": "ml/configs/class_mapping.json",
+      "sha256": "acd01d009a63d6c6bd374b3f0be0c663b7bb2235aef293307e6855110f867d05",
+      "bytes": 8022
+    },
+    {
+      "path": "ml/data/manifest.csv",
+      "sha256": "4c8b3575484baee21b673a254efc9028e90ad465186408c9f4d7eafa1d4d94b1",
+      "bytes": 1168197
+    },
+    {
+      "path": "ml/data/manifest_pad.csv",
+      "sha256": "beddf6246870411c530b7e1aae65bf5995dd212eb443cc8139e82574628d4302",
+      "bytes": 283565
+    },
+    {
+      "path": "research/agerule/results_oof/age_rule_lambda.json",
+      "sha256": "737beac72b84114d4498d078ce21127ad850f5dbcb69f58b3323a32b28e2b84e",
+      "bytes": 11058
+    },
+    {
+      "path": "research/selective/results_oof/fit_state.json",
+      "sha256": "721f7442ce642b747b03865da8582391964bfcb39ebc9b082bba16f4106913b7",
+      "bytes": 3237
+    },
+    {
+      "path": "research/predictions_oof_tta/convnext_tiny_train.csv",
+      "sha256": "2de973d119c96ad971e4018c83286e8c20849034cc8fd30494934895ba2f0603",
+      "bytes": 1750797
+    },
+    {
+      "path": "research/predictions_oof_tta/convnext_small_train.csv",
+      "sha256": "83822b5e734e3744f52a0bfdea306a29dbcfb96d554559d1f99a6fc2360e14da",
+      "bytes": 1768151
+    },
+    {
+      "path": "research/predictions_oof_tta/densenet121_train.csv",
+      "sha256": "c496a060f118bf775d1c08348ab5305a3803ece77bae13ccdbb5c7a98fbcb97b",
+      "bytes": 1726736
+    },
+    {
+      "path": "research/predictions_oof_tta/efficientnet_b0_train.csv",
+      "sha256": "b15171ea729f733863be3214bfb4cf333f393cecb738979e9314ad4a7e288d6b",
+      "bytes": 1779897
+    },
+    {
+      "path": "research/predictions_oof_tta/efficientnet_b3_train.csv",
+      "sha256": "7efb2b84ce710f8f5eacfc00b1de42368e92f46504fe53c3eb0d5e3afbb59015",
+      "bytes": 1777198
+    },
+    {
+      "path": "research/predictions_oof_tta/resnet50_train.csv",
+      "sha256": "c2e11fae51b9cd4a536fe450e6f19ffbf2db678a7d75e0a348bab5038eec0421",
+      "bytes": 1680932
+    },
+    {
+      "path": "research/predictions_tta/convnext_tiny_val.csv",
+      "sha256": "984937263e7e870f0b3fa3da6b8c1b89a83b7ab5c1a8e5e2dfd66e2f5938a720",
+      "bytes": 375843
+    },
+    {
+      "path": "research/predictions_tta/convnext_small_val.csv",
+      "sha256": "0953bae7e95855ef9289fd332f8e1893b24c58d7b18c33028e9d91b61e7418a1",
+      "bytes": 379653
+    },
+    {
+      "path": "research/predictions_tta/densenet121_val.csv",
+      "sha256": "789bdf3ae8bdbfeed2b6e9d6f754df3bec4b90de98516d8c3d998854737e8180",
+      "bytes": 370552
+    },
+    {
+      "path": "research/predictions_tta/efficientnet_b0_val.csv",
+      "sha256": "b90342ed02e75c53752ce6adecb047500a369cc43a610032c782fc4c9bfabb2c",
+      "bytes": 382159
+    },
+    {
+      "path": "research/predictions_tta/efficientnet_b3_val.csv",
+      "sha256": "f7738e7a523127ec1aa02a24bdfcc0ea6a788a22d70a0965e030b98976d9ed51",
+      "bytes": 381132
+    },
+    {
+      "path": "research/predictions_tta/resnet50_val.csv",
+      "sha256": "e829699ea8d37e2026170f887da80dd41fdd6dec0c6a20167a7c99246719a573",
+      "bytes": 360543
+    },
+    {
+      "path": "results/external/predictions/ensemble_dirichlet_bcn20000.csv",
+      "sha256": "ee427b9d762e898d10f6ad6fbca34ae8ecd536dba58f0f5b9e6896534cfa9d31",
+      "bytes": 4158158
+    },
+    {
+      "path": "results/external/predictions/ensemble_dirichlet_mskcc.csv",
+      "sha256": "4f8aaccaeea369e126cc06849896bcda50c8e43381ff491326f69afe063e16e0",
+      "bytes": 1021810
+    },
+    {
+      "path": "research/predictions_pad/convnext_tiny.csv",
+      "sha256": "6408042ed70f0bbed0643f03db4208c8214ca0c689829e687b556fdff9753a5b",
+      "bytes": 535649
+    },
+    {
+      "path": "results/session9/age_gap_test.csv",
+      "sha256": "307ea7d2b63daae6704e69b7af84b8f61c5b035c9ddea793f372f7be762b8f9d",
+      "bytes": 1148
+    },
+    {
+      "path": "results/session9/agerule_test.csv",
+      "sha256": "69de42743b2d7259e5e5366ab8e4df1d8a21acb80d36f0840cd7bbc8284d7a9a",
+      "bytes": 1429
+    },
+    {
+      "path": "results/session9/conformal_test.csv",
+      "sha256": "f4a9df7cdd3950d6a5b4a467ac048a7c96a7bfa47b7745482403c2a88930ebe5",
+      "bytes": 5629
+    },
+    {
+      "path": "results/session9/per_class_f1_test.csv",
+      "sha256": "a877b44765806a6efb500c20f7f1a9043c7551c1fdc49fc762e9d66b86aa173a",
+      "bytes": 798
+    }
+  ],
+  "missing": [],
+  "all_present": true
+}

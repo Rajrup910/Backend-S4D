@@ -1,0 +1,164 @@
+{
+  "session": "S46",
+  "phase": "E_plan_freeze",
+  "frozen_at": "2026-09-14T14:25:22.646625+00:00",
+  "statement": "V3 analysis plan. Frozen after S44 (Phase C conditions), S45 (Phase D arm D2) and the S46 safety refit. No V3 candidate is certified better than the ham_only control, so this plan freezes measurements and a gate verdict, not a deployment candidate. The HAM test split was not read at any point in V3.",
+  "phase_c": {
+    "gate": {
+      "metric": "macro_f1",
+      "split": "ham_val",
+      "control": "ham_only",
+      "arm": "all_three",
+      "delta_required": 0.03,
+      "delta": -0.008807042431822953,
+      "ci_lo": -0.05535897171733064,
+      "ci_hi": 0.03535088907166132,
+      "fires": false
+    },
+    "conditions": {
+      "ham_only": {
+        "macro_f1_val": 0.7509358509814447,
+        "esc_sens_under40": 0.4090909090909091,
+        "macro_f1_external": 0.35638456905553767
+      },
+      "ham_mskcc": {
+        "macro_f1_val": 0.7868602722024169,
+        "esc_sens_under40": 0.5454545454545454,
+        "macro_f1_external": 0.39582335127479745
+      },
+      "ham_bcn": {
+        "macro_f1_val": 0.7613823139375091,
+        "esc_sens_under40": 0.4090909090909091,
+        "macro_f1_external": 0.5517037855896143
+      },
+      "all_three": {
+        "macro_f1_val": 0.7421288085496217,
+        "esc_sens_under40": 0.5909090909090909,
+        "macro_f1_external": 0.5753667574051453
+      }
+    },
+    "multiplicity": {
+      "family": "S44 condition vs ham_only, macro_f1 on HAM val",
+      "family_size": 3,
+      "method": "holm_bonferroni",
+      "raw": {
+        "ham_mskcc": 0.022,
+        "ham_bcn": 0.542,
+        "all_three": 0.66
+      },
+      "holm": {
+        "ham_mskcc": 0.066,
+        "ham_bcn": 1.0,
+        "all_three": 1.0
+      },
+      "survivors": []
+    },
+    "outcome_preregistered": "3_breadth_buys_robustness_not_accuracy -- cross-archive only",
+    "outcome_substantive": "4_archives_do_not_pool_naively -- the pre-registered classifier returns outcome 3 on the pooled external endpoint, but that holdout is 80% BCN so the movement is in-domain; 0 of 2 genuine zero-shot transfer contrasts have a CI excluding zero",
+    "zero_shot_transfer_gains_excluding_zero": 0
+  },
+  "endpoint_retired": {
+    "endpoint": "under40_escalation_sensitivity_thresholded",
+    "reason": "S44 measured a same-data retraining spread of 5 of 22 cases, larger than the entire between-condition spread; at 22 positives it cannot discriminate",
+    "same_data_spread": {
+      "macro_f1_val": 0.002742416095441902,
+      "esc_sens_under40": 0.22727272727272724,
+      "under40_cases": 5
+    },
+    "between_condition_spread": {
+      "macro_f1_val": 0.044731463652795234,
+      "esc_sens_under40": 0.18181818181818182
+    },
+    "replacement": "under-40 escalation-mass AUC pooled over HAM val + external holdout (76 positives) -- deviation D10"
+  },
+  "phase_d": {
+    "arm": "D2_age_invariant_gradient_reversal",
+    "arm_choice_rule": "pre-committed in the S43 addendum before any Phase C result: if pooling archives moves nothing, a dual-view fix to the same entanglement is less likely to help. Phase C moved nothing.",
+    "safe_settings": {
+      "config": "age_weight=1.0 max_lambda=1.0 k_inner=5 lr=1e-5, 30 epochs",
+      "verdict": "INERT -- the adversary did not move the representation; says nothing about whether age-invariance would help. Raise lambda/k_inner or report as inert",
+      "primary_delta": 0.014121789567762222,
+      "mechanism_moved": false,
+      "under40_auc_delta": -0.04457150730228698
+    },
+    "strong_settings": {
+      "config": "age_weight=3 max_lambda=3 k_inner=10 lr=5e-5, 6 epochs",
+      "verdict": "NEGATIVE RESULT -- invariance bought at a Macro-F1 cost (delta -0.1422); the unfavourable trade the sweep predicted",
+      "primary_delta": -0.1421693306999149,
+      "mechanism_moved": true,
+      "under40_auc_delta": -0.10487278405437672,
+      "limitation": "6 epochs, 5 under pressure -- not re-converged, so part of the Macro-F1 drop is training disruption rather than the intrinsic cost of invariance"
+    },
+    "conclusion": "Removing the age entanglement S42 certified makes under-40 ranking WORSE, not better. The age signal is not a separable nuisance; it is load-bearing diagnostic signal. This does NOT establish that age-invariance is worthless -- no setting was found where invariance came without cost."
+  },
+  "safety_refit": {
+    "deviation": "fit split is HAM val (lesion-grouped tuning/calibration halves), not an OOF panel -- no V3 condition has fold checkpoints and building one needs ~9 h of retraining",
+    "fit_split": "ham_val_tuning_half",
+    "eval_split": "ham_val_calibration_half",
+    "n_tuning": 770,
+    "n_calibration": 762,
+    "lambda_rule": {
+      "refittable": false,
+      "under40_escalating_on_val": 22,
+      "gate": 30,
+      "action": "frozen S5 values retained; pooling the external holdout's 54 cases would clear the count but fit a HAM operating point on out-of-domain data"
+    },
+    "per_condition": {
+      "ham_only": {
+        "ece_uncalibrated": 0.11779819072926948,
+        "ece_dirichlet": 0.06263025226242586,
+        "conformal_a05_coverage": 0.9435695538057742,
+        "uncertifiable_a05": [
+          "df",
+          "vasc"
+        ]
+      },
+      "ham_mskcc": {
+        "ece_uncalibrated": 0.10719547053074402,
+        "ece_dirichlet": 0.03918307573776545,
+        "conformal_a05_coverage": 0.931758530183727,
+        "uncertifiable_a05": [
+          "df",
+          "vasc"
+        ]
+      },
+      "ham_bcn": {
+        "ece_uncalibrated": 0.06465548680555415,
+        "ece_dirichlet": 0.041955136486238706,
+        "conformal_a05_coverage": 0.9448818897637795,
+        "uncertifiable_a05": [
+          "df",
+          "vasc"
+        ]
+      },
+      "all_three": {
+        "ece_uncalibrated": 0.07955008987385988,
+        "ece_dirichlet": 0.0544654387501594,
+        "conformal_a05_coverage": 0.9278215223097113,
+        "uncertifiable_a05": [
+          "df",
+          "vasc"
+        ]
+      }
+    }
+  },
+  "s47_gate": {
+    "rule": "winning system beats ham_only by >= 0.03 HAM-val Macro-F1 with a CI excluding zero",
+    "frozen_in": "V3_SESSION_RUNBOOK.md S46, before any V3 training existed",
+    "candidates": {
+      "all_three_vs_ham_only": -0.008807042431822953,
+      "ham_mskcc_vs_ham_only": 0.03592442122097228,
+      "ham_mskcc_holm_p": 0.066,
+      "d2_vs_all_three": 0.014121789567762222,
+      "d2_strong_vs_all_three": -0.1421693306999149
+    },
+    "met": false,
+    "consequence": "no test read. results/test_pass_receipt.json stays at n_executions: 2. S47 reports HAM-val and the external holdout."
+  },
+  "test_read_status": {
+    "n_executions": 2,
+    "v3_read_test": false
+  },
+  "outputs_root": "results/v3/",
+  "self_sha256": "b925d7df63909f1dae6c60b567c6d291d48de29f020ad8529c04c7f8d13186c0"
+}

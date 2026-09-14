@@ -1,0 +1,90 @@
+{
+  "session": "S28",
+  "generated_at": "2026-09-13T10:10:21.907730+00:00",
+  "statement": "Cross-cohort image and lesion overlap, recomputed directly from the manifest CSVs on every run. This is the evidence behind the ban on the word 'independent' for external cohorts (blueprint \u00a78, \u00a741).",
+  "relationships": [
+    {
+      "pair": "HAM10000 <-> ISIC-2019 archive",
+      "unit": "image",
+      "n_a": 10015,
+      "n_b": 25331,
+      "overlap": 10015,
+      "verdict": "KNOWN_CONTAINMENT",
+      "note": "HAM10000 images found inside the larger public ISIC-2019 archive."
+    },
+    {
+      "pair": "HAM10000 <-> BCN-20000",
+      "unit": "image",
+      "n_a": 10015,
+      "n_b": 12413,
+      "overlap": 0,
+      "verdict": "DISJOINT"
+    },
+    {
+      "pair": "HAM10000 <-> MSKCC",
+      "unit": "image",
+      "n_a": 10015,
+      "n_b": 2903,
+      "overlap": 0,
+      "verdict": "DISJOINT"
+    },
+    {
+      "pair": "BCN-20000 <-> MSKCC",
+      "unit": "image",
+      "n_a": 12413,
+      "n_b": 2903,
+      "overlap": 0,
+      "verdict": "DISJOINT"
+    },
+    {
+      "pair": "HAM10000 <-> BCN-20000",
+      "unit": "lesion_id",
+      "n_a": 7470,
+      "n_b": 3576,
+      "overlap": 0,
+      "verdict": "DISJOINT"
+    },
+    {
+      "pair": "HAM10000 <-> MSKCC",
+      "unit": "lesion_id",
+      "n_a": 7470,
+      "n_b": 801,
+      "overlap": 0,
+      "verdict": "DISJOINT"
+    },
+    {
+      "pair": "BCN-20000 <-> MSKCC",
+      "unit": "lesion_id",
+      "n_a": 3576,
+      "n_b": 801,
+      "overlap": 0,
+      "verdict": "DISJOINT"
+    }
+  ],
+  "clustering": {
+    "HAM10000": {
+      "n_images": 10015,
+      "n_lesions": 7470,
+      "images_per_lesion": 1.341
+    },
+    "BCN-20000": {
+      "n_images": 12413,
+      "n_lesions": 3576,
+      "images_per_lesion": 3.471
+    },
+    "MSKCC": {
+      "n_images": 2903,
+      "n_lesion_id_present": 819,
+      "n_lesion_id_null": 2084,
+      "null_lesion_id_fraction": 0.7179
+    }
+  },
+  "independence_verdict": "No pair shares an image or a lesion_id, but HAM10000 is a documented subset of the ISIC-2019 archive and BCN-20000/MSKCC are both carved from that same parent archive. No pair qualifies as independent replication. Mandatory language: 'cross-hospital evaluation within a shared archive'.",
+  "mskcc_caveat": "72% of MSKCC rows have a null lesion_id. Under the project's singleton-cluster protocol these rows each become their own 'lesion', so a lesion-grouped bootstrap on MSKCC is largely an image-level bootstrap in disguise -- its confidence intervals are optimistic (too narrow). MSKCC is therefore secondary/supporting evidence only, never a confirmatory-family member (blueprint \u00a78, F1).",
+  "allowed_language": "cross-hospital evaluation within a shared archive",
+  "banned_language": [
+    "independent replication",
+    "independent validation",
+    "independent cohort"
+  ]
+}

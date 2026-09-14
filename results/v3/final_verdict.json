@@ -1,0 +1,189 @@
+{
+  "session": "S47",
+  "phase": "E_final_verdict",
+  "generated_at": "2026-09-14T14:28:55.722069+00:00",
+  "statement": "V3 close-out. The S47 gate was not met, so no test read was performed and the headline is HAM val plus the BCN+MSKCC external holdout. Six hypotheses were tested; five were falsified and one -- the age-entanglement diagnosis -- was certified and then shown not to be a fixable cause.",
+  "test_read": {
+    "performed": false,
+    "n_executions": 2,
+    "gate_met": false,
+    "gate_rule": "winning system beats ham_only by >= 0.03 HAM-val Macro-F1 with a CI excluding zero",
+    "candidates": {
+      "all_three_vs_ham_only": -0.008807042431822953,
+      "ham_mskcc_vs_ham_only": 0.03592442122097228,
+      "ham_mskcc_holm_p": 0.066,
+      "d2_vs_all_three": 0.014121789567762222,
+      "d2_strong_vs_all_three": -0.1421693306999149
+    }
+  },
+  "headline_ceiling": {
+    "target": 0.8,
+    "best_v3_val_macro_f1": 0.7868602722024169,
+    "best_condition": "ham_mskcc",
+    "broken": false,
+    "reading": "the runbook set out to break 0.80; the best V3 condition reaches 0.7869 and it is not certified better than the control"
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "phase": "A",
+      "session": "S40",
+      "claim": "S35's N2 escalation-head result survives out-of-sample feature extraction",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "delta_pauc": -0.0669964955679242,
+        "ci": [
+          -0.2452592056895738,
+          0.07181488947780383
+        ],
+        "n_escalating": 22,
+        "mcid": 0.05
+      },
+      "reading": "the gain does not clear MCID and the interval spans zero; the original result was an artifact of in-sample feature extraction"
+    },
+    {
+      "id": "H2",
+      "phase": "B",
+      "session": "S42",
+      "claim": "a better head on the frozen representation would recover the under-40 gap",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "bands_with_positive_certified_headroom": 0,
+        "delta_head_by_band": {
+          "<40": -0.022479526339088007,
+          "40-59": -0.0022884958242682663,
+          "60+": -0.017553735222280764,
+          "all": -0.01312138096798865
+        }
+      },
+      "reading": "every Delta_head against the matched baseline is negative and none is certified positive, over a family including the deployed head's own functional form, an MLP and a GBM"
+    },
+    {
+      "id": "H3",
+      "phase": "B",
+      "session": "S42",
+      "claim": "the representation is age-entangled (encodes age, and the score rides on it)",
+      "verdict": "CERTIFIED",
+      "evidence": {
+        "age_band_auc": 0.6921880515145523,
+        "age_band_ci": [
+          0.6637992663004054,
+          0.7186841726439731
+        ],
+        "age_residual": 0.12255836600448483,
+        "age_residual_ci": [
+          0.09239990172035523,
+          0.151287391229608
+        ]
+      },
+      "reading": "both certified above their nulls; composed with S36 check 7 this proves no band-constant logit offset can repair the defect"
+    },
+    {
+      "id": "H4",
+      "phase": "C",
+      "session": "S44",
+      "claim": "pooling HAM + BCN + MSKCC beats the control by >= 0.03 HAM-val Macro-F1",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "delta": -0.008807042431822953,
+        "ci": [
+          -0.05535897171733064,
+          0.03535088907166132
+        ],
+        "holm": {
+          "ham_mskcc": 0.066,
+          "ham_bcn": 1.0,
+          "all_three": 1.0
+        },
+        "survivors": []
+      },
+      "reading": "the gate arm is numerically worse than the control and no comparison survives Holm over the declared family of three"
+    },
+    {
+      "id": "H5",
+      "phase": "C",
+      "session": "S44",
+      "claim": "archive breadth buys cross-archive robustness",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "zero_shot_gains_excluding_zero": 0,
+        "zero_shot_contrasts": [
+          {
+            "cohort": "bcn20000",
+            "condition": "ham_mskcc",
+            "delta": 0.015882300977859365,
+            "ci": [
+              -0.027105746829214284,
+              0.05339868082986396
+            ]
+          },
+          {
+            "cohort": "mskcc",
+            "condition": "ham_bcn",
+            "delta": 0.026005258961711353,
+            "ci": [
+              -0.0010923094354126864,
+              0.05434295609949754
+            ]
+          }
+        ]
+      },
+      "reading": "the pooled external endpoint moves, but the holdout is 80% BCN so that movement is in-domain; both genuine zero-shot contrasts are null"
+    },
+    {
+      "id": "H6",
+      "phase": "D",
+      "session": "S45",
+      "claim": "removing the certified age entanglement improves under-40 ranking",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "safe_settings": {
+          "mechanism_moved": false,
+          "under40_auc_delta": -0.04457150730228698,
+          "verdict": "INERT -- the adversary did not move the representation; says nothing about whether age-invariance would help. Raise lambda/k_inner or report as inert"
+        },
+        "strong_settings": {
+          "mechanism_moved": true,
+          "under40_auc_delta": -0.10487278405437672,
+          "macro_f1_delta": -0.1421693306999149,
+          "verdict": "NEGATIVE RESULT -- invariance bought at a Macro-F1 cost (delta -0.1422); the unfavourable trade the sweep predicted"
+        },
+        "n_pooled_positives": 76
+      },
+      "reading": "at settings that actually move the representation the entanglement is removed -- age_band AUC falls below the baseline interval and age_residual flips sign -- and under-40 ranking gets WORSE, not better. The age signal is load-bearing diagnostic signal, not a separable nuisance.",
+      "limitation": "HAM test never read; receipt stays at n_executions: 2"
+    }
+  ],
+  "verdict_counts": {
+    "FALSIFIED": 5,
+    "CERTIFIED": 1
+  },
+  "safety_stack": {
+    "refit_on": "ham_val_tuning_half",
+    "deviation": "fit split is HAM val (lesion-grouped tuning/calibration halves), not an OOF panel -- no V3 condition has fold checkpoints and building one needs ~9 h of retraining",
+    "lambda_refittable": false,
+    "dirichlet_reduces_ece_in_all_conditions": true,
+    "uncertifiable_classes_a05": [
+      "df",
+      "vasc"
+    ]
+  },
+  "contribution_type": {
+    "kind": "diagnostic_and_falsification",
+    "falsified": [
+      "H1",
+      "H2",
+      "H4",
+      "H5",
+      "H6"
+    ],
+    "certified": [
+      "H3"
+    ],
+    "headline_claim": "The under-40 escalation gap is not caused by a removable age shortcut. The representation is certifiably age-entangled (H3), but removing that entanglement makes under-40 ranking worse (H6) -- the age signal is load-bearing diagnostic signal. No head-level fix exists (H2), archive breadth does not help (H4, H5), and the original escalation-head result was an in-sample artifact (H1).",
+    "why_not_a_method_paper": "best V3 HAM-val Macro-F1 is 0.7869 against a 0.80 target, and no condition or arm is certified better than the control",
+    "what_the_negatives_are_worth": "five falsifications, each with a pre-registered criterion and a lesion-grouped interval, plus one certified diagnosis that was then tested as a cause rather than assumed to be one"
+  },
+  "plan_sha256": "b925d7df63909f1dae6c60b567c6d291d48de29f020ad8529c04c7f8d13186c0",
+  "note": "HAM test never read in V3; receipt stays at n_executions: 2"
+}

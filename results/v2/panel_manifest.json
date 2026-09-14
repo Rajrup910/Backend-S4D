@@ -1,0 +1,112 @@
+{
+  "session": "S29",
+  "generated_at": "2026-09-12T15:14:59.209844+00:00",
+  "statement": "Five normalized per-cohort panels, one row schema across all cohorts (image_id, lesion_id, effective_lesion_id, age, age_band, y_true, true_code, p_<code> x7 calibrated, p_raw_<code> x7 uncalibrated). Every later V2 session reads these files, never a raw prediction CSV directly.",
+  "class_codes": [
+    "akiec",
+    "bcc",
+    "bkl",
+    "df",
+    "mel",
+    "nv",
+    "vasc"
+  ],
+  "panels": [
+    {
+      "cohort": "ham_oof",
+      "path": "results/v2/panels/ham_oof.csv",
+      "rows": 6981,
+      "sha256": "73266cb1101fa53c9b9edb85947ff301949f9ceed5c4c047aae37db3f894d75c",
+      "calibration_source": "deployed_dirichlet",
+      "class_codes": [
+        "akiec",
+        "bcc",
+        "bkl",
+        "df",
+        "mel",
+        "nv",
+        "vasc"
+      ],
+      "n_missing_age": 38,
+      "n_unknown_band": 38,
+      "problems": []
+    },
+    {
+      "cohort": "ham_val",
+      "path": "results/v2/panels/ham_val.csv",
+      "rows": 1532,
+      "sha256": "dbec46699210798bdd08d92462d139930389fdfaca9032e8547e52f7364834e5",
+      "calibration_source": "deployed_dirichlet",
+      "class_codes": [
+        "akiec",
+        "bcc",
+        "bkl",
+        "df",
+        "mel",
+        "nv",
+        "vasc"
+      ],
+      "n_missing_age": 10,
+      "n_unknown_band": 10,
+      "problems": []
+    },
+    {
+      "cohort": "bcn20000",
+      "path": "results/v2/panels/bcn20000.csv",
+      "rows": 11982,
+      "sha256": "c801b0e6529834662bf9b9672e4a72ad064d0dec5cb3aba21ab38dfc191f44e3",
+      "calibration_source": "deployed_dirichlet_precomputed",
+      "class_codes": [
+        "akiec",
+        "bcc",
+        "bkl",
+        "df",
+        "mel",
+        "nv",
+        "vasc"
+      ],
+      "n_missing_age": 74,
+      "n_unknown_band": 74,
+      "problems": []
+    },
+    {
+      "cohort": "mskcc",
+      "path": "results/v2/panels/mskcc.csv",
+      "rows": 2903,
+      "sha256": "5f9aa12dded477da485f379b60dbabb142a3fd16174eac4945d75a6138f9d250",
+      "calibration_source": "deployed_dirichlet_precomputed",
+      "class_codes": [
+        "akiec",
+        "bcc",
+        "bkl",
+        "df",
+        "mel",
+        "nv",
+        "vasc"
+      ],
+      "n_missing_age": 310,
+      "n_unknown_band": 310,
+      "problems": []
+    },
+    {
+      "cohort": "pad",
+      "path": "results/v2/panels/pad.csv",
+      "rows": 2106,
+      "sha256": "5dfc9117bd99acc24b10a6f1c3083598168556d89d3249e9b803ba4d09cd52cb",
+      "calibration_source": "deployed_dirichlet",
+      "class_codes": [
+        "akiec",
+        "bcc",
+        "bkl",
+        "df",
+        "mel",
+        "nv",
+        "vasc"
+      ],
+      "n_missing_age": 0,
+      "n_unknown_band": 0,
+      "problems": []
+    }
+  ],
+  "all_clean": true
+}

@@ -1,0 +1,391 @@
+{
+  "session": "S39",
+  "generated_at": "2026-09-13T10:08:27.646071+00:00",
+  "blueprint_source": "~/.claude/plans/master-polymorphic-gadget.md (V2 blueprint rev.2) section 13",
+  "test_split_lock": "results/test_pass_receipt.json:n_executions == 2 (verified before this run)",
+  "structure_note": "Section 13 assigns a verdict PER HYPOTHESIS and defines no single program-level verdict; none is invented here. The synthesis section 13 does require is the contribution type.",
+  "per_hypothesis": {
+    "H1": {
+      "hypothesis": "H1",
+      "claim": "argmax discards usable escalation information in under-40",
+      "verdict": "NO-GO",
+      "criterion": "GO: C>0, CI excludes 0, >=2/3 cohorts, >=MCID | NO-GO: C<=0 or CI spans 0 in >=2 cohorts",
+      "cohorts_meeting_go": [],
+      "cohorts_meeting_nogo": [
+        "ham_oof",
+        "bcn20000",
+        "pad"
+      ],
+      "evidence": [
+        {
+          "cohort": "ham_oof",
+          "C": -0.03125,
+          "ci": [
+            -0.08771929824561403,
+            0.025649350649350623
+          ],
+          "p_holm": 1.0
+        },
+        {
+          "cohort": "bcn20000",
+          "C": 0.005420054200541979,
+          "ci": [
+            -0.005830903790087439,
+            0.013700517000641522
+          ],
+          "p_holm": 1.0
+        },
+        {
+          "cohort": "pad",
+          "C": 0.0,
+          "ci": [
+            0.0,
+            0.025641025641025633
+          ],
+          "p_holm": 1.0
+        }
+      ],
+      "paper_claim_if_survives": "argmax compresses escalation evidence",
+      "source": "results/v2/bootstrap_intervals.json:F1"
+    },
+    "H2": {
+      "hypothesis": "H2",
+      "claim": "part of the gap is ranking, not decision",
+      "verdict": "NO-GO",
+      "criterion": "GO: B>0 with CI excluding 0 after multiplicity | NO-GO: CI includes 0",
+      "B_certified": 0.0,
+      "certification": "NOT CERTIFIED",
+      "mandated_wording": "report as NOT CERTIFIED -- a near-zero B is never evidence that ranking is adequate (blueprint section 17 lists that inference as prohibited)",
+      "evidence": [
+        {
+          "score": "d",
+          "diff_vs_s": 0.03125,
+          "p_holm": 1.0,
+          "significant_holm": false
+        },
+        {
+          "score": "msp",
+          "diff_vs_s": -0.328125,
+          "p_holm": 1.0,
+          "significant_holm": false
+        },
+        {
+          "score": "entropy",
+          "diff_vs_s": -0.390625,
+          "p_holm": 1.0,
+          "significant_holm": false
+        },
+        {
+          "score": "disagreement",
+          "diff_vs_s": -0.359375,
+          "p_holm": 1.0,
+          "significant_holm": false
+        }
+      ],
+      "source": "results/v2/bootstrap_intervals.json:F2"
+    },
+    "H3": {
+      "hypothesis": "H3",
+      "claim": "a frozen mass threshold transports",
+      "verdict": "NO-GO",
+      "criterion": "GO: frozen beats argmax on BCN, CI excludes 0 | MODIFY: direction only | NO-GO: frozen <= argmax",
+      "decisive_cohort": "bcn20000",
+      "evidence": [
+        {
+          "band": "ALL",
+          "S_frozen": 0.3838825550523192,
+          "S_argmax_natural": 0.3876307980634078,
+          "S_frozen_minus_argmax": -0.0037482430110885,
+          "S_frozen_minus_argmax_ci_lo": -0.0084343865007149,
+          "S_frozen_minus_argmax_ci_hi": 0.0011331298557158
+        },
+        {
+          "band": "<40",
+          "S_frozen": 0.2710027100271002,
+          "S_argmax_natural": 0.2791327913279133,
+          "S_frozen_minus_argmax": -0.008130081300813,
+          "S_frozen_minus_argmax_ci_lo": -0.024913256227758,
+          "S_frozen_minus_argmax_ci_hi": 0.0072297908340383
+        }
+      ],
+      "paper_claim": "oracle-only -- the blueprint's mandated wording when H3 is falsified",
+      "source": "results/v2/transport_frozen_vs_oracle.csv"
+    },
+    "H4": {
+      "hypothesis": "H4",
+      "claim": "marginal conformal coverage != subgroup escalation protection",
+      "verdict": "GO",
+      "criterion": "GO: FRR materially exceeds 1-coverage in a powered subgroup (CP lower bound above 1-coverage) | NO-GO: FRR tracks marginal coverage",
+      "qualifying_powered_subgroups": [
+        {
+          "alpha": 0.05,
+          "group": "all_escalating",
+          "frr": 0.0863836017569546,
+          "cp_lo": 0.0664081072984946,
+          "one_minus_marginal_coverage": 0.0493079584775086
+        },
+        {
+          "alpha": 0.05,
+          "group": "40-59",
+          "frr": 0.1318681318681318,
+          "cp_lo": 0.0863516500154072,
+          "one_minus_marginal_coverage": 0.0493079584775086
+        },
+        {
+          "alpha": 0.1,
+          "group": "all_escalating",
+          "frr": 0.2210834553440702,
+          "cp_lo": 0.1904904665672762,
+          "one_minus_marginal_coverage": 0.0991926182237601
+        },
+        {
+          "alpha": 0.1,
+          "group": "40-59",
+          "frr": 0.3131868131868132,
+          "cp_lo": 0.2466128141310962,
+          "one_minus_marginal_coverage": 0.0991926182237601
+        },
+        {
+          "alpha": 0.1,
+          "group": "60+",
+          "frr": 0.1680851063829787,
+          "cp_lo": 0.1353925564399915,
+          "one_minus_marginal_coverage": 0.0991926182237601
+        }
+      ],
+      "evidence": [
+        {
+          "alpha": 0.05,
+          "group": "all_escalating",
+          "frr_k": 59,
+          "frr_n": 683,
+          "frr": 0.0863836017569546,
+          "cp_lo": 0.0664081072984946,
+          "cp_hi": 0.1100149810367946,
+          "one_minus_marginal_coverage": 0.0493079584775086,
+          "gap_frr_minus_1mcov": 0.0370756432794459,
+          "powered": true
+        },
+        {
+          "alpha": 0.05,
+          "group": "<40",
+          "frr_k": 11,
+          "frr_n": 29,
+          "frr": 0.3793103448275862,
+          "cp_lo": 0.2068686994865071,
+          "cp_hi": 0.5773953593355987,
+          "one_minus_marginal_coverage": 0.0493079584775086,
+          "gap_frr_minus_1mcov": 0.3300023863500775,
+          "powered": false
+        },
+        {
+          "alpha": 0.05,
+          "group": "40-59",
+          "frr_k": 24,
+          "frr_n": 182,
+          "frr": 0.1318681318681318,
+          "cp_lo": 0.0863516500154072,
+          "cp_hi": 0.1898287023189468,
+          "one_minus_marginal_coverage": 0.0493079584775086,
+          "gap_frr_minus_1mcov": 0.0825601733906231,
+          "powered": true
+        },
+        {
+          "alpha": 0.05,
+          "group": "60+",
+          "frr_k": 24,
+          "frr_n": 470,
+          "frr": 0.051063829787234,
+          "cp_lo": 0.0329879762883357,
+          "cp_hi": 0.0750287237477173,
+          "one_minus_marginal_coverage": 0.0493079584775086,
+          "gap_frr_minus_1mcov": 0.0017558713097253,
+          "powered": true
+        },
+        {
+          "alpha": 0.1,
+          "group": "all_escalating",
+          "frr_k": 151,
+          "frr_n": 683,
+          "frr": 0.2210834553440702,
+          "cp_lo": 0.1904904665672762,
+          "cp_hi": 0.2541079593929753,
+          "one_minus_marginal_coverage": 0.0991926182237601,
+          "gap_frr_minus_1mcov": 0.1218908371203101,
+          "powered": true
+        },
+        {
+          "alpha": 0.1,
+          "group": "<40",
+          "frr_k": 15,
+          "frr_n": 29,
+          "frr": 0.5172413793103449,
+          "cp_lo": 0.3253149963614564,
+          "cp_hi": 0.7055144170481589,
+          "one_minus_marginal_coverage": 0.0991926182237601,
+          "gap_frr_minus_1mcov": 0.4180487610865847,
+          "powered": false
+        },
+        {
+          "alpha": 0.1,
+          "group": "40-59",
+          "frr_k": 57,
+          "frr_n": 182,
+          "frr": 0.3131868131868132,
+          "cp_lo": 0.2466128141310962,
+          "cp_hi": 0.385966004908654,
+          "one_minus_marginal_coverage": 0.0991926182237601,
+          "gap_frr_minus_1mcov": 0.213994194963053,
+          "powered": true
+        },
+        {
+          "alpha": 0.1,
+          "group": "60+",
+          "frr_k": 79,
+          "frr_n": 470,
+          "frr": 0.1680851063829787,
+          "cp_lo": 0.1353925564399915,
+          "cp_hi": 0.2050199164875882,
+          "one_minus_marginal_coverage": 0.0991926182237601,
+          "gap_frr_minus_1mcov": 0.0688924881592185,
+          "powered": true
+        }
+      ],
+      "mandated_wording": "coverage does not imply protection -- an ENDPOINT MISMATCH, never 'conformal fails' (blueprint sections 7 and 17)",
+      "source": "results/v2/frr_by_group.csv"
+    },
+    "H6": {
+      "hypothesis": "H6",
+      "claim": "a new architecture closes part of the deficit",
+      "verdict": "NO-GO",
+      "criterion": "GO: all 7 of section 12.3 | MODIFY: 1-2 fail | NO-GO: >=3 fail",
+      "best_arm_failure_count": 4,
+      "arms": {
+        "convnext_tiny-v2_n3_best": {
+          "n_failed": 4,
+          "failed_items": [
+            "1_raises_B_or_C_by_MCID",
+            "2_difference_CI_excludes_zero",
+            "4_under40_subgroup_endpoint",
+            "5_same_direction_on_BCN"
+          ],
+          "n_pass": 1,
+          "n_decidable": 5
+        },
+        "convnext_tiny-v2_n4_best": {
+          "n_failed": 4,
+          "failed_items": [
+            "1_raises_B_or_C_by_MCID",
+            "2_difference_CI_excludes_zero",
+            "4_under40_subgroup_endpoint",
+            "5_same_direction_on_BCN"
+          ],
+          "n_pass": 1,
+          "n_decidable": 5
+        },
+        "convnext_tiny-v2_n5_best": {
+          "n_failed": 4,
+          "failed_items": [
+            "1_raises_B_or_C_by_MCID",
+            "2_difference_CI_excludes_zero",
+            "4_under40_subgroup_endpoint",
+            "5_same_direction_on_BCN"
+          ],
+          "n_pass": 1,
+          "n_decidable": 5
+        }
+      },
+      "consequence_if_nogo": "NO-GO for architecture as a contribution (rules out types E and F)",
+      "note": "Track B is exploratory; it contributes no member to F1-F4 and cannot alter Track A inference.",
+      "source": "results/v2/arm_criterion.json"
+    },
+    "H5": {
+      "hypothesis": "H5",
+      "claim": "uncertainty adds rescue beyond the decision rule",
+      "verdict": "FALSIFIED",
+      "section_13_row": false,
+      "criterion": "section 7 falsifier: Jaccard ~= 1 between rescue sets",
+      "pairs_at_jaccard_1": [
+        {
+          "mechanism_a": "margin",
+          "mechanism_b": "lambda_rule",
+          "n_a": 5,
+          "n_b": 5,
+          "n_intersection": 5,
+          "jaccard": 1.0
+        }
+      ],
+      "supporting_f4": [
+        {
+          "score": "msp",
+          "rescue_rate": 0.1379310344827586,
+          "chance_p0": 0.0500379075056861,
+          "p_holm": 0.1646351204958228,
+          "significant_holm": false
+        },
+        {
+          "score": "entropy",
+          "rescue_rate": 0.0344827586206896,
+          "chance_p0": 0.0500379075056861,
+          "p_holm": 1.0,
+          "significant_holm": false
+        },
+        {
+          "score": "margin",
+          "rescue_rate": 0.1724137931034483,
+          "chance_p0": 0.0500379075056861,
+          "p_holm": 0.0544711674283193,
+          "significant_holm": false
+        },
+        {
+          "score": "disagreement",
+          "rescue_rate": 0.1034482758620689,
+          "chance_p0": 0.0500379075056861,
+          "p_holm": 0.3507800980314078,
+          "significant_holm": false
+        }
+      ],
+      "paper_claim": "abstention is NOT orthogonal to the decision rule",
+      "source": "results/v2/rescue_lattice_jaccard_lt40.csv + rescue_partitions.csv"
+    }
+  },
+  "summary": {
+    "GO": [
+      "H4"
+    ],
+    "MODIFY": [],
+    "NO-GO": [
+      "H1",
+      "H2",
+      "H3",
+      "H6"
+    ],
+    "H5_section7_only": "FALSIFIED"
+  },
+  "contribution_type": {
+    "selected": "C",
+    "selected_label": "diagnostic framework",
+    "taxonomy": {
+      "A": "mathematical",
+      "B": "methodological",
+      "C": "diagnostic framework",
+      "D": "empirical",
+      "E": "model",
+      "F": "loss",
+      "G": "clinical policy"
+    },
+    "ruled_out": [
+      "A",
+      "E",
+      "F",
+      "G"
+    ],
+    "ruled_out_reasons": [
+      "H6 NO-GO: no new architecture or loss is justified as a contribution",
+      "H1 and H2 both NO-GO: no mathematical result about compression or a certified ranking bound survived (the blueprint's own section 6.5 novelty audit already downgraded this to 'not a math paper')",
+      "H3 NO-GO: the frozen policy does not transport, so no deployable clinical-policy claim is supported (label: oracle-only)"
+    ],
+    "rationale": "H4 is the one surviving hypothesis: marginal conformal coverage is met while subgroup escalation protection is not, demonstrated in powered subgroups. That is a statement about what evaluation endpoints do and do not certify -- a diagnostic framework contribution. Types E/F (model, loss) are ruled out by H6, A (mathematical) by H1+H2, and G (clinical policy) by H3.",
+    "rule": "section 13: the contribution type is selected FROM the verdict, not decided in advance"
+  }
+}

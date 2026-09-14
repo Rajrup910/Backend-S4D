@@ -1,0 +1,6 @@
+label,band_lo,band_hi,violations_lo,violations_hi,ties_lo,ties_hi,n
+bcn20000,0.2,0.75,0,0,0,0,11982
+ham_oof,0.2,0.75,0,0,0,0,6981
+ham_val,0.2,0.75,0,0,0,0,1532
+mskcc,0.2,0.75,0,0,0,0,2903
+pad,0.2,0.75,0,0,0,0,2106

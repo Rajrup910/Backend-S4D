@@ -1,0 +1,134 @@
+{
+  "session": "S40",
+  "phase": "A2",
+  "generated_at": "2026-09-13T20:15:34.314400+00:00",
+  "statement": "Re-read of S34's exploratory efficiency claim. S34's arithmetic is reproduced, not disputed; what is added is the chance baseline max(q, prior) the statistic is silent about, two normalizations of it that disagree with each other, and the prior-free AUC instrument that needs no normalization choice.",
+  "n_boot": 500,
+  "seed": 42,
+  "q_grid": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.3
+  ],
+  "reproduction_of_s34": {
+    "checked": true,
+    "n_cells": 60,
+    "max_abs_diff": 0.0,
+    "reproduced": true,
+    "tolerance": 0.01
+  },
+  "worst_band_by_instrument": {
+    "ham_oof": {
+      "worst_by_raw_efficiency_q05": "<40",
+      "worst_by_lift_ratio_q05": "60+",
+      "worst_by_corrected_efficiency_q05": "<40",
+      "worst_by_partial_auc": "<40",
+      "worst_by_full_auc": "<40"
+    },
+    "bcn20000": {
+      "worst_by_raw_efficiency_q05": "<40",
+      "worst_by_lift_ratio_q05": "60+",
+      "worst_by_corrected_efficiency_q05": "<40",
+      "worst_by_partial_auc": "60+",
+      "worst_by_full_auc": "<40"
+    },
+    "mskcc": {
+      "worst_by_raw_efficiency_q05": "<40",
+      "worst_by_lift_ratio_q05": "60+",
+      "worst_by_corrected_efficiency_q05": "<40",
+      "worst_by_partial_auc": "60+",
+      "worst_by_full_auc": "40-59"
+    },
+    "pad": {
+      "worst_by_raw_efficiency_q05": "60+",
+      "worst_by_lift_ratio_q05": "60+",
+      "worst_by_corrected_efficiency_q05": "60+",
+      "worst_by_partial_auc": "60+",
+      "worst_by_full_auc": "60+"
+    }
+  },
+  "under40_margins": {
+    "ham_oof": {
+      "full_auc": {
+        "margin": -0.0392,
+        "verdict": "under40_worst",
+        "under40": 0.8953,
+        "next_worst_band": "60+",
+        "next_worst": 0.9345
+      },
+      "partial_auc": {
+        "margin": -0.0435,
+        "verdict": "under40_worst",
+        "under40": 0.8096,
+        "next_worst_band": "60+",
+        "next_worst": 0.8531
+      }
+    },
+    "bcn20000": {
+      "full_auc": {
+        "margin": -0.0031,
+        "verdict": "tied",
+        "under40": 0.7914,
+        "next_worst_band": "60+",
+        "next_worst": 0.7945
+      },
+      "partial_auc": {
+        "margin": 0.0338,
+        "verdict": "under40_not_worst",
+        "under40": 0.719,
+        "next_worst_band": "60+",
+        "next_worst": 0.6852
+      }
+    },
+    "mskcc": {
+      "full_auc": {
+        "margin": 0.0972,
+        "verdict": "under40_not_worst",
+        "under40": 0.7903,
+        "next_worst_band": "40-59",
+        "next_worst": 0.693
+      },
+      "partial_auc": {
+        "margin": 0.1039,
+        "verdict": "under40_not_worst",
+        "under40": 0.7029,
+        "next_worst_band": "60+",
+        "next_worst": 0.599
+      }
+    },
+    "pad": {
+      "full_auc": {
+        "margin": 0.0801,
+        "verdict": "under40_not_worst",
+        "under40": 0.8061,
+        "next_worst_band": "60+",
+        "next_worst": 0.7261
+      },
+      "partial_auc": {
+        "margin": 0.0804,
+        "verdict": "under40_not_worst",
+        "under40": 0.7004,
+        "next_worst_band": "60+",
+        "next_worst": 0.62
+      }
+    }
+  },
+  "near_tie_threshold": 0.01,
+  "finding": {
+    "supports_under40_deficit": [
+      "ham_oof"
+    ],
+    "reverses_under40_deficit": [
+      "mskcc",
+      "pad"
+    ],
+    "flat_or_ambiguous": [
+      "bcn20000"
+    ],
+    "n_cohorts": 4,
+    "instruments_agree_in_n_cohorts": 3,
+    "reading": "Both prior-free variants call under-40 worst in 1 of 4 cohorts (ham_oof); both call it NOT worst in 2 (mskcc, pad); the ordering is flat or the variants disagree in 1 (bcn20000). Separately, the two chance-corrections of S34's efficiency disagree with each other in every cohort, so that instrument does not decide the ordering on its own."
+  }
+}

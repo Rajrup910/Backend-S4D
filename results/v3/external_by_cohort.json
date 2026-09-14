@@ -1,0 +1,183 @@
+{
+  "session": "S44",
+  "phase": "C3_supplement",
+  "generated_at": "2026-09-14T10:40:20.135314+00:00",
+  "purpose": "separate in-domain generalization from cross-archive transfer",
+  "holdout_composition": {
+    "bcn20000": 1794,
+    "mskcc": 438
+  },
+  "trained_on": {
+    "ham_only": [],
+    "ham_mskcc": [
+      "mskcc"
+    ],
+    "ham_bcn": [
+      "bcn20000"
+    ],
+    "all_three": [
+      "bcn20000",
+      "mskcc"
+    ]
+  },
+  "rows": [
+    {
+      "cohort": "bcn20000",
+      "condition": "ham_only",
+      "n": 1794,
+      "regime": "zero_shot",
+      "macro_f1": 0.3642040853285318,
+      "ci_lo": 0.31531272008801214,
+      "ci_hi": 0.4141164310916162,
+      "balanced_acc": 0.3691952886551512,
+      "esc_sens": 0.4834503510531595
+    },
+    {
+      "cohort": "bcn20000",
+      "condition": "ham_mskcc",
+      "n": 1794,
+      "regime": "zero_shot",
+      "macro_f1": 0.3800863863063912,
+      "ci_lo": 0.327707727854323,
+      "ci_hi": 0.43426803385921875,
+      "balanced_acc": 0.38617696651648104,
+      "esc_sens": 0.6369107321965898
+    },
+    {
+      "cohort": "bcn20000",
+      "condition": "ham_bcn",
+      "n": 1794,
+      "regime": "in_domain",
+      "macro_f1": 0.5703396576261548,
+      "ci_lo": 0.47974145322624584,
+      "ci_hi": 0.6359705872187162,
+      "balanced_acc": 0.564450168988391,
+      "esc_sens": 0.7883650952858575
+    },
+    {
+      "cohort": "bcn20000",
+      "condition": "all_three",
+      "n": 1794,
+      "regime": "in_domain",
+      "macro_f1": 0.5728238466019572,
+      "ci_lo": 0.48417036447873607,
+      "ci_hi": 0.6452577270064229,
+      "balanced_acc": 0.5624887414495948,
+      "esc_sens": 0.79839518555667
+    },
+    {
+      "cohort": "mskcc",
+      "condition": "ham_only",
+      "n": 438,
+      "regime": "zero_shot",
+      "macro_f1": 0.20731116749863115,
+      "ci_lo": 0.17958474438358338,
+      "ci_hi": 0.23248376101328455,
+      "balanced_acc": 0.4433206589238208,
+      "esc_sens": 0.22093023255813954
+    },
+    {
+      "cohort": "mskcc",
+      "condition": "ham_mskcc",
+      "n": 438,
+      "regime": "in_domain",
+      "macro_f1": 0.3045792545693414,
+      "ci_lo": 0.28161319199307805,
+      "ci_hi": 0.3275087517399636,
+      "balanced_acc": 0.6994801128149737,
+      "esc_sens": 0.46511627906976744
+    },
+    {
+      "cohort": "mskcc",
+      "condition": "ham_bcn",
+      "n": 438,
+      "regime": "zero_shot",
+      "macro_f1": 0.2333164264603425,
+      "ci_lo": 0.20724203813709716,
+      "ci_hi": 0.25853443917289953,
+      "balanced_acc": 0.4850298312321453,
+      "esc_sens": 0.313953488372093
+    },
+    {
+      "cohort": "mskcc",
+      "condition": "all_three",
+      "n": 438,
+      "regime": "in_domain",
+      "macro_f1": 0.3029612415338839,
+      "ci_lo": 0.2777265745337346,
+      "ci_hi": 0.3252320301681862,
+      "balanced_acc": 0.6801048139116647,
+      "esc_sens": 0.5
+    }
+  ],
+  "comparisons": [
+    {
+      "cohort": "bcn20000",
+      "condition": "ham_mskcc",
+      "vs": "ham_only",
+      "regime": "zero_shot",
+      "delta": 0.015882300977859365,
+      "ci_lo": -0.027105746829214284,
+      "ci_hi": 0.05339868082986396,
+      "p_value_two_sided": 0.402,
+      "excludes_zero": false
+    },
+    {
+      "cohort": "bcn20000",
+      "condition": "ham_bcn",
+      "vs": "ham_only",
+      "regime": "in_domain",
+      "delta": 0.20613557229762297,
+      "ci_lo": 0.13178385197692202,
+      "ci_hi": 0.25664557238388824,
+      "p_value_two_sided": 0.0,
+      "excludes_zero": true
+    },
+    {
+      "cohort": "bcn20000",
+      "condition": "all_three",
+      "vs": "ham_only",
+      "regime": "in_domain",
+      "delta": 0.20861976127342535,
+      "ci_lo": 0.1330047665949576,
+      "ci_hi": 0.26759143879195074,
+      "p_value_two_sided": 0.0,
+      "excludes_zero": true
+    },
+    {
+      "cohort": "mskcc",
+      "condition": "ham_mskcc",
+      "vs": "ham_only",
+      "regime": "in_domain",
+      "delta": 0.09726808707071022,
+      "ci_lo": 0.0661623232988859,
+      "ci_hi": 0.12786206107769865,
+      "p_value_two_sided": 0.0,
+      "excludes_zero": true
+    },
+    {
+      "cohort": "mskcc",
+      "condition": "ham_bcn",
+      "vs": "ham_only",
+      "regime": "zero_shot",
+      "delta": 0.026005258961711353,
+      "ci_lo": -0.0010923094354126864,
+      "ci_hi": 0.05434295609949754,
+      "p_value_two_sided": 0.058,
+      "excludes_zero": false
+    },
+    {
+      "cohort": "mskcc",
+      "condition": "all_three",
+      "vs": "ham_only",
+      "regime": "in_domain",
+      "delta": 0.09565007403525272,
+      "ci_lo": 0.06644182909627817,
+      "ci_hi": 0.1254778388655622,
+      "p_value_two_sided": 0.0,
+      "excludes_zero": true
+    }
+  ],
+  "n_zero_shot_gains_excluding_zero": 0,
+  "note": "HAM test never read; receipt stays at n_executions: 2"
+}
