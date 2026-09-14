@@ -7,6 +7,12 @@
   <a href="#zero-leakage-protocol"><img src="https://img.shields.io/badge/Leakage_Guard-0_Cross--Split_Leaks-brightgreen.svg?style=for-the-badge&logo=shield" alt="Leakage Guard: 0 Leaks"></a>
   <a href="#how-to-reproduce"><img src="https://img.shields.io/badge/Python-3.12_%7C_PyTorch_2.11-yellow.svg?style=for-the-badge&logo=python" alt="Python 3.12 | PyTorch 2.11"></a>
 </p>
+<p align="center">
+  <a href="#post-manuscript-falsification-programme-v2--v3"><img src="https://img.shields.io/badge/Falsification-5_of_6_Hypotheses-critical.svg?style=flat-square&logo=target" alt="Falsification: 5 of 6 hypotheses"></a>
+  <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Pre--Registered-SHA256_Frozen_Plans-informational.svg?style=flat-square&logo=gitbook" alt="Pre-registered SHA256 frozen plans"></a>
+  <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Test_Reads-2_(Locked)-important.svg?style=flat-square&logo=lock" alt="Test reads: 2, locked"></a>
+  <a href="#an-endpoint-retired-on-evidence"><img src="https://img.shields.io/badge/Negative_Results-Retained-blueviolet.svg?style=flat-square&logo=bookstack" alt="Negative results retained"></a>
+</p>
 
 ---
 
@@ -37,6 +43,7 @@ This repository hosts a publication-grade research framework and safety audit pi
    - **Conformal Guarantees**: A marginal split-conformal guarantee at $\alpha = 0.10$ achieves 90.1% overall coverage, but covers only **23.8%** of malignant lesions in patients under 40. Only **equalized bipartite conformal prediction** (conditioning calibration quantiles jointly on age band $\times$ escalation requirement) restores young malignant coverage to **95.2%**.
 5. **Mitigation Priced in Biopsy Burden**: An out-of-fold cross-fitted age-conditional decision rule ($\hat{y} = \arg\max_c [p_c + \lambda_{b} \mathbf{1}_{c \in \mathcal{E}}]$) raises all-ages sensitivity from **0.731 $\to$ 0.831**, cutting missed malignancies from 78 to 49. In clinical currency, this increases the Number Needed to Biopsy (NNB) from **$3.0 \to 6.2$** at 3% reference prevalence. Under-40 sensitivity improves to **0.238 [0.082, 0.472]**—mitigating, but not closing, the blind spot.
 6. **Multi-Centre External Generalization**: Frozen evaluation across **11,982 BCN20000** and **2,903 MSKCC** external dermoscopy lesions reveals a transportability paradox: the $\lambda$-rule operating point transports (consistently lifting under-40 sensitivity across all centres), but pre-registered causal prior-shift hypotheses fail: **the operating policy transports, but the explanation does not**.
+7. **The Age Shortcut Is Load-Bearing, Not Removable**: A dedicated falsification programme (V3) established that the representation is *certifiably* age-entangled — it decodes age band at AUC **0.6922 [0.6638, 0.7187]**, and the escalation score rides on age even with the true class held fixed (`age_residual` **+0.1226 [+0.0924, +0.1513]**). Yet **removing that entanglement makes the blind spot worse**: adversarial age-invariance training drove `age_residual` to **$-0.0452$** (sign flipped) and simultaneously cut under-40 escalation ranking AUC from **0.8249 $\to$ 0.7201**. The age signal is **load-bearing diagnostic signal, not a separable nuisance** — which is why every logit-level remedy has failed.
 
 
 ---
@@ -166,6 +173,58 @@ Evaluating the frozen HAM-trained ensemble and age-conditional decision rule acr
 
 ---
 
+## Post-Manuscript Falsification Programme (V2 · V3)
+
+After the manuscript was frozen, two further campaigns ran **not** to improve the headline number
+but to test whether the under-40 blind spot could be *closed at all*. Both were pre-registered, and
+**neither read the test split** — `results/test_pass_receipt.json` remains at `n_executions: 2`
+throughout, and the six frozen `*_best.HAM-only.pt` checkpoints are byte-identical.
+
+V3 (sessions S40–S47) posed six falsifiable hypotheses. **Five were falsified; one was certified
+and then shown not to be a fixable cause.**
+
+| | Hypothesis | Verdict | Decisive evidence |
+|:--|:--|:--|:--|
+| **H1** | The prior escalation-head result survives out-of-sample feature extraction | ❌ **Falsified** | $\Delta$pAUC $-0.0670$, CI $[-0.245, +0.072]$ — an in-sample extraction artifact |
+| **H2** | A better head on the frozen representation recovers the gap | ❌ **Falsified** | Every matched $\Delta_{\text{head}}$ negative; none certified positive across linear / MLP / GBM probes |
+| **H3** | The representation is age-entangled | ✅ **Certified** | `age_band` AUC **0.6922** [0.6638, 0.7187]; `age_residual` **+0.1226** [+0.0924, +0.1513] |
+| **H4** | Pooling HAM + BCN + MSKCC beats the control by $\ge 0.03$ Macro-F1 | ❌ **Falsified** | $-0.0088$ $[-0.0554, +0.0354]$; no comparison survives Holm |
+| **H5** | Archive breadth buys cross-archive robustness | ❌ **Falsified** | **0 of 2** genuine zero-shot transfer contrasts exclude zero |
+| **H6** | Removing the entanglement improves under-40 ranking | ❌ **Falsified** | Entanglement removed, ranking AUC **fell** 0.8249 $\to$ 0.7201 |
+
+### Why H4 and H5 are separate
+
+A naive read of the pooled external endpoint suggests breadth buys robustness. It does not. The
+external holdout is **80% BCN** (1,794 BCN / 438 MSKCC), so any BCN-trained condition is scored
+largely on an archive it *trained on*. Disaggregating by cohort and labelling each cell from the
+training composition isolates the only two honest cross-archive contrasts — a model trained on one
+external archive, scored on the other, which it never saw:
+
+| Contrast | $\Delta$ vs control | 95% CI | Verdict |
+|:--|:--|:--|:--|
+| `ham_mskcc` on BCN (never saw BCN) | $+0.0159$ | $[-0.0271, +0.0534]$ | null |
+| `ham_bcn` on MSKCC (never saw MSKCC) | $+0.0260$ | $[-0.0011, +0.0543]$ | null |
+
+while every *in-domain* cell is large and certain (e.g. `ham_bcn` on BCN $+0.2061$ $[+0.1318, +0.2566]$).
+**Adding a second archive does not make the model robust to a third, unseen one.**
+
+### An endpoint retired on evidence
+
+Thresholded under-40 escalation sensitivity was **withdrawn as a discriminating endpoint**. Two
+ConvNeXt-Tiny models trained on *byte-identical* data differ by **5 of 22** cases on it
+(0.636 vs 0.409) — a same-data spread of **0.2273**, larger than the entire between-condition
+spread of **0.1818**. It was replaced by under-40 escalation-mass **AUC pooled across HAM val and
+the external holdout**, raising the positive count from 22 to **76**.
+
+> **Net result.** V3 set out to break a 0.80 Macro-F1 ceiling. The best condition reaches
+> **0.7869** and is not certified better than the control. The contribution is therefore
+> *diagnostic and falsificatory*: the under-40 gap is not caused by a removable age shortcut, no
+> head-level fix exists, archive breadth does not help, and the result that motivated three earlier
+> arms was an artifact. The frozen plan is at `results/v3/analysis_plan_v3.json`; per-hypothesis
+> verdicts are computed, not asserted, in `results/v3/final_verdict.json`.
+
+---
+
 ## Strict Research Integrity & Audit Gates
 
 This codebase enforces strict automated verification protocols to prevent data leakage, metric inflation, or hand-entered results:
@@ -177,13 +236,23 @@ This codebase enforces strict automated verification protocols to prevent data l
    - `python research/ablation/audit_manuscript.py --target paper/manuscript_edited.tex`: Validates the condensed 11-page manuscript (269 passed, 91 intentional skips, 0 failed).
    - `python research/ablation/verify_edited_tables.py`: Reconstructs 4 edited LaTeX tables (137 lines) byte-for-byte from underlying JSON/CSV artifacts.
    - `python research/ablation/validate_structure.py`: Validates citation, label, figure, and nested input resolution.
+4. **Pre-Registration Before Data**: Every post-manuscript campaign freezes its hypotheses, gates
+   and minimum clinically important difference *before* the runs that test them, with a
+   self-verifying SHA256 (`results/v3/analysis_plan_v3.json`, `python -m research.v3.plan --check`).
+   Deviations are numbered and logged (D1–D11) rather than silently applied.
+5. **Certification Asymmetry**: An interval containing the null is reported `NOT_CERTIFIED`, never
+   as evidence of absence. Negative results are retained and published, never discarded — six
+   levers have now been killed on the record.
+6. **Multiplicity Discipline**: Declared comparison families are Holm-corrected
+   (`research/stats/families.py`). A nominal winner that does not survive correction is reported as
+   a nominal winner, not promoted.
 
 ---
 
 ## Repository Map
 
 ```
-Backend-S4D-/
+Backend-S4D/
 ├── ml/                                 # Core Deep Learning Engine
 │   ├── checkpoints/                   # Checkpoints & weights (HAM-only, PAD-only, PAD-warm)
 │   ├── configs/                       # Class configurations & 7-class taxonomy definitions
@@ -201,6 +270,20 @@ Backend-S4D-/
 │   ├── external/                      # Multi-centre replication engine (BCN20000, MSKCC, PAD-UFES)
 │   ├── selective/                     # Selective classification, margin & MSP risk-coverage curves
 │   ├── tta/                           # 24-view dihedral test-time augmentation pipelines
+│   ├── v2/                            # Post-manuscript campaign: frontier efficiency, escalation
+│   │                                  #   heads, rescue conformal, transport decomposition
+│   ├── v3/                            # Falsification programme (S40–S47)
+│   │   ├── ceiling.py                 #   Representation ceiling instrument (rho_g, Delta_head)
+│   │   ├── probes.py                  #   Bottleneck battery: age_band, age_residual, archive
+│   │   ├── build_multiarchive.py      #   4 multi-archive training conditions + split generation
+│   │   ├── eval_conditions.py         #   Condition evaluation with the pre-registered gate
+│   │   ├── external_by_cohort.py      #   Separates in-domain fit from zero-shot transfer
+│   │   ├── age_invariant.py           #   Gradient-reversal age-invariance primitives
+│   │   ├── train_age_invariant.py     #   Adversarial trainer (alternating k_inner schedule)
+│   │   ├── eval_d2.py                 #   Paired mechanism + endpoint evaluation
+│   │   ├── safety_refit.py            #   Dirichlet / abstention / conformal refit
+│   │   ├── plan.py                    #   Frozen analysis plan + artifact registration
+│   │   └── final_verdict.py           #   Per-hypothesis verdicts computed from artifacts
 │   └── experiments.csv                # Central append-only ledger of all experimental runs
 ├── paper/                              # Publication Manuscripts & Camera-Ready Artifacts
 │   ├── manuscript.tex                 # Full comprehensive paper draft (~24 pages)
@@ -210,10 +293,13 @@ Backend-S4D-/
 │   ├── tables_edited/                 # Formatted LaTeX tables for 11-page edited paper
 │   └── figures/                       # Vector & high-res PNG camera-ready figures
 ├── results/                            # Frozen JSON, CSV, and ledger experimental artifacts
+│   ├── frozen_artifacts.json          # SHA256 registry: 34 prediction matrices + analysis plans
+│   ├── test_pass_receipt.json         # Append-only test-read receipt (n_executions: 2)
+│   ├── v2/                            # V2 campaign outputs, panels & frozen plan
+│   └── v3/                            # V3 outputs: conditions, probes, verdicts, frozen plan
 ├── scripts/                            # Utility Scripts
 │   ├── verify_env.py                  # CUDA kernel launch & package environment verifier
 │   └── sample_predict.py              # CLI sample inference and triage verification
-├── CHANGELOG.md                        # Exhaustive session-by-session research ledger (S0–S27)
 └── README.md                           # This document
 ```
 

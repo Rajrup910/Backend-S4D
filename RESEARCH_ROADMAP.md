@@ -202,6 +202,70 @@ Beyond LDAM-DRW and ASL:
 
 ---
 
+## 2D. Phase 6 — Post-Manuscript Falsification Programme (V2 · V3, sessions S28–S47)
+
+Phases 0–5 delivered the manuscript. Phase 6 asks the question the manuscript could not answer:
+**is the under-40 blind spot fixable at all, or is it intrinsic?** It is deliberately structured as
+a falsification programme rather than a search for improvement — each campaign declares hypotheses,
+gates and an MCID *before* the runs that test them, and a null is a publishable result.
+
+### Standing constraints (non-negotiable)
+
+- HAM val/test inherited byte-identically from `ml/configs/splits/split_v1.csv`
+- `results/test_pass_receipt.json` stays at `n_executions: 2` — **no test read in either campaign**
+- The six `*_best.HAM-only.pt` checkpoints stay byte-identical (`research.v2.frozen_checkpoints --check`)
+- Every number traceable to `results/`; an interval containing the null is `NOT_CERTIFIED`, never "zero"
+
+### V3 hypothesis register (S40–S47)
+
+| ID | Phase | Hypothesis | Instrument | Verdict |
+|:--|:--|:--|:--|:--|
+| H1 | A | The prior escalation-head gain survives out-of-sample extraction | `research/v3/oos_probe.py` | ❌ Falsified |
+| H2 | B | A better head on the frozen representation recovers the gap | `research/v3/ceiling.py` ($\rho_g$, $\Delta_{\text{head}}$) | ❌ Falsified |
+| H3 | B | The representation is age-entangled | `research/v3/probes.py` | ✅ **Certified** |
+| H4 | C | Pooling HAM + BCN + MSKCC clears a $+0.03$ Macro-F1 gate | `research/v3/eval_conditions.py` | ❌ Falsified |
+| H5 | C | Archive breadth buys zero-shot cross-archive robustness | `research/v3/external_by_cohort.py` | ❌ Falsified |
+| H6 | D | Removing the entanglement improves under-40 ranking | `research/v3/eval_d2.py` | ❌ Falsified |
+
+### The four multi-archive conditions (Phase C)
+
+| Condition | Train images | Purpose |
+|:--|--:|:--|
+| `ham_only` | 6,981 | control — must reproduce the published val figure |
+| `ham_mskcc` | 9,010 | sample size, almost no domain breadth |
+| `ham_bcn` | 15,396 | rare-class injection, second dermoscopy site |
+| `all_three` | 17,425 | the deployable object |
+
+All four validate on the **same** fixed 1,532-image HAM val set, so per-epoch figures are
+comparable and no condition selects against a different target.
+
+### Methodological products worth reusing
+
+1. **In-domain vs zero-shot disaggregation** — a pooled external endpoint whose holdout is 80% one
+   archive cannot measure robustness. Cells are labelled from the training composition, not by hand.
+2. **Noise-floor calibration of an endpoint** — before attributing a subgroup difference to a
+   condition, measure how far two models trained on *identical* data drift on that endpoint. Here
+   the same-data spread (0.2273) exceeded the between-condition spread (0.1818), retiring the
+   endpoint.
+3. **Mechanism checks gate endpoint claims** — an intervention that did not move the representation
+   cannot be credited with moving an outcome. `eval_d2.py` encodes this as a 2×2 verdict table with
+   an explicit `CONFOUNDED` cell.
+4. **Reliance $\ne$ invariance** — adversarial removal can stop a head *using* an attribute without
+   deleting it. Both halves are asserted so neither can silently drift.
+
+### Outcome
+
+The 0.80 Macro-F1 ceiling was **not** broken (best condition 0.7869, not certified above control).
+The contribution type, derived from the verdict pattern rather than chosen in advance, is
+**diagnostic and falsificatory**:
+
+> The under-40 escalation gap is **not caused by a removable age shortcut**. The representation is
+> certifiably age-entangled, but stripping that entanglement degrades the very subgroup it was
+> meant to rescue — the age signal is load-bearing diagnostic signal. No head-level fix exists,
+> archive breadth does not help, and the result that motivated three earlier arms was an artifact.
+
+---
+
 ## 3. Experiment Registry Schema (`research/experiments.csv`)
 
 Every experimental run appends a structured record:
@@ -212,8 +276,30 @@ timestamp,session,method,split,macro_f1,accuracy,balanced_accuracy,weighted_f1,m
 
 ---
 
-## 4. Immediate Next Steps for Execution
+## 4. Programme Status
 
-1. **Session 0**: Run `scripts/verify_env.py` and extract standardized prediction CSVs for all 6 existing checkpoints across both `val` and `test` splits.
-2. **Session 1**: Implement `research/ensembling/` algorithms (Soft-Vote, Rank-Average, Nelder-Mead Simplex, Non-negative Stacking, Caruana Greedy) on the generated prediction matrices.
-3. **Session 2**: Implement TTA, Dirichlet calibration, and Cost-Sensitive Thresholding with Decision Curve Analysis.
+| Phase | Scope | Status |
+|:--|:--|:--|
+| 0 | Baseline calibration & preprocessing | ✅ Complete — 6 backbones trained and evaluated |
+| 1 | OOF ensembling & diversity | ✅ Complete — soft-vote is the only certifiable rung |
+| 2 | TTA, Dirichlet calibration, cost-sensitive thresholds, DCA | ✅ Complete |
+| 3 | Vision transformers, margin losses, multimodal fusion | ✅ Complete — no arm beats the CNN soft-vote |
+| 4 | Cross-domain adaptation, selective classification, fairness, conformal | ✅ Complete |
+| 5 | Ablation synthesis, statistical inference, manuscript | ✅ Complete — manuscript + supplementary frozen |
+| 6 | Post-manuscript falsification programme (V2 · V3) | ✅ Complete — 5 of 6 hypotheses falsified |
+
+### Open items
+
+1. **The remaining test read is unspent.** V3's gate (winning system beats the control by
+   $\ge 0.03$ HAM-val Macro-F1 with a CI excluding zero) was **not met** by any candidate, so S47
+   did not spend it. Whether the V3 result justifies spending it is a manuscript question, not a
+   pipeline one.
+2. **Page budget.** `research/ablation/estimate_pages.py` puts the full manuscript at ~24 pages
+   against IEEE TMI's 10; prose is 16.2 of those, so deleting every float still leaves ~18. The
+   honest options remain splitting the paper or targeting a venue without a ten-page limit.
+3. **Optional — a converged invariance frontier.** Two points exist: $\lambda = 1$ (inert; no cost,
+   no benefit) and $\lambda = 3$ (engaged; $-0.1422$ Macro-F1, $-0.1049$ under-40 AUC, but only 6
+   epochs and not re-converged). Three full runs (~6 h) would turn "no cheap setting was found"
+   into a measured cost curve. Only worth it if the invariance claim becomes load-bearing.
+4. **D1 (dual-view input) remains documented and unrefuted**, though Phase C weakened its premise —
+   pooling archives produced 0 of 2 zero-shot transfer gains.
