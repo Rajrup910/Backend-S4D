@@ -1,0 +1,8 @@
+C,ci_lo,ci_hi,p_two_sided,n_boot_used,family,cohort,band,n,n_escalating,n_lesions,p_holm,significant_holm,exceeds_mcid,score,diff_vs_s,p_one_sided
+-0.03125,-0.08771929824561403,0.025649350649350623,0.46776611694152925,2000,F1_compression_gap,ham_oof,<40,1319.0,64.0,907.0,1.0,False,False,,,
+0.005420054200541979,-0.005830903790087439,0.013700517000641522,0.6036981509245377,2000,F1_compression_gap,bcn20000,<40,1964.0,369.0,618.0,1.0,False,False,,,
+0.0,0.0,0.025641025641025633,1.0,2000,F1_compression_gap,pad,<40,241.0,74.0,206.0,1.0,False,False,,,
+,-0.033333333333333326,0.08335843373493966,,2000,F2_ranking_certification,ham_oof,<40,,,,1.0,False,,d,0.03125,0.4257871064467766
+,-0.5147058823529411,-0.156232638888889,,2000,F2_ranking_certification,ham_oof,<40,,,,1.0,False,,msp,-0.328125,1.0
+,-0.5416964285714286,-0.21873579545454552,,2000,F2_ranking_certification,ham_oof,<40,,,,1.0,False,,entropy,-0.390625,1.0
+,-0.5319731856601574,-0.22469322885866366,,2000,F2_ranking_certification,ham_oof,<40,,,,1.0,False,,disagreement,-0.359375,1.0

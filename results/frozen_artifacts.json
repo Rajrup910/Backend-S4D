@@ -180,5 +180,11 @@
     "frozen_at": "2026-09-04T16:23:17+00:00",
     "n_quantities": 19,
     "statement": "The pre-registered analysis plan for the single session-9 test pass. Written before any test read; the pass refuses to emit a quantity it does not name. Its hash is recorded here so that a plan revised after seeing test numbers would be visibly a different plan."
+  },
+  "analysis_plan_v3": {
+    "path": "results/v3/analysis_plan_v3.json",
+    "sha256": "cd72a53b7502a70a644bc198b0fe3dbee3fafd04ea1f3abd91105b809d940984",
+    "bytes": 7039,
+    "registered_at": "2026-09-14T14:25:22.655730+00:00"
   }
 }

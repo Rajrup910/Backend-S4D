@@ -1,0 +1,124 @@
+{
+  "session": "S45",
+  "arm": "D2_age_invariant",
+  "generated_at": "2026-09-14T10:57:18.913373+00:00",
+  "purpose": "does the alternating fix buy invariance at an acceptable class-accuracy cost?",
+  "chance_age_decodability": 0.3333333333333333,
+  "baseline_is_k_inner_0": true,
+  "grid": [
+    {
+      "k_inner": 0,
+      "max_lambda": 1.0,
+      "acc_in_dist": 0.9866666793823242,
+      "acc_shifted": 0.9950000047683716,
+      "age_decodability": 0.9433333277702332
+    },
+    {
+      "k_inner": 0,
+      "max_lambda": 3.0,
+      "acc_in_dist": 0.3233333230018616,
+      "acc_shifted": 0.5333333611488342,
+      "age_decodability": 0.9549999833106995
+    },
+    {
+      "k_inner": 0,
+      "max_lambda": 10.0,
+      "acc_in_dist": 0.9666666388511658,
+      "acc_shifted": 0.8199999928474426,
+      "age_decodability": 0.9416666626930237
+    },
+    {
+      "k_inner": 0,
+      "max_lambda": 30.0,
+      "acc_in_dist": 0.8266666531562805,
+      "acc_shifted": 0.7433333396911621,
+      "age_decodability": 0.9300000071525574
+    },
+    {
+      "k_inner": 5,
+      "max_lambda": 1.0,
+      "acc_in_dist": 0.996666669845581,
+      "acc_shifted": 1.0,
+      "age_decodability": 0.9300000071525574
+    },
+    {
+      "k_inner": 5,
+      "max_lambda": 3.0,
+      "acc_in_dist": 0.9866666793823242,
+      "acc_shifted": 0.9883333444595337,
+      "age_decodability": 0.9166666865348816
+    },
+    {
+      "k_inner": 5,
+      "max_lambda": 10.0,
+      "acc_in_dist": 0.5016666650772095,
+      "acc_shifted": 0.4633333384990692,
+      "age_decodability": 0.7016666531562805
+    },
+    {
+      "k_inner": 5,
+      "max_lambda": 30.0,
+      "acc_in_dist": 0.5699999928474426,
+      "acc_shifted": 0.6433333158493042,
+      "age_decodability": 0.6566666960716248
+    },
+    {
+      "k_inner": 20,
+      "max_lambda": 1.0,
+      "acc_in_dist": 0.9933333396911621,
+      "acc_shifted": 0.9883333444595337,
+      "age_decodability": 0.92166668176651
+    },
+    {
+      "k_inner": 20,
+      "max_lambda": 3.0,
+      "acc_in_dist": 0.5400000214576721,
+      "acc_shifted": 0.699999988079071,
+      "age_decodability": 0.625
+    },
+    {
+      "k_inner": 20,
+      "max_lambda": 10.0,
+      "acc_in_dist": 0.5083333253860474,
+      "acc_shifted": 0.6483333110809326,
+      "age_decodability": 0.5450000166893005
+    },
+    {
+      "k_inner": 20,
+      "max_lambda": 30.0,
+      "acc_in_dist": 0.5383333563804626,
+      "acc_shifted": 0.6650000214576721,
+      "age_decodability": 0.6150000095367432
+    },
+    {
+      "k_inner": 50,
+      "max_lambda": 1.0,
+      "acc_in_dist": 0.996666669845581,
+      "acc_shifted": 0.996666669845581,
+      "age_decodability": 0.9183333516120911
+    },
+    {
+      "k_inner": 50,
+      "max_lambda": 3.0,
+      "acc_in_dist": 0.5699999928474426,
+      "acc_shifted": 0.7250000238418579,
+      "age_decodability": 0.6066666841506958
+    },
+    {
+      "k_inner": 50,
+      "max_lambda": 10.0,
+      "acc_in_dist": 0.5400000214576721,
+      "acc_shifted": 0.6800000071525574,
+      "age_decodability": 0.54666668176651
+    },
+    {
+      "k_inner": 50,
+      "max_lambda": 30.0,
+      "acc_in_dist": 0.550000011920929,
+      "acc_shifted": 0.6683333516120911,
+      "age_decodability": 0.5550000071525574
+    }
+  ],
+  "finding": "k_inner=0 leaves age decodable at every lambda; k_inner>=5 moves it only at lambda where class accuracy collapses; no operating point in this toy buys invariance cheaply",
+  "note": "synthetic data only; no split of any real cohort is read"
+}

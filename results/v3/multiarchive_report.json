@@ -1,0 +1,77 @@
+{
+  "session": "S43",
+  "phase": "C1",
+  "generated_at": "2026-09-13T21:06:02.847713+00:00",
+  "seed": 42,
+  "fractions": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "manifest": {
+    "path": "ml\\data\\manifest_v3.csv",
+    "rows": 24900,
+    "lesions": 13809,
+    "sha256": "de87b78ea9f89bf2962bbb2575f54fce72ec9e345f371b840bf3a90166437511",
+    "by_cohort": {
+      "bcn20000": 11982,
+      "ham10000": 10015,
+      "mskcc": 2903
+    }
+  },
+  "external_holdout": {
+    "path": "ml\\configs\\splits\\v3\\external_holdout.csv",
+    "note": "computed and recorded; absent from all condition files"
+  },
+  "conditions": {
+    "ham_only": {
+      "path": "ml\\configs\\splits\\v3\\split_v3_ham_only.csv",
+      "rows": 10015,
+      "train": 6981,
+      "sha256": "2348f775dd3b9c32a2c24eb266fc9e3e20bc040a9d991b6db7710d2944e3d69b"
+    },
+    "ham_mskcc": {
+      "path": "ml\\configs\\splits\\v3\\split_v3_ham_mskcc.csv",
+      "rows": 12044,
+      "train": 9010,
+      "sha256": "2a73134d9e4fd852379027ee9abcd711938df87924f496da7c5abf427f9607cb"
+    },
+    "ham_bcn": {
+      "path": "ml\\configs\\splits\\v3\\split_v3_ham_bcn.csv",
+      "rows": 18430,
+      "train": 15396,
+      "sha256": "ab98ce621dd2a9f9cb3b70276b19ba7bea5e7c7b7464e3176514d9aa9c953566"
+    },
+    "all_three": {
+      "path": "ml\\configs\\splits\\v3\\split_v3_all_three.csv",
+      "rows": 20459,
+      "train": 17425,
+      "sha256": "330dfb7355fd6196a8c2c528d58a84c47b40d037f652361f13f8febcd8729c20"
+    }
+  },
+  "split_v1_sha256": "2348f775dd3b9c32a2c24eb266fc9e3e20bc040a9d991b6db7710d2944e3d69b",
+  "checks": [
+    "ham_only: assert_no_leakage passes",
+    "ham_only: 0 HAM val/test images in train",
+    "ham_only: every image_id present in manifest_v3",
+    "ham_only: image_id unique (one_to_one merge safe)",
+    "ham_only: val/test identical to split_v1",
+    "ham_mskcc: assert_no_leakage passes",
+    "ham_mskcc: 0 HAM val/test images in train",
+    "ham_mskcc: every image_id present in manifest_v3",
+    "ham_mskcc: image_id unique (one_to_one merge safe)",
+    "ham_mskcc: val/test identical to split_v1",
+    "ham_bcn: assert_no_leakage passes",
+    "ham_bcn: 0 HAM val/test images in train",
+    "ham_bcn: every image_id present in manifest_v3",
+    "ham_bcn: image_id unique (one_to_one merge safe)",
+    "ham_bcn: val/test identical to split_v1",
+    "all_three: assert_no_leakage passes",
+    "all_three: 0 HAM val/test images in train",
+    "all_three: every image_id present in manifest_v3",
+    "all_three: image_id unique (one_to_one merge safe)",
+    "all_three: val/test identical to split_v1",
+    "ham_only: row-for-row identical to split_v1",
+    "all 24900 manifest paths resolve on disk"
+  ]
+}

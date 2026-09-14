@@ -1,0 +1,72 @@
+{
+  "session": "S42",
+  "phase": "B1_transport",
+  "generated_at": "2026-09-13T20:51:15.051540+00:00",
+  "pair": "val_to_pad",
+  "probe": "multinomial_lse",
+  "n_boot": 2000,
+  "seed": 42,
+  "fpr_max": 0.2,
+  "source": {
+    "panel": "ham_val.csv",
+    "features": "convnext_tiny_val.npz",
+    "n": 1532
+  },
+  "target": {
+    "panel": "pad.csv",
+    "features": "convnext_tiny_pad.npz",
+    "n": 2106
+  },
+  "extractor": "convnext_tiny_best.HAM-only.pt for both sides",
+  "caveat": "cross-modality (dermoscopy -> smartphone clinical); within-modality transport needs BCN features, not available",
+  "bands": [
+    {
+      "band": "<40",
+      "n": 241,
+      "n_escalating": 74,
+      "probe": "multinomial_lse",
+      "rho_fit_target": 0.9109888331445218,
+      "rho_fit_source": 0.6366276456096815,
+      "transport_gap": 0.2743611875348403,
+      "gap_ci_lo": 0.19071389089410118,
+      "gap_ci_hi": 0.3464435440913145,
+      "reading": "refit_recovers_signal"
+    },
+    {
+      "band": "40-59",
+      "n": 748,
+      "n_escalating": 619,
+      "probe": "multinomial_lse",
+      "rho_fit_target": 0.8867265281586957,
+      "rho_fit_source": 0.6291356540445469,
+      "transport_gap": 0.2575908741141488,
+      "gap_ci_lo": 0.20387188282845523,
+      "gap_ci_hi": 0.30728118003517985,
+      "reading": "refit_recovers_signal"
+    },
+    {
+      "band": "60+",
+      "n": 1117,
+      "n_escalating": 934,
+      "probe": "multinomial_lse",
+      "rho_fit_target": 0.841474148702007,
+      "rho_fit_source": 0.6210178391963066,
+      "transport_gap": 0.2204563095057004,
+      "gap_ci_lo": 0.17060850216367543,
+      "gap_ci_hi": 0.2706749867741969,
+      "reading": "refit_recovers_signal"
+    },
+    {
+      "band": "all",
+      "n": 2106,
+      "n_escalating": 1627,
+      "probe": "multinomial_lse",
+      "rho_fit_target": 0.8865425805001057,
+      "rho_fit_source": 0.6402860594323038,
+      "transport_gap": 0.24625652106780194,
+      "gap_ci_lo": 0.21508506274589892,
+      "gap_ci_hi": 0.2751814877581255,
+      "reading": "refit_recovers_signal"
+    }
+  ]
+}

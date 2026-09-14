@@ -1,0 +1,351 @@
+{
+  "session": "S40",
+  "phase": "A1",
+  "statement": "N2 kill test. S35's probe re-run on genuinely out-of-sample features. The probe (research.v2.np_head.cross_fitted_np_scores) is imported unchanged; only the feature source varies. Exploratory -- member of no confirmatory family.",
+  "mcid": 0.05,
+  "fpr_max": 0.2,
+  "n_boot": 2000,
+  "seed": 42,
+  "stages": {
+    "stage0": {
+      "stage": 0,
+      "harness_proof": {
+        "train_under40_np_pauc": 0.9929794710048696,
+        "s35_published": 0.9929794710048696,
+        "train_all_np_full_auc": 0.9990320550639135,
+        "reproduced": true,
+        "note": "In-sample by construction -- features from the full-train checkpoint over the rows it trained on. Reproducing S35 here proves this harness is faithful; it is not evidence for N2."
+      },
+      "in_sample": {
+        "label": "ham_train_INSAMPLE",
+        "n_rows": 6981,
+        "bands": [
+          {
+            "source": "ham_train_INSAMPLE",
+            "band": "<40",
+            "n": 1319,
+            "n_escalating": 64,
+            "s_pauc": 0.8095811199645861,
+            "s_full_auc": 0.8953187250996015,
+            "np_pauc": 0.9929794710048696,
+            "np_full_auc": 0.997472609561753,
+            "np_pauc_ci_lo": 0.9753810391831227,
+            "np_pauc_ci_hi": 1.0,
+            "delta_pauc": 0.18339835104028346,
+            "delta_ci_lo": 0.11080109217640363,
+            "delta_ci_hi": 0.2651717852778136,
+            "underpowered": false
+          },
+          {
+            "source": "ham_train_INSAMPLE",
+            "band": "40-59",
+            "n": 3112,
+            "n_escalating": 397,
+            "s_pauc": 0.8958296287018611,
+            "s_full_auc": 0.954677577225137,
+            "np_pauc": 0.9961342975941414,
+            "np_full_auc": 0.9986083471338909,
+            "np_pauc_ci_lo": 0.9923145386353034,
+            "np_pauc_ci_hi": 0.9991012657324289,
+            "delta_pauc": 0.10030466889228029,
+            "delta_ci_lo": 0.07779161830662466,
+            "delta_ci_hi": 0.12429544755753848,
+            "underpowered": false
+          },
+          {
+            "source": "ham_train_INSAMPLE",
+            "band": "60+",
+            "n": 2512,
+            "n_escalating": 893,
+            "s_pauc": 0.8531214073760003,
+            "s_full_auc": 0.9344839106163028,
+            "np_pauc": 0.99751765748638,
+            "np_full_auc": 0.9991063566950967,
+            "np_pauc_ci_lo": 0.9947023814481812,
+            "np_pauc_ci_hi": 0.999286827039992,
+            "delta_pauc": 0.1443962501103797,
+            "delta_ci_lo": 0.12232478518298906,
+            "delta_ci_hi": 0.16732008573476118,
+            "underpowered": false
+          },
+          {
+            "source": "ham_train_INSAMPLE",
+            "band": "all",
+            "n": 6981,
+            "n_escalating": 1356,
+            "s_pauc": 0.8850311373320223,
+            "s_full_auc": 0.9501081612586038,
+            "np_pauc": 0.9973112640664263,
+            "np_full_auc": 0.9990320550639135,
+            "np_pauc_ci_lo": 0.9955068882666228,
+            "np_pauc_ci_hi": 0.998776632682233,
+            "delta_pauc": 0.11228012673440402,
+            "delta_ci_lo": 0.09810331246843125,
+            "delta_ci_hi": 0.12694213402142837,
+            "underpowered": false
+          }
+        ],
+        "deltas": {
+          "<40": {
+            "delta_pauc": 0.18339835104028346,
+            "ci_lo": 0.11080109217640363,
+            "ci_hi": 0.2651717852778136,
+            "excludes_zero": true,
+            "exceeds_mcid": true
+          },
+          "40-59": {
+            "delta_pauc": 0.10030466889228029,
+            "ci_lo": 0.07779161830662466,
+            "ci_hi": 0.12429544755753848,
+            "excludes_zero": true,
+            "exceeds_mcid": true
+          },
+          "60+": {
+            "delta_pauc": 0.1443962501103797,
+            "ci_lo": 0.12232478518298906,
+            "ci_hi": 0.16732008573476118,
+            "excludes_zero": true,
+            "exceeds_mcid": true
+          },
+          "all": {
+            "delta_pauc": 0.11228012673440402,
+            "ci_lo": 0.09810331246843125,
+            "ci_hi": 0.12694213402142837,
+            "excludes_zero": true,
+            "exceeds_mcid": true
+          }
+        }
+      },
+      "out_of_sample": {
+        "label": "ham_val_OOS",
+        "n_rows": 1532,
+        "bands": [
+          {
+            "source": "ham_val_OOS",
+            "band": "<40",
+            "n": 267,
+            "n_escalating": 22,
+            "s_pauc": 0.8175633889919605,
+            "s_full_auc": 0.9294990723562152,
+            "np_pauc": 0.7505668934240363,
+            "np_full_auc": 0.7771799628942486,
+            "np_pauc_ci_lo": 0.6074171788467713,
+            "np_pauc_ci_hi": 0.8796052522824952,
+            "delta_pauc": -0.0669964955679242,
+            "delta_ci_lo": -0.2452592056895738,
+            "delta_ci_hi": 0.07181488947780383,
+            "underpowered": true
+          },
+          {
+            "source": "ham_val_OOS",
+            "band": "40-59",
+            "n": 697,
+            "n_escalating": 60,
+            "s_pauc": 0.8587127158555731,
+            "s_full_auc": 0.9413919413919414,
+            "np_pauc": 0.8327809756381186,
+            "np_full_auc": 0.8895866038723181,
+            "np_pauc_ci_lo": 0.7571236879770992,
+            "np_pauc_ci_hi": 0.9049093736944089,
+            "delta_pauc": -0.02593174021745448,
+            "delta_ci_lo": -0.08546573027312857,
+            "delta_ci_hi": 0.030946482754542384,
+            "underpowered": false
+          },
+          {
+            "source": "ham_val_OOS",
+            "band": "60+",
+            "n": 558,
+            "n_escalating": 226,
+            "s_pauc": 0.8569943490777268,
+            "s_full_auc": 0.9327886768312186,
+            "np_pauc": 0.7882273933492081,
+            "np_full_auc": 0.8658638980701567,
+            "np_pauc_ci_lo": 0.7319438969152681,
+            "np_pauc_ci_hi": 0.8443248381083454,
+            "delta_pauc": -0.06876695572851865,
+            "delta_ci_lo": -0.11671052628529491,
+            "delta_ci_hi": -0.02229866999199052,
+            "underpowered": false
+          },
+          {
+            "source": "ham_val_OOS",
+            "band": "all",
+            "n": 1532,
+            "n_escalating": 308,
+            "s_pauc": 0.8838083213083213,
+            "s_full_auc": 0.9492296918767507,
+            "np_pauc": 0.824779659338483,
+            "np_full_auc": 0.8788674560733384,
+            "np_pauc_ci_lo": 0.7902053771420852,
+            "np_pauc_ci_hi": 0.859756138046205,
+            "delta_pauc": -0.05902866196983836,
+            "delta_ci_lo": -0.08851781888516458,
+            "delta_ci_hi": -0.02912899031790881,
+            "underpowered": false
+          }
+        ],
+        "deltas": {
+          "<40": {
+            "delta_pauc": -0.0669964955679242,
+            "ci_lo": -0.2452592056895738,
+            "ci_hi": 0.07181488947780383,
+            "excludes_zero": false,
+            "exceeds_mcid": false
+          },
+          "40-59": {
+            "delta_pauc": -0.02593174021745448,
+            "ci_lo": -0.08546573027312857,
+            "ci_hi": 0.030946482754542384,
+            "excludes_zero": false,
+            "exceeds_mcid": false
+          },
+          "60+": {
+            "delta_pauc": -0.06876695572851865,
+            "ci_lo": -0.11671052628529491,
+            "ci_hi": -0.02229866999199052,
+            "excludes_zero": false,
+            "exceeds_mcid": false
+          },
+          "all": {
+            "delta_pauc": -0.05902866196983836,
+            "ci_lo": -0.08851781888516458,
+            "ci_hi": -0.02912899031790881,
+            "excludes_zero": false,
+            "exceeds_mcid": false
+          }
+        }
+      },
+      "verdict": {
+        "criterion": "under-40 pAUC gain over s_uniform exceeds MCID 0.05 with a lesion-grouped 95% CI excluding zero",
+        "delta_pauc": -0.0669964955679242,
+        "ci": [
+          -0.2452592056895738,
+          0.07181488947780383
+        ],
+        "excludes_zero": false,
+        "exceeds_mcid": false,
+        "n_escalating": 22,
+        "underpowered": true,
+        "result": "N2_FALSIFIED"
+      }
+    },
+    "stage1": {
+      "stage": 1,
+      "out_of_sample": {
+        "label": "ham_oof_CROSSFIT",
+        "n_rows": 6981,
+        "bands": [
+          {
+            "source": "ham_oof_CROSSFIT",
+            "band": "<40",
+            "n": 1319,
+            "n_escalating": 64,
+            "s_pauc": 0.8095811199645861,
+            "s_full_auc": 0.8953187250996015,
+            "np_pauc": 0.7181931994245241,
+            "np_full_auc": 0.7615351095617531,
+            "np_pauc_ci_lo": 0.6505128898241093,
+            "np_pauc_ci_hi": 0.7838270215451356,
+            "delta_pauc": -0.09138792054006206,
+            "delta_ci_lo": -0.1755607015741886,
+            "delta_ci_hi": -0.009032214573957661,
+            "underpowered": false
+          },
+          {
+            "source": "ham_oof_CROSSFIT",
+            "band": "40-59",
+            "n": 3112,
+            "n_escalating": 397,
+            "s_pauc": 0.8958296287018611,
+            "s_full_auc": 0.954677577225137,
+            "np_pauc": 0.8045565291971348,
+            "np_full_auc": 0.8532200527900321,
+            "np_pauc_ci_lo": 0.7754812075080191,
+            "np_pauc_ci_hi": 0.8325977479550438,
+            "delta_pauc": -0.09127309950472628,
+            "delta_ci_lo": -0.11757202997634401,
+            "delta_ci_hi": -0.06612692082372497,
+            "underpowered": false
+          },
+          {
+            "source": "ham_oof_CROSSFIT",
+            "band": "60+",
+            "n": 2512,
+            "n_escalating": 893,
+            "s_pauc": 0.8531214073760003,
+            "s_full_auc": 0.9344839106163028,
+            "np_pauc": 0.7368993605316609,
+            "np_full_auc": 0.8170237666235292,
+            "np_pauc_ci_lo": 0.7121275281692081,
+            "np_pauc_ci_hi": 0.7625044790953144,
+            "delta_pauc": -0.11622204684433934,
+            "delta_ci_lo": -0.14011202800205305,
+            "delta_ci_hi": -0.09086281471628944,
+            "underpowered": false
+          },
+          {
+            "source": "ham_oof_CROSSFIT",
+            "band": "all",
+            "n": 6981,
+            "n_escalating": 1356,
+            "s_pauc": 0.8850311373320223,
+            "s_full_auc": 0.9501081612586038,
+            "np_pauc": 0.7777786882260825,
+            "np_full_auc": 0.8352530317928547,
+            "np_pauc_ci_lo": 0.7607377362535872,
+            "np_pauc_ci_hi": 0.7943723168103788,
+            "delta_pauc": -0.10725244910593978,
+            "delta_ci_lo": -0.12291323853513944,
+            "delta_ci_hi": -0.09173111885686212,
+            "underpowered": false
+          }
+        ],
+        "deltas": {
+          "<40": {
+            "delta_pauc": -0.09138792054006206,
+            "ci_lo": -0.1755607015741886,
+            "ci_hi": -0.009032214573957661,
+            "excludes_zero": false,
+            "exceeds_mcid": false
+          },
+          "40-59": {
+            "delta_pauc": -0.09127309950472628,
+            "ci_lo": -0.11757202997634401,
+            "ci_hi": -0.06612692082372497,
+            "excludes_zero": false,
+            "exceeds_mcid": false
+          },
+          "60+": {
+            "delta_pauc": -0.11622204684433934,
+            "ci_lo": -0.14011202800205305,
+            "ci_hi": -0.09086281471628944,
+            "excludes_zero": false,
+            "exceeds_mcid": false
+          },
+          "all": {
+            "delta_pauc": -0.10725244910593978,
+            "ci_lo": -0.12291323853513944,
+            "ci_hi": -0.09173111885686212,
+            "excludes_zero": false,
+            "exceeds_mcid": false
+          }
+        }
+      },
+      "verdict": {
+        "criterion": "under-40 pAUC gain over s_uniform exceeds MCID 0.05 with a lesion-grouped 95% CI excluding zero",
+        "delta_pauc": -0.09138792054006206,
+        "ci": [
+          -0.1755607015741886,
+          -0.009032214573957661
+        ],
+        "excludes_zero": false,
+        "exceeds_mcid": false,
+        "n_escalating": 64,
+        "underpowered": false,
+        "result": "N2_FALSIFIED"
+      }
+    }
+  },
+  "generated_at": "2026-09-13T20:12:03.793416+00:00"
+}

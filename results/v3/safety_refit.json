@@ -1,0 +1,608 @@
+{
+  "session": "S46",
+  "phase": "E_safety_refit",
+  "generated_at": "2026-09-14T14:24:02.359783+00:00",
+  "deviation_D11": "fit split is HAM val (lesion-grouped tuning/calibration halves), not an OOF panel -- no V3 condition has fold checkpoints and building one needs ~9 h of retraining",
+  "fit_split": "ham_val_tuning_half",
+  "eval_split": "ham_val_calibration_half",
+  "n_tuning": 770,
+  "n_calibration": 762,
+  "all_four_refit_because": "S44 certified no condition better than the control; picking one would repeat the rung-6 / A2 selection error",
+  "lambda_rule": {
+    "refittable": false,
+    "under40_escalating_on_val": 22,
+    "gate": 30,
+    "action": "frozen S5 values retained; pooling the external holdout's 54 cases would clear the count but fit a HAM operating point on out-of-domain data"
+  },
+  "conditions": {
+    "ham_only": {
+      "ece_uncalibrated_all": 0.11779819072926948,
+      "ece_calibrated_calibhalf": 0.06263025226242586,
+      "macro_f1_calibhalf_raw": 0.7676849698855548,
+      "macro_f1_calibhalf_dirichlet": 0.7436326621134659,
+      "abstention": {
+        "abstain_05": {
+          "threshold": 0.542708694934845,
+          "coverage": 0.9330708661417323,
+          "risk_kept": 0.12236286919831219,
+          "risk_all": 0.15091863517060367
+        },
+        "abstain_10": {
+          "threshold": 0.6148513555526733,
+          "coverage": 0.89501312335958,
+          "risk_kept": 0.10703812316715544,
+          "risk_all": 0.15091863517060367
+        },
+        "abstain_20": {
+          "threshold": 0.762220561504364,
+          "coverage": 0.8031496062992126,
+          "risk_kept": 0.09150326797385622,
+          "risk_all": 0.15091863517060367
+        }
+      },
+      "conformal": {
+        "alpha_0.05": {
+          "marginal": {
+            "quantile": 0.9484508633613586,
+            "coverage": 0.9435695538057742,
+            "mean_set_size": 1.5538057742782152,
+            "empty_sets": 0
+          },
+          "class_conditional": {
+            "akiec": {
+              "n_calib": 25,
+              "quantile": 0.9945785999298096,
+              "certifiable": true,
+              "coverage": 1.0,
+              "n_eval": 28
+            },
+            "bcc": {
+              "n_calib": 45,
+              "quantile": 0.9882509708404541,
+              "certifiable": true,
+              "coverage": 0.972972972972973,
+              "n_eval": 37
+            },
+            "bkl": {
+              "n_calib": 75,
+              "quantile": 0.9742994904518127,
+              "certifiable": true,
+              "coverage": 0.9058823529411765,
+              "n_eval": 85
+            },
+            "df": {
+              "n_calib": 13,
+              "quantile": null,
+              "certifiable": false
+            },
+            "mel": {
+              "n_calib": 74,
+              "quantile": 0.9671436548233032,
+              "certifiable": true,
+              "coverage": 0.9696969696969697,
+              "n_eval": 99
+            },
+            "nv": {
+              "n_calib": 527,
+              "quantile": 0.6628566980361938,
+              "certifiable": true,
+              "coverage": 0.9714867617107943,
+              "n_eval": 491
+            },
+            "vasc": {
+              "n_calib": 11,
+              "quantile": null,
+              "certifiable": false
+            }
+          },
+          "uncertifiable_classes": [
+            "df",
+            "vasc"
+          ]
+        },
+        "alpha_0.10": {
+          "marginal": {
+            "quantile": 0.7954432964324951,
+            "coverage": 0.89501312335958,
+            "mean_set_size": 1.1653543307086613,
+            "empty_sets": 0
+          },
+          "class_conditional": {
+            "akiec": {
+              "n_calib": 25,
+              "quantile": 0.9762915372848511,
+              "certifiable": true,
+              "coverage": 0.8928571428571429,
+              "n_eval": 28
+            },
+            "bcc": {
+              "n_calib": 45,
+              "quantile": 0.9547625780105591,
+              "certifiable": true,
+              "coverage": 0.918918918918919,
+              "n_eval": 37
+            },
+            "bkl": {
+              "n_calib": 75,
+              "quantile": 0.955619752407074,
+              "certifiable": true,
+              "coverage": 0.8588235294117647,
+              "n_eval": 85
+            },
+            "df": {
+              "n_calib": 13,
+              "quantile": 0.9988199472427368,
+              "certifiable": true,
+              "coverage": 1.0,
+              "n_eval": 11
+            },
+            "mel": {
+              "n_calib": 74,
+              "quantile": 0.9652928709983826,
+              "certifiable": true,
+              "coverage": 0.9292929292929293,
+              "n_eval": 99
+            },
+            "nv": {
+              "n_calib": 527,
+              "quantile": 0.31433314085006714,
+              "certifiable": true,
+              "coverage": 0.9470468431771895,
+              "n_eval": 491
+            },
+            "vasc": {
+              "n_calib": 11,
+              "quantile": 0.9959363341331482,
+              "certifiable": true,
+              "coverage": 0.9090909090909091,
+              "n_eval": 11
+            }
+          },
+          "uncertifiable_classes": []
+        }
+      }
+    },
+    "ham_mskcc": {
+      "ece_uncalibrated_all": 0.10719547053074402,
+      "ece_calibrated_calibhalf": 0.03918307573776545,
+      "macro_f1_calibhalf_raw": 0.8012229032574784,
+      "macro_f1_calibhalf_dirichlet": 0.7928486780653478,
+      "abstention": {
+        "abstain_05": {
+          "threshold": 0.5546172261238098,
+          "coverage": 0.9514435695538058,
+          "risk_kept": 0.10896551724137926,
+          "risk_all": 0.12992125984251968
+        },
+        "abstain_10": {
+          "threshold": 0.6495863199234009,
+          "coverage": 0.9002624671916011,
+          "risk_kept": 0.09766763848396498,
+          "risk_all": 0.12992125984251968
+        },
+        "abstain_20": {
+          "threshold": 0.7980879545211792,
+          "coverage": 0.7926509186351706,
+          "risk_kept": 0.07615894039735094,
+          "risk_all": 0.12992125984251968
+        }
+      },
+      "conformal": {
+        "alpha_0.05": {
+          "marginal": {
+            "quantile": 0.9407263994216919,
+            "coverage": 0.931758530183727,
+            "mean_set_size": 1.4724409448818898,
+            "empty_sets": 0
+          },
+          "class_conditional": {
+            "akiec": {
+              "n_calib": 25,
+              "quantile": 0.9966257214546204,
+              "certifiable": true,
+              "coverage": 1.0,
+              "n_eval": 28
+            },
+            "bcc": {
+              "n_calib": 45,
+              "quantile": 0.9829643964767456,
+              "certifiable": true,
+              "coverage": 0.972972972972973,
+              "n_eval": 37
+            },
+            "bkl": {
+              "n_calib": 75,
+              "quantile": 0.9835212230682373,
+              "certifiable": true,
+              "coverage": 0.9529411764705882,
+              "n_eval": 85
+            },
+            "df": {
+              "n_calib": 13,
+              "quantile": null,
+              "certifiable": false
+            },
+            "mel": {
+              "n_calib": 74,
+              "quantile": 0.9708724617958069,
+              "certifiable": true,
+              "coverage": 0.9696969696969697,
+              "n_eval": 99
+            },
+            "nv": {
+              "n_calib": 527,
+              "quantile": 0.6632033586502075,
+              "certifiable": true,
+              "coverage": 0.9694501018329938,
+              "n_eval": 491
+            },
+            "vasc": {
+              "n_calib": 11,
+              "quantile": null,
+              "certifiable": false
+            }
+          },
+          "uncertifiable_classes": [
+            "df",
+            "vasc"
+          ]
+        },
+        "alpha_0.10": {
+          "marginal": {
+            "quantile": 0.7741605639457703,
+            "coverage": 0.9028871391076115,
+            "mean_set_size": 1.094488188976378,
+            "empty_sets": 0
+          },
+          "class_conditional": {
+            "akiec": {
+              "n_calib": 25,
+              "quantile": 0.9828993082046509,
+              "certifiable": true,
+              "coverage": 0.8571428571428571,
+              "n_eval": 28
+            },
+            "bcc": {
+              "n_calib": 45,
+              "quantile": 0.9482387900352478,
+              "certifiable": true,
+              "coverage": 0.918918918918919,
+              "n_eval": 37
+            },
+            "bkl": {
+              "n_calib": 75,
+              "quantile": 0.9747766256332397,
+              "certifiable": true,
+              "coverage": 0.9176470588235294,
+              "n_eval": 85
+            },
+            "df": {
+              "n_calib": 13,
+              "quantile": 0.999742865562439,
+              "certifiable": true,
+              "coverage": 1.0,
+              "n_eval": 11
+            },
+            "mel": {
+              "n_calib": 74,
+              "quantile": 0.9679909944534302,
+              "certifiable": true,
+              "coverage": 0.9292929292929293,
+              "n_eval": 99
+            },
+            "nv": {
+              "n_calib": 527,
+              "quantile": 0.2579811215400696,
+              "certifiable": true,
+              "coverage": 0.9470468431771895,
+              "n_eval": 491
+            },
+            "vasc": {
+              "n_calib": 11,
+              "quantile": 0.5682793855667114,
+              "certifiable": true,
+              "coverage": 0.8181818181818182,
+              "n_eval": 11
+            }
+          },
+          "uncertifiable_classes": []
+        }
+      }
+    },
+    "ham_bcn": {
+      "ece_uncalibrated_all": 0.06465548680555415,
+      "ece_calibrated_calibhalf": 0.041955136486238706,
+      "macro_f1_calibhalf_raw": 0.7805884005922042,
+      "macro_f1_calibhalf_dirichlet": 0.7616577982755006,
+      "abstention": {
+        "abstain_05": {
+          "threshold": 0.599225640296936,
+          "coverage": 0.9448818897637795,
+          "risk_kept": 0.11527777777777781,
+          "risk_all": 0.13648293963254599
+        },
+        "abstain_10": {
+          "threshold": 0.6709858775138855,
+          "coverage": 0.9041994750656168,
+          "risk_kept": 0.10595065312046448,
+          "risk_all": 0.13648293963254599
+        },
+        "abstain_20": {
+          "threshold": 0.8334324955940247,
+          "coverage": 0.7939632545931758,
+          "risk_kept": 0.09256198347107436,
+          "risk_all": 0.13648293963254599
+        }
+      },
+      "conformal": {
+        "alpha_0.05": {
+          "marginal": {
+            "quantile": 0.9547633528709412,
+            "coverage": 0.9448818897637795,
+            "mean_set_size": 1.5564304461942258,
+            "empty_sets": 0
+          },
+          "class_conditional": {
+            "akiec": {
+              "n_calib": 25,
+              "quantile": 0.9912864565849304,
+              "certifiable": true,
+              "coverage": 1.0,
+              "n_eval": 28
+            },
+            "bcc": {
+              "n_calib": 45,
+              "quantile": 0.9736810922622681,
+              "certifiable": true,
+              "coverage": 0.9459459459459459,
+              "n_eval": 37
+            },
+            "bkl": {
+              "n_calib": 75,
+              "quantile": 0.9770278334617615,
+              "certifiable": true,
+              "coverage": 0.9294117647058824,
+              "n_eval": 85
+            },
+            "df": {
+              "n_calib": 13,
+              "quantile": null,
+              "certifiable": false
+            },
+            "mel": {
+              "n_calib": 74,
+              "quantile": 0.9621873497962952,
+              "certifiable": true,
+              "coverage": 0.9393939393939394,
+              "n_eval": 99
+            },
+            "nv": {
+              "n_calib": 527,
+              "quantile": 0.4326167702674866,
+              "certifiable": true,
+              "coverage": 0.9633401221995926,
+              "n_eval": 491
+            },
+            "vasc": {
+              "n_calib": 11,
+              "quantile": null,
+              "certifiable": false
+            }
+          },
+          "uncertifiable_classes": [
+            "df",
+            "vasc"
+          ]
+        },
+        "alpha_0.10": {
+          "marginal": {
+            "quantile": 0.8574472665786743,
+            "coverage": 0.8937007874015748,
+            "mean_set_size": 1.1351706036745406,
+            "empty_sets": 0
+          },
+          "class_conditional": {
+            "akiec": {
+              "n_calib": 25,
+              "quantile": 0.9874516129493713,
+              "certifiable": true,
+              "coverage": 1.0,
+              "n_eval": 28
+            },
+            "bcc": {
+              "n_calib": 45,
+              "quantile": 0.9334943890571594,
+              "certifiable": true,
+              "coverage": 0.8918918918918919,
+              "n_eval": 37
+            },
+            "bkl": {
+              "n_calib": 75,
+              "quantile": 0.9755766987800598,
+              "certifiable": true,
+              "coverage": 0.9176470588235294,
+              "n_eval": 85
+            },
+            "df": {
+              "n_calib": 13,
+              "quantile": 0.9877620935440063,
+              "certifiable": true,
+              "coverage": 0.8181818181818182,
+              "n_eval": 11
+            },
+            "mel": {
+              "n_calib": 74,
+              "quantile": 0.9608257412910461,
+              "certifiable": true,
+              "coverage": 0.9191919191919192,
+              "n_eval": 99
+            },
+            "nv": {
+              "n_calib": 527,
+              "quantile": 0.12311583757400513,
+              "certifiable": true,
+              "coverage": 0.9144602851323829,
+              "n_eval": 491
+            },
+            "vasc": {
+              "n_calib": 11,
+              "quantile": 0.6367535591125488,
+              "certifiable": true,
+              "coverage": 0.8181818181818182,
+              "n_eval": 11
+            }
+          },
+          "uncertifiable_classes": []
+        }
+      }
+    },
+    "all_three": {
+      "ece_uncalibrated_all": 0.07955008987385988,
+      "ece_calibrated_calibhalf": 0.0544654387501594,
+      "macro_f1_calibhalf_raw": 0.7153426066911477,
+      "macro_f1_calibhalf_dirichlet": 0.7281916242192273,
+      "abstention": {
+        "abstain_05": {
+          "threshold": 0.5622996687889099,
+          "coverage": 0.9606299212598425,
+          "risk_kept": 0.12431693989071035,
+          "risk_all": 0.14435695538057747
+        },
+        "abstain_10": {
+          "threshold": 0.6555948257446289,
+          "coverage": 0.9238845144356955,
+          "risk_kept": 0.11079545454545459,
+          "risk_all": 0.14435695538057747
+        },
+        "abstain_20": {
+          "threshold": 0.8329311609268188,
+          "coverage": 0.7939632545931758,
+          "risk_kept": 0.09090909090909094,
+          "risk_all": 0.14435695538057747
+        }
+      },
+      "conformal": {
+        "alpha_0.05": {
+          "marginal": {
+            "quantile": 0.9471224546432495,
+            "coverage": 0.9278215223097113,
+            "mean_set_size": 1.39501312335958,
+            "empty_sets": 0
+          },
+          "class_conditional": {
+            "akiec": {
+              "n_calib": 25,
+              "quantile": 0.9944618940353394,
+              "certifiable": true,
+              "coverage": 1.0,
+              "n_eval": 28
+            },
+            "bcc": {
+              "n_calib": 45,
+              "quantile": 0.9937310218811035,
+              "certifiable": true,
+              "coverage": 0.972972972972973,
+              "n_eval": 37
+            },
+            "bkl": {
+              "n_calib": 75,
+              "quantile": 0.9774293899536133,
+              "certifiable": true,
+              "coverage": 0.9176470588235294,
+              "n_eval": 85
+            },
+            "df": {
+              "n_calib": 13,
+              "quantile": null,
+              "certifiable": false
+            },
+            "mel": {
+              "n_calib": 74,
+              "quantile": 0.969611406326294,
+              "certifiable": true,
+              "coverage": 0.9797979797979798,
+              "n_eval": 99
+            },
+            "nv": {
+              "n_calib": 527,
+              "quantile": 0.5888035297393799,
+              "certifiable": true,
+              "coverage": 0.9755600814663951,
+              "n_eval": 491
+            },
+            "vasc": {
+              "n_calib": 11,
+              "quantile": null,
+              "certifiable": false
+            }
+          },
+          "uncertifiable_classes": [
+            "df",
+            "vasc"
+          ]
+        },
+        "alpha_0.10": {
+          "marginal": {
+            "quantile": 0.7901628613471985,
+            "coverage": 0.8832020997375328,
+            "mean_set_size": 1.083989501312336,
+            "empty_sets": 0
+          },
+          "class_conditional": {
+            "akiec": {
+              "n_calib": 25,
+              "quantile": 0.983684778213501,
+              "certifiable": true,
+              "coverage": 1.0,
+              "n_eval": 28
+            },
+            "bcc": {
+              "n_calib": 45,
+              "quantile": 0.9193745255470276,
+              "certifiable": true,
+              "coverage": 0.8918918918918919,
+              "n_eval": 37
+            },
+            "bkl": {
+              "n_calib": 75,
+              "quantile": 0.9120001792907715,
+              "certifiable": true,
+              "coverage": 0.788235294117647,
+              "n_eval": 85
+            },
+            "df": {
+              "n_calib": 13,
+              "quantile": 0.9967955350875854,
+              "certifiable": true,
+              "coverage": 0.9090909090909091,
+              "n_eval": 11
+            },
+            "mel": {
+              "n_calib": 74,
+              "quantile": 0.9625926613807678,
+              "certifiable": true,
+              "coverage": 0.898989898989899,
+              "n_eval": 99
+            },
+            "nv": {
+              "n_calib": 527,
+              "quantile": 0.16767215728759766,
+              "certifiable": true,
+              "coverage": 0.9429735234215886,
+              "n_eval": 491
+            },
+            "vasc": {
+              "n_calib": 11,
+              "quantile": 0.9958243370056152,
+              "certifiable": true,
+              "coverage": 0.8181818181818182,
+              "n_eval": 11
+            }
+          },
+          "uncertifiable_classes": []
+        }
+      }
+    }
+  },
+  "note": "HAM test never read; receipt stays at n_executions: 2"
+}

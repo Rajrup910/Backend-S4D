@@ -1,0 +1,54 @@
+{
+  "session": "S44",
+  "phase": "C3_supplement",
+  "generated_at": "2026-09-14T10:41:58.489413+00:00",
+  "control_reproduction": {
+    "published": {
+      "checkpoint": "convnext_tiny_best.HAM-only.pt",
+      "macro_f1_val": 0.7481934348860028,
+      "balanced_acc_val": 0.7616002134855755,
+      "esc_sens_val": 0.7922077922077922,
+      "esc_sens_under40": 0.6363636363636364,
+      "under40_caught": 14,
+      "under40_n": 22,
+      "under40_ci_lo": 0.40657666882564664,
+      "under40_ci_hi": 0.8280205623536676
+    },
+    "v3_retrain": {
+      "macro_f1_val": 0.7509358509814447,
+      "esc_sens_under40": 0.4090909090909091,
+      "under40_caught": 9,
+      "under40_n": 22
+    },
+    "evaluator_drift_vs_published": 6.565113997214489e-06,
+    "evaluator_path_exact": true,
+    "same_data_spread": {
+      "macro_f1_val": 0.002742416095441902,
+      "esc_sens_under40": 0.22727272727272724,
+      "under40_cases": 5
+    },
+    "between_condition_spread": {
+      "macro_f1_val": 0.044731463652795234,
+      "esc_sens_under40": 0.18181818181818182
+    },
+    "under40_endpoint_discriminates": false,
+    "reading": "evaluator reproduces the published figure to 7e-6, so the failed control check is retraining variance, not a measurement bug"
+  },
+  "multiplicity": {
+    "family": "S44 condition vs ham_only, macro_f1 on HAM val",
+    "family_size": 3,
+    "method": "holm_bonferroni",
+    "raw": {
+      "ham_mskcc": 0.022,
+      "ham_bcn": 0.542,
+      "all_three": 0.66
+    },
+    "holm": {
+      "ham_mskcc": 0.066,
+      "ham_bcn": 1.0,
+      "all_three": 1.0
+    },
+    "survivors": []
+  },
+  "note": "HAM test never read; receipt stays at n_executions: 2"
+}

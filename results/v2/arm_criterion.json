@@ -1,0 +1,252 @@
+{
+  "ham_val": {
+    "session": "S36",
+    "generated_at": "2026-09-13T01:16:20.925213+00:00",
+    "cohort": "ham_val",
+    "stage": "val",
+    "n_boot": 500,
+    "baseline": "convnext_tiny_best.HAM-only.pt",
+    "inference": "single view, val transform, no TTA",
+    "arms": {
+      "convnext_tiny-v2_n3_best": {
+        "arm": "convnext_tiny-v2_n3_best",
+        "all_decidable_pass": false,
+        "n_pass": 0,
+        "n_decidable": 3,
+        "n_deferred": 4,
+        "items": {
+          "1_raises_B_or_C_by_MCID": {
+            "pass": false,
+            "evidence": "max(dB_u40, dC_u40) = +0.0000 against MCID 0.05 (via B_u40)"
+          },
+          "2_difference_CI_excludes_zero": {
+            "pass": false,
+            "evidence": "B_u40 delta +0.0000 95% CI [+0.0000, +0.0714]"
+          },
+          "3_not_merely_aggregate_macro_f1": {
+            "pass": null,
+            "evidence": "dMacro-F1 -0.0282, dunder40_sens_matched +0.0000 -- a reading, not an arithmetic test; judge from these two together"
+          },
+          "4_under40_subgroup_endpoint": {
+            "pass": false,
+            "evidence": "under-40 sensitivity at matched global budget +0.0000 95% CI [-0.1503, +0.1313]"
+          },
+          "5_same_direction_on_BCN": {
+            "pass": null,
+            "evidence": "--stage bcn not run"
+          },
+          "6_BCN_threshold_frozen": {
+            "pass": null,
+            "evidence": "--stage bcn not run"
+          },
+          "7_survives_F4_uncertainty": {
+            "pass": null,
+            "evidence": "deferred to S37 -- this module does not run the uncertainty analysis"
+          }
+        },
+        "note": "Track B contributes to no confirmatory family, so nothing here enters a Holm correction. Item 1 is reported exactly as frozen even where it is known to be blind to an arm's mechanism (N5; see S36_TRACK_B_ARMS.md section 2)."
+      },
+      "convnext_tiny-v2_n4_best": {
+        "arm": "convnext_tiny-v2_n4_best",
+        "all_decidable_pass": false,
+        "n_pass": 0,
+        "n_decidable": 3,
+        "n_deferred": 4,
+        "items": {
+          "1_raises_B_or_C_by_MCID": {
+            "pass": false,
+            "evidence": "max(dB_u40, dC_u40) = +0.0000 against MCID 0.05 (via B_u40)"
+          },
+          "2_difference_CI_excludes_zero": {
+            "pass": false,
+            "evidence": "B_u40 delta +0.0000 95% CI [+0.0000, +0.0804]"
+          },
+          "3_not_merely_aggregate_macro_f1": {
+            "pass": null,
+            "evidence": "dMacro-F1 -0.0242, dunder40_sens_matched -0.0909 -- a reading, not an arithmetic test; judge from these two together"
+          },
+          "4_under40_subgroup_endpoint": {
+            "pass": false,
+            "evidence": "under-40 sensitivity at matched global budget -0.0909 95% CI [-0.2206, +0.0833]"
+          },
+          "5_same_direction_on_BCN": {
+            "pass": null,
+            "evidence": "--stage bcn not run"
+          },
+          "6_BCN_threshold_frozen": {
+            "pass": null,
+            "evidence": "--stage bcn not run"
+          },
+          "7_survives_F4_uncertainty": {
+            "pass": null,
+            "evidence": "deferred to S37 -- this module does not run the uncertainty analysis"
+          }
+        },
+        "note": "Track B contributes to no confirmatory family, so nothing here enters a Holm correction. Item 1 is reported exactly as frozen even where it is known to be blind to an arm's mechanism (N5; see S36_TRACK_B_ARMS.md section 2)."
+      },
+      "convnext_tiny-v2_n5_best": {
+        "arm": "convnext_tiny-v2_n5_best",
+        "all_decidable_pass": false,
+        "n_pass": 0,
+        "n_decidable": 3,
+        "n_deferred": 4,
+        "items": {
+          "1_raises_B_or_C_by_MCID": {
+            "pass": false,
+            "evidence": "max(dB_u40, dC_u40) = +0.0000 against MCID 0.05 (via B_u40)"
+          },
+          "2_difference_CI_excludes_zero": {
+            "pass": false,
+            "evidence": "B_u40 delta +0.0000 95% CI [+0.0000, +0.1705]"
+          },
+          "3_not_merely_aggregate_macro_f1": {
+            "pass": null,
+            "evidence": "dMacro-F1 -0.0234, dunder40_sens_matched -0.1364 -- a reading, not an arithmetic test; judge from these two together"
+          },
+          "4_under40_subgroup_endpoint": {
+            "pass": false,
+            "evidence": "under-40 sensitivity at matched global budget -0.1364 95% CI [-0.3277, +0.1200]"
+          },
+          "5_same_direction_on_BCN": {
+            "pass": null,
+            "evidence": "--stage bcn not run"
+          },
+          "6_BCN_threshold_frozen": {
+            "pass": null,
+            "evidence": "--stage bcn not run"
+          },
+          "7_survives_F4_uncertainty": {
+            "pass": null,
+            "evidence": "deferred to S37 -- this module does not run the uncertainty analysis"
+          }
+        },
+        "note": "Track B contributes to no confirmatory family, so nothing here enters a Holm correction. Item 1 is reported exactly as frozen even where it is known to be blind to an arm's mechanism (N5; see S36_TRACK_B_ARMS.md section 2)."
+      }
+    }
+  },
+  "bcn20000": {
+    "session": "S36",
+    "generated_at": "2026-09-13T01:23:33.130108+00:00",
+    "cohort": "bcn20000",
+    "stage": "bcn",
+    "n_boot": 500,
+    "baseline": "convnext_tiny_best.HAM-only.pt",
+    "inference": "single view, val transform, no TTA",
+    "arms": {
+      "convnext_tiny-v2_n3_best": {
+        "arm": "convnext_tiny-v2_n3_best",
+        "all_decidable_pass": false,
+        "n_pass": 1,
+        "n_decidable": 5,
+        "n_deferred": 2,
+        "items": {
+          "1_raises_B_or_C_by_MCID": {
+            "pass": false,
+            "evidence": "max(dB_u40, dC_u40) = +0.0000 against MCID 0.05 (via B_u40)"
+          },
+          "2_difference_CI_excludes_zero": {
+            "pass": false,
+            "evidence": "B_u40 delta +0.0000 95% CI [+0.0000, +0.0714]"
+          },
+          "3_not_merely_aggregate_macro_f1": {
+            "pass": null,
+            "evidence": "dMacro-F1 -0.0282, dunder40_sens_matched +0.0000 -- a reading, not an arithmetic test; judge from these two together"
+          },
+          "4_under40_subgroup_endpoint": {
+            "pass": false,
+            "evidence": "under-40 sensitivity at matched global budget +0.0000 95% CI [-0.1503, +0.1313]"
+          },
+          "5_same_direction_on_BCN": {
+            "pass": false,
+            "evidence": "BCN dunder40_sens_matched +0.0379 vs HAM val +0.0000"
+          },
+          "6_BCN_threshold_frozen": {
+            "pass": true,
+            "evidence": "threshold_type=frozen_deployable: each model's absolute score cutoff is fitted on HAM val at the baseline's val referral rate and applied to BCN unchanged; the realized BCN burden is an outcome, not a tuned parameter"
+          },
+          "7_survives_F4_uncertainty": {
+            "pass": null,
+            "evidence": "deferred to S37 -- this module does not run the uncertainty analysis"
+          }
+        },
+        "note": "Track B contributes to no confirmatory family, so nothing here enters a Holm correction. Item 1 is reported exactly as frozen even where it is known to be blind to an arm's mechanism (N5; see S36_TRACK_B_ARMS.md section 2)."
+      },
+      "convnext_tiny-v2_n4_best": {
+        "arm": "convnext_tiny-v2_n4_best",
+        "all_decidable_pass": false,
+        "n_pass": 1,
+        "n_decidable": 5,
+        "n_deferred": 2,
+        "items": {
+          "1_raises_B_or_C_by_MCID": {
+            "pass": false,
+            "evidence": "max(dB_u40, dC_u40) = +0.0000 against MCID 0.05 (via B_u40)"
+          },
+          "2_difference_CI_excludes_zero": {
+            "pass": false,
+            "evidence": "B_u40 delta +0.0000 95% CI [+0.0000, +0.0804]"
+          },
+          "3_not_merely_aggregate_macro_f1": {
+            "pass": null,
+            "evidence": "dMacro-F1 -0.0242, dunder40_sens_matched -0.0909 -- a reading, not an arithmetic test; judge from these two together"
+          },
+          "4_under40_subgroup_endpoint": {
+            "pass": false,
+            "evidence": "under-40 sensitivity at matched global budget -0.0909 95% CI [-0.2206, +0.0833]"
+          },
+          "5_same_direction_on_BCN": {
+            "pass": false,
+            "evidence": "BCN dunder40_sens_matched +0.0244 vs HAM val -0.0909"
+          },
+          "6_BCN_threshold_frozen": {
+            "pass": true,
+            "evidence": "threshold_type=frozen_deployable: each model's absolute score cutoff is fitted on HAM val at the baseline's val referral rate and applied to BCN unchanged; the realized BCN burden is an outcome, not a tuned parameter"
+          },
+          "7_survives_F4_uncertainty": {
+            "pass": null,
+            "evidence": "deferred to S37 -- this module does not run the uncertainty analysis"
+          }
+        },
+        "note": "Track B contributes to no confirmatory family, so nothing here enters a Holm correction. Item 1 is reported exactly as frozen even where it is known to be blind to an arm's mechanism (N5; see S36_TRACK_B_ARMS.md section 2)."
+      },
+      "convnext_tiny-v2_n5_best": {
+        "arm": "convnext_tiny-v2_n5_best",
+        "all_decidable_pass": false,
+        "n_pass": 1,
+        "n_decidable": 5,
+        "n_deferred": 2,
+        "items": {
+          "1_raises_B_or_C_by_MCID": {
+            "pass": false,
+            "evidence": "max(dB_u40, dC_u40) = +0.0000 against MCID 0.05 (via B_u40)"
+          },
+          "2_difference_CI_excludes_zero": {
+            "pass": false,
+            "evidence": "B_u40 delta +0.0000 95% CI [+0.0000, +0.1705]"
+          },
+          "3_not_merely_aggregate_macro_f1": {
+            "pass": null,
+            "evidence": "dMacro-F1 -0.0234, dunder40_sens_matched -0.1364 -- a reading, not an arithmetic test; judge from these two together"
+          },
+          "4_under40_subgroup_endpoint": {
+            "pass": false,
+            "evidence": "under-40 sensitivity at matched global budget -0.1364 95% CI [-0.3277, +0.1200]"
+          },
+          "5_same_direction_on_BCN": {
+            "pass": false,
+            "evidence": "BCN dunder40_sens_matched +0.0271 vs HAM val -0.1364"
+          },
+          "6_BCN_threshold_frozen": {
+            "pass": true,
+            "evidence": "threshold_type=frozen_deployable: each model's absolute score cutoff is fitted on HAM val at the baseline's val referral rate and applied to BCN unchanged; the realized BCN burden is an outcome, not a tuned parameter"
+          },
+          "7_survives_F4_uncertainty": {
+            "pass": null,
+            "evidence": "deferred to S37 -- this module does not run the uncertainty analysis"
+          }
+        },
+        "note": "Track B contributes to no confirmatory family, so nothing here enters a Holm correction. Item 1 is reported exactly as frozen even where it is known to be blind to an arm's mechanism (N5; see S36_TRACK_B_ARMS.md section 2)."
+      }
+    }
+  }
+}

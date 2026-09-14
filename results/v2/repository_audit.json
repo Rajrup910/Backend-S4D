@@ -1,0 +1,161 @@
+{
+  "session": "S28",
+  "generated_at": "2026-09-13T10:10:21.823134+00:00",
+  "statement": "Confirms every V1 artifact V2 depends on or has promised not to modify is present and records its current hash, so a later session can detect drift. Recomputed on every run -- nothing here is hand-typed.",
+  "v1_locked_artifacts": [
+    {
+      "path": "results/frozen_artifacts.json",
+      "present": true,
+      "sha256": "97423d1a8924ee77e92d8a0b74786326f9fbf592fbca8bfa63bf42fcd3e5f28a",
+      "bytes": 7220
+    },
+    {
+      "path": "results/test_pass_receipt.json",
+      "present": true,
+      "sha256": "980df737be251f6aaafc56c7001444b04a8947657bae109d4f6f9f55dd53185f",
+      "bytes": 5455
+    },
+    {
+      "path": "results/analysis_plan.json",
+      "present": true,
+      "sha256": "05e91323fb8b46dbceb85d3b16077eb928643764004b65792584491f0a0f9112",
+      "bytes": 31044
+    },
+    {
+      "path": "results/comparison_families.json",
+      "present": true,
+      "sha256": "89535023ffe414ccdf3fbe0734c3e913dda8a4599bcd7e8b41d32f164216b392",
+      "bytes": 7309
+    },
+    {
+      "path": "results/ablation_table.csv",
+      "present": true,
+      "sha256": "de896eee6b3603b1b7a73405235240018a8d3c2a7730d7b671b7c8f182c1c48c",
+      "bytes": 2490
+    },
+    {
+      "path": "results/mcnemar_delong.json",
+      "present": true,
+      "sha256": "6676f22f0136616ddbc081a7ffd6dd3a98357e73f8f366f7d079631dd1dc40a1",
+      "bytes": 17325
+    },
+    {
+      "path": "research/experiments.csv",
+      "present": true,
+      "sha256": "511c58d9baaabb7d7a7657dd5d194a7d5be2873767b176366ad3748d8e3cb428",
+      "bytes": 92514
+    },
+    {
+      "path": "research/stats/families.py",
+      "present": true,
+      "sha256": "8ad42321a0c4f927598e25587cbce26a127de3f1f573a9d3d821b57b8d00acd2",
+      "bytes": 11543
+    },
+    {
+      "path": "research/selective/results_oof/fit_state.json",
+      "present": true,
+      "sha256": "721f7442ce642b747b03865da8582391964bfcb39ebc9b082bba16f4106913b7",
+      "bytes": 3237
+    },
+    {
+      "path": "paper/manuscript.tex",
+      "present": true,
+      "sha256": "134e05ce918b3c1fb95f98d4f124c9e1e316e677ea8472a60f33f9e4eebf869c",
+      "bytes": 144180
+    },
+    {
+      "path": "paper/manuscript_edited.tex",
+      "present": true,
+      "sha256": "caa4e8cd790d8e1f1b9df3aac4daec4420bd6493e173f9b135f1e7bb499cb777",
+      "bytes": 62834
+    }
+  ],
+  "v1_reused_modules": [
+    {
+      "path": "research/stats/intervals.py",
+      "present": true
+    },
+    {
+      "path": "research/stats/calibration_slices.py",
+      "present": true
+    },
+    {
+      "path": "research/stats/families.py",
+      "present": true
+    },
+    {
+      "path": "research/ablation/bootstrap.py",
+      "present": true
+    },
+    {
+      "path": "research/ablation/run_part_a.py",
+      "present": true
+    },
+    {
+      "path": "research/external/frozen_params.py",
+      "present": true
+    },
+    {
+      "path": "research/selective/scores.py",
+      "present": true
+    },
+    {
+      "path": "research/selective/fairness.py",
+      "present": true
+    },
+    {
+      "path": "research/selective/risk_coverage.py",
+      "present": true
+    },
+    {
+      "path": "research/conformal/scores.py",
+      "present": true
+    },
+    {
+      "path": "research/conformal/calibrate.py",
+      "present": true
+    },
+    {
+      "path": "research/conformal/metrics.py",
+      "present": true
+    },
+    {
+      "path": "research/conformal/hierarchical.py",
+      "present": true
+    },
+    {
+      "path": "research/external/eval_age_rule_transfer.py",
+      "present": true
+    },
+    {
+      "path": "research/external/eval_decision_curve.py",
+      "present": true
+    },
+    {
+      "path": "ml/evaluation/metrics.py",
+      "present": true
+    },
+    {
+      "path": "research/experiment_log.py",
+      "present": true
+    },
+    {
+      "path": "research/testguard.py",
+      "present": true
+    },
+    {
+      "path": "research/fitsplit.py",
+      "present": true
+    }
+  ],
+  "missing_locked_artifacts": [],
+  "missing_reused_modules": [],
+  "test_split_lock": {
+    "receipt_path": "results/test_pass_receipt.json",
+    "n_executions": 2,
+    "both_rerun_reasons_empty": true,
+    "statement": "V2 must not increase n_executions or add a rerun_reason. Checked, not assumed."
+  },
+  "all_locked_present": true,
+  "all_reused_present": true
+}

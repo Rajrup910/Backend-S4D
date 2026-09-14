@@ -1,0 +1,44 @@
+{
+  "session": "S36",
+  "generated_at": "2026-09-12T19:35:58.746775+00:00",
+  "statement": "SHA256 of the six frozen HAM-only checkpoints, recorded before any Track B training run. These are the provenance of every published CNN baseline number in the manuscript; a Track B arm must never write into them.",
+  "pattern": "*_best.HAM-only.pt",
+  "checkpoints": [
+    {
+      "name": "convnext_small_best.HAM-only.pt",
+      "path": "ml/checkpoints/convnext_small_best.HAM-only.pt",
+      "bytes": 197974263,
+      "sha256": "68ef998e6bc1eb89f4fd19502f3b6a540e6d32fb1df14b757efc1475830f4350"
+    },
+    {
+      "name": "convnext_tiny_best.HAM-only.pt",
+      "path": "ml/checkpoints/convnext_tiny_best.HAM-only.pt",
+      "bytes": 111374951,
+      "sha256": "d872d8687a83f7a1c486b50e682c44139dd66a4646b7ebc6ee9e86be8656b453"
+    },
+    {
+      "name": "densenet121_best.HAM-only.pt",
+      "path": "ml/checkpoints/densenet121_best.HAM-only.pt",
+      "bytes": 28459670,
+      "sha256": "9ab07e196a1096c8c7cb8686cbb961dffc90a5063b3638fe8042a0b452eb6d9e"
+    },
+    {
+      "name": "efficientnet_b0_best.HAM-only.pt",
+      "path": "ml/checkpoints/efficientnet_b0_best.HAM-only.pt",
+      "bytes": 16374469,
+      "sha256": "b52fd58485c944138998f1dcdca011fe3962cff41dd58326fce9df6037b0fca1"
+    },
+    {
+      "name": "efficientnet_b3_best.HAM-only.pt",
+      "path": "ml/checkpoints/efficientnet_b3_best.HAM-only.pt",
+      "bytes": 43394999,
+      "sha256": "868c21c4a9dc3eeabf4ad2a72028213c3d8e1b1e2c1fb76dface3b70d1b1bb29"
+    },
+    {
+      "name": "resnet50_best.HAM-only.pt",
+      "path": "ml/checkpoints/resnet50_best.HAM-only.pt",
+      "bytes": 94413731,
+      "sha256": "543c93b3d5b2a4658100dff38c1f48188f8ff8d6b63dadc22e4835af90fc8c0d"
+    }
+  ]
+}

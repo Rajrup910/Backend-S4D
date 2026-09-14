@@ -1,0 +1,244 @@
+{
+  "session": "S35",
+  "generated_at": "2026-09-12T19:14:55.479928+00:00",
+  "arm": "N2_np_head",
+  "statement": "Cross-fitted logistic-regression escalation head on cached ConvNeXt-Tiny 768-d features, lesion-grouped 5-fold CV, class-balanced, HAM-OOF only. Exploratory (Track B) -- not a member of any confirmatory family.",
+  "n_folds": 5,
+  "n_boot": 500,
+  "fpr_max": 0.2,
+  "band_reports": [
+    {
+      "band": "<40",
+      "n": 1319,
+      "n_escalating": 64,
+      "s_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.13144920318725103,
+        "partial_auc_mcclish": 0.8095811199645861,
+        "full_auc": 0.8953187250996015,
+        "ci_lo": 0.7239709255140605,
+        "ci_hi": 0.8808178487933734,
+        "n_boot": 500
+      },
+      "d_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.12812500000000002,
+        "partial_auc_mcclish": 0.8003472222222223,
+        "full_auc": 0.8831424302788845,
+        "ci_lo": 0.7104547634378934,
+        "ci_hi": 0.8760893434904633,
+        "n_boot": 500
+      },
+      "np_head": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.19747260956175303,
+        "partial_auc_mcclish": 0.9929794710048696,
+        "full_auc": 0.997472609561753,
+        "ci_lo": 0.9754867665279864,
+        "ci_hi": 1.0,
+        "n_boot": 500
+      },
+      "s_recombined_N1": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.12732818725099604,
+        "partial_auc_mcclish": 0.798133853474989,
+        "full_auc": 0.8795941235059761,
+        "ci_lo": 0.7161032862698233,
+        "ci_hi": 0.8736187036762381,
+        "n_boot": 500
+      }
+    },
+    {
+      "band": "40-59",
+      "n": 3112,
+      "n_escalating": 397,
+      "s_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.16249866633267002,
+        "partial_auc_mcclish": 0.8958296287018611,
+        "full_auc": 0.954677577225137,
+        "ci_lo": 0.8707886582810386,
+        "ci_hi": 0.9192382066743248,
+        "n_boot": 500
+      },
+      "d_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.16051509711417586,
+        "partial_auc_mcclish": 0.8903197142060442,
+        "full_auc": 0.9499682239262238,
+        "ci_lo": 0.8639617547612203,
+        "ci_hi": 0.9152058069769533,
+        "n_boot": 500
+      },
+      "np_head": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.19860834713389092,
+        "partial_auc_mcclish": 0.9961342975941414,
+        "full_auc": 0.9986083471338909,
+        "ci_lo": 0.9923671465904227,
+        "ci_hi": 0.9991314782041042,
+        "n_boot": 500
+      },
+      "s_recombined_N1": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.16066725116087044,
+        "partial_auc_mcclish": 0.8907423643357512,
+        "full_auc": 0.9484169948648009,
+        "ci_lo": 0.863543985756913,
+        "ci_hi": 0.915188971504356,
+        "n_boot": 500
+      }
+    },
+    {
+      "band": "60+",
+      "n": 2512,
+      "n_escalating": 893,
+      "s_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.14712370665536012,
+        "partial_auc_mcclish": 0.8531214073760003,
+        "full_auc": 0.9344839106163028,
+        "ci_lo": 0.8293043113979165,
+        "ci_hi": 0.8746250211377389,
+        "n_boot": 500
+      },
+      "d_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.1451498062965886,
+        "partial_auc_mcclish": 0.8476383508238573,
+        "full_auc": 0.9297210408039469,
+        "ci_lo": 0.8236553499546189,
+        "ci_hi": 0.8687501813577596,
+        "n_boot": 500
+      },
+      "np_head": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.1991063566950968,
+        "partial_auc_mcclish": 0.99751765748638,
+        "full_auc": 0.9991063566950967,
+        "ci_lo": 0.9947558210089956,
+        "ci_hi": 0.9992922755284006,
+        "n_boot": 500
+      },
+      "s_recombined_N1": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.1454235710180133,
+        "partial_auc_mcclish": 0.8483988083833702,
+        "full_auc": 0.9293274780791096,
+        "ci_lo": 0.8232881056918427,
+        "ci_hi": 0.869970829332973,
+        "n_boot": 500
+      }
+    },
+    {
+      "band": "all",
+      "n": 6981,
+      "n_escalating": 1356,
+      "s_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.15861120943952803,
+        "partial_auc_mcclish": 0.8850311373320223,
+        "full_auc": 0.9501081612586038,
+        "ci_lo": 0.8698347961127331,
+        "ci_hi": 0.8988329542715567,
+        "n_boot": 500
+      },
+      "d_uniform": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.15691602753195677,
+        "partial_auc_mcclish": 0.8803222986998799,
+        "full_auc": 0.9460582104228121,
+        "ci_lo": 0.8651234214180039,
+        "ci_hi": 0.8947838997822483,
+        "n_boot": 500
+      },
+      "np_head": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.19903205506391347,
+        "partial_auc_mcclish": 0.9973112640664263,
+        "full_auc": 0.9990320550639135,
+        "ci_lo": 0.9954928156665319,
+        "ci_hi": 0.9987024581127263,
+        "n_boot": 500
+      },
+      "s_recombined_N1": {
+        "fpr_max": 0.2,
+        "partial_auc_raw": 0.15681927236971485,
+        "partial_auc_mcclish": 0.8800535343603191,
+        "full_auc": 0.9442700753851195,
+        "ci_lo": 0.864913890647979,
+        "ci_hi": 0.8936734911222805,
+        "n_boot": 500
+      }
+    }
+  ],
+  "operating_points_under40": [
+    {
+      "score": "s_uniform",
+      "fpr_target": 0.05,
+      "sensitivity": 0.625
+    },
+    {
+      "score": "s_uniform",
+      "fpr_target": 0.1,
+      "sensitivity": 0.6875
+    },
+    {
+      "score": "s_uniform",
+      "fpr_target": 0.2,
+      "sensitivity": 0.796875
+    },
+    {
+      "score": "d_uniform",
+      "fpr_target": 0.05,
+      "sensitivity": 0.625
+    },
+    {
+      "score": "d_uniform",
+      "fpr_target": 0.1,
+      "sensitivity": 0.671875
+    },
+    {
+      "score": "d_uniform",
+      "fpr_target": 0.2,
+      "sensitivity": 0.75
+    },
+    {
+      "score": "np_head",
+      "fpr_target": 0.05,
+      "sensitivity": 0.984375
+    },
+    {
+      "score": "np_head",
+      "fpr_target": 0.1,
+      "sensitivity": 0.984375
+    },
+    {
+      "score": "np_head",
+      "fpr_target": 0.2,
+      "sensitivity": 1.0
+    },
+    {
+      "score": "s_recombined_N1",
+      "fpr_target": 0.05,
+      "sensitivity": 0.546875
+    },
+    {
+      "score": "s_recombined_N1",
+      "fpr_target": 0.1,
+      "sensitivity": 0.671875
+    },
+    {
+      "score": "s_recombined_N1",
+      "fpr_target": 0.2,
+      "sensitivity": 0.796875
+    }
+  ],
+  "verdict": {
+    "criterion": "np_head under-40 partial-AUC 95% CI lower bound exceeds uniform s point estimate",
+    "s_uniform_partial_auc": 0.8095811199645861,
+    "np_head_partial_auc": 0.9929794710048696,
+    "np_head_ci_lo": 0.9754867665279864,
+    "result": "RAISES_B"
+  }
+}

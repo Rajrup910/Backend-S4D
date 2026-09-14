@@ -1,0 +1,30 @@
+{
+  "session": "S43",
+  "phase": "B2_followup",
+  "generated_at": "2026-09-13T21:14:50.341169+00:00",
+  "n_boot": 2000,
+  "within_class": "nv",
+  "sources": {
+    "ham_val": "research\\selective\\features\\convnext_tiny_val.npz",
+    "bcn20000": "research\\v3\\features\\convnext_tiny_bcn20000_holdout.npz"
+  },
+  "extractor": "convnext_tiny_best.HAM-only.pt for every cohort",
+  "result": {
+    "probe": "archive",
+    "metric": "macro_ovr_auc",
+    "chance": 0.5,
+    "value": 0.9847309271153089,
+    "ci_lo": 0.9763687163437901,
+    "ci_hi": 0.9913278679662282,
+    "cohorts": [
+      "bcn20000",
+      "ham_val"
+    ],
+    "n": 2259,
+    "within_modality_only": true,
+    "entangled": true,
+    "reading": "acquisition-entangled within dermoscopy"
+  },
+  "d1_first_condition": "D1 first condition MET -- archive encoding certified within dermoscopy",
+  "d1_second_condition": "lesion_vs_context positive in S42: interior 0.8714, exterior 0.8608"
+}
