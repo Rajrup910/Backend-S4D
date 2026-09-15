@@ -357,7 +357,12 @@ def run(args: argparse.Namespace) -> int:
     started = time.time()
 
     for epoch in range(epochs):
-        stage = "head" if epoch < min(HEAD_EPOCHS, epochs) else "finetune"
+        # A smoke run goes straight to `finetune`. The head stage trains a frozen backbone and
+        # peaks at 1.09 GB where the real run peaks at 6.27 GB (384 px, batch 32) -- so a
+        # rehearsal that only ran the head stage would certify the cheap half and miss the OOM
+        # it exists to catch.
+        stage = "finetune" if args.smoke else (
+            "head" if epoch < min(HEAD_EPOCHS, epochs) else "finetune")
         if stage != stage_now:
             frozen = stage == "head"
             freeze_backbone(model, recipe, frozen=frozen)
