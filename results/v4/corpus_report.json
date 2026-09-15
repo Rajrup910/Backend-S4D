@@ -1,0 +1,236 @@
+{
+  "session": "S49",
+  "phase": "U_corpus",
+  "generated_at": "2026-09-15T15:06:36+00:00",
+  "sources": {
+    "isic_gt": "data/external/ISIC_2019_Training_GroundTruth.csv",
+    "isic_meta": "data/external/ISIC_2019_Training_Metadata.csv",
+    "ham_meta": "data/ham10000/HAM10000_metadata.csv",
+    "split_v1": "ml/configs/splits/split_v1.csv",
+    "nonham_manifest": "data/external/manifest_isic2019_nonham.csv",
+    "power_audit": "results/v4/power_audit.json"
+  },
+  "test_read": false,
+  "taxonomy": {
+    "classes_8": [
+      "akiec_ak",
+      "bcc",
+      "bkl",
+      "df",
+      "mel",
+      "nv",
+      "scc",
+      "vasc"
+    ],
+    "classes_7": [
+      "akiec",
+      "bcc",
+      "bkl",
+      "df",
+      "mel",
+      "nv",
+      "vasc"
+    ],
+    "collapse": {
+      "akiec_ak": "akiec",
+      "scc": "akiec",
+      "bcc": "bcc",
+      "bkl": "bkl",
+      "df": "df",
+      "mel": "mel",
+      "nv": "nv",
+      "vasc": "vasc"
+    },
+    "escalating_8": [
+      "mel",
+      "bcc",
+      "akiec_ak",
+      "scc"
+    ]
+  },
+  "manifest": {
+    "isic_rows": 25331,
+    "dropped_unk": 0,
+    "manifest_rows": 25331,
+    "in_ham": 10015,
+    "non_ham": 15316,
+    "null_lesion_ids": 2084,
+    "archives": {
+      "bcn20000": 12413,
+      "ham": 10015,
+      "mskcc": 2903
+    },
+    "class_8": {
+      "nv": 12875,
+      "mel": 4522,
+      "bcc": 3323,
+      "bkl": 2624,
+      "akiec_ak": 867,
+      "scc": 628,
+      "vasc": 253,
+      "df": 239
+    },
+    "class_7": {
+      "nv": 12875,
+      "mel": 4522,
+      "bcc": 3323,
+      "bkl": 2624,
+      "akiec": 1495,
+      "vasc": 253,
+      "df": 239
+    }
+  },
+  "grouping": {
+    "duplicate_detection": {
+      "radius": 3,
+      "join_rule": "both_hashes_within_radius",
+      "n_images": 27629,
+      "n_unreadable": 0,
+      "pairs_dhash": 27787,
+      "pairs_phash": 459,
+      "pairs_either_REJECTED": 28023,
+      "pairs_both_agree": 223,
+      "chance": {
+        "rate_dhash_is_upper_bound": false,
+        "rate_phash_is_upper_bound": true,
+        "rate_both_is_upper_bound": true,
+        "n_sampled_pairs": 399980,
+        "total_corpus_pairs": 381667006.0,
+        "rate_dhash": 7.750387519375969e-05,
+        "rate_phash": 7.500375018750938e-06,
+        "rate_either": 7.750387519375969e-05,
+        "rate_both_sampled": 0.0,
+        "rate_both_product": 5.813081293596657e-10,
+        "rate_both_model": "product of marginals; assumes hash independence off-duplicates",
+        "expected_dhash": 29580.67199859993,
+        "expected_phash": 2862.645677283864,
+        "expected_either": 29580.67199859993,
+        "expected_both": 0.2218661332961643,
+        "sampling_resolution_pairs": 954.215225761288
+      },
+      "enrichment_both_over_chance": 1005.1105893765324,
+      "enrichment_either_over_chance": 0.9473415614535852,
+      "n_clusters": 27412,
+      "n_multi_image_clusters": 208,
+      "n_images_in_multi_clusters": 425,
+      "largest_cluster": 4
+    },
+    "n_effective_lesions": 13931,
+    "n_groups": 13909,
+    "lesion_merges_caused_by_duplicates": 22,
+    "note": "group_id is the union of lesion identity and perceptual duplication. The difference between n_effective_lesions and n_groups is exactly the leak that lesion_id grouping alone would have missed."
+  },
+  "splits": {
+    "seed": 20260915,
+    "reserved_fraction": 0.3,
+    "val_fraction": 0.15,
+    "scarce_stratum": "<40|True",
+    "under40_reserved_target": 104,
+    "allocation_per_stratum": {
+      "40-59|False": {
+        "groups": 1403,
+        "reserved": 421,
+        "val": 210,
+        "train": 772
+      },
+      "40-59|True": {
+        "groups": 576,
+        "reserved": 173,
+        "val": 86,
+        "train": 317
+      },
+      "60+|False": {
+        "groups": 1167,
+        "reserved": 350,
+        "val": 175,
+        "train": 642
+      },
+      "60+|True": {
+        "groups": 1589,
+        "reserved": 477,
+        "val": 238,
+        "train": 874
+      },
+      "<40|False": {
+        "groups": 1219,
+        "reserved": 366,
+        "val": 183,
+        "train": 670
+      },
+      "<40|True": {
+        "groups": 151,
+        "reserved": 104,
+        "val": 0,
+        "train": 47
+      },
+      "unknown|False": {
+        "groups": 254,
+        "reserved": 76,
+        "val": 38,
+        "train": 140
+      },
+      "unknown|True": {
+        "groups": 82,
+        "reserved": 25,
+        "val": 12,
+        "train": 45
+      }
+    },
+    "images_per_split": {
+      "train": 15294,
+      "reserved": 4733,
+      "val": 2270,
+      "ham_val": 1532,
+      "ham_test": 1502
+    },
+    "groups_per_split": {
+      "ham_test": 1121,
+      "ham_val": 1120,
+      "reserved": 1992,
+      "train": 8734,
+      "val": 942
+    },
+    "under40_escalating_by_split": {
+      "ham_test": {
+        "images": 21,
+        "lesions": 10
+      },
+      "ham_val": {
+        "images": 22,
+        "lesions": 10
+      },
+      "reserved": {
+        "images": 279,
+        "lesions": 104
+      },
+      "train": {
+        "images": 193,
+        "lesions": 81
+      }
+    },
+    "ham_groups_locked": {
+      "ham_test": 1121,
+      "ham_val": 1120,
+      "ham_train": 5227
+    }
+  },
+  "verification": {
+    "assert_no_leakage_v4_splits": "PASS",
+    "assert_no_leakage_all_splits": "PASS",
+    "ham_val_test_images": 3034,
+    "ham_val_test_in_v4_train": 0,
+    "ham_val_test_split_preserved": true,
+    "groups_spanning_splits": 0,
+    "duplicate_clusters_spanning_splits": 0,
+    "sampled_paths_resolved": 500,
+    "sampled_paths_checked": 500,
+    "reserved_under40_escalating_lesions": 104,
+    "reserved_under40_escalating_images": 279,
+    "s48_target_range": [
+      104,
+      131
+    ],
+    "meets_s48_power_target": true,
+    "meets_paired_mcnemar_target": true
+  }
+}

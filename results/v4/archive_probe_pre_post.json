@@ -1,0 +1,99 @@
+{
+  "session": "S49",
+  "phase": "U_corpus",
+  "test_read": false,
+  "generated_at": "2026-09-15T15:05:46+00:00",
+  "checkpoint": "ml/checkpoints/convnext_tiny_best.HAM-only.pt",
+  "minkowski_p": 6,
+  "raw_arm_reproduces_s43_cache": {
+    "ham_val": {
+      "status": "DRIFT",
+      "max_abs_delta": 0.011322975158691406,
+      "mean_abs_delta": 0.00018637643370311707,
+      "feature_abs_mean": 0.21798250079154968
+    },
+    "bcn20000": {
+      "status": "exact",
+      "max_abs_delta": 0.0,
+      "mean_abs_delta": 0.0,
+      "feature_abs_mean": 0.2795441448688507
+    },
+    "mskcc": {
+      "status": "exact",
+      "max_abs_delta": 0.0,
+      "mean_abs_delta": 0.0,
+      "feature_abs_mean": 0.2294388860464096
+    }
+  },
+  "cohort_sizes": {
+    "bcn20000": 3567,
+    "mskcc": 874,
+    "ham_val": 1532
+  },
+  "results": [
+    {
+      "cohort_set": "ham_val_vs_bcn20000",
+      "arm": "raw",
+      "auc": 0.9904631939427344,
+      "ci_lo": 0.9872534784133017,
+      "ci_hi": 0.9933762044747888,
+      "n": 5099,
+      "within_modality_only": true,
+      "entangled": true
+    },
+    {
+      "cohort_set": "ham_val_vs_bcn20000",
+      "arm": "shades_of_grey",
+      "auc": 0.9517799329654413,
+      "ci_lo": 0.9431121320324092,
+      "ci_hi": 0.9603525832822442,
+      "n": 5099,
+      "within_modality_only": true,
+      "entangled": true
+    },
+    {
+      "cohort_set": "ham_val_vs_mskcc",
+      "arm": "raw",
+      "auc": 0.9454243865424716,
+      "ci_lo": 0.9335927169953655,
+      "ci_hi": 0.9563528800479995,
+      "n": 2406,
+      "within_modality_only": true,
+      "entangled": true
+    },
+    {
+      "cohort_set": "ham_val_vs_mskcc",
+      "arm": "shades_of_grey",
+      "auc": 0.8683355390121348,
+      "ci_lo": 0.8508128100626482,
+      "ci_hi": 0.8844338907617701,
+      "n": 2406,
+      "within_modality_only": true,
+      "entangled": true
+    },
+    {
+      "cohort_set": "all_three",
+      "arm": "raw",
+      "auc": 0.965648811675402,
+      "ci_lo": 0.960666914843075,
+      "ci_hi": 0.9703462752813266,
+      "n": 5973,
+      "within_modality_only": true,
+      "entangled": true
+    },
+    {
+      "cohort_set": "all_three",
+      "arm": "shades_of_grey",
+      "auc": 0.912644123012047,
+      "ci_lo": 0.9041644832201244,
+      "ci_hi": 0.920531975289366,
+      "n": 5973,
+      "within_modality_only": true,
+      "entangled": true
+    }
+  ],
+  "primary_contrast": "ham_val_vs_bcn20000",
+  "primary_delta_auc": -0.03868326097729313,
+  "intervals_overlap": false,
+  "verdict": "colour constancy materially reduces within-modality archive decodability (0.9905 -> 0.9518, non-overlapping intervals), so illuminant statistics carry part of archive identity and the V4 re-pool is a different experiment rather than a re-run. TWO things this does not license: the residual AUC is still 0.952, so archive identity is reduced and nowhere near removed -- most of it survives colour normalisation and lives in something else; and a mechanism for archive separability is not a mechanism for H4's failure, which may have had reasons unrelated to colour. The pooling experiment still has to be run and can still fail."
+}

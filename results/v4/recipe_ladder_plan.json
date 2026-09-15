@@ -1,0 +1,304 @@
+{
+  "arch": "convnext_tiny",
+  "corpus": {
+    "declared_discontinuity": "V4 val contains ZERO HAM images (all BCN-20000 + MSKCC). The screen model-selects on a HAM val distribution and the promote stage on a BCN/MSKCC one, so a rung can reverse between Block 1 and Block 2. Declared, not discovered.",
+    "image_root": "data\\external\\isic2019_images\\ISIC_2019_Training_Input",
+    "manifest": "ml\\data\\manifest_v4.csv",
+    "promote_train": "manifest_v4 split=train -- 15,294 images / 8,734 groups",
+    "promote_val": "manifest_v4 split=val -- 2,270 images / 942 groups",
+    "readout": "manifest_v4 split=reserved -- 4,733 images / 1,992 groups / 104 under-40 escalating lesions (279 images)",
+    "screen_train": "manifest_v4 split=train AND in_ham -- 6,981 images / 5,229 lesions",
+    "screen_val": "manifest_v4 split=ham_val -- 1,532 images",
+    "test_split_never_loaded": "split=ham_test is refused by the dataset loader"
+  },
+  "mcids": {
+    "age_flip": 0.05,
+    "basis": "MCID 0.020 on val macro-F1 is ~7x S44's measured same-data seed spread of 0.0027 and is the size of the V1 Dirichlet rung A6->A7 (+0.019), larger than the TTA rung A5->A6 (+0.014). Both are reported, load-bearing levers in the manuscript, so an effect below this is not one the paper would describe. The non-inferiority margin of 0.005 is ~2x the same seed spread. The operating-point and age-flip MCIDs of 0.05 are anchored on the frozen under-40 lambda of 0.26, which moved test under-40 sensitivity 0.143 -> 0.238.",
+    "noninferiority_margin": 0.005,
+    "operating_point": 0.05,
+    "val_macro_f1": 0.02
+  },
+  "phase": "R_recipe_ladder",
+  "promote": {
+    "arms": [
+      "pooled control (baseline recipe)",
+      "composite (all promoted rungs together)"
+    ],
+    "block": 2,
+    "declared_confound": "The composite bundles >= 2 changes, so an effect cannot be attributed to a single rung. Accepted deliberately: V1's exhaustion result is that five separate levers were each below noise, so composition is the hypothesis worth the GPU time.",
+    "resolution": "384 px if R1 is promoted, else 224 px -- this choice sets the entire remaining GPU budget"
+  },
+  "rungs": {
+    "R0": {
+      "change": "none -- the published recipe verbatim",
+      "declared_as": "reproduction anchor",
+      "dropped": "",
+      "endpoint": "val macro-F1",
+      "falsifier": "If val macro-F1 falls outside (0.735, 0.765) the pipeline does not reproduce the published baseline (0.7482); the screen is void and Block 2 must not be started.",
+      "label": "control",
+      "mcid": null,
+      "rationale": "Reproduction anchor. HAM-only train is the same 6,981 images the published ConvNeXt-Tiny baseline was fitted on, so this run has a known answer.",
+      "recipe": {
+        "balanced_sampler": false,
+        "colour_constancy": false,
+        "ema": false,
+        "epochs": 30,
+        "image_size": 224,
+        "metadata_branch": false,
+        "mixup_cutmix": false,
+        "randaugment": false
+      },
+      "recipe_diff_vs_control": {},
+      "screen_eligible": false
+    },
+    "R1": {
+      "change": "224 -> 384 px",
+      "declared_as": "ranking lever",
+      "dropped": "",
+      "endpoint": "delta val macro-F1 vs R0",
+      "falsifier": "Below MCID: the discarded-scale reading of the TTA gain is not supported, and resolution is not promoted. R1's outcome also sets the Block 2 and Block 3 resolution and therefore the whole remaining GPU budget.",
+      "label": "resolution_384",
+      "mcid": 0.02,
+      "rationale": "Dermoscopic criteria -- pigment network, dots and globules, streaks, blue-white veil -- are fine-grained. That 24-view TTA already helps is direct evidence scale information is being discarded.",
+      "recipe": {
+        "balanced_sampler": false,
+        "colour_constancy": false,
+        "ema": false,
+        "epochs": 30,
+        "image_size": 384,
+        "metadata_branch": false,
+        "mixup_cutmix": false,
+        "randaugment": false
+      },
+      "recipe_diff_vs_control": {
+        "image_size": 384
+      },
+      "screen_eligible": true
+    },
+    "R2": {
+      "change": "shades-of-grey colour constancy (Finlayson & Trezzi, p=6)",
+      "declared_as": "ranking lever",
+      "dropped": "",
+      "endpoint": "delta val macro-F1 vs R0",
+      "falsifier": "Below MCID: archive illuminant is not the obstacle to pooling, and V3's H4 negative stands without this explanation. A clean negative either way -- the rung exists because section 13 recorded it as a phantom.",
+      "label": "colour_constancy",
+      "mcid": 0.02,
+      "rationale": "Archive normalisation. V3 Phase C's pooling failed (H4 -0.0088) while S42's archive probe showed the embedding can tell the archives apart. If archive identity rides on illuminant statistics, this is the mechanism H4 lacked.",
+      "recipe": {
+        "balanced_sampler": false,
+        "colour_constancy": true,
+        "ema": false,
+        "epochs": 30,
+        "image_size": 224,
+        "metadata_branch": false,
+        "mixup_cutmix": false,
+        "randaugment": false
+      },
+      "recipe_diff_vs_control": {
+        "colour_constancy": true
+      },
+      "screen_eligible": true
+    },
+    "R3": {
+      "change": "mask-guided lesion-centred crop + exterior dropout",
+      "declared_as": "DROPPED",
+      "dropped": "S50 gate fired 2026-09-15. Age is peri-lesional in direction (paired delta +0.0297 [+0.0174, +0.0424], selectivity +0.0332 [+0.0147, +0.0522], both CIs excluding zero) but below the declared MCID of 0.05, and the crop is a no-op on 18.9% of lesions. Transforms remain built and unwired in research/v4/mask_augment.py. Reopening requires a fresh pre-registration.",
+      "endpoint": "n/a",
+      "falsifier": "n/a",
+      "label": "mask_guided_crop",
+      "mcid": null,
+      "rationale": "Targeted removal of the peri-lesional shortcut.",
+      "recipe": {
+        "balanced_sampler": false,
+        "colour_constancy": false,
+        "ema": false,
+        "epochs": 30,
+        "image_size": 224,
+        "metadata_branch": false,
+        "mixup_cutmix": false,
+        "randaugment": false
+      },
+      "recipe_diff_vs_control": {},
+      "screen_eligible": false
+    },
+    "R4": {
+      "change": "class-balanced sampler",
+      "declared_as": "operating-point lever",
+      "dropped": "",
+      "endpoint": "delta escalation sensitivity at matched referral rate",
+      "falsifier": "A null macro-F1 result is PREDICTED, not a failure: S36 verify_losses.py check 7 proves a band-constant offset cannot change within-band ranking. R4 is therefore exempt from the macro-F1 screen. It fails only if it does not move the operating point either, at which point resampling buys nothing at all.",
+      "label": "balanced_sampler",
+      "mcid": 0.05,
+      "rationale": "Prior shift. Included for its operating point, not its ranking.",
+      "recipe": {
+        "balanced_sampler": true,
+        "colour_constancy": false,
+        "ema": false,
+        "epochs": 30,
+        "image_size": 224,
+        "metadata_branch": false,
+        "mixup_cutmix": false,
+        "randaugment": false
+      },
+      "recipe_diff_vs_control": {
+        "balanced_sampler": true
+      },
+      "screen_eligible": false
+    },
+    "R5": {
+      "change": "Mixup / CutMix + colour-safe RandAugment",
+      "declared_as": "ranking lever",
+      "dropped": "",
+      "endpoint": "delta val macro-F1 vs R0",
+      "falsifier": "Below MCID: the model is not regularisation-limited at 6,981 images, and the conservative published augmentation was already adequate.",
+      "label": "mixup_randaugment",
+      "mcid": 0.02,
+      "rationale": "Regularisation. Colour ops are excluded because colour is diagnostic signal in pigmented lesions -- the same reason the published config caps hue at 0.02.",
+      "recipe": {
+        "balanced_sampler": false,
+        "colour_constancy": false,
+        "ema": false,
+        "epochs": 30,
+        "image_size": 224,
+        "metadata_branch": false,
+        "mixup_cutmix": true,
+        "randaugment": true
+      },
+      "recipe_diff_vs_control": {
+        "mixup_cutmix": true,
+        "randaugment": true
+      },
+      "screen_eligible": true
+    },
+    "R6": {
+      "change": "EMA + 60-epoch cosine",
+      "declared_as": "ranking lever",
+      "dropped": "",
+      "endpoint": "delta val macro-F1 vs R0",
+      "falsifier": "Below MCID: the recipe is not under-trained and schedule length is not the limit. Evaluate _last.pt, not _best.pt (S45's checkpoint-selection trap).",
+      "label": "ema_60ep",
+      "mcid": 0.02,
+      "rationale": "30 epochs is plausibly under-training: S44's all_three best was epoch 18 of 26, i.e. the schedule was still improving when it ended.",
+      "recipe": {
+        "balanced_sampler": false,
+        "colour_constancy": false,
+        "ema": true,
+        "epochs": 60,
+        "image_size": 224,
+        "metadata_branch": false,
+        "mixup_cutmix": false,
+        "randaugment": false
+      },
+      "recipe_diff_vs_control": {
+        "ema": true,
+        "epochs": 60
+      },
+      "screen_eligible": true
+    },
+    "R7": {
+      "change": "explicit metadata branch (age / sex / site) via GatedFusionModel",
+      "declared_as": "mechanism",
+      "dropped": "",
+      "endpoint": "counterfactual age-flip shift in mean escalation mass, plus non-inferiority on val macro-F1",
+      "falsifier": "Two independent ways to fail, both informative. (a) If the age flip moves mean escalation mass by < 0.05 the gate has learned to ignore the branch and it is decorative, not auditable. (b) If val macro-F1 drops by more than the non-inferiority margin of 0.005, explicitness costs accuracy and that trade is the reportable result. R7 is exempt from the macro-F1 screen in the promotion sense -- it cannot be ranked against a lever.",
+      "label": "metadata_branch",
+      "mcid": 0.05,
+      "rationale": "The H3+H6 resolution. H3 certified age is encoded in the representation and the escalation score rides on it; H6 showed removing it makes under-40 WORSE, so age is load-bearing diagnostic signal, not a separable nuisance. The resolution is not removal but explicitness: an inspectable term that can be read, audited and modulated at inference instead of a shortcut buried in the backbone.",
+      "recipe": {
+        "balanced_sampler": false,
+        "colour_constancy": false,
+        "ema": false,
+        "epochs": 30,
+        "image_size": 224,
+        "metadata_branch": true,
+        "mixup_cutmix": false,
+        "randaugment": false
+      },
+      "recipe_diff_vs_control": {
+        "metadata_branch": true
+      },
+      "screen_eligible": false
+    }
+  },
+  "s54_gate": {
+    "cohort": "reserved, 4,733 images / 1,992 groups / 104 under-40 escalating lesions -- identical to S51's cohort so the two sessions are directly comparable",
+    "conjunction": "BOTH must move with a lesion-grouped CI excluding zero. A conjunction is conservative by construction, so no multiplicity correction is applied across the two endpoints.",
+    "gate_A": {
+      "comparator_already_frozen": "4,587 of the 4,733 reserved images already have predictions in results/external/predictions/ from S13/S14. No new training-set read is needed.",
+      "confound": "The V1 ensemble is HAM-only; the reserved cohort is 100% BCN-20000 + MSKCC (verified: 0 HAM images). The V4 arms train on those archives and V1 never did. S14 measured V1's BCN transfer at Macro-F1 0.402 against 0.784 in-domain, so Gate A is expected to fire on macro-F1 for training-corpus reasons alone. Report it as the DEPLOYMENT delta, never as evidence about the representation.",
+      "contrast": "V4 composite vs frozen V1 ensemble (6-CNN soft-vote + 24-view TTA + deployed HAM-OOF Dirichlet map)",
+      "required_top_up": "The 146 missing images are exactly the class_8=scc rows S13 excluded by pre-registration. Without them the cohort drops to 103 under-40 escalating lesions -- one below S48's power target of 104, and no longer S51-comparable. S54 must score those 146 images with the 6 frozen checkpoints (minutes of GPU, inside S54's existing inference budget) so both arms are read on one 4,733-image cohort.",
+      "status": "AS THE RUNBOOK DECLARES IT, AND CONFOUNDED"
+    },
+    "gate_B": {
+      "contrast": "V4 composite vs V4 pooled control -- same corpus, same split, seed-matched paired",
+      "deviation": "The runbook named only the V1 comparator. S52 adds Gate B because Gate A cannot separate a corpus effect from a recipe effect, and reading the four outcomes off a confounded contrast would license 'the representation was the bottleneck' from a training-data change.",
+      "status": "ADDED BY S52. This is the clean recipe contrast and the runbook's four outcomes are read from it."
+    },
+    "outcomes_read_from_gate_B": {
+      "1": "both move -> the representation was the bottleneck; section 4 is built on the new backbone",
+      "2": "macro-F1 only -> general accuracy gain, under-40 untouched; section 4 carries the under-40 burden alone",
+      "3": "under-40 pAUC only -> the shortcut fix worked without a general gain, the most interesting outcome",
+      "4": "neither -> the representation is not reachable by recipe; section 4 is the whole contribution, and that is still a deployable result"
+    },
+    "primary_endpoints": [
+      "full-coverage macro-F1",
+      "under-40 escalation partial AUC, FPR in [0, 0.20]"
+    ]
+  },
+  "screen": {
+    "block": 1,
+    "control_gate": {
+      "action_if_outside": "screen void; do not start Block 2",
+      "band": [
+        0.735,
+        0.765
+      ],
+      "published": 0.7481934348860028,
+      "s44_retrain": 0.7509358509814447
+    },
+    "exempt_by_prior_declaration": [
+      "R4",
+      "R7"
+    ],
+    "promotion_rule": {
+      "budget": 2,
+      "fallback": "if fewer than 2 clear the MCID, promote any lever with delta >= 0 up to the budget and record the promotion as BELOW MCID -- Block 2 still runs, but no rung-level claim is made",
+      "primary": "promote ranking levers with delta >= 0.02; if more than 2 clear, take the top 2 by point estimate",
+      "r4_r7": "promoted into the composite only if they clear their own declared endpoints, never on macro-F1 rank"
+    },
+    "ranking_levers": [
+      "R1",
+      "R2",
+      "R5",
+      "R6"
+    ],
+    "selection_endpoint": "val macro-F1",
+    "status": "COMPUTE-ALLOCATION FILTER, NOT A HYPOTHESIS TEST. No p-values are computed at Block 1. 'Screened out' never means 'falsified'.",
+    "why_not_under40": {
+      "between_condition_spread_macro_f1": 0.044731463652795234,
+      "between_condition_spread_under40_sens": 0.18181818181818182,
+      "reading": "On macro-F1 signal exceeds seed noise ~16x. On under-40 escalation sensitivity S44 recorded noise_exceeds_signal=true at n=22. Screening seven arms on the second would select on noise and bias the S54 readout the reserved cohort was built to support.",
+      "same_data_seed_spread_macro_f1": 0.002742416095441902,
+      "same_data_seed_spread_under40_sens": 0.22727272727272724,
+      "source": "results/v3/s44_control_and_multiplicity.json",
+      "statement": "The under-40 endpoint is not used to select anything before S54."
+    }
+  },
+  "seeds": {
+    "block": 3,
+    "budget_contingency": "MEASURED in S52 Block 0, replacing the runbook's inherited ~50 min/rung, which was 3.4x too slow: 30 epochs over 6,981 images at 224 px takes 14.8 min, and 384 px costs 2.26x, not the 2.94x a pixel-square model predicts. The whole three-block programme is ~10 h, not ~40 h, so the 'three nights vs one' contingency this field previously carried does not arise. Block 3 is ~4-5 h whether or not R1 is promoted.",
+    "form": "PAIRED, seed-matched is primary (S48's own resolution: 3 seeds do not make the unpaired comparison adequate, which needs ~6 at n=151).",
+    "reporting": "Report the seed-averaged point estimate with the observed seed range. NEVER report the best seed -- S44 is the precedent, where picking either of its two retrains would have supported an opposite conclusion.",
+    "rule": "S48's binding rule applies unconditionally -- every V4 under-40 condition runs >= 3 seeds. Both Block 2 arms are under-40 conditions at S54.",
+    "seed_floor_under40": 0.1607060866333062,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "two_x_floor": 0.3214121732666124
+  },
+  "session": "v4_s52",
+  "test_read": false
+}

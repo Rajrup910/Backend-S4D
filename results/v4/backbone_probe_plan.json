@@ -1,0 +1,63 @@
+{
+  "arms": [
+    "convnext_tiny",
+    "panderm_vitb16",
+    "dinov2_vitb14"
+  ],
+  "candidate": "panderm_vitb16",
+  "control": "convnext_tiny",
+  "declared_biases": [
+    "PanDerm and DINOv2 pretraining corpora are undisclosed at the image level and may contain ISIC-2019 material; this biases toward the alternative, so a negative result is robust and a positive one carries the caveat.",
+    "The PanDerm tower used is DermLIP's CLIP-aligned PanDerm-base, not the raw masked-latent checkpoint, because the only HF copies of the latter are untrusted third-party pickles.",
+    "The control is a supervised HAM10000 fine-tune while the candidates are self-supervised; on a BCN/MSKCC cohort that is a domain disadvantage for the control, running against the falsifier rather than with it."
+  ],
+  "eval_split": [
+    "reserved"
+  ],
+  "falsifier": {
+    "both_conditions_required": true,
+    "clears_falsifier_only_on": "CERTIFIED_HEADROOM",
+    "mcid": 0.05,
+    "statement": "PanDerm under-40 escalation pAUC must exceed ConvNeXt-Tiny's by >= 0.05 with a lesion-grouped paired CI excluding zero, or the representation-bottleneck hypothesis is falsified and V4 drops the foundation-model arm entirely.",
+    "verdicts": [
+      "CERTIFIED_HEADROOM",
+      "CERTIFIED_BUT_BELOW_MCID",
+      "NOT_CERTIFIED"
+    ]
+  },
+  "instrument": {
+    "cross_fitting": "GroupKFold(n_splits=5) on effective_lesion_id",
+    "fpr_max": 0.2,
+    "imported_unchanged_from": [
+      "research.v3.ceiling",
+      "research.v2.frontier",
+      "research.v3.oos_probe"
+    ],
+    "interval": "lesion-grouped paired bootstrap, research.v3.oos_probe.paired_delta_ci",
+    "n_boot": 2000,
+    "probe_family": [
+      "linear",
+      "multinomial_lse",
+      "mlp",
+      "gbm"
+    ],
+    "seed": 42,
+    "selection": "nested_adaptive_probe -- family member chosen inside each outer training fold, never on the rows the verdict is read from"
+  },
+  "phase": "R_backbone_probe",
+  "poolings": {
+    "primary": "CLS token after final norm (ViT) / penultimate hook (ConvNeXt)",
+    "robustness": "mean of patch tokens after final norm (ViT arms only)"
+  },
+  "primary_band": "<40",
+  "primary_endpoint": "escalation partial AUC, FPR in [0, 0.20], McClish-standardised",
+  "secondary": [
+    "all-band and 40-59 / 60+ pAUC",
+    "dinov2 vs control",
+    "panderm vs dinov2",
+    "per-family-member marginals",
+    "mean-pool robustness arm"
+  ],
+  "session": "S51",
+  "test_read": false
+}
