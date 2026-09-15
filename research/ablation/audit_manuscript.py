@@ -1062,6 +1062,56 @@ if EDITED:
 else:
     claim("bibliography size", 49, SRC.count("\\bibitem{"))
 
+# --- S48 regression guards: the unit of analysis on the under-40 cell ---------------------------
+# The manuscript argued at length that resampling images "would treat correlated views as
+# independent evidence and produce intervals that are too narrow", and then described its own
+# headline count -- 3 of 21 -- as "escalating lesions". They are images, on ten lesions. S48
+# measured the cell from ml/configs/splits/split_v1.csv joined to the HAM metadata; the counts
+# live in results/v4/power_audit.json and are asserted against it here rather than restated.
+
+_POWER = _json("results/v4/power_audit.json")
+_CELL = _POWER["ham_under40_counts"]
+
+absent("under-40 cell called lesions", "of $21$ escalating lesions caught",
+       "the 21 are images sitting on 10 lesions (results/v4/power_audit.json, "
+       "ham_under40_counts.test); calling them lesions asserts 21 independent units")
+
+for _split, _label in (("test", "test"), ("val", "validation"), ("train", "out-of-fold")):
+    present(f"under-40 {_label} image count",
+            "$%d$" % _CELL[_split]["escalating_images"], "results/v4/power_audit.json")
+present("under-40 test lesion count",
+        "$21$ test images sit on", "results/v4/power_audit.json")
+
+# The three lesion counts must all appear, and the test/val cells must be the same size -- if a
+# future split changes that, the Limitations sentence "the 22 validation images on 10" is wrong.
+checks += 1
+if _CELL["test"]["escalating_lesions"] != _CELL["val"]["escalating_lesions"]:
+    failures.append(
+        "Limitations pairs the test and validation under-40 cells at 10 lesions each, but "
+        f"power_audit.json now has {_CELL['test']['escalating_lesions']} and "
+        f"{_CELL['val']['escalating_lesions']}")
+
+checks += 1
+if not all(_CELL[s]["reconciles_with_split_file"] for s in ("test", "val", "train")):
+    failures.append(
+        "power_audit.json no longer reconciles its lesion counts against age_band_prior.csv, so "
+        "the manuscript's per-split image/lesion pairs are not computed on the same cell")
+
+# Directional: the under-40 cell must stay clustered. If a future corpus gives it ~1 image per
+# lesion the whole Power limitation paragraph is obsolete and must be rewritten, not kept.
+checks += 1
+if _CELL["test"]["images_per_lesion"] < 1.5:
+    failures.append(
+        "the under-40 test cell is no longer meaningfully clustered "
+        f"({_CELL['test']['images_per_lesion']:.2f} images/lesion); the Limitations claim that "
+        "image-level intervals are 'correspondingly optimistic' no longer holds")
+
+# The paper must not claim it recomputed the under-40 sensitivity on a lesion denominator -- that
+# would be a test quantity outside the frozen plan, and the receipt would have to show it.
+checks += 1
+if _POWER["test_read"]:
+    failures.append("results/v4/power_audit.json reports a test read; S48 declared none")
+
 n_passed = checks - len(failures) - len(skipped)
 print(f"target: {TARGET}")
 print(f"{checks} checks run -- {n_passed} passed, {len(skipped)} skipped, {len(failures)} failed")

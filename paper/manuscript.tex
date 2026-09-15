@@ -657,10 +657,10 @@ patient age reveals that it is not, uniformly.
 \input{tables/table4_agegap.tex}
 
 Table~\ref{tab:agegap} gives escalation sensitivity by age band at full coverage on all three
-splits. On test, patients aged $60$ and over have $76.4\%$ of their escalating lesions caught
+splits. On test, patients aged $60$ and over have $76.4\%$ of their escalating images caught
 and the $40$--$59$ band $81.4\%$. Patients under $40$ have $14.3\%$ --- three of twenty-one
---- with eighteen lesions requiring escalation, most of them melanomas, classified as ordinary
-nevi. The single pre-specified confirmatory comparison, under $40$ against $60+$ and the sole
+images, which sit on ten lesions (Sec.~\ref{sec:frozen}) --- with eighteen images requiring
+escalation, most of them melanomas, classified as ordinary nevi. The single pre-specified confirmatory comparison, under $40$ against $60+$ and the sole
 member of its family, gives a difference of $-0.621$ $[-0.786, -0.386]$ with Holm-adjusted
 $p<0.001$.
 
@@ -1131,6 +1131,23 @@ bound on fold-bagging rather than a refutation of it --- a caveat pre-registered
 added once the number came back. Every test quantity in this paper was named before it was
 computed, and any analysis these numbers suggest cannot be run against this test split at
 all; that is the intended cost of the discipline.
+
+\textbf{Power: the paper's most cited number rests on ten independent units.} The under-$40$
+escalating cell is small in a way the image count understates. Its $21$ test images sit on
+$10$ lesions, the $22$ validation images on $10$, and the $64$ out-of-fold images on $34$
+(Sec.~\ref{sec:frozen}). Every under-$40$ figure in this paper is therefore a proportion over
+roughly ten independent units, and the exact intervals we report --- computed on image counts
+--- are correspondingly optimistic. This bounds what the age analysis can claim in two
+specific ways. First, no comparison on this cell can resolve a difference much smaller than
+$0.2$; the $\lambda$ rule's under-$40$ lift from $0.143$ to $0.238$ sits inside that
+resolution and is reported as directional, which is why Sec.~\ref{sec:results-utility}
+declines to present it as a solved problem. Second, a difference of that size is within the
+range that retraining the same architecture on identical data can produce, so no single
+training run should be read as evidence about this band. Raising the cell out of that regime
+is a data problem rather than a modelling one: the under-$40$ escalating population of the
+public dermoscopic archives is roughly ten times what one HAM10000 split contains, and
+assembling it is the prerequisite for any future claim about this subgroup, including a
+negative one.
 
 \textbf{The mitigation: right form, locally wrong magnitude, and not orthogonal where it
 matters.} Each $\lambda_b$ minimises expected cost under our cost matrix subject to a
@@ -1636,10 +1653,24 @@ Neither half of this rule is cosmetic. Lesion resampling matters because the $1{
 images sit on $1{,}121$ lesions, one of them contributing six views; resampling images would
 treat correlated views as independent evidence and produce intervals that are too narrow. The
 exact interval matters because at the paper's smallest and most consequential count --- $3$
-of $21$ escalating lesions caught in the under-$40$ band --- the percentile bootstrap returns
-$[0.000, 0.286]$ against the exact $[0.030, 0.363]$. The bootstrap interval is visibly too
-narrow and cannot reach the upper tail, and this is exactly the number that must not be
-reported with understated uncertainty.
+of $21$ escalating \emph{images} caught in the under-$40$ band --- the percentile bootstrap
+returns $[0.000, 0.286]$ against the exact $[0.030, 0.363]$. The bootstrap interval is
+visibly too narrow and cannot reach the upper tail, and this is exactly the number that must
+not be reported with understated uncertainty.
+
+\textbf{A residual we state rather than resolve.} The two halves of that rule correct
+different problems, and on this one number they do not compose. Those $21$ under-$40$
+escalating test images sit on only $10$ lesions --- $2.1$ views per lesion; the validation
+cell is $22$ images on $10$ lesions and the out-of-fold cell $64$ images on $34$. The exact
+interval is computed on the image count, and therefore treats correlated views of a single
+lesion as independent evidence: precisely the error that lesion resampling exists to prevent.
+The direction of the residual is not in doubt --- the exact interval quoted above is, if
+anything, still too narrow. We do not restate the under-$40$ sensitivity on a lesion
+denominator, because that would compute a test quantity outside the frozen analysis plan
+declared in this section, and the protocol that makes the rest of this paper auditable is
+worth more than one recomputed interval. The consequence is carried into
+Sec.~\ref{sec:limitations}: the under-$40$ point estimate rests on ten independent units, not
+twenty-one, and every statement built on it is weaker by that factor.
 
 \textbf{Paired tests and declared comparison families.} Paired comparisons between rungs that
 share the $N=1502$ denominator use McNemar's test~\cite{dietterich1998} on raw
