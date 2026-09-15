@@ -1,0 +1,258 @@
+{
+  "session": "S50",
+  "phase": "U",
+  "generated_at": "2026-09-15T15:34:27.135413+00:00",
+  "n_boot": 2000,
+  "seed": 42,
+  "declared_before_running": {
+    "mcid_delta": 0.05,
+    "primary": "age_band_locus.delta (exterior - interior), lesion-grouped paired CI",
+    "rule": {
+      "PERI_LESIONAL": "delta >= +0.05 and CI excludes 0 -> R3 promoted",
+      "LESION_INTRINSIC": "delta <= -0.05 and CI excludes 0 -> R3 demoted",
+      "CO_LOCATED": "otherwise -> R3 demoted, instrument-limited"
+    },
+    "secondary": "escalation_locus.delta, and the selectivity margin between them",
+    "null_caveat": "receptive-field bleed shrinks |delta| toward zero, so CO_LOCATED is a limit of this instrument and not evidence of genuine co-location"
+  },
+  "rows": {
+    "total": 6965,
+    "used": 6927,
+    "dropped_unknown_band": 38
+  },
+  "probes": [
+    {
+      "probe": "age_band_locus",
+      "metric": "macro_ovr_auc",
+      "chance": 0.5,
+      "n": 6927,
+      "classes": [
+        "40-59",
+        "60+",
+        "<40"
+      ],
+      "interior": 0.6694579641870334,
+      "exterior": 0.6991299579447983,
+      "delta": 0.02967199375776486,
+      "delta_ci_lo": 0.017398434146065993,
+      "delta_ci_hi": 0.04237728071741727,
+      "separated": true,
+      "verdict": "CO_LOCATED",
+      "promote_r3": false,
+      "reading": "age is encoded about equally in both blocks at this instrument's resolution, so no mask can remove it selectively and R3 is DEMOTED -- but receptive-field bleed shrinks this contrast toward zero, so this is a limit of the probe, NOT evidence that age is genuinely co-located",
+      "per_class": {
+        "interior": [
+          {
+            "class": "40-59",
+            "n_positive": 3106,
+            "auc": 0.6078448513678686
+          },
+          {
+            "class": "60+",
+            "n_positive": 2506,
+            "auc": 0.7179551704274365
+          },
+          {
+            "class": "<40",
+            "n_positive": 1315,
+            "auc": 0.6825738707657951
+          }
+        ],
+        "exterior": [
+          {
+            "class": "40-59",
+            "n_positive": 3106,
+            "auc": 0.6187992426036141
+          },
+          {
+            "class": "60+",
+            "n_positive": 2506,
+            "auc": 0.7432553637837839
+          },
+          {
+            "class": "<40",
+            "n_positive": 1315,
+            "auc": 0.7353352674469971
+          }
+        ]
+      }
+    },
+    {
+      "probe": "age_residual_locus",
+      "metric": "class_stratified_spearman",
+      "chance": 0.0,
+      "n": 6927,
+      "interior": 0.15184058284375168,
+      "exterior": 0.15359974961955672,
+      "delta": 0.0017591667758050378,
+      "delta_ci_lo": -0.031247988700896286,
+      "delta_ci_hi": 0.03581238074041042,
+      "separated": false,
+      "reading": "the escalation score tracks age read from peri-lesional skin more strongly than age read from the lesion"
+    },
+    {
+      "probe": "escalation_locus",
+      "metric": "escalation_auc",
+      "chance": 0.5,
+      "n": 6927,
+      "interior": 0.8743500753757164,
+      "exterior": 0.870871303435406,
+      "delta": -0.0034787719403104322,
+      "delta_ci_lo": -0.017221724848171308,
+      "delta_ci_hi": 0.011015339030755187,
+      "separated": false
+    }
+  ],
+  "controls": [
+    {
+      "control": "reproduce_s42",
+      "published_interior": 0.8714,
+      "published_exterior": 0.8608,
+      "got_interior": 0.8714269600262283,
+      "got_exterior": 0.8608360557750026,
+      "abs_drift_interior": 2.6960026228373124e-05,
+      "abs_drift_exterior": 3.6055775002541424e-05,
+      "tolerance": 0.0005,
+      "reproduced": true
+    },
+    {
+      "control": "bleed",
+      "tertiles": [
+        {
+          "tertile": "small",
+          "n": 2309,
+          "area_lo": 0.006696428571428571,
+          "area_hi": 0.2668606505102041,
+          "mean_area": 0.15184413143776349,
+          "exterior_age_auc": 0.692639495963986,
+          "ci_lo": 0.6816099718324307,
+          "ci_hi": 0.7159414858912977
+        },
+        {
+          "tertile": "medium",
+          "n": 2309,
+          "area_lo": 0.2669005102040816,
+          "area_hi": 0.5290377869897959,
+          "mean_area": 0.388235524423065,
+          "exterior_age_auc": 0.6977205582808971,
+          "ci_lo": 0.6810941830404312,
+          "ci_hi": 0.716867140812058
+        },
+        {
+          "tertile": "large",
+          "n": 2309,
+          "area_lo": 0.5290776466836735,
+          "area_hi": 0.9998804209183674,
+          "mean_area": 0.7251801937819845,
+          "exterior_age_auc": 0.697295901138976,
+          "ci_lo": 0.6817866664406258,
+          "ci_hi": 0.7155728230210424
+        }
+      ],
+      "large_minus_small": 0.004656405174989997,
+      "ci_lo": -0.02074353848786552,
+      "ci_hi": 0.03014585210667501,
+      "rises_with_area": false,
+      "reading": "exterior age AUC is FLAT in lesion area -- the interval on large-minus-small contains zero, and receptive-field bleed cannot produce a flat profile, since a larger lesion necessarily fills more of every exterior cell's receptive field. The exterior block is reading the surrounding skin, not an echo of the lesion."
+    },
+    {
+      "control": "geometry",
+      "metric": "macro_ovr_auc",
+      "chance": 0.5,
+      "n": 6927,
+      "value": 0.5483349695531273,
+      "ci_lo": 0.536755256228575,
+      "ci_hi": 0.5599385472982392,
+      "area_predicts_age": true,
+      "reading": "lesion AREA alone predicts age band above chance -- part of what both blocks read is geometry, which no exterior dropout removes"
+    }
+  ],
+  "s42_comparability_with_unknown": {
+    "probe": "age_band_locus",
+    "metric": "macro_ovr_auc",
+    "chance": 0.5,
+    "n": 6965,
+    "classes": [
+      "40-59",
+      "60+",
+      "<40",
+      "unknown"
+    ],
+    "interior": 0.6729707491205977,
+    "exterior": 0.723674434608959,
+    "delta": 0.05070368548836124,
+    "delta_ci_lo": 0.02591589800520796,
+    "delta_ci_hi": 0.07814623948803813,
+    "separated": true,
+    "verdict": "PERI_LESIONAL",
+    "promote_r3": true,
+    "reading": "age is encoded more strongly outside the lesion than inside it -- the shortcut is peri-lesional, mask-guided cropping and exterior dropout are a targeted fix, and R3 is PROMOTED",
+    "per_class": {
+      "interior": [
+        {
+          "class": "40-59",
+          "n_positive": 3106,
+          "auc": 0.6095455601985441
+        },
+        {
+          "class": "60+",
+          "n_positive": 2506,
+          "auc": 0.720210673571587
+        },
+        {
+          "class": "<40",
+          "n_positive": 1315,
+          "auc": 0.6866729701537737
+        },
+        {
+          "class": "unknown",
+          "n_positive": 38,
+          "auc": 0.6754537925584859
+        }
+      ],
+      "exterior": [
+        {
+          "class": "40-59",
+          "n_positive": 3106,
+          "auc": 0.6215777936591976
+        },
+        {
+          "class": "60+",
+          "n_positive": 2506,
+          "auc": 0.7431524735342512
+        },
+        {
+          "class": "<40",
+          "n_positive": 1315,
+          "auc": 0.7327741848649012
+        },
+        {
+          "class": "unknown",
+          "n_positive": 38,
+          "auc": 0.7971932863774855
+        }
+      ]
+    }
+  },
+  "selectivity_margin": {
+    "quantity": "selectivity_margin",
+    "metric": "delta_age_auc - delta_escalation_auc",
+    "value": 0.03315076569807529,
+    "ci_lo": 0.014693567657079215,
+    "ci_hi": 0.05223635144116427,
+    "separated": true,
+    "exceeds_mcid": false,
+    "reading": "peri-lesional skin carries age more than it carries the diagnosis, so an exterior dropout would remove more nuisance than signal"
+  },
+  "verdict": {
+    "locus": "CO_LOCATED",
+    "promote_r3": false,
+    "reading": "age is encoded about equally in both blocks at this instrument's resolution, so no mask can remove it selectively and R3 is DEMOTED -- but receptive-field bleed shrinks this contrast toward zero, so this is a limit of the probe, NOT evidence that age is genuinely co-located",
+    "selectivity_margin": 0.03315076569807529,
+    "selectivity_ci": [
+      0.014693567657079215,
+      0.05223635144116427
+    ],
+    "r3_requires_selectivity": "R3 removes peri-lesional pixels. It can only help if age is carried there MORE than escalation is; the selectivity margin is that difference and it must be positive and material for the lever to be worth a training run."
+  }
+}

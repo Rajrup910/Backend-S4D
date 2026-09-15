@@ -45,6 +45,10 @@ variables/
 ml/checkpoints/
 ml/checkpoints/**
 
+# Frozen backbone features (S51). ~65 MB of .npz, reproducible from
+# research/v4/extract_backbone_features.py, and past GitHub's per-file warning threshold.
+research/v4/features/
+
 # ==============================================================================
 # 2. DYNAMIC TRAINING LOGS, METRICS & EXPERIMENT TRACKERS
 # ==============================================================================

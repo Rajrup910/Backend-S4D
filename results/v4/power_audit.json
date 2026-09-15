@@ -1,0 +1,622 @@
+{
+  "session": "S48",
+  "phase": "U_power_audit",
+  "generated_at": "2026-09-15T11:46:45+00:00",
+  "sources": {
+    "s44_control": "results/v3/s44_control_and_multiplicity.json",
+    "age_band_prior": "results/age_band_prior.csv",
+    "agerule_test": "results/session9/agerule_test.csv",
+    "nonham_manifest": "data/external/manifest_isic2019_nonham.csv",
+    "split_v1": "ml/configs/splits/split_v1.csv",
+    "ham_metadata": "data/ham10000/HAM10000_metadata.csv"
+  },
+  "test_read": false,
+  "seed_floor": {
+    "source": "results/v3/s44_control_and_multiplicity.json",
+    "seed_a": 0.6363636363636364,
+    "seed_b": 0.4090909090909091,
+    "n_reference": 22,
+    "same_data_spread": 0.22727272727272724,
+    "between_condition_spread": 0.18181818181818182,
+    "noise_exceeds_signal": true,
+    "sigma_seed_point": 0.1607060866333062,
+    "sigma_seed_ci95": [
+      0.0716988895632464,
+      5.12815683292649
+    ],
+    "degrees_of_freedom": 1,
+    "net_discordant_cases": 5,
+    "caveat": "one pair, 1 df; the upper end of the interval is uninformative. The defensible claim is the lower bound: the seed SD on this endpoint is at least 0.072."
+  },
+  "seed_policy": {
+    "floor": 0.1607060866333062,
+    "floor_lower_bound_95": 0.0716988895632464,
+    "two_x_floor": 0.3214121732666124,
+    "binding_rule": "Any V4 condition whose claimed effect on an under-40 quantity is within 2x the floor (0.321) requires >= 3 seeds. Since the declared MCID (0.1) and every effect V4 plausibly produces sit far below that threshold, the rule is unconditional in practice: EVERY V4 under-40 condition runs >= 3 seeds, and a single-seed under-40 result is descriptive from here on.",
+    "seeds_required_unpaired": {
+      "at_n_22": 41,
+      "at_n_151": 6
+    },
+    "three_seeds_sufficient_unpaired": false,
+    "resolution": "Three seeds do NOT make the unpaired comparison adequate -- the projection asks for ~6 at n=151. V4 therefore declares the PAIRED, seed-matched form as primary and treats the 3 seeds as (a) a stability check on the point estimate and (b) the material for a real multi-seed variance estimate, which replaces this 1-df one as soon as S53 lands.",
+    "reporting": "Report the seed-averaged point estimate with the observed seed range beside it. Never report the best seed. S44 is the precedent: picking either of its two retrains would have supported an opposite conclusion."
+  },
+  "cohort_supply": {
+    "source": "data/external/manifest_isic2019_nonham.csv",
+    "pool_images": 15316,
+    "pool_lesions": 6461,
+    "null_lesion_ids": 2084,
+    "under40_escalating_images": 408,
+    "under40_escalating_lesions": 151,
+    "under40_escalating_lesions_excl_scc": 150,
+    "by_source": {
+      "bcn20000": {
+        "images": 372,
+        "lesions": 115
+      },
+      "mskcc": {
+        "images": 36,
+        "lesions": 36
+      }
+    },
+    "class_mix": {
+      "mel": 255,
+      "bcc": 130,
+      "akiec": 20,
+      "scc": 3
+    },
+    "images_per_lesion": 2.7019867549668874
+  },
+  "ham_under40_counts": {
+    "test": {
+      "escalating_images": 21,
+      "escalating_lesions": 10,
+      "images": 290,
+      "escalating_share": 0.0724137931034482,
+      "images_per_lesion": 2.1,
+      "reconciles_with_split_file": true,
+      "half_width_at_p50_lesion_level": 0.3129139715526015
+    },
+    "train": {
+      "escalating_images": 64,
+      "escalating_lesions": 34,
+      "images": 1319,
+      "escalating_share": 0.048521607278241,
+      "images_per_lesion": 1.8823529411764706,
+      "reconciles_with_split_file": true,
+      "half_width_at_p50_lesion_level": 0.17573072997867903
+    },
+    "val": {
+      "escalating_images": 22,
+      "escalating_lesions": 10,
+      "images": 267,
+      "escalating_share": 0.0823970037453183,
+      "images_per_lesion": 2.2,
+      "reconciles_with_split_file": true,
+      "half_width_at_p50_lesion_level": 0.3129139715526015
+    }
+  },
+  "min_n_for_half_width": {
+    "0.15": 47,
+    "0.10": 104,
+    "0.05": 402
+  },
+  "min_n_paired_mcnemar": {
+    "loss_ratio_0.0": 51,
+    "loss_ratio_0.5": 81,
+    "loss_ratio_1.0": 121
+  },
+  "historical_audit": [
+    {
+      "quantity": "test <40 escalation sensitivity, argmax",
+      "value": 0.1428571428571428,
+      "n_positives": 21,
+      "split": "test",
+      "source": "results/session9/agerule_test.csv",
+      "ci_lo": 0.03048896762151556,
+      "ci_hi": 0.363423987016981,
+      "half_width": 0.16646750969773272,
+      "n_lesions": 10,
+      "ci_lo_lesion": 0.0025285785444617865,
+      "ci_hi_lesion": 0.4450161170281954,
+      "half_width_lesion": 0.22124376924186678,
+      "retired_descriptive_only": true,
+      "resolves_mcid_010": false
+    },
+    {
+      "quantity": "test <40 escalation sensitivity, lambda rule",
+      "value": 0.238095238095238,
+      "n_positives": 21,
+      "split": "test",
+      "source": "results/session9/agerule_test.csv",
+      "ci_lo": 0.08217587559302258,
+      "ci_hi": 0.4716598276546214,
+      "half_width": 0.1947419760307994,
+      "n_lesions": 10,
+      "ci_lo_lesion": 0.025210726326833386,
+      "ci_hi_lesion": 0.5560954623076415,
+      "half_width_lesion": 0.26544236799040405,
+      "retired_descriptive_only": true,
+      "resolves_mcid_010": false
+    },
+    {
+      "quantity": "val <40 escalation sensitivity (S5/S7)",
+      "value": 0.5454545454545454,
+      "n_positives": 22,
+      "split": "val",
+      "source": "results/age_band_prior.csv",
+      "ci_lo": 0.3221047545531717,
+      "ci_hi": 0.7561381340769835,
+      "half_width": 0.21701668976190588,
+      "n_lesions": 10,
+      "ci_lo_lesion": 0.18708602844739855,
+      "ci_hi_lesion": 0.8129139715526015,
+      "half_width_lesion": 0.3129139715526015,
+      "retired_descriptive_only": true,
+      "resolves_mcid_010": false
+    },
+    {
+      "quantity": "S44 control, published checkpoint",
+      "value": 0.6363636363636364,
+      "n_positives": 22,
+      "split": "val",
+      "source": "results/v3/s44_control_and_multiplicity.json",
+      "ci_lo": 0.40657666882564664,
+      "ci_hi": 0.8280205623536676,
+      "half_width": 0.2107219467640105,
+      "n_lesions": 10,
+      "ci_lo_lesion": 0.2623780766069451,
+      "ci_hi_lesion": 0.8784477418801728,
+      "half_width_lesion": 0.30803483263661385,
+      "retired_descriptive_only": true,
+      "resolves_mcid_010": false
+    },
+    {
+      "quantity": "S44 control, identical-data retrain",
+      "value": 0.4090909090909091,
+      "n_positives": 22,
+      "split": "val",
+      "source": "results/v3/s44_control_and_multiplicity.json",
+      "ci_lo": 0.2070931229971492,
+      "ci_hi": 0.6364530382702687,
+      "half_width": 0.21467995763655973,
+      "n_lesions": 10,
+      "ci_lo_lesion": 0.1215522581198272,
+      "ci_hi_lesion": 0.7376219233930549,
+      "half_width_lesion": 0.30803483263661385,
+      "retired_descriptive_only": true,
+      "resolves_mcid_010": false
+    },
+    {
+      "quantity": "OOF <40 escalation sensitivity (S5/S7, better powered)",
+      "value": 0.546875,
+      "n_positives": 64,
+      "split": "train",
+      "source": "results/age_band_prior.csv",
+      "ci_lo": 0.4174763153160475,
+      "ci_hi": 0.6717928854962819,
+      "half_width": 0.1271582850901172,
+      "n_lesions": 34,
+      "ci_lo_lesion": 0.37885764395707144,
+      "ci_hi_lesion": 0.728149803585133,
+      "half_width_lesion": 0.1746460798140308,
+      "retired_descriptive_only": false,
+      "resolves_mcid_010": false
+    }
+  ],
+  "paired_power": [
+    {
+      "n_positives": 21,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 2.1,
+      "b_rescues": 3,
+      "c_losses": 0,
+      "mcnemar_p": 0.25,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 21,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 2.1,
+      "b_rescues": 4,
+      "c_losses": 1,
+      "mcnemar_p": 0.375,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 21,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 2.1,
+      "b_rescues": 5,
+      "c_losses": 2,
+      "mcnemar_p": 0.453125,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 22,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 2.2,
+      "b_rescues": 3,
+      "c_losses": 0,
+      "mcnemar_p": 0.25,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 22,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 2.2,
+      "b_rescues": 4,
+      "c_losses": 1,
+      "mcnemar_p": 0.375,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 22,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 2.2,
+      "b_rescues": 5,
+      "c_losses": 2,
+      "mcnemar_p": 0.453125,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 64,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 6.4,
+      "b_rescues": 7,
+      "c_losses": 0,
+      "mcnemar_p": 0.015625,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 64,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 6.4,
+      "b_rescues": 10,
+      "c_losses": 3,
+      "mcnemar_p": 0.09228515625,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 64,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 6.4,
+      "b_rescues": 13,
+      "c_losses": 6,
+      "mcnemar_p": 0.1670684814453125,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 96,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 9.600000000000001,
+      "b_rescues": 10,
+      "c_losses": 0,
+      "mcnemar_p": 0.001953125,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 96,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 9.600000000000001,
+      "b_rescues": 15,
+      "c_losses": 5,
+      "mcnemar_p": 0.04138946533203125,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 96,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 9.600000000000001,
+      "b_rescues": 20,
+      "c_losses": 10,
+      "mcnemar_p": 0.09873714670538905,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 104,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 10.4,
+      "b_rescues": 11,
+      "c_losses": 0,
+      "mcnemar_p": 0.0009765625,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 104,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 10.4,
+      "b_rescues": 16,
+      "c_losses": 5,
+      "mcnemar_p": 0.02660369873046875,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 104,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 10.4,
+      "b_rescues": 21,
+      "c_losses": 10,
+      "mcnemar_p": 0.07075554598122835,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 107,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 10.700000000000001,
+      "b_rescues": 11,
+      "c_losses": 0,
+      "mcnemar_p": 0.0009765625,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 107,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 10.700000000000001,
+      "b_rescues": 17,
+      "c_losses": 5,
+      "mcnemar_p": 0.01690053939819336,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 107,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 10.700000000000001,
+      "b_rescues": 22,
+      "c_losses": 11,
+      "mcnemar_p": 0.08014331245794892,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 115,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 11.5,
+      "b_rescues": 12,
+      "c_losses": 0,
+      "mcnemar_p": 0.00048828125,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 115,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 11.5,
+      "b_rescues": 18,
+      "c_losses": 6,
+      "mcnemar_p": 0.022655844688415527,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 115,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 11.5,
+      "b_rescues": 23,
+      "c_losses": 12,
+      "mcnemar_p": 0.08953107893466952,
+      "significant_at_05": false
+    },
+    {
+      "n_positives": 150,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 15.0,
+      "b_rescues": 15,
+      "c_losses": 0,
+      "mcnemar_p": 6.103515625e-05,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 150,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 15.0,
+      "b_rescues": 23,
+      "c_losses": 8,
+      "mcnemar_p": 0.010673840530216694,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 150,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 15.0,
+      "b_rescues": 30,
+      "c_losses": 15,
+      "mcnemar_p": 0.035697803555194696,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 151,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 15.100000000000001,
+      "b_rescues": 16,
+      "c_losses": 0,
+      "mcnemar_p": 3.0517578125e-05,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 151,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 15.100000000000001,
+      "b_rescues": 23,
+      "c_losses": 8,
+      "mcnemar_p": 0.010673840530216694,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 151,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 15.100000000000001,
+      "b_rescues": 31,
+      "c_losses": 15,
+      "mcnemar_p": 0.02589608179323477,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 300,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 30.0,
+      "b_rescues": 30,
+      "c_losses": 0,
+      "mcnemar_p": 1.862645149230957e-09,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 300,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 30.0,
+      "b_rescues": 45,
+      "c_losses": 15,
+      "mcnemar_p": 0.00013451408092849532,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 300,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 30.0,
+      "b_rescues": 60,
+      "c_losses": 30,
+      "mcnemar_p": 0.0020602656809630745,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 408,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 40.800000000000004,
+      "b_rescues": 41,
+      "c_losses": 0,
+      "mcnemar_p": 9.094947017729282e-13,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 408,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 40.800000000000004,
+      "b_rescues": 62,
+      "c_losses": 20,
+      "mcnemar_p": 3.714641593828418e-06,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 408,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 40.800000000000004,
+      "b_rescues": 82,
+      "c_losses": 41,
+      "mcnemar_p": 0.0002756176335340419,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 515,
+      "loss_ratio": 0.0,
+      "net_gain_cases": 51.5,
+      "b_rescues": 52,
+      "c_losses": 0,
+      "mcnemar_p": 4.440892098500626e-16,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 515,
+      "loss_ratio": 0.5,
+      "net_gain_cases": 51.5,
+      "b_rescues": 78,
+      "c_losses": 26,
+      "mcnemar_p": 3.277703497138628e-07,
+      "significant_at_05": true
+    },
+    {
+      "n_positives": 515,
+      "loss_ratio": 1.0,
+      "net_gain_cases": 51.5,
+      "b_rescues": 103,
+      "c_losses": 52,
+      "mcnemar_p": 5.120483494372956e-05,
+      "significant_at_05": true
+    }
+  ],
+  "endpoint": {
+    "name": "under40_escalation_sensitivity_at_fixed_referral_budget",
+    "definition": "Fraction of truly escalating (mel/bcc/akiec/scc) lesions in patients under 40 that receive an escalating prediction, evaluated on the S49 reserved cohort at a global referral budget matched exactly to the frozen V1 baseline's referral rate on the same cohort. Matching the budget is what stops an arm from buying sensitivity with referral volume -- the failure mode the runbook's section 9.7 names.",
+    "evaluation_surface": "S49 reserved cohort (non-HAM: BCN-20000 + MSKCC). HAM test is NOT read.",
+    "unit_of_analysis": "lesion (perceptual-hash clusters count as one lesion)",
+    "interval": "Clopper-Pearson for the single-arm proportion (counts will sit below research.stats.intervals.SMALL_COUNT=30 in some cells); lesion-grouped paired bootstrap for the between-arm difference.",
+    "mcid": 0.1,
+    "mcid_rationale": "At the achievable n the exact interval's half-width is ~0.08-0.10 at p=0.5. An MCID of 0.05 would sit inside the interval the data can produce, which is the same mistake V4 exists to stop. 0.10 is the smallest effect this cohort can honestly resolve.",
+    "comparison_form": "PAIRED, seed-matched, on one fixed cohort",
+    "comparison_rationale": "The unpaired form is not affordable. At sigma_seed 0.1607 projected to 151 lesions, resolving 0.1 as a difference of independent means needs ~6 seeds per arm. Paired on a common cohort the cohort-sampling term cancels and the requirement collapses to the discordant-case count.",
+    "secondary": [
+      "escalation specificity (Gate 2, floor 0.85)",
+      "per-band referral rate and NNB (Gate 4, reported per band, never pooled)",
+      "full-coverage macro-F1 and balanced accuracy (Gate 3, non-inferiority)",
+      "7-class collapse (ak+scc -> akiec) reported alongside every 8-class number"
+    ],
+    "declared_at": "2026-09-15T11:46:45+00:00"
+  },
+  "retired_endpoints": {
+    "rule": "Any proportion estimated on <= 25 positive **lesions** is descriptive-only in V4. It may be reported, with its interval, and may not gate a decision, license a mechanism claim, or serve as a comparison baseline.",
+    "unit_note": "The threshold is applied to lesions, not images, because lesions are the independent units. On the counts this session measured that is the difference between n=21 and n=10 on HAM test, and it changes which quantities survive.",
+    "retired": [
+      {
+        "quantity": "test <40 escalation sensitivity, argmax",
+        "value": 0.1429,
+        "n_positives_images": 21,
+        "n_positives_lesions": 10,
+        "half_width_image_level": 0.1665,
+        "half_width_lesion_level": 0.2212
+      },
+      {
+        "quantity": "test <40 escalation sensitivity, lambda rule",
+        "value": 0.2381,
+        "n_positives_images": 21,
+        "n_positives_lesions": 10,
+        "half_width_image_level": 0.1947,
+        "half_width_lesion_level": 0.2654
+      },
+      {
+        "quantity": "val <40 escalation sensitivity (S5/S7)",
+        "value": 0.5455,
+        "n_positives_images": 22,
+        "n_positives_lesions": 10,
+        "half_width_image_level": 0.217,
+        "half_width_lesion_level": 0.3129
+      },
+      {
+        "quantity": "S44 control, published checkpoint",
+        "value": 0.6364,
+        "n_positives_images": 22,
+        "n_positives_lesions": 10,
+        "half_width_image_level": 0.2107,
+        "half_width_lesion_level": 0.308
+      },
+      {
+        "quantity": "S44 control, identical-data retrain",
+        "value": 0.4091,
+        "n_positives_images": 22,
+        "n_positives_lesions": 10,
+        "half_width_image_level": 0.2147,
+        "half_width_lesion_level": 0.308
+      }
+    ],
+    "n_retired": 5,
+    "survivors": [
+      {
+        "quantity": "OOF <40 escalation sensitivity (S5/S7, better powered)",
+        "n_positives_lesions": 34,
+        "resolves_mcid_010": false
+      }
+    ],
+    "note": "This retires the bare 0.143 as a decision-grade number. The manuscript may keep it as the observation that opened the thread, with its interval attached, which is how S7 already required it to be quoted -- but the interval quoted should now be the lesion-level one, not [0.030, 0.363]. Note that the OOF figure survives retirement on 34 lesions and still does not resolve the MCID: surviving the rule is not the same as being adequately powered."
+  },
+  "falsifier": {
+    "mcid": 0.1,
+    "available_under40_escalating_lesions": 151,
+    "available_under40_escalating_images": 408,
+    "required_for_single_arm_ci": 104,
+    "required_for_paired_mcnemar_loss_ratio_05": 81,
+    "half_width_if_entire_pool_reserved": 0.08236058704560026,
+    "premise_holds": true,
+    "runbook_gate_150_lesions_met": true,
+    "training_lesions_left_if_gate_met": 1,
+    "training_lesions_left_at_power_requirement": 47,
+    "verdict": "HOLDS, but only under the paired comparison form and with the reserved/train split of the under-40 escalating cells stated explicitly. The single-arm interval needs 104 lesions of the 151 available; reserving that many leaves 47 under-40 escalating lesions for training. The runbook's literal '>= 150 lesions' gate leaves 1, which is not a usable training supply.",
+    "current_test_lesions": 10,
+    "unlock_ratio_lesion_level": 10.4,
+    "action_for_s49": "Size the reserved cohort at 104-131 under-40 escalating lesions, not 150, and record the chosen split. State the unlock in lesions: the endpoint currently rests on 10 independent units on HAM test and would rest on 104+, a 10.4x gain. The runbook's image-level '21 -> 515' framing overstates the count and understates the gain, because both of its numbers are images."
+  }
+}
