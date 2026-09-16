@@ -62,6 +62,16 @@ function Log($msg) {
 
 Log "=== morning run starting ==="
 
+# The mutex only excludes copies that take it. A copy started before the mutex was added holds no
+# lock, and relaunching over it would start a second training run on the same GPU and the same
+# checkpoint names. So refuse outright if any training process already exists.
+$busy = @(Get-CimInstance Win32_Process -Filter "Name='python.exe'" -ErrorAction SilentlyContinue |
+          Where-Object { $_.CommandLine -match 'research\.v4\.train_v4|ml\.training\.train' })
+if ($busy.Count -gt 0) {
+    Log ("A training process is already running (PID {0}). Not starting a second one." -f ($busy.ProcessId -join ", "))
+    exit 4
+}
+
 # --- 0. re-run R1 if the overnight attempt died ---------------------------------------------
 # R1 failed at epoch 3 with Windows error 1455 (ERROR_COMMITMENT_LIMIT) in a dataloader worker.
 # Root cause: the disk filled, so the auto-managed pagefile could not grow, so the system commit
