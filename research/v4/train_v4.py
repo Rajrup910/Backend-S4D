@@ -492,6 +492,7 @@ def run(args: argparse.Namespace) -> int:
         "seed": args.seed, "arch": ARCH, "model_kind": model_kind, "recipe": asdict(recipe),
         "batch_size": args.batch_size, "grad_accum": args.grad_accum,
         "effective_batch": args.batch_size * args.grad_accum,
+        "num_workers": args.num_workers,
         "epochs_run": len(history),
         "best_val_macro_f1": best_value, "best_epoch": best_epoch,
         "final_val_macro_f1": final["val_macro_f1"],
@@ -584,6 +585,7 @@ def write_ledger(summary: dict[str, Any]) -> None:
         "notes": (f"rungs={'+'.join(summary['rungs'])} seed={summary['seed']} "
                   f"batch_size={summary['batch_size']} grad_accum={summary.get('grad_accum', 1)} "
                   f"effective_batch={summary.get('effective_batch', summary['batch_size'])} "
+                  f"num_workers={summary.get('num_workers', '?')} "
                   f"image_size={summary['recipe']['image_size']} "
                   f"epochs_run={summary['epochs_run']} best_epoch={summary['best_epoch']} "
                   f"minutes={summary['train_time_seconds'] / 60:.1f} "
