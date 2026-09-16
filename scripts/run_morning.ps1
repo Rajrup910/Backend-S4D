@@ -118,6 +118,25 @@ if ($composite.Count -eq 0) {
 }
 Log ("gate cleared ({0}); composite = {1}" -f $verdict.control_gate, ($composite -join " "))
 
+# Project the finish against the user's 13:30 deadline and say so plainly in the log, so the
+# 13:20 readout can report a known number instead of guessing. Measured 224 px rates on the HAM
+# split were 31-40 s/epoch; the pooled corpus is 2.19x larger and 384 px costs 2.26x more.
+$at384   = $composite -contains "R1"
+$secEp   = if ($at384) { 106 * (15294/6981) } else { 31 * (15294/6981) }
+$compEp  = if ($composite -contains "R6") { 60 } else { 30 }
+$projMin = ($secEp * 30 + $secEp * $compEp) / 60
+$projEnd = (Get-Date).AddMinutes($projMin)
+$deadline = (Get-Date).Date.AddHours(13).AddMinutes(30)
+Log ("Block 2 projection: {0} px, {1} composite epochs, ~{2:N0} min at full length -> {3:HH:mm}" -f `
+     $(if ($at384) {384} else {224}), $compEp, $projMin, $projEnd)
+if ($projEnd -gt $deadline) {
+    Log ("*** PROJECTED FINISH {0:HH:mm} IS PAST THE 13:30 DEADLINE by {1:N0} min at full length." -f $projEnd, ($projEnd - $deadline).TotalMinutes)
+    Log "*** Running anyway: early stopping has shortened every arm so far (R0 23/30, R2 15/30),"
+    Log "*** so the real finish is likely earlier. The 13:20 readout will report actual progress."
+} else {
+    Log ("Block 2 projected to finish by {0:HH:mm}, inside the 13:30 deadline." -f $projEnd)
+}
+
 foreach ($arm in @(@{ Name = "pooled control"; Rungs = @("R0") },
                    @{ Name = "composite";      Rungs = $composite })) {
     Log ("--- {0}: --rungs {1} ---" -f $arm.Name, ($arm.Rungs -join " "))
