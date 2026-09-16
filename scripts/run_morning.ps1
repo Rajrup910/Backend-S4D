@@ -19,7 +19,11 @@
 #
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_morning.ps1
 
-$ErrorActionPreference = "Stop"
+# "Continue", not "Stop": under Stop, PS 5.1 wraps every stderr line a native command writes
+# (tqdm progress, warnings) in a terminating NativeCommandError, killing the script on the first
+# such line regardless of the process's real exit code. Every python call below already checks
+# $LASTEXITCODE explicitly, so that -- not this preference -- is what enforces failure.
+$ErrorActionPreference = "Continue"
 $repo = Split-Path -Parent $PSScriptRoot
 $py   = "C:\Users\RAJ\Downloads\Capstone\.venv\Scripts\python.exe"
 $log  = Join-Path $repo "results\v4\morning_run.log"
@@ -27,10 +31,33 @@ $log  = Join-Path $repo "results\v4\morning_run.log"
 Set-Location $repo
 New-Item -ItemType Directory -Force -Path (Split-Path $log) | Out-Null
 
+# One instance at a time. On 2026-09-16 the script was launched two or three times within ten
+# minutes; the copies trained the same rung onto the same checkpoint names and fought over the log
+# ("Add-Content : Stream was not readable"). A named mutex dies with its process, so a crashed run
+# never leaves a stale lock behind.
+$mutex = New-Object System.Threading.Mutex($false, "Global\capstone_v4_run_morning")
+# An abandoned mutex (the previous holder crashed) counts as acquired.
+try { $owned = $mutex.WaitOne(0) } catch [System.Threading.AbandonedMutexException] { $owned = $true }
+if (-not $owned) {
+    Write-Output "Another run_morning.ps1 is already running. Not starting a second copy."
+    Write-Output "Watch it with:  Get-Content '$log' -Tail 5 -Wait"
+    exit 4
+}
+
+# Shared-access append: tolerates a reader tailing the log, and a failed write never stops a run.
 function Log($msg) {
     $line = "[{0:yyyy-MM-dd HH:mm:ss}] {1}" -f (Get-Date), $msg
     Write-Output $line
-    Add-Content -Path $log -Value $line -Encoding utf8
+    for ($try = 0; $try -lt 5; $try++) {
+        try {
+            $fs = [System.IO.File]::Open($log, 'Append', 'Write', 'ReadWrite')
+            try {
+                $bytes = [System.Text.Encoding]::UTF8.GetBytes($line + "`r`n")
+                $fs.Write($bytes, 0, $bytes.Length)
+            } finally { $fs.Dispose() }
+            return
+        } catch { Start-Sleep -Milliseconds 50 }
+    }
 }
 
 Log "=== morning run starting ==="
@@ -139,9 +166,27 @@ if ($projEnd -gt $deadline) {
 
 foreach ($arm in @(@{ Name = "pooled control"; Rungs = @("R0") },
                    @{ Name = "composite";      Rungs = $composite })) {
-    Log ("--- {0}: --rungs {1} ---" -f $arm.Name, ($arm.Rungs -join " "))
+    # Skip an arm that already banked a result, so a relaunch after a failure resumes rather than
+    # retraining the control it already has. train_v4 names runs '+'.join(rungs)_corpus_sSEED.
+    $runId = "{0}_pooled_s42" -f ($arm.Rungs -join "+")
+    if (Test-Path (Join-Path $repo "results\v4\recipe_runs\$runId.json")) {
+        Log ("{0} ({1}) already complete; skipping" -f $arm.Name, $runId)
+        continue
+    }
+
+    # 384 px arms get the same memory accommodation R1 needed in Block 1: batch 16 x grad-accum 2
+    # (effective batch 32, unchanged) on one worker. At batch 32 / 2 workers a 384 px arm needs
+    # 216 MB of shared mappings -- the configuration that died with error 1455 overnight. It also
+    # keeps the composite's R1 component under the same conditions R1 was screened under.
+    $memArgs = if ($arm.Rungs -contains "R1") {
+        @("--batch-size", "16", "--grad-accum", "2", "--num-workers", "1")
+    } else {
+        @("--batch-size", "32", "--num-workers", "2")
+    }
+
+    Log ("--- {0}: --rungs {1}  {2} ---" -f $arm.Name, ($arm.Rungs -join " "), ($memArgs -join " "))
     $started = Get-Date
-    & $py -m research.v4.train_v4 --rungs $arm.Rungs --corpus pooled --batch-size 32 --num-workers 2 2>&1 |
+    & $py -m research.v4.train_v4 --rungs $arm.Rungs --corpus pooled @memArgs 2>&1 |
         ForEach-Object { Log $_ }
     if ($LASTEXITCODE -ne 0) {
         Log ("{0} FAILED with exit {1}. Stopping -- the second arm is not comparable without the first." -f $arm.Name, $LASTEXITCODE)
