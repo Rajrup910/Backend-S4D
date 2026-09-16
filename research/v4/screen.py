@@ -62,6 +62,33 @@ def load_runs() -> dict[str, dict[str, Any]]:
     return runs
 
 
+def record_control_reference(history_path: Path) -> dict[str, Any]:
+    """Distil a reference trainer's history into the file the gate reads.
+
+    This lives here rather than as Python embedded in the PowerShell runner because PowerShell
+    strips double quotes when handing a here-string to a native executable -- the first version
+    of this arrived at the interpreter as `print(fcontrol`. It would have failed safely (no
+    reference file, so the gate refuses) but it would have wasted the window it was scheduled for.
+    """
+    # utf-8-sig, not utf-8: Python writes these histories without a BOM, but anything regenerated
+    # from Windows PowerShell carries one, and a BOM makes json.loads fail outright.
+    history = json.loads(history_path.read_text(encoding="utf-8-sig"))
+    best = max(history, key=lambda row: row["val_macro_f1"])
+    reference = {
+        "trainer": "ml/training/train.py",
+        "arch": "convnext_tiny",
+        "split": "ml/configs/splits/split_v1.csv",
+        "history": str(history_path),
+        "epochs_run": len(history),
+        "best_val_macro_f1": float(best["val_macro_f1"]),
+        "best_epoch": int(best["epoch"]),
+        "purpose": "S52 control-gate diagnostic: identical data, reference trainer",
+    }
+    CONTROL_REF_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CONTROL_REF_PATH.write_text(json.dumps(reference, indent=2), encoding="utf-8")
+    return reference
+
+
 def control_deviation(control: float) -> dict[str, Any]:
     """Can the control gate's failure be attributed to a stale reference rather than a broken run?
 
@@ -80,7 +107,7 @@ def control_deviation(control: float) -> dict[str, Any]:
                           "split and write results/v4/control_reference.json before the gate "
                           "failure can be attributed to anything."}
 
-    reference = json.loads(CONTROL_REF_PATH.read_text(encoding="utf-8"))
+    reference = json.loads(CONTROL_REF_PATH.read_text(encoding="utf-8-sig"))
     value = float(reference["best_val_macro_f1"])
     gap = abs(value - control)
     agrees = gap <= CONTROL_REF_TOLERANCE
@@ -143,6 +170,20 @@ def screen(runs: dict[str, dict[str, Any]]) -> dict[str, Any]:
     else:
         verdict["control_gate"] = "PASSED"
 
+    # --- the screen must be complete before it ranks anything --------------------------
+    # "Top 2 of 4 by point estimate" is not a rule that can be applied to 2 of 4. An unattended
+    # runner reaching this point with arms still training would promote from a partial field and
+    # look exactly like a finished screen, so incompleteness is a refusal, not a warning.
+    missing_levers = [r for r in RANKING_LEVERS if r not in runs]
+    if missing_levers:
+        verdict |= {
+            "proceed": False,
+            "reason": f"Ranking levers {', '.join(missing_levers)} have not run. The promotion "
+                      f"rule ranks the whole declared field and cannot be applied to part of it. "
+                      f"Wait for Block 1 to finish.",
+        }
+        return verdict
+
     # --- ranking levers ---------------------------------------------------------------
     deltas = {r: runs[r]["best_val_macro_f1"] - control for r in RANKING_LEVERS if r in runs}
     verdict["deltas"] = {r: round(d, 6) for r, d in sorted(deltas.items(),
@@ -191,7 +232,18 @@ def screen(runs: dict[str, dict[str, Any]]) -> dict[str, Any]:
     for rung_id, key in (("R4", "clears"), ("R7", "branch_is_auditable")):
         if verdict.get(rung_id, {}).get(key):
             composite.append(rung_id)
-    verdict |= {"composite": composite, "proceed": True}
+    verdict["composite"] = composite
+    if not composite:
+        # Every arm came in at or below the control. There is no composite to build, and running
+        # Block 2 as control-vs-control would burn hours to compare a thing with itself.
+        verdict |= {
+            "proceed": False,
+            "reason": "No rung was promoted -- every arm landed at or below the control, and "
+                      "neither R4 nor R7 met its own endpoint. There is no composite to run. "
+                      "This is a real result about the recipe, not a failure: report it and stop.",
+        }
+        return verdict
+    verdict["proceed"] = True
     return verdict
 
 
@@ -245,7 +297,21 @@ def main(argv: list[str] | None = None) -> int:
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--emit-commands", action="store_true")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--record-control-reference", metavar="HISTORY_JSON",
+                        help="distil a reference trainer's training history into "
+                             "results/v4/control_reference.json, then exit")
     args = parser.parse_args(argv)
+
+    if args.record_control_reference:
+        path = Path(args.record_control_reference)
+        if not path.is_file():
+            print(f"control reference history not found: {path}")
+            return 1
+        reference = record_control_reference(path)
+        print(f"control reference: {reference['best_val_macro_f1']:.4f} at epoch "
+              f"{reference['best_epoch']} of {reference['epochs_run']} "
+              f"-> {CONTROL_REF_PATH.relative_to(REPO_ROOT)}")
+        return 0
 
     verdict = screen(load_runs())
     VERDICT_PATH.parent.mkdir(parents=True, exist_ok=True)
