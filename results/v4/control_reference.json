@@ -1,0 +1,10 @@
+{
+  "trainer": "ml/training/train.py",
+  "arch": "convnext_tiny",
+  "split": "ml/configs/splits/split_v1.csv",
+  "history": "C:\\Users\\RAJ\\Downloads\\Capstone review 1\\ml\\results\\convnext_tiny-v4_control_ref_training_history.json",
+  "epochs_run": 30,
+  "best_val_macro_f1": 0.7764634738155697,
+  "best_epoch": 25,
+  "purpose": "S52 control-gate diagnostic: identical data, reference trainer"
+}

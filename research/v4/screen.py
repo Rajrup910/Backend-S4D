@@ -192,14 +192,19 @@ def screen(runs: dict[str, dict[str, Any]]) -> dict[str, Any]:
     clears = sorted((r for r, d in deltas.items() if d >= MCID_MACRO_F1),
                     key=lambda r: -deltas[r])
     if len(clears) >= PROMOTE_BUDGET:
-        promoted, basis = clears[:PROMOTE_BUDGET], "cleared MCID"
+        promoted = clears[:PROMOTE_BUDGET]
     else:
-        # Declared fallback: Block 2 still runs so the night is not wasted, but no rung-level
-        # claim is made. This is written into the frozen plan, not decided here.
+        # Declared fallback: fill the remaining slot with a non-negative lever so Block 2 is not
+        # wasted, but make no rung-level claim for it. Written into the frozen plan, not decided here.
         positive = sorted((r for r, d in deltas.items() if d >= 0.0), key=lambda r: -deltas[r])
         promoted = (clears + [r for r in positive if r not in clears])[:PROMOTE_BUDGET]
-        basis = "BELOW MCID -- promoted to use the Block 2 slot; no rung-level claim is made"
-    verdict["ranking_levers"] = {"cleared_mcid": clears, "promoted": promoted, "basis": basis}
+    # The basis is per rung. The first version labelled every promoted rung "below MCID" whenever
+    # fewer than two cleared, which misreported R1 (+0.0225 against an MCID of 0.020).
+    basis = {r: ("cleared MCID" if r in clears
+                 else "BELOW MCID -- fills the Block 2 slot; no rung-level claim is made")
+             for r in promoted}
+    verdict["ranking_levers"] = {"cleared_mcid": clears, "promoted": promoted, "basis": basis,
+                                 "unfilled_slots": PROMOTE_BUDGET - len(promoted)}
 
     # --- R4: operating point, never macro-F1 ------------------------------------------
     if "R4" in runs:
@@ -279,8 +284,12 @@ def render(verdict: dict[str, Any]) -> str:
     for rung_id, delta in verdict["deltas"].items():
         mark = "CLEARS" if delta >= verdict["mcid"] else "      "
         lines.append(f"  {rung_id} {RUNGS[rung_id].label:<20} {delta:+.4f}  {mark}")
-    lines.append(f"\npromoted: {', '.join(verdict['ranking_levers']['promoted']) or 'none'}"
-                 f"  ({verdict['ranking_levers']['basis']})")
+    levers = verdict["ranking_levers"]
+    lines.append("\npromoted: " + (", ".join(f"{r} ({levers['basis'][r]})"
+                                             for r in levers["promoted"]) or "none"))
+    if levers.get("unfilled_slots"):
+        lines.append(f"  {levers['unfilled_slots']} Block 2 slot(s) unfilled -- no other lever "
+                     f"was at or above the control")
     for rung_id in ("R4", "R7"):
         if rung_id in verdict:
             entry = verdict[rung_id]
