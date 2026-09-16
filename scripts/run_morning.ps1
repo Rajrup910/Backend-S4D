@@ -35,6 +35,32 @@ function Log($msg) {
 
 Log "=== morning run starting ==="
 
+# --- 0. re-run R1 if the overnight attempt died ---------------------------------------------
+# R1 failed at epoch 3 with Windows error 1455 (ERROR_COMMITMENT_LIMIT) in a dataloader worker.
+# Root cause: the disk filled, so the auto-managed pagefile could not grow, so the system commit
+# limit was pinned and shared-memory allocation failed. At 384 px a batch of 32 needs 54 MB of
+# shared mappings against 18 MB at 224 px, which is why R1 died where the 224 px arms did not.
+#
+# The settings below are a hardware accommodation, not a recipe change: batch 16 with grad-accum
+# 2 keeps the EFFECTIVE batch at 32, identical to every other arm, so R1 remains exactly one
+# declared change (resolution) away from the control. One worker halves the mappings again, to
+# 54 MB in flight -- below the 74 MB that the 224 px arms are demonstrably surviving on.
+$r1Json = Join-Path $repo "results\v4\recipe_runs\R1_ham_only_s42.json"
+if (Test-Path $r1Json) {
+    Log "R1 already complete; not re-running"
+} else {
+    Log "--- R1 re-run (384 px, batch 16 x accum 2 = effective 32, 1 worker, ~50 min) ---"
+    $started = Get-Date
+    & $py -m research.v4.train_v4 --rungs R1 --corpus ham_only `
+        --batch-size 16 --grad-accum 2 --num-workers 1 2>&1 | ForEach-Object { Log $_ }
+    if ($LASTEXITCODE -ne 0) {
+        Log "R1 re-run FAILED with exit $LASTEXITCODE."
+        Log "The screen cannot rank a partial field, so Block 2 will not run. Stopping here."
+        exit $LASTEXITCODE
+    }
+    Log ("R1 finished in {0:N1} min" -f ((Get-Date) - $started).TotalMinutes)
+}
+
 # --- 1. the screen as it stands -------------------------------------------------------------
 Log "--- Block 1 screen ---"
 & $py -m research.v4.screen 2>&1 | ForEach-Object { Log $_ }
