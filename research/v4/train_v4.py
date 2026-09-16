@@ -186,10 +186,30 @@ def forward(model: nn.Module, images: torch.Tensor, tabular: torch.Tensor,
 
 # --------------------------------------------------------------------- epochs
 def train_one_epoch(model, loader, criterion, optimizer, device, scaler, recipe, mixer, ema,
-                    description, max_batches=None) -> tuple[float, float]:
+                    description, max_batches=None, accum=1) -> tuple[float, float]:
+    """`accum` micro-batches per optimiser step, so the effective batch is batch_size * accum.
+
+    This exists because 384 px at batch 32 needs 6.05 GB and the desktop leaves about 4-5 GB free,
+    which killed R1 at the head->finetune transition on its first attempt. Halving the batch would
+    have fixed the memory and broken the experiment: batch size changes the effective LR schedule,
+    so R1 would then differ from the control in resolution AND batch, while the plan declares it as
+    one change. Accumulation keeps the optimiser's view identical and only splits the forward pass.
+
+    **It is equivalent up to a normalisation subtlety, and the difference is declared rather than
+    hidden.** Measured: with an unweighted loss, accumulation reproduces the larger batch to 3e-08,
+    i.e. exactly. With the class-weighted loss this recipe actually uses, it differs by ~5e-04 on
+    the weights, because `CrossEntropyLoss(weight=...)` at `reduction='mean'` divides by the *sum
+    of sample weights* in the batch rather than the count -- so two micro-batches with different
+    class mixes carry slightly different normalisers. The effect is a per-step scaling wobble, not
+    a systematic shift: it perturbs the trajectory like a different seed, which S44 measured at
+    0.0027 on val Macro-F1 against this ladder's MCID of 0.020. A batch-size change would have
+    been first-order; this is not. Any arm run with `accum > 1` records `grad_accum` and
+    `effective_batch` in its summary so the caveat travels with the number.
+    """
     model.train()
     total_loss = correct = seen = 0.0
     use_amp = scaler is not None and device.type == "cuda"
+    optimizer.zero_grad(set_to_none=True)
 
     for step, (images, labels, tabular) in enumerate(
             tqdm(loader, desc=description, leave=False, unit="batch")):
@@ -205,24 +225,32 @@ def train_one_epoch(model, loader, criterion, optimizer, device, scaler, recipe,
         if mixer is not None:
             images, targets = mixer(images, labels)
 
-        optimizer.zero_grad(set_to_none=True)
         with torch.autocast(device_type=device.type, enabled=use_amp):
             logits = forward(model, images, tabular, recipe)
             loss = criterion(logits, targets)
 
+        # Scale down so the accumulated gradient equals the mean over the effective batch, which
+        # is what a single un-accumulated step of that size would have produced.
+        scaled = loss / accum
         if use_amp:
-            scaler.scale(loss).backward()
-            scaler.unscale_(optimizer)
-            nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
-            scaler.step(optimizer)
-            scaler.update()
+            scaler.scale(scaled).backward()
         else:
-            loss.backward()
-            nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
-            optimizer.step()
+            scaled.backward()
 
-        if ema is not None:
-            ema.update_parameters(model)
+        # An optimiser step only on the last micro-batch of each group. EMA follows the optimiser,
+        # not the forward pass, or its decay would be applied `accum` times too often.
+        if (step + 1) % accum == 0:
+            if use_amp:
+                scaler.unscale_(optimizer)
+                nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
+                optimizer.step()
+            optimizer.zero_grad(set_to_none=True)
+            if ema is not None:
+                ema.update_parameters(model)
 
         batch = labels.size(0)
         total_loss += float(loss.item()) * batch
@@ -379,7 +407,7 @@ def run(args: argparse.Namespace) -> int:
         epoch_started = time.time()
         train_loss, train_accuracy = train_one_epoch(
             model, loaders["train"], criterion, optimizer, device, scaler, recipe, mixer, ema,
-            f"epoch {epoch + 1}/{epochs} [{stage}]", max_batches)
+            f"epoch {epoch + 1}/{epochs} [{stage}]", max_batches, args.grad_accum)
 
         # R6 is evaluated through its EMA weights -- the averaged model is the artefact the rung
         # claims, so selecting on the raw weights would measure a different thing from the one
@@ -410,7 +438,9 @@ def run(args: argparse.Namespace) -> int:
             "arch": ARCH, "model_kind": model_kind, "recipe": asdict(recipe),
             "num_classes": mapping.num_classes, "class_codes": list(mapping.codes),
             "class_mapping_version": mapping.version, "image_size": recipe.image_size,
-            "batch_size": args.batch_size, "epoch": epoch + 1,
+            "batch_size": args.batch_size, "grad_accum": args.grad_accum,
+            "effective_batch": args.batch_size * args.grad_accum,
+            "epoch": epoch + 1,
             "monitor_metric": "macro_f1", "monitor_value": metrics["macro_f1"],
             "state_dict": (ema.module if ema is not None else model).state_dict(),
             "tabular_encoder": asdict(encoder) if encoder is not None else None,
@@ -434,7 +464,9 @@ def run(args: argparse.Namespace) -> int:
     summary: dict[str, Any] = {
         "run_id": run_id, "session": RUN_SESSION, "rungs": args.rungs, "corpus": args.corpus,
         "seed": args.seed, "arch": ARCH, "model_kind": model_kind, "recipe": asdict(recipe),
-        "batch_size": args.batch_size, "epochs_run": len(history),
+        "batch_size": args.batch_size, "grad_accum": args.grad_accum,
+        "effective_batch": args.batch_size * args.grad_accum,
+        "epochs_run": len(history),
         "best_val_macro_f1": best_value, "best_epoch": best_epoch,
         "final_val_macro_f1": final["val_macro_f1"],
         "final_val_balanced_accuracy": final["val_balanced_accuracy"],
@@ -552,6 +584,11 @@ def main(argv: list[str] | None = None) -> int:
     # limit. 3 survives but with no measured margin; 2 and 3 are indistinguishable at 384 px
     # (306 vs 307 ms/batch) because the GPU is the bottleneck there, so 2 costs nothing on the
     # long runs and only ~3 min per short 224 px run.
+    parser.add_argument("--grad-accum", type=int, default=1,
+                        help="micro-batches per optimiser step; effective batch is "
+                             "--batch-size * --grad-accum. Used to fit 384 px in the VRAM the "
+                             "desktop leaves free without changing the effective batch, which "
+                             "would confound the resolution rung with a batch-size change.")
     parser.add_argument("--num-workers", type=int, default=2)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--smoke", action="store_true",
