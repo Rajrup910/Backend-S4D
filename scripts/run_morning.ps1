@@ -58,17 +58,14 @@ if (Test-Path $refHistory) {
 }
 
 # --- 3. record it where the gate can read it ------------------------------------------------
-& $py -c @"
-import json, pathlib
-history = json.loads(pathlib.Path(r'$refHistory').read_text(encoding='utf-8'))
-best = max(history, key=lambda row: row['val_macro_f1'])
-out = {'trainer': 'ml/training/train.py', 'arch': 'convnext_tiny',
-       'split': 'ml/configs/splits/split_v1.csv', 'epochs_run': len(history),
-       'best_val_macro_f1': best['val_macro_f1'], 'best_epoch': best['epoch'],
-       'purpose': 'S52 control-gate diagnostic: same data, reference trainer'}
-pathlib.Path('results/v4/control_reference.json').write_text(json.dumps(out, indent=2), encoding='utf-8')
-print(f"control reference: {out['best_val_macro_f1']:.4f} at epoch {out['best_epoch']} of {out['epochs_run']}")
-"@ 2>&1 | ForEach-Object { Log $_ }
+# Deliberately a module call, not Python embedded in a here-string: PowerShell strips double
+# quotes when passing one to a native executable, and the first version of this reached the
+# interpreter as `print(fcontrol`.
+& $py -m research.v4.screen --record-control-reference $refHistory 2>&1 | ForEach-Object { Log $_ }
+if ($LASTEXITCODE -ne 0) {
+    Log "could not record the control reference (exit $LASTEXITCODE). Block 2 NOT started."
+    exit $LASTEXITCODE
+}
 
 # --- 4. re-screen, now that the gate has a reference to weigh -------------------------------
 Log "--- re-screening with the control reference ---"
@@ -83,7 +80,16 @@ if ($gate -ne 0) {
 
 # --- 5. Block 2 -----------------------------------------------------------------------------
 $verdict   = Get-Content (Join-Path $repo "results\v4\screen_verdict.json") -Raw | ConvertFrom-Json
-$composite = $verdict.composite
+$composite = @($verdict.composite)
+
+# Defence in depth. screen.py already refuses an empty composite, but a zero-exit plus an empty
+# rung list would otherwise reach the trainer as `--rungs` with no value, and the failure would
+# look like a training bug rather than a screening one.
+if ($composite.Count -eq 0) {
+    Log "screen returned success with an EMPTY composite. Refusing to run Block 2 -- this is a"
+    Log "screening inconsistency, not a training problem. See results/v4/screen_verdict.json."
+    exit 3
+}
 Log ("gate cleared ({0}); composite = {1}" -f $verdict.control_gate, ($composite -join " "))
 
 foreach ($arm in @(@{ Name = "pooled control"; Rungs = @("R0") },
