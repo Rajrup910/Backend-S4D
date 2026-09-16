@@ -148,10 +148,13 @@ Log ("gate cleared ({0}); composite = {1}" -f $verdict.control_gate, ($composite
 # Project the finish against the user's 13:30 deadline and say so plainly in the log, so the
 # 13:20 readout can report a known number instead of guessing. Measured 224 px rates on the HAM
 # split were 31-40 s/epoch; the pooled corpus is 2.19x larger and 384 px costs 2.26x more.
+# The pooled control is always R0, i.e. 224 px; only the composite can be 384 px. The first
+# version priced both arms at the composite's resolution and overstated the finish by ~2 h.
 $at384   = $composite -contains "R1"
-$secEp   = if ($at384) { 106 * (15294/6981) } else { 31 * (15294/6981) }
+$ctrlSec = 31 * (15294/6981)
+$compSec = if ($at384) { 106 * (15294/6981) } else { $ctrlSec }
 $compEp  = if ($composite -contains "R6") { 60 } else { 30 }
-$projMin = ($secEp * 30 + $secEp * $compEp) / 60
+$projMin = ($ctrlSec * 30 + $compSec * $compEp) / 60
 $projEnd = (Get-Date).AddMinutes($projMin)
 $deadline = (Get-Date).Date.AddHours(13).AddMinutes(30)
 Log ("Block 2 projection: {0} px, {1} composite epochs, ~{2:N0} min at full length -> {3:HH:mm}" -f `

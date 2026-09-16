@@ -97,6 +97,28 @@ GRAD_CLIP = 5.0
 EFFECTIVE_NUMBER_BETA = 0.999
 EARLY_STOPPING_PATIENCE = 8
 
+#: Refuse to start, or to continue, below these. On 2026-09-16 the disk reached 0.25 GB free; the
+#: auto-managed pagefile could not grow, the system commit limit pinned, and a dataloader worker
+#: died with Windows error 1455 -- which reads like a memory bug and cost three wrong diagnoses.
+#: Failing here with a plain message is the whole point: the real cause is named at the moment it
+#: happens. 5 GB at launch leaves room for the pagefile to grow; 2 GB mid-run is the last point at
+#: which a clean stop is still possible.
+MIN_FREE_GB_AT_LAUNCH = 5.0
+MIN_FREE_GB_PER_EPOCH = 2.0
+
+
+def require_disk(minimum_gb: float, when: str) -> None:
+    import shutil
+
+    free = shutil.disk_usage(REPO_ROOT).free / 1e9
+    if free < minimum_gb:
+        raise SystemExit(
+            f"DISK LOW {when}: {free:.2f} GB free on the repo drive, need {minimum_gb:.1f} GB. "
+            f"Windows grows the pagefile into free disk to raise the commit limit; below this the "
+            f"dataloader fails with error 1455 (ERROR_COMMITMENT_LIMIT). Free space and relaunch."
+        )
+
+
 CORPORA = {
     # name        train rows                                   val rows
     "ham_only": ({"split": "train", "in_ham": True}, {"split": "ham_val"}),
@@ -314,6 +336,8 @@ def compose(rung_ids: list[str]) -> Recipe:
 
 def run(args: argparse.Namespace) -> int:
     testguard.block_test_reads("S53 recipe ladder: training only, no test split")
+    if not args.smoke:
+        require_disk(MIN_FREE_GB_AT_LAUNCH, "at launch")
     mapping = load_class_mapping()
     recipe = compose(args.rungs)
     device = resolve_device(args.device)
@@ -404,6 +428,8 @@ def run(args: argparse.Namespace) -> int:
             print(f"\n--- stage {stage} | lr={learning_rate:g} | "
                   f"trainable {count_parameters(model)['trainable']:,} ---")
 
+        if not args.smoke:
+            require_disk(MIN_FREE_GB_PER_EPOCH, f"before epoch {epoch + 1}")
         epoch_started = time.time()
         train_loss, train_accuracy = train_one_epoch(
             model, loaders["train"], criterion, optimizer, device, scaler, recipe, mixer, ema,
@@ -556,7 +582,9 @@ def write_ledger(summary: dict[str, Any]) -> None:
         # LR schedule, and S44's whole finding was that unrecorded run-to-run variance swamped the
         # effect being measured.
         "notes": (f"rungs={'+'.join(summary['rungs'])} seed={summary['seed']} "
-                  f"batch_size={summary['batch_size']} image_size={summary['recipe']['image_size']} "
+                  f"batch_size={summary['batch_size']} grad_accum={summary.get('grad_accum', 1)} "
+                  f"effective_batch={summary.get('effective_batch', summary['batch_size'])} "
+                  f"image_size={summary['recipe']['image_size']} "
                   f"epochs_run={summary['epochs_run']} best_epoch={summary['best_epoch']} "
                   f"minutes={summary['train_time_seconds'] / 60:.1f} "
                   f"plan={str(summary['plan_sha256'])[:16]}"),

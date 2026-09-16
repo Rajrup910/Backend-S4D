@@ -1,0 +1,75 @@
+{
+  "plan_sha256": "eff9d79f36f351ffcad05f005aa9a7dccbd1c12a44e4c0ddda8914145039bf5e",
+  "arms_found": [
+    "R0",
+    "R1",
+    "R2",
+    "R4",
+    "R5",
+    "R6",
+    "R7"
+  ],
+  "arms_missing": [],
+  "mcid": 0.02,
+  "status": "screen is a compute-allocation filter, not a hypothesis test; 'not promoted' does not mean 'falsified'",
+  "control": {
+    "value": 0.7772510786119006,
+    "band": [
+      0.735,
+      0.765
+    ],
+    "reproduces": false
+  },
+  "control_reference": {
+    "accepted": true,
+    "reference_trainer": "ml/training/train.py",
+    "reference_value": 0.7764634738155697,
+    "v4_value": 0.7772510786119006,
+    "gap": 0.000788,
+    "tolerance": 0.02,
+    "published_band": [
+      0.735,
+      0.765
+    ],
+    "reason": "The reference trainer scores 0.7765 on the identical split, within 0.02 of this pipeline's 0.7773. Both trainers therefore disagree with the published (0.735, 0.765) in the same direction and by the same amount, so the band is stale rather than this pipeline being broken. The ladder's internal deltas were never affected; what does not transfer is any cross-reference between V4 numbers and V1's published figures."
+  },
+  "control_gate": "FAILED_BUT_DEVIATION_ACCEPTED",
+  "deltas": {
+    "R1": 0.022503,
+    "R6": -0.012146,
+    "R5": -0.029023,
+    "R2": -0.102183
+  },
+  "ranking_levers": {
+    "cleared_mcid": [
+      "R1"
+    ],
+    "promoted": [
+      "R1"
+    ],
+    "basis": {
+      "R1": "cleared MCID"
+    },
+    "unfilled_slots": 1
+  },
+  "R4": {
+    "delta_escalation_sensitivity": 0.061688,
+    "mcid": 0.05,
+    "clears": true,
+    "delta_macro_f1": -0.009087,
+    "note": "A null Macro-F1 result is PREDICTED, not a failure (S36 check 7). Referral rate is not matched here, so this is directional -- the matched-referral comparison belongs in the Block 2 readout."
+  },
+  "R7": {
+    "age_flip_span": 0.047468,
+    "mcid": 0.05,
+    "branch_is_auditable": false,
+    "delta_macro_f1": -0.010978,
+    "non_inferior": false,
+    "note": "Fails as a mechanism if the flip moves escalation mass by less than the MCID -- that means the gate learned to ignore the branch."
+  },
+  "composite": [
+    "R1",
+    "R4"
+  ],
+  "proceed": true
+}
