@@ -1,0 +1,603 @@
+{
+  "session": "v4_s57a",
+  "target": "patient age (recorded, HAM metadata), 5-year resolution, 0-85",
+  "features": "research/v3/features/convnext_tiny_oof.npz",
+  "n_recorded": 6943,
+  "crossfit": "S3 lesion-grouped OOF folds (outer) x GroupKFold(3) by lesion (inner, penalty)",
+  "models": {
+    "mean": {
+      "mae": 13.788011605829123,
+      "rmse": 17.045260313565926,
+      "r2": -0.0007390283111305962,
+      "spearman": -0.034157965546683905,
+      "tweedie_d2": -0.0005777301245972755,
+      "mae_ci": [
+        13.465007618545238,
+        14.10404051575441
+      ],
+      "r2_ci": [
+        -0.002121335702884719,
+        -0.00022610249122725977
+      ]
+    },
+    "ridge": {
+      "mae": 11.819843542184168,
+      "rmse": 15.06165342867951,
+      "r2": 0.21862617018047514,
+      "spearman": 0.48548337024929766,
+      "tweedie_d2": 0.17251164761690563,
+      "mae_ci": [
+        11.527083428773166,
+        12.099201290212974
+      ],
+      "r2_ci": [
+        0.19548950411245683,
+        0.24292367080515082
+      ]
+    },
+    "tweedie": {
+      "mae": 11.63410781605687,
+      "rmse": 14.767428399005613,
+      "r2": 0.248855816215237,
+      "spearman": 0.5157028589191908,
+      "tweedie_d2": 0.19450972217689166,
+      "mae_ci": [
+        11.35982949208098,
+        11.898076974881969
+      ],
+      "r2_ci": [
+        0.2290393443847587,
+        0.2682175724566326
+      ]
+    }
+  },
+  "alphas_by_fold": {
+    "mean": [
+      {
+        "fold": 0
+      },
+      {
+        "fold": 1
+      },
+      {
+        "fold": 2
+      },
+      {
+        "fold": 3
+      },
+      {
+        "fold": 4
+      }
+    ],
+    "ridge": [
+      {
+        "fold": 0,
+        "alpha": 10000.0,
+        "inner": [
+          {
+            "alpha": 100.0,
+            "inner_loss": 260.2457498996678
+          },
+          {
+            "alpha": 1000.0,
+            "inner_loss": 218.42347752856423
+          },
+          {
+            "alpha": 10000.0,
+            "inner_loss": 215.0663302378664
+          },
+          {
+            "alpha": 30000.0,
+            "inner_loss": 222.46831289246526
+          },
+          {
+            "alpha": 100000.0,
+            "inner_loss": 233.19101655297746
+          },
+          {
+            "alpha": 300000.0,
+            "inner_loss": 247.26033168346234
+          },
+          {
+            "alpha": 1000000.0,
+            "inner_loss": 266.7731593955995
+          }
+        ]
+      },
+      {
+        "fold": 1,
+        "alpha": 1000.0,
+        "inner": [
+          {
+            "alpha": 100.0,
+            "inner_loss": 243.7306789745505
+          },
+          {
+            "alpha": 1000.0,
+            "inner_loss": 212.19383561829804
+          },
+          {
+            "alpha": 10000.0,
+            "inner_loss": 213.12603925216933
+          },
+          {
+            "alpha": 30000.0,
+            "inner_loss": 221.46913336313014
+          },
+          {
+            "alpha": 100000.0,
+            "inner_loss": 234.15604097932305
+          },
+          {
+            "alpha": 300000.0,
+            "inner_loss": 250.7353694072269
+          },
+          {
+            "alpha": 1000000.0,
+            "inner_loss": 271.33001052764257
+          }
+        ]
+      },
+      {
+        "fold": 2,
+        "alpha": 10000.0,
+        "inner": [
+          {
+            "alpha": 100.0,
+            "inner_loss": 263.62110420552045
+          },
+          {
+            "alpha": 1000.0,
+            "inner_loss": 217.92096304366405
+          },
+          {
+            "alpha": 10000.0,
+            "inner_loss": 216.74305232429495
+          },
+          {
+            "alpha": 30000.0,
+            "inner_loss": 224.56521632463807
+          },
+          {
+            "alpha": 100000.0,
+            "inner_loss": 236.18849051601896
+          },
+          {
+            "alpha": 300000.0,
+            "inner_loss": 251.85975943845975
+          },
+          {
+            "alpha": 1000000.0,
+            "inner_loss": 272.06872547562523
+          }
+        ]
+      },
+      {
+        "fold": 3,
+        "alpha": 10000.0,
+        "inner": [
+          {
+            "alpha": 100.0,
+            "inner_loss": 255.78095224509056
+          },
+          {
+            "alpha": 1000.0,
+            "inner_loss": 215.6560032411397
+          },
+          {
+            "alpha": 10000.0,
+            "inner_loss": 212.24005933447634
+          },
+          {
+            "alpha": 30000.0,
+            "inner_loss": 219.2789921596691
+          },
+          {
+            "alpha": 100000.0,
+            "inner_loss": 231.05413709664845
+          },
+          {
+            "alpha": 300000.0,
+            "inner_loss": 247.6371821313015
+          },
+          {
+            "alpha": 1000000.0,
+            "inner_loss": 268.7177673348155
+          }
+        ]
+      },
+      {
+        "fold": 4,
+        "alpha": 1000.0,
+        "inner": [
+          {
+            "alpha": 100.0,
+            "inner_loss": 251.4749276458255
+          },
+          {
+            "alpha": 1000.0,
+            "inner_loss": 211.9253171220649
+          },
+          {
+            "alpha": 10000.0,
+            "inner_loss": 212.62344625303163
+          },
+          {
+            "alpha": 30000.0,
+            "inner_loss": 220.86801106305643
+          },
+          {
+            "alpha": 100000.0,
+            "inner_loss": 231.9826607331075
+          },
+          {
+            "alpha": 300000.0,
+            "inner_loss": 246.16037120342432
+          },
+          {
+            "alpha": 1000000.0,
+            "inner_loss": 265.84305390487685
+          }
+        ]
+      }
+    ],
+    "tweedie": [
+      {
+        "fold": 0,
+        "alpha": 10.0,
+        "inner": [
+          {
+            "alpha": 0.01,
+            "inner_loss": 1.1681658828109966
+          },
+          {
+            "alpha": 0.1,
+            "inner_loss": 1.0367494938297588
+          },
+          {
+            "alpha": 1.0,
+            "inner_loss": 0.8589000175581859
+          },
+          {
+            "alpha": 3.0,
+            "inner_loss": 0.8182423898777255
+          },
+          {
+            "alpha": 10.0,
+            "inner_loss": 0.8099861790819127
+          },
+          {
+            "alpha": 30.0,
+            "inner_loss": 0.8235794467510217
+          },
+          {
+            "alpha": 100.0,
+            "inner_loss": 0.8480201646993488
+          }
+        ]
+      },
+      {
+        "fold": 1,
+        "alpha": 10.0,
+        "inner": [
+          {
+            "alpha": 0.01,
+            "inner_loss": 1.0316198444159417
+          },
+          {
+            "alpha": 0.1,
+            "inner_loss": 0.9301014869073475
+          },
+          {
+            "alpha": 1.0,
+            "inner_loss": 0.7883430443616435
+          },
+          {
+            "alpha": 3.0,
+            "inner_loss": 0.760621880325409
+          },
+          {
+            "alpha": 10.0,
+            "inner_loss": 0.7600799701558634
+          },
+          {
+            "alpha": 30.0,
+            "inner_loss": 0.7773001902259962
+          },
+          {
+            "alpha": 100.0,
+            "inner_loss": 0.8061975740059487
+          }
+        ]
+      },
+      {
+        "fold": 2,
+        "alpha": 10.0,
+        "inner": [
+          {
+            "alpha": 0.01,
+            "inner_loss": 1.184602536334254
+          },
+          {
+            "alpha": 0.1,
+            "inner_loss": 1.0396234199881385
+          },
+          {
+            "alpha": 1.0,
+            "inner_loss": 0.8433641762020875
+          },
+          {
+            "alpha": 3.0,
+            "inner_loss": 0.8067383942173215
+          },
+          {
+            "alpha": 10.0,
+            "inner_loss": 0.8040844225952609
+          },
+          {
+            "alpha": 30.0,
+            "inner_loss": 0.8213282883336417
+          },
+          {
+            "alpha": 100.0,
+            "inner_loss": 0.8490259700772419
+          }
+        ]
+      },
+      {
+        "fold": 3,
+        "alpha": 10.0,
+        "inner": [
+          {
+            "alpha": 0.01,
+            "inner_loss": 1.0957881589425646
+          },
+          {
+            "alpha": 0.1,
+            "inner_loss": 0.9853777599477423
+          },
+          {
+            "alpha": 1.0,
+            "inner_loss": 0.8196656885873748
+          },
+          {
+            "alpha": 3.0,
+            "inner_loss": 0.7836615321211348
+          },
+          {
+            "alpha": 10.0,
+            "inner_loss": 0.7774127506698161
+          },
+          {
+            "alpha": 30.0,
+            "inner_loss": 0.7913632201130104
+          },
+          {
+            "alpha": 100.0,
+            "inner_loss": 0.8176029121237619
+          }
+        ]
+      },
+      {
+        "fold": 4,
+        "alpha": 10.0,
+        "inner": [
+          {
+            "alpha": 0.01,
+            "inner_loss": 1.1318224997948894
+          },
+          {
+            "alpha": 0.1,
+            "inner_loss": 0.9992390000373979
+          },
+          {
+            "alpha": 1.0,
+            "inner_loss": 0.8216502918978931
+          },
+          {
+            "alpha": 3.0,
+            "inner_loss": 0.7898567765975848
+          },
+          {
+            "alpha": 10.0,
+            "inner_loss": 0.7898303454323782
+          },
+          {
+            "alpha": 30.0,
+            "inner_loss": 0.8082775356312483
+          },
+          {
+            "alpha": 100.0,
+            "inner_loss": 0.8356450239073251
+          }
+        ]
+      }
+    ]
+  },
+  "alpha_at_grid_boundary": {
+    "ridge": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "tweedie": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "final_alpha_at_grid_boundary": false,
+  "primary": "tweedie",
+  "tweedie_minus_ridge_mae": {
+    "point": -0.18573572612729805,
+    "ci": [
+      -0.258588330801957,
+      -0.1061442932828608
+    ]
+  },
+  "calibration_primary": {
+    "by_true_band": {
+      "<40": {
+        "n": 1319,
+        "mean_true": 27.62699014404852,
+        "mean_pred": 47.165191261505456,
+        "bias": 19.538201117456925,
+        "mae": 19.538201117456925,
+        "share_predicted_in_band": 0.03790750568612585
+      },
+      "40-59": {
+        "n": 3112,
+        "mean_true": 47.427699228791774,
+        "mean_pred": 50.034554203893286,
+        "bias": 2.6068549751015175,
+        "mae": 6.025664835146957,
+        "share_predicted_in_band": 0.9068123393316195
+      },
+      "60+": {
+        "n": 2512,
+        "mean_true": 69.98009554140127,
+        "mean_pred": 56.99165684758628,
+        "bias": -12.988438693814992,
+        "mae": 14.431868760342295,
+        "share_predicted_in_band": 0.357484076433121
+      }
+    },
+    "band_from_prediction_balanced_accuracy": 0.43406797381695544,
+    "band_confusion": {
+      "40-59": {
+        "40-59": 2822,
+        "60+": 261,
+        "<40": 29
+      },
+      "60+": {
+        "40-59": 1606,
+        "60+": 898,
+        "<40": 8
+      },
+      "<40": {
+        "40-59": 1245,
+        "60+": 24,
+        "<40": 50
+      }
+    },
+    "calibration_true_on_pred": {
+      "slope": 1.0420759609353019,
+      "intercept": -2.3691936404101077
+    },
+    "by_escalation": {
+      "escalating": {
+        "n": 1354,
+        "bias": -4.214248149930226,
+        "mae": 11.989878701739936
+      },
+      "not_escalating": {
+        "n": 5589,
+        "bias": 1.2457602348512926,
+        "mae": 11.547918197303092
+      }
+    }
+  },
+  "calibration_ridge": {
+    "by_true_band": {
+      "<40": {
+        "n": 1319,
+        "mean_true": 27.62699014404852,
+        "mean_pred": 47.23096848814988,
+        "bias": 19.603978344101353,
+        "mae": 19.610529592735144,
+        "share_predicted_in_band": 0.05989385898407885
+      },
+      "40-59": {
+        "n": 3112,
+        "mean_true": 47.427699228791774,
+        "mean_pred": 50.1431412854053,
+        "bias": 2.7154420566135253,
+        "mae": 6.484253899303802,
+        "share_predicted_in_band": 0.8762853470437018
+      },
+      "60+": {
+        "n": 2512,
+        "mean_true": 69.98009554140127,
+        "mean_pred": 57.37006653626934,
+        "bias": -12.61002900513194,
+        "mae": 14.339127008731523,
+        "share_predicted_in_band": 0.39729299363057324
+      }
+    },
+    "band_from_prediction_balanced_accuracy": 0.4444907332194514,
+    "band_confusion": {
+      "40-59": {
+        "40-59": 2727,
+        "60+": 322,
+        "<40": 63
+      },
+      "60+": {
+        "40-59": 1486,
+        "60+": 998,
+        "<40": 28
+      },
+      "<40": {
+        "40-59": 1191,
+        "60+": 49,
+        "<40": 79
+      }
+    },
+    "calibration_true_on_pred": {
+      "slope": 0.9011722541608612,
+      "intercept": 4.780220277060077
+    },
+    "by_escalation": {
+      "escalating": {
+        "n": 1354,
+        "bias": -4.241737262921344,
+        "mae": 12.305321874661914
+      },
+      "not_escalating": {
+        "n": 5589,
+        "bias": 1.498483182886929,
+        "mae": 11.702230791750305
+      }
+    }
+  },
+  "qc_flag": {
+    "threshold_years": 29.028840054964764,
+    "quantile": 0.95,
+    "flag_rate": 0.05012242546449661,
+    "flag_rate_by_band": {
+      "<40": 0.14935557240333586,
+      "40-59": 0.002570694087403599,
+      "60+": 0.05692675159235669
+    },
+    "escalation_prevalence_flagged": 0.13793103448275862,
+    "escalation_prevalence_unflagged": 0.19802880970432146,
+    "reading": "descriptive; a flag marks disagreement, not an error"
+  },
+  "fallback": {
+    "n_missing_age": 38,
+    "predicted_band_counts": {
+      "40-59": 25,
+      "<40": 8,
+      "60+": 5
+    },
+    "predicted_age_range": [
+      33.96879094387259,
+      73.30277015513232
+    ],
+    "note": "in-sample for the final model's features only in the sense that these rows have no age label and were never a training target",
+    "resolve_age_sources": {
+      "recorded": 6943,
+      "estimated": 38
+    }
+  },
+  "s42_reference": {
+    "age_band_probe_macro_ovr_auc": 0.6922,
+    "comparable": false,
+    "why": "classification AUC vs regression error"
+  },
+  "state": "results/v4/age_estimator_state.json",
+  "rule": "resolve_age(): recorded age always wins; estimate fills genuinely missing only"
+}

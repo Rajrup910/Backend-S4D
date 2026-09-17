@@ -1,0 +1,76 @@
+{
+  "arms": {
+    "band": "per-band CRC floor thresholds, max-min S*, leftover spent globally",
+    "global": "one threshold at the OOF (1-R) score quantile (status quo)"
+  },
+  "budgets": [
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3
+  ],
+  "cost_reported_with_endpoint": [
+    "under-40 referral rate, band - global (paired CI)",
+    "all-ages referral rate, band - global (paired CI) -- the nominal budget is fit on OOF and the realised rate on reserved is measured, not assumed",
+    "retained Macro-F1, band - global (paired CI)"
+  ],
+  "crc_bound": "(FN_b + 1) / (P_b + 1) <= 1 - S, per band, on OOF",
+  "evaluation": "manifest_v4 split=reserved (4,733 images, 104 under-40 escalating lesions); frozen V1 predictions (S13 + S54 top-up); read once",
+  "fit_split": "HAM OOF (6,981 rows), cross-fitted Dirichlet",
+  "floor_bands": [
+    "<40",
+    "40-59",
+    "60+"
+  ],
+  "floor_grid_step": 0.005,
+  "floor_transfer_check": "per fitted band, realised reserved system sensitivity with its interval against the nominal OOF floor S*; 'violated' when the interval's upper bound is below S*",
+  "model": "frozen V1: 6-CNN uniform soft-vote, 24-view TTA, deployed HAM-OOF Dirichlet (research/selective/results_oof/fit_state.json); S54 outcome 4 keeps it",
+  "not_done": [
+    "no HAM test read",
+    "no reserved re-scoring of images",
+    "S55 per-band calibration is not adopted here: the deployed global map is held fixed so the contrast isolates the abstention rule"
+  ],
+  "per_budget_columns": [
+    "retained_macro_f1",
+    "system_sens (per band)",
+    "frr (per band)",
+    "referral_rate (per band)",
+    "nnb at pi 0.01/0.03/0.05 (upper bound: every referral counted as a biopsy)"
+  ],
+  "primary_budget": 0.2,
+  "primary_endpoint": {
+    "interval": "lesion-grouped paired bootstrap (group_id), one resample for both arms, 2000 draws, seed 42",
+    "mcid": 0.1,
+    "outcomes": {
+      "HARM": "CI upper bound < 0",
+      "NOT_RESOLVED": "CI contains 0",
+      "POSITIVE_BELOW_MCID": "CI lower bound > 0 and delta < MCID",
+      "SUPPORTED": "delta >= MCID and CI lower bound > 0"
+    },
+    "quantity": "under-40 system escalation sensitivity, band arm minus global arm, at R = 0.2, same score, reserved"
+  },
+  "proportion_intervals": "research.stats.intervals.proportion (Clopper-Pearson below 30 events, lesion-grouped bootstrap otherwise)",
+  "referral_semantics": "a referred case is not a silent miss; system sensitivity = (argmax-escalated or referred) / escalating; FRR = 1 - that",
+  "score_selection": {
+    "candidates": [
+      "msp",
+      "margin",
+      "entropy",
+      "esc_risk"
+    ],
+    "noninferiority": 0.02,
+    "rule": "The rule, declared before val was scored (and restated in the plan):\n\n    Among the four scores, under the **band** arm, pick the highest val **all-ages** system\n    escalation sensitivity averaged over the five budgets -- all-ages because val has 22\n    under-40 escalating cases and S48 retires <=25-positive quantities from any decision --\n    among scores whose mean retained Macro-F1 is within ``F1_NONINFERIORITY`` of the best\n    score's. Ties (to 1e-9) go to the earlier name in ``SCORES``.",
+    "selected": "msp",
+    "selection_file": "results/v4/s56/selection_val.json",
+    "selection_sha256": "4cbb63bc607c46598d9e13a51f6a1fbd2998c7472f8e55624237d652af42e276"
+  },
+  "secondary_descriptive": {
+    "score": "esc_risk",
+    "why": "highest val system sensitivity but fails the Macro-F1 guard, so not selected; its reserved frontier and <40 band-global contrast are reported beside the primary and decide nothing"
+  },
+  "selection_split": "HAM val (1,532 rows)",
+  "session": "S56",
+  "title": "Group-conditional selective abstention (per-age-band referral thresholds)",
+  "unknown_band": "no floor, global threshold only"
+}

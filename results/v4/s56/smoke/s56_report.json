@@ -1,0 +1,162 @@
+{
+  "plan_sha256": "4e142ad2c423a0ecdc9b0c36e6516be519701f9e9fcc4156d508775b4ff98102",
+  "score": "msp",
+  "reserved": {
+    "smoke": "HAM val stands in"
+  },
+  "floors_oof": {
+    "0.1": 0.755,
+    "0.15": 0.81,
+    "0.2": 0.855,
+    "0.25": 0.88,
+    "0.3": 0.905
+  },
+  "primary": {
+    "budget": 0.2,
+    "contrast": "band-global",
+    "band": "<40",
+    "stat": "system_sens",
+    "delta": 0.3181818181818181,
+    "ci_lo": 0.09055944055944054,
+    "ci_hi": 0.668055555555556,
+    "outcome": "SUPPORTED",
+    "mcid": 0.1
+  },
+  "floor_transfer": [
+    {
+      "budget": 0.1,
+      "band": "<40",
+      "nominal_floor": 0.755,
+      "realised": 0.7727272727272727,
+      "ci_lo": 0.5462963763378781,
+      "ci_hi": 0.9217937396481075,
+      "status": "met"
+    },
+    {
+      "budget": 0.1,
+      "band": "40-59",
+      "nominal_floor": 0.755,
+      "realised": 0.7166666666666667,
+      "ci_lo": 0.59984375,
+      "ci_hi": 0.8334016393442624,
+      "status": "below_point_within_ci"
+    },
+    {
+      "budget": 0.1,
+      "band": "60+",
+      "nominal_floor": 0.755,
+      "realised": 0.8141592920353983,
+      "ci_lo": 0.7419287634408602,
+      "ci_hi": 0.8595097415953031,
+      "status": "met"
+    },
+    {
+      "budget": 0.15,
+      "band": "<40",
+      "nominal_floor": 0.81,
+      "realised": 0.8636363636363636,
+      "ci_lo": 0.6508779027425919,
+      "ci_hi": 0.9709441488712534,
+      "status": "met"
+    },
+    {
+      "budget": 0.15,
+      "band": "40-59",
+      "nominal_floor": 0.81,
+      "realised": 0.7833333333333333,
+      "ci_lo": 0.6610169491525424,
+      "ci_hi": 0.8929933414043585,
+      "status": "below_point_within_ci"
+    },
+    {
+      "budget": 0.15,
+      "band": "60+",
+      "nominal_floor": 0.81,
+      "realised": 0.8584070796460177,
+      "ci_lo": 0.788791585721224,
+      "ci_hi": 0.9071808955556795,
+      "status": "met"
+    },
+    {
+      "budget": 0.2,
+      "band": "<40",
+      "nominal_floor": 0.855,
+      "realised": 0.9090909090909091,
+      "ci_lo": 0.7083872584460665,
+      "ci_hi": 0.988794413975849,
+      "status": "met"
+    },
+    {
+      "budget": 0.2,
+      "band": "40-59",
+      "nominal_floor": 0.855,
+      "realised": 0.7833333333333333,
+      "ci_lo": 0.6610169491525424,
+      "ci_hi": 0.8929933414043585,
+      "status": "below_point_within_ci"
+    },
+    {
+      "budget": 0.2,
+      "band": "60+",
+      "nominal_floor": 0.855,
+      "realised": 0.8893805309734514,
+      "ci_lo": 0.8221823617339312,
+      "ci_hi": 0.9297961779487498,
+      "status": "met"
+    },
+    {
+      "budget": 0.25,
+      "band": "<40",
+      "nominal_floor": 0.88,
+      "realised": 0.9090909090909091,
+      "ci_lo": 0.7083872584460665,
+      "ci_hi": 0.988794413975849,
+      "status": "met"
+    },
+    {
+      "budget": 0.25,
+      "band": "40-59",
+      "nominal_floor": 0.88,
+      "realised": 0.7833333333333333,
+      "ci_lo": 0.6610169491525424,
+      "ci_hi": 0.8929933414043585,
+      "status": "below_point_within_ci"
+    },
+    {
+      "budget": 0.25,
+      "band": "60+",
+      "nominal_floor": 0.88,
+      "realised": 0.911504424778761,
+      "ci_lo": 0.8532484326018809,
+      "ci_hi": 0.9530625614150017,
+      "status": "met"
+    },
+    {
+      "budget": 0.3,
+      "band": "<40",
+      "nominal_floor": 0.905,
+      "realised": 0.9545454545454546,
+      "ci_lo": 0.7715556023323666,
+      "ci_hi": 0.9988498524734264,
+      "status": "met"
+    },
+    {
+      "budget": 0.3,
+      "band": "40-59",
+      "nominal_floor": 0.905,
+      "realised": 0.85,
+      "ci_lo": 0.7498940677966102,
+      "ci_hi": 0.9661158192090396,
+      "status": "below_point_within_ci"
+    },
+    {
+      "budget": 0.3,
+      "band": "60+",
+      "nominal_floor": 0.905,
+      "realised": 0.9292035398230089,
+      "ci_lo": 0.8749728260869565,
+      "ci_hi": 0.9662746541065645,
+      "status": "met"
+    }
+  ]
+}

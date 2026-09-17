@@ -1,0 +1,44 @@
+{
+  "uncalibrated": {
+    "ece_gap": 0.10892049304406591,
+    "signed_gap_spread": 0.10988421910348745,
+    "accuracy_gap": 0.13964509399612723,
+    "n_groups": 3.0,
+    "groups": [
+      "40-59",
+      "60+",
+      "<40"
+    ],
+    "excluded_groups": [
+      "unknown"
+    ]
+  },
+  "dirichlet_global": {
+    "ece_gap": 0.01499214998012733,
+    "signed_gap_spread": 0.06792282952331818,
+    "accuracy_gap": 0.14538826219438583,
+    "n_groups": 3.0,
+    "groups": [
+      "40-59",
+      "60+",
+      "<40"
+    ],
+    "excluded_groups": [
+      "unknown"
+    ]
+  },
+  "dirichlet_per_band": {
+    "ece_gap": 0.020577848504233817,
+    "signed_gap_spread": 0.008370319058893294,
+    "accuracy_gap": 0.14800255211678415,
+    "n_groups": 3.0,
+    "groups": [
+      "40-59",
+      "60+",
+      "<40"
+    ],
+    "excluded_groups": [
+      "unknown"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "arms": {
+    "A_specialist": "binary L2 logistic, balanced, C=0.001, under-40 training rows only",
+    "B_reweight": "control + sample weight x5.0 under-40 escalating, x3.0 benign rows with H0 escalation mass >= the benign 90% quantile",
+    "C_metadata": "control + sex, anatomic site (one-hot, missing level) and age/100 (median-filled) + age-missing indicator",
+    "H0": "checkpoint layer (results/v4/s58/fit_state.npz `ham`), descriptive only",
+    "control": "7-way L2 logistic, class_weight=balanced, C=0.001, escalation mass"
+  },
+  "cross_fitting": {
+    "aggregation": "mean of the per-repeat out-of-fold scores",
+    "folds": 5,
+    "repeats": [
+      42,
+      43,
+      44
+    ],
+    "splitter": "StratifiedGroupKFold on group_id, strata = (under-40 escalating, escalating)"
+  },
+  "declared_dependence": "ham_val chose the checkpoint epoch; S58's C was selected on V4 val, which is inside the development rows. Both are common to every arm, so they bias levels, not contrasts",
+  "development_rows": {
+    "bcn20000": [
+      "train",
+      "val"
+    ],
+    "ham": [
+      "ham_val"
+    ],
+    "mskcc": [
+      "train",
+      "val"
+    ]
+  },
+  "excluded": "HAM train (in-sample for the trunk); reserved and ham_test never loaded",
+  "features": {
+    "file": "research/v4/features/convnext_tiny_s58_fit.npz",
+    "sha256": "4475dcf403e61d491a18d4eeb6c252ed855fa1fd075c4951586a4c2c9600044e",
+    "trunk": "ml/checkpoints/convnext_tiny_best.HAM-only.pt, bilinear eval transform (S58)"
+  },
+  "no_tuning": "every C, weight and quantile above is fixed here; nothing is selected",
+  "primary": {
+    "gate": "PASS iff delta >= 0.03 and the adjusted interval's lower bound > 0; runbook's 95% interval tightened for three arms",
+    "interval": "lesion-grouped paired bootstrap, 2000 draws, seed 42, percentile at 1 - 0.05/3",
+    "quantity": "under-40 pAUC@0.20 (McClish), arm minus control, development rows",
+    "stage2": "only PASS arms are handed to the user as a GPU fine-tune"
+  },
+  "prior": "low: S51 (foundation models) and S54 (pooled training) left under-40 ranking flat",
+  "question": "does a head objective / data weighting change move under-40 escalation pAUC@0.20 on frozen HAM-only ConvNeXt-Tiny features?",
+  "reported_beside": [
+    "full under-40 AUC",
+    "all-ages pAUC delta (harm watch)",
+    "per-archive under-40 pAUC (descriptive)",
+    "H0 vs control"
+  ],
+  "session": "S67 stage 1"
+}

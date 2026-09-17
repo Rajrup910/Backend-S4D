@@ -1,0 +1,233 @@
+{
+  "colour_fix": {
+    "file": "research/v4/colour.py",
+    "gain": "||e|| / (sqrt(3) * e_c); identity on a neutral image",
+    "sha256": "91dd88728eef364be19a255c43b86403e2eb18a64e757649dbda709ee7c5a267"
+  },
+  "corpus": "ham_only (train 6,981; val = HAM val 1,532)",
+  "estimate_source": "measured minutes/epoch from each rung's S53 run JSON, x1.05",
+  "estimated_hours_by_tier": {
+    "A": 4.17,
+    "B": 4.57,
+    "C": 2.52
+  },
+  "ladder_plan": {
+    "file": "results/v4/recipe_ladder_plan.json",
+    "recipes": "unchanged; composed from the same registry",
+    "sha256": "eff9d79f36f351ffcad05f005aa9a7dccbd1c12a44e4c0ddda8914145039bf5e"
+  },
+  "primary": {
+    "mcid": 0.02,
+    "ni_margin": 0.005,
+    "partial": "a rung is read only with all three seeds of it and of R0 banked; otherwise it is reported as INCOMPLETE",
+    "quantity": "final-epoch HAM val Macro-F1, rung minus R0, paired by seed, mean over seeds with the range",
+    "reading": {
+      "HARM": "mean <= -MCID and every seed delta < 0",
+      "LEVER": "mean >= MCID and every seed delta > 0",
+      "MIXED": "otherwise",
+      "NULL": "|mean| < MCID"
+    },
+    "secondary": "best-epoch val Macro-F1 (optimistic for every arm)"
+  },
+  "reused": {
+    "R1": "results/v4/recipe_runs/R1_ham_only_s42.json (patience never fired: asserted epochs_run == 30)",
+    "R4": "results/v4/recipe_runs/R4_ham_only_s42.json (patience never fired: asserted epochs_run == 30)"
+  },
+  "schedule": [
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 17.3,
+      "run_id": "R0_ham_only_s42_rerun",
+      "rung": "R0",
+      "seed": 42,
+      "tier": "A"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 66.2,
+      "run_id": "R2_ham_only_s42_rerun",
+      "rung": "R2",
+      "seed": 42,
+      "tier": "A"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 17.3,
+      "run_id": "R0_ham_only_s43_rerun",
+      "rung": "R0",
+      "seed": 43,
+      "tier": "A"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 66.2,
+      "run_id": "R2_ham_only_s43_rerun",
+      "rung": "R2",
+      "seed": 43,
+      "tier": "A"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 17.3,
+      "run_id": "R0_ham_only_s44_rerun",
+      "rung": "R0",
+      "seed": 44,
+      "tier": "A"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 66.2,
+      "run_id": "R2_ham_only_s44_rerun",
+      "rung": "R2",
+      "seed": 44,
+      "tier": "A"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 44.1,
+      "run_id": "R6_ham_only_s42_rerun",
+      "rung": "R6",
+      "seed": 42,
+      "tier": "B"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 22.1,
+      "run_id": "R5_ham_only_s42_rerun",
+      "rung": "R5",
+      "seed": 42,
+      "tier": "B"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 25.2,
+      "run_id": "R7_ham_only_s42_rerun",
+      "rung": "R7",
+      "seed": 42,
+      "tier": "B"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 44.1,
+      "run_id": "R6_ham_only_s43_rerun",
+      "rung": "R6",
+      "seed": 43,
+      "tier": "B"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 22.1,
+      "run_id": "R5_ham_only_s43_rerun",
+      "rung": "R5",
+      "seed": 43,
+      "tier": "B"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 25.2,
+      "run_id": "R7_ham_only_s43_rerun",
+      "rung": "R7",
+      "seed": 43,
+      "tier": "B"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 44.1,
+      "run_id": "R6_ham_only_s44_rerun",
+      "rung": "R6",
+      "seed": 44,
+      "tier": "B"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 22.1,
+      "run_id": "R5_ham_only_s44_rerun",
+      "rung": "R5",
+      "seed": 44,
+      "tier": "B"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 25.2,
+      "run_id": "R7_ham_only_s44_rerun",
+      "rung": "R7",
+      "seed": 44,
+      "tier": "B"
+    },
+    {
+      "accum": 2,
+      "batch": 16,
+      "est_minutes": 53.6,
+      "run_id": "R1_ham_only_s43_rerun",
+      "rung": "R1",
+      "seed": 43,
+      "tier": "C"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 22.1,
+      "run_id": "R4_ham_only_s43_rerun",
+      "rung": "R4",
+      "seed": 43,
+      "tier": "C"
+    },
+    {
+      "accum": 2,
+      "batch": 16,
+      "est_minutes": 53.6,
+      "run_id": "R1_ham_only_s44_rerun",
+      "rung": "R1",
+      "seed": 44,
+      "tier": "C"
+    },
+    {
+      "accum": 1,
+      "batch": 32,
+      "est_minutes": 22.1,
+      "run_id": "R4_ham_only_s44_rerun",
+      "rung": "R4",
+      "seed": 44,
+      "tier": "C"
+    }
+  ],
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "session": "S53r",
+  "status": "compute-allocation screen on HAM val, not a test; no reserved or test read; supersedes S53's HAM-only ladder ranking, not S54",
+  "training": {
+    "batch": "32 x 1, except R1 16 x 2 (effective 32), as in S53",
+    "early_stopping_patience": null,
+    "epochs": {
+      "R0": 30,
+      "R1": 30,
+      "R2": 30,
+      "R4": 30,
+      "R5": 30,
+      "R6": 60,
+      "R7": 30
+    },
+    "ledger_session": "v4_s53r",
+    "num_workers": "2, stepping down 2 -> 1 -> 0 only on a failed attempt",
+    "run_tag": "rerun"
+  },
+  "why": "V4 audit: shades_of_grey sqrt(3) over-brightening invalidated R2; patience-8 early stopping truncated R0/R2/R5/R6/R7 at high learning rate"
+}

@@ -1,0 +1,409 @@
+{
+  "session": "v4_s57b",
+  "frozen_at": "2026-09-16T19:46:20.939382+00:00",
+  "git_head": "d8090d76ffc108367415827602559cd85e867eaa",
+  "bootstrap_seed": 42,
+  "question": "does any lambda(age) finer than three bands beat the frozen S5 rule?",
+  "evaluation_surface": {
+    "primary": "manifest_v4 split=reserved (4,733 images, 104 under-40 escalating lesions), deployed V1 ensemble, read once",
+    "ham_test": "not read in S57 (runbook \u00a7S57b)",
+    "probabilities": "S13/S54 frozen deployed-V1 files; no image scored"
+  },
+  "arms": {
+    "A0": {
+      "source": "results/v4/lambda_candidates.json",
+      "kind": "step"
+    },
+    "A1": {
+      "source": "results/v4/lambda_candidates.json",
+      "kind": "step"
+    },
+    "A2": {
+      "source": "results/v4/lambda_candidates.json",
+      "kind": "step"
+    },
+    "A3": {
+      "source": "results/v4/lambda_candidates.json",
+      "kind": "interp"
+    },
+    "A4": {
+      "source": "results/v4/lambda_candidates.json",
+      "kind": "interp"
+    },
+    "A5": {
+      "source": "results/v4/lambda_candidates.json",
+      "kind": "interp"
+    },
+    "A6": {
+      "source": "results/v4/lambda_candidates.json",
+      "kind": "interp"
+    },
+    "A7": {
+      "source": "results/v4/lambda_candidates.json",
+      "kind": "step"
+    }
+  },
+  "candidate_selection": {
+    "primary": "A7",
+    "rule": "among A2-A7, highest cross-fitted under-40 sensitivity; ties -> lower cross-fitted cost",
+    "dev_best": "A3",
+    "confirmatory_family": [
+      "A3",
+      "A7"
+    ],
+    "selected_on": "cross-fitted HAM OOF only -- never a reserved quantity"
+  },
+  "hyperparameters": {
+    "bandwidth": 100.0,
+    "kappa": 0.001,
+    "tau": "inf"
+  },
+  "objective": "expected clinical cost (build_cost_matrix) s.t. escalation specificity >= 0.85 per band",
+  "primary_endpoint": {
+    "quantity": "under-40 escalation sensitivity (image-level), candidate - A1",
+    "interval": "lesion-grouped paired percentile bootstrap, 2000 resamples, seed 42, resampling lesions within the band",
+    "p_value": "two-sided bootstrap p",
+    "multiplicity": "Holm over ['A3', 'A7']"
+  },
+  "secondary_endpoints": [
+    "under-40 missed serious",
+    "overall sensitivity",
+    "overall missed serious",
+    "Macro-F1",
+    "balanced accuracy",
+    "specificity per band",
+    "referral per band",
+    "NNB per band (pi 0.01/0.03/0.05)",
+    "ECE and AURC: unchanged by construction (lambda moves neither the probabilities nor the confidence ranking) -- reported once, not per arm"
+  ],
+  "gates": {
+    "1_under40": {
+      "rule": "delta >= 0.1 AND 95% CI lower bound > 0 AND Holm p < 0.05",
+      "directional": "delta >= 0.1 with CI including 0 (-> PROMISING at most)"
+    },
+    "2_specificity": {
+      "development": "cross-fitted OOF: per-band Clopper-Pearson upper bound >= 0.85",
+      "reserved": "per band, candidate specificity >= A1's - 0.02 (A1 already misses the 0.85 floor on reserved at 40-59, S57a, known before this plan; the floor is not relaxed, it is reported)",
+      "development_result": {
+        "A3": {
+          "per_band": {
+            "<40": {
+              "specificity": 0.8788844621513944,
+              "cp": [
+                0.8595431779340036,
+                0.8964297093793068
+              ],
+              "pass": true
+            },
+            "40-59": {
+              "specificity": 0.8998158379373848,
+              "cp": [
+                0.8879032117354818,
+                0.9108582102319682
+              ],
+              "pass": true
+            },
+            "60+": {
+              "specificity": 0.8499073502161828,
+              "cp": [
+                0.831568204975451,
+                0.8669673968687273
+              ],
+              "pass": true
+            }
+          },
+          "pass": true
+        },
+        "A7": {
+          "per_band": {
+            "<40": {
+              "specificity": 0.9059760956175299,
+              "cp": [
+                0.8884652520811022,
+                0.921556213736912
+              ],
+              "pass": true
+            },
+            "40-59": {
+              "specificity": 0.9075506445672191,
+              "cp": [
+                0.8960269185613584,
+                0.9181866078001236
+              ],
+              "pass": true
+            },
+            "60+": {
+              "specificity": 0.8499073502161828,
+              "cp": [
+                0.831568204975451,
+                0.8669673968687273
+              ],
+              "pass": true
+            }
+          },
+          "pass": true
+        }
+      }
+    },
+    "3_noninferiority": {
+      "rule": "Macro-F1 and balanced accuracy: lower 95% bound of (candidate - A1) > -0.02; 40-59 and 60+ sensitivity point estimate >= A1's Clopper-Pearson lower bound"
+    },
+    "4_referral": {
+      "rule": "per-band delta referral and delta NNB reported; BLOWOUT if under-40 referral(candidate) / referral(A1) > 1.5"
+    },
+    "5_stability": {
+      "rule": {
+        "5a": "mean band width < mean |C - A1|",
+        "5b": "median sign agreement >= 0.8 at knots differing by > 0.01"
+      },
+      "result": {
+        "A3": {
+          "candidate": "A3",
+          "5a_resolution": {
+            "mean_band_width": 0.13447222222222224,
+            "mean_distance_to_A1": 0.19833333333333336,
+            "under40_mean_band_width": 0.09378125000000001,
+            "under40_mean_distance_to_A1": 0.4,
+            "pass": true
+          },
+          "5b_sign_stability": {
+            "knots_compared": [
+              0,
+              5,
+              10,
+              15,
+              20,
+              25,
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70
+            ],
+            "sign_agreement": [
+              0.975,
+              0.975,
+              0.975,
+              0.975,
+              0.9725,
+              0.9725,
+              0.9725,
+              0.9725,
+              0.985,
+              0.985,
+              0.985,
+              0.985,
+              0.62,
+              0.5525,
+              0.495
+            ],
+            "median_sign_agreement": 0.975,
+            "threshold": 0.8,
+            "pass": true
+          },
+          "pass": true
+        },
+        "A7": {
+          "candidate": "A7",
+          "5a_resolution": {
+            "mean_band_width": 0.37151545222472787,
+            "mean_distance_to_A1": 0.09826852245572001,
+            "under40_mean_band_width": 0.38756612336551854,
+            "under40_mean_distance_to_A1": 0.1476116441746947,
+            "pass": false
+          },
+          "5b_sign_stability": {
+            "knots_compared": [
+              0,
+              5,
+              10,
+              15,
+              20,
+              25,
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              70,
+              75,
+              80,
+              85
+            ],
+            "sign_agreement": [
+              0.8975,
+              0.875,
+              0.82,
+              0.7175,
+              0.475,
+              0.7575,
+              0.8825,
+              0.9325,
+              0.855,
+              0.6975,
+              0.7625,
+              0.9375,
+              0.95,
+              0.985,
+              0.91,
+              0.36,
+              0.36
+            ],
+            "median_sign_agreement": 0.855,
+            "threshold": 0.8,
+            "pass": true
+          },
+          "pass": false
+        }
+      }
+    }
+  },
+  "verdict_logic": [
+    "ADOPT: gate 1 passes and gates 2-5 pass (2 on both halves)",
+    "REJECT-cost: gate 1 passes and gate 4 BLOWOUT",
+    "PROMISING: gate 1 directional, gates 2, 3, 5 pass, no BLOWOUT (A1 stays deployed)",
+    "REJECT-unstable: gate 5 fails",
+    "REJECT-flat: otherwise",
+    "overall verdict: the most favourable member verdict in the order ['ADOPT', 'PROMISING', 'REJECT-cost', 'REJECT-unstable', 'REJECT-flat']; every member's verdict is reported"
+  ],
+  "exploratory": {
+    "ablation_steps": [
+      "A0->A1 (age conditioning)",
+      "A1->A2 (5-year resolution)",
+      "A2->A3 (kernel smoothing)",
+      "A2->A6 (spline smoothing)",
+      "A2->A7 (shrinkage)",
+      "A1->A7 (primary candidate vs frozen rule)"
+    ],
+    "arms_not_in_family": [
+      "A0",
+      "A1",
+      "A2",
+      "A4",
+      "A5",
+      "A6"
+    ],
+    "deviance_diagnostic": {
+      "model_steps": "logit P(esc) ~ logit(escalation mass) + 3 band steps",
+      "model_spline": "+ cubic B-spline(age), interior knots (17.0, 34.0, 51.0, 68.0)",
+      "n": 6943,
+      "loglik_steps": -1498.681114392582,
+      "loglik_spline": -1480.8789786252469,
+      "lr_statistic": 35.60427153467026,
+      "df": 7,
+      "p_value": 8.60813824463428e-06,
+      "reading": "tests whether age carries structure beyond three steps; says nothing about whether that structure clears a clinical MCID",
+      "under40_linear_age": {
+        "n": 1319,
+        "n_escalating": 64,
+        "lr_statistic": 16.32130851887439,
+        "df": 1,
+        "p_value": 5.3459423530707654e-05
+      }
+    }
+  },
+  "dev_summary": {
+    "A0": {
+      "crossfit_under40_sens": 0.546875,
+      "crossfit_cost": 0.6155994843145681
+    },
+    "A1": {
+      "crossfit_under40_sens": 0.609375,
+      "crossfit_cost": 0.3980088812491047
+    },
+    "A2": {
+      "crossfit_under40_sens": 0.6875,
+      "crossfit_cost": 0.4308122045552213
+    },
+    "A3": {
+      "crossfit_under40_sens": 0.703125,
+      "crossfit_cost": 0.4058874086807048
+    },
+    "A4": {
+      "crossfit_under40_sens": 0.65625,
+      "crossfit_cost": 0.4383326171035668
+    },
+    "A5": {
+      "crossfit_under40_sens": 0.625,
+      "crossfit_cost": 0.4167024781549921
+    },
+    "A6": {
+      "crossfit_under40_sens": 0.640625,
+      "crossfit_cost": 0.4114740008594757
+    },
+    "A7": {
+      "crossfit_under40_sens": 0.640625,
+      "crossfit_cost": 0.416774101131643
+    }
+  },
+  "freeze_on_adopt": {
+    "file": "results/v4/analysis_plan_s57.json",
+    "curve": "research/agerule/results_oof/lambda_curve.json",
+    "loader": "frozen_params.load_lambda_curve()"
+  },
+  "transport_after_freeze_only": "lambda_transport.py, non-reserved BCN/MSKCC rows, zero-shot",
+  "inputs": {
+    "arm_tables": {
+      "path": "results/v4/lambda_candidates.json",
+      "sha256": "f77b70cd0621ff00d4b6b4d6a200c445dbaf78ae7072cf087d4b37652607d3d4"
+    },
+    "crossfit_audit": {
+      "path": "results/v4/lambda_crossfit_audit.json",
+      "sha256": "94f0200df157ed8fbe70c5a01db4f6cc4050e21336982189ee06ed44643ea4f9"
+    },
+    "crossfit_rows": {
+      "path": "results/v4/s57b/crossfit_rows.csv",
+      "sha256": "931b42ed6ecece26f689f318ccabd343d5de126a0b9db8ee2b28e4d921e404d1"
+    },
+    "ablation_dev": {
+      "path": "results/v4/s57b/ablation_dev.csv",
+      "sha256": "0db5ddb6b281f203f7044e74a49d6d0668196c1fe7960fc861a3a3dd92c3b3c9"
+    },
+    "bootstrap": {
+      "path": "results/v4/lambda_bootstrap.json",
+      "sha256": "650851781598d28fafc1ec6b1b34586a5125d91834d63901fbdff8f6b19df91f"
+    },
+    "bootstrap_draws": {
+      "path": "results/v4/s57b/bootstrap_tables.npz",
+      "sha256": "be010ad450ce54cfa2e8afdfe241e550f77790c15416d2a20bc8b736c47c515e"
+    },
+    "lambda_curve": {
+      "path": "results/v4/lambda_curve.csv",
+      "sha256": "fc33f17c31d8c2067e0dcc3bc58af2661aa98b89bfb34ca625e24f7055ed6ea3"
+    },
+    "frozen_band_lambda": {
+      "path": "research/agerule/results_oof/age_rule_lambda.json",
+      "sha256": "737beac72b84114d4498d078ce21127ad850f5dbcb69f58b3323a32b28e2b84e"
+    },
+    "deployed_dirichlet": {
+      "path": "research/selective/results_oof/fit_state.json",
+      "sha256": "721f7442ce642b747b03865da8582391964bfcb39ebc9b082bba16f4106913b7"
+    },
+    "lambda_rule_py": {
+      "path": "research/agerule/lambda_rule.py",
+      "sha256": "7d1b44becbb65561c59a246325319679decaa05a09de6b6450065823ff6f62f9"
+    },
+    "manifest_v4": {
+      "path": "ml/data/manifest_v4.csv",
+      "sha256": "43be63926df1bb6dbe18d11937f70740ffe610495e12381b2dbfe87ff3f8c2f9"
+    },
+    "v1_bcn20000": {
+      "path": "results/external/predictions/ensemble_dirichlet_bcn20000.csv",
+      "sha256": "ee427b9d762e898d10f6ad6fbca34ae8ecd536dba58f0f5b9e6896534cfa9d31"
+    },
+    "v1_mskcc": {
+      "path": "results/external/predictions/ensemble_dirichlet_mskcc.csv",
+      "sha256": "4f8aaccaeea369e126cc06849896bcda50c8e43381ff491326f69afe063e16e0"
+    },
+    "v1_topup_ensemble_dirichlet_bcn20000": {
+      "path": "results/v4/s54/v1_topup/ensemble_dirichlet_bcn20000.csv",
+      "sha256": "fd8399540c8fe8473716753df2d7f27450e5c07aa918e0122d5e8f9c18f4f4d2"
+    }
+  }
+}

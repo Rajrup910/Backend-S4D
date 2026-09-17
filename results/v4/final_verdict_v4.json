@@ -1,0 +1,230 @@
+{
+  "session": "S63",
+  "generated_at": "2026-09-17T11:59:08+00:00",
+  "test_read": false,
+  "gate": {
+    "rule": "the composed cascade clears its pre-registered per-band floor on the reserved cohort (V4 runbook Sec.6, S63)",
+    "per_band": {
+      "<40": {
+        "value": 0.7634408602150538,
+        "ci": [
+          0.6553672578698116,
+          0.8525933935490912
+        ],
+        "floor": 0.855,
+        "status": "NOT_MET"
+      },
+      "40-59": {
+        "value": 0.7040133779264214,
+        "ci": [
+          0.6312993159839609,
+          0.7709050480138532
+        ],
+        "floor": 0.855,
+        "status": "NOT_MET"
+      },
+      "60+": {
+        "value": 0.6743697478991597,
+        "ci": [
+          0.6383707489449287,
+          0.7129931018050374
+        ],
+        "floor": 0.855,
+        "status": "NOT_MET"
+      }
+    },
+    "cleared": false,
+    "decision": "CLOSED -- no HAM test read; the receipt stays at 2"
+  },
+  "ham_test_receipt": {
+    "path": "results/test_pass_receipt.json",
+    "n_executions": 2,
+    "spent_by_v4": false
+  },
+  "index": {
+    "path": "results/v4/analysis_plan_v4.json",
+    "sha256": "bd320319e1d9fff67980774cc861b4658b4e83f0daa0d59200d888537f521ecf",
+    "registered_sha256": "bd320319e1d9fff67980774cc861b4658b4e83f0daa0d59200d888537f521ecf",
+    "registered_matches": true
+  },
+  "sessions": {
+    "S51": {
+      "verdict": {
+        "contrast": "panderm_vitb16 - convnext_tiny",
+        "delta_pauc": -0.03630093397349232,
+        "ci": [
+          -0.0827509430719189,
+          0.012668963643240059
+        ]
+      },
+      "report": "results/v4/backbone_probe.json"
+    },
+    "S53r": {
+      "verdict": {
+        "R2": "NULL",
+        "R6": "NULL",
+        "R5": "NULL",
+        "R7": "NULL",
+        "R1": "LEVER",
+        "R4": "NULL"
+      },
+      "report": "results/v4/s53r/s53r_report.json"
+    },
+    "S54": {
+      "verdict": 4,
+      "report": "results/v4/s54/s54_gate.json"
+    },
+    "S56": {
+      "verdict": "SUPPORTED",
+      "report": "results/v4/s56/s56_report.json"
+    },
+    "S57b": {
+      "verdict": "REJECT-cost",
+      "report": "results/v4/lambda_verdict.json"
+    },
+    "S58": {
+      "verdict": "SUPPORTED",
+      "report": "results/v4/s58/s58_report.json"
+    },
+    "S59": {
+      "verdict": {
+        "stack": "S56",
+        "contract": "CONTRACT_FAILS"
+      },
+      "report": "results/v4/s59/s59_report.json"
+    },
+    "S64": {
+      "verdict": "oracle_bins is in-sample and optimistic; any dynamic lambda(age) is bounded by it",
+      "report": "results/v4/s64/ceiling.json"
+    },
+    "S65": {
+      "verdict": "REJECT-cost",
+      "report": "results/v4/s65/s65_report.json"
+    },
+    "S66": {
+      "verdict": "REJECT-cost",
+      "report": "results/v4/s66/s66_report.json"
+    },
+    "S67": {
+      "verdict": "STAGE2_NO_GO",
+      "report": "results/v4/s67/probes.json"
+    }
+  },
+  "not_run": {
+    "S57c": "gated on S57b ADOPT; S57b returned REJECT-cost (results/v4/lambda_verdict.json)",
+    "S67 stage 2": "gated on stage 1; stage 1 returned STAGE2_NO_GO (results/v4/s67/probes.json)",
+    "S67 stage 0": "a descriptive reserved read of the V4 ensemble; left to the owner",
+    "S66 V4 arm": "optional in the runbook; needed only if a V4 base were adopted, and none was"
+  },
+  "reserved_reads": {
+    "receipted_sessions": 8,
+    "receipts": {
+      "results/v4/s54/reserved_receipt.json": {
+        "executions": 3,
+        "rerun_reasons": []
+      },
+      "results/v4/s56/reserved_receipt.json": {
+        "executions": 1,
+        "rerun_reasons": []
+      },
+      "results/v4/s57a/reserved_audit_receipt.json": {
+        "executions": 1,
+        "rerun_reasons": []
+      },
+      "results/v4/s57b/reserved_receipt.json": {
+        "executions": 1,
+        "rerun_reasons": []
+      },
+      "results/v4/s58/reserved_receipt.json": {
+        "executions": 1,
+        "rerun_reasons": []
+      },
+      "results/v4/s59/reserved_receipt.json": {
+        "executions": 1,
+        "rerun_reasons": []
+      },
+      "results/v4/s65/reserved_receipt.json": {
+        "executions": 1,
+        "rerun_reasons": []
+      },
+      "results/v4/s66/reserved_receipt.json": {
+        "executions": 1,
+        "rerun_reasons": []
+      }
+    },
+    "unreceipted": [
+      "S51 backbone probe (cross-fitted on reserved labels, predates receipts)"
+    ],
+    "note": "results/v4/analysis_plan_v4.json records reserved_reads=7 because it counts only the sessions it indexes; S57a's specificity-only audit read is the eighth"
+  },
+  "decision_layer": {
+    "deployed_stack": "S56",
+    "deployed_arm": "S56@0.2",
+    "base": "v1",
+    "contract_on_reserved": "CONTRACT_FAILS",
+    "term_status": {
+      "sensitivity[<40]": "NOT_MET",
+      "sensitivity[40-59]": "NOT_MET",
+      "sensitivity[60+]": "NOT_MET",
+      "retained_macro_f1[ALL]": "NOT_MET",
+      "referral_rate[ALL]": "NOT_MET",
+      "nnb_pi0.03[ALL]": "NOT_MET"
+    },
+    "referral_rate": 0.3858018170293683,
+    "selective_coverage": 0.6141981829706318,
+    "selective_coverage_definition": "1 - referral rate (share decided without referral); not a joint bootstrap pass rate"
+  },
+  "finding": "The under-40 blind spot is a ranking limit of dermoscopy models trained on these archives. Decision layers move referrals between age bands and do not create sensitivity at equal workload. The deployed stack (V1 + S56 per-band abstention) fails its contract on the reserved cohort, so V4 closes without a HAM test read.",
+  "open_decisions": [
+    {
+      "decision": "a V4 base for the deployed stack",
+      "why": "V4 pooled models beat V1 by about +0.18 Macro-F1 on reserved (S54 Gate A, confounded), but S56's thresholds need cross-fitted OOF predictions, which no V4 model has",
+      "cost": "GPU K-fold training plus a new pre-registered plan",
+      "evidence": [
+        "results/v4/s54/s54_contrasts.csv",
+        "results/v4/s59_plan.json"
+      ]
+    },
+    {
+      "decision": "target-side threshold recalibration",
+      "why": "HAM-fitted budgets and floors do not transfer (S56: 0 of 15 floor cells met; nominal 20% budget realises about 39%)",
+      "cost": "CPU; BCN/MSKCC V4 train rows scored by V1 already exist (S66's fitting data)",
+      "evidence": [
+        "results/v4/s56/s56_report.json",
+        "results/v4/s66/lambda_by_centre.json"
+      ]
+    },
+    {
+      "decision": "a smartphone admissibility gate that works",
+      "why": "S58's pooled Mahalanobis gate rejects only 0.378 of PAD-UFES-20 and rejects escalating lesions more often",
+      "cost": "CPU; fit on HAM only (S8b AUROC 0.913) or a modality classifier",
+      "evidence": [
+        "results/v4/s58/s58_report.json"
+      ]
+    },
+    {
+      "decision": "more under-40 escalating data",
+      "why": "every representation, training, head and decision lever left under-40 ranking flat (S51, S54, S58, S64, S67)",
+      "cost": "data acquisition, not compute",
+      "evidence": [
+        "results/v4/s64/ceiling.json",
+        "results/v4/s67/probes.json"
+      ]
+    }
+  ],
+  "sources": [
+    "results/test_pass_receipt.json",
+    "results/v4/analysis_plan_v4.json",
+    "results/v4/backbone_probe.json",
+    "results/v4/lambda_verdict.json",
+    "results/v4/s53r/s53r_report.json",
+    "results/v4/s54/s54_gate.json",
+    "results/v4/s56/s56_report.json",
+    "results/v4/s58/s58_report.json",
+    "results/v4/s59/s59_report.json",
+    "results/v4/s64/ceiling.json",
+    "results/v4/s65/s65_report.json",
+    "results/v4/s66/s66_report.json",
+    "results/v4/s67/probes.json"
+  ]
+}

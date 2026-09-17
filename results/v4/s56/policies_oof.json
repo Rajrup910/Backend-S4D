@@ -1,0 +1,147 @@
+{
+  "band_0.1": {
+    "arm": "band",
+    "score": "msp",
+    "budget": 0.1,
+    "floor": 0.755,
+    "tau_band": {
+      "<40": 0.11195316590862914,
+      "40-59": 0.33746823826605044,
+      "60+": 0.5602639656950874
+    },
+    "tau_global": 0.5255812051114077,
+    "fit_counts": {
+      "<40": 312,
+      "40-59": 276,
+      "60+": 75,
+      "global_topup": 35
+    }
+  },
+  "global_0.1": {
+    "arm": "global",
+    "score": "msp",
+    "budget": 0.1,
+    "floor": null,
+    "tau_band": {},
+    "tau_global": 0.38684667778657467,
+    "fit_counts": {
+      "ALL": 698
+    }
+  },
+  "band_0.15": {
+    "arm": "band",
+    "score": "msp",
+    "budget": 0.15,
+    "floor": 0.81,
+    "tau_band": {
+      "<40": 0.09642849734702785,
+      "40-59": 0.2763821998801379,
+      "60+": 0.4292930659374785
+    },
+    "tau_global": 0.42214507690510017,
+    "fit_counts": {
+      "<40": 343,
+      "40-59": 359,
+      "60+": 322,
+      "global_topup": 23
+    }
+  },
+  "global_0.15": {
+    "arm": "global",
+    "score": "msp",
+    "budget": 0.15,
+    "floor": null,
+    "tau_band": {},
+    "tau_global": 0.30010204819107544,
+    "fit_counts": {
+      "ALL": 1047
+    }
+  },
+  "band_0.2": {
+    "arm": "band",
+    "score": "msp",
+    "budget": 0.2,
+    "floor": 0.855,
+    "tau_band": {
+      "<40": 0.07148993334109954,
+      "40-59": 0.20535960718218416,
+      "60+": 0.34395075797674346
+    },
+    "tau_global": 0.37250286262959076,
+    "fit_counts": {
+      "<40": 418,
+      "40-59": 478,
+      "60+": 498,
+      "global_topup": 2
+    }
+  },
+  "global_0.2": {
+    "arm": "global",
+    "score": "msp",
+    "budget": 0.2,
+    "floor": null,
+    "tau_band": {},
+    "tau_global": 0.22936677560333996,
+    "fit_counts": {
+      "ALL": 1396
+    }
+  },
+  "band_0.25": {
+    "arm": "band",
+    "score": "msp",
+    "budget": 0.25,
+    "floor": 0.88,
+    "tau_band": {
+      "<40": 0.052164898407408566,
+      "40-59": 0.1669438424306624,
+      "60+": 0.28293922328863796
+    },
+    "tau_global": 0.279070364020791,
+    "fit_counts": {
+      "<40": 526,
+      "40-59": 562,
+      "60+": 643,
+      "global_topup": 14
+    }
+  },
+  "global_0.25": {
+    "arm": "global",
+    "score": "msp",
+    "budget": 0.25,
+    "floor": null,
+    "tau_band": {},
+    "tau_global": 0.16884768066888955,
+    "fit_counts": {
+      "ALL": 1745
+    }
+  },
+  "band_0.3": {
+    "arm": "band",
+    "score": "msp",
+    "budget": 0.3,
+    "floor": 0.905,
+    "tau_band": {
+      "<40": 0.04493420243623669,
+      "40-59": 0.11866029651417276,
+      "60+": 0.22727022114159623
+    },
+    "tau_global": 0.2150284319340633,
+    "fit_counts": {
+      "<40": 588,
+      "40-59": 675,
+      "60+": 787,
+      "global_topup": 44
+    }
+  },
+  "global_0.3": {
+    "arm": "global",
+    "score": "msp",
+    "budget": 0.3,
+    "floor": null,
+    "tau_band": {},
+    "tau_global": 0.12064679216820706,
+    "fit_counts": {
+      "ALL": 2094
+    }
+  }
+}

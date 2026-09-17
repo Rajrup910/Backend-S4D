@@ -725,6 +725,15 @@ def _selftest() -> int:
               tuple(tensor.shape) == (3, size, size) == tuple(evaluated.shape), str(tensor.shape))
     check("5.c colour constancy changes pixels and identity does not",
           not np.array_equal(np.asarray(ColourConstancy()(image)), np.asarray(image)))
+    grey = Image.fromarray(np.full((32, 32, 3), 150, dtype=np.uint8))
+    tinted = Image.fromarray(np.stack([np.full((32, 32), 180), np.full((32, 32), 150),
+                                       np.full((32, 32), 120)], axis=-1).astype(np.uint8))
+    out_tinted = np.asarray(ColourConstancy()(tinted), dtype=float)
+    check("5.c2 colour constancy is the identity on a neutral image (the V4 audit's sqrt(3) bug)",
+          np.abs(np.asarray(ColourConstancy()(grey), dtype=float) - 150).max() <= 1)
+    check("5.c3 colour constancy neutralises a tint without saturating",
+          np.ptp(out_tinted.mean(axis=(0, 1))) <= 2 and out_tinted.max() < 255,
+          f"channel means {out_tinted.mean(axis=(0, 1)).round(1)}")
 
     labels = [0] * 100 + [1] * 5
     generator = torch.Generator().manual_seed(0)

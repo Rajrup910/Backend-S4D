@@ -1,0 +1,20 @@
+{
+  "cohort": "manifest_v4 split=reserved (S66 per-centre lambda)",
+  "plan": "results/v4/s66_plan.json",
+  "plan_sha256": "caf910c5a71962dd70753fb4e1f39adfe7e37a040c88aae878f819e2ed1d4616",
+  "executions": [
+    {
+      "execution": 1,
+      "status": "completed",
+      "started_at": "2026-09-16T20:45:55.771581+00:00",
+      "rerun_reason": null,
+      "git_head": "d8090d76ffc108367415827602559cd85e867eaa",
+      "completed_at": "2026-09-16T20:47:27.847122+00:00",
+      "verdict": "REJECT-cost",
+      "items": {
+        "results/v4/s66/s66_report.json": "5994f787c62c7209b51cfa6c2def24a6a207ba9910d844e5e3ef4d6791237a11",
+        "results/v4/s66/reserved_arms.csv": "7cb557805aefb65dcf1a789c76289e8a82062161ed2a354b1b351a97db98df02"
+      }
+    }
+  ]
+}

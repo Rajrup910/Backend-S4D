@@ -1,0 +1,20 @@
+{
+  "cohort": "manifest_v4 split=reserved (S57a audit item 2)",
+  "declared_quantities": [
+    "escalation specificity per band, A0 and A1"
+  ],
+  "lambda_sha256": "737beac72b84114d4498d078ce21127ad850f5dbcb69f58b3323a32b28e2b84e",
+  "executions": [
+    {
+      "execution": 1,
+      "status": "completed",
+      "started_at": "2026-09-16T16:46:48.015211+00:00",
+      "rerun_reason": null,
+      "git_head": "d8090d76ffc108367415827602559cd85e867eaa",
+      "completed_at": "2026-09-16T16:46:48.192823+00:00",
+      "items": {
+        "results/v4/s57a/reserved_audit.json": "ad1c812c703616debece3c4913a1651b991d9576cdf0d2330e57dcca3e2e94e2"
+      }
+    }
+  ]
+}

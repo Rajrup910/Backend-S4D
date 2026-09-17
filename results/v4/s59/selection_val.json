@@ -1,0 +1,76 @@
+{
+  "base": "v1",
+  "conformal": {
+    "k_reg": 1,
+    "penalty": 0.05,
+    "reproduced_cells": 8
+  },
+  "contract_terms": {
+    "deployed_arm": "S56@0.2",
+    "floor_S": 0.855,
+    "frr_F": 0.14500000000000002,
+    "nnb_pi003_N": 7.921812506096966,
+    "nominal_budget_R": 0.2,
+    "referral_tolerance": 0.05,
+    "retained_macro_f1_M": 0.8882415376504612,
+    "val_realised_referral": 0.20496083550913838
+  },
+  "decisions": {
+    "conformal_layer": {
+      "adopted": false,
+      "arm": "S56_CONF@0.2",
+      "comparator": "S56_matched_CONF@0.83",
+      "delta_val_all": -0.0032467532467532756,
+      "margin": 0.01
+    },
+    "lambda_layer": {
+      "adopted": false,
+      "casc": "CASC@0.15",
+      "comparator": "S56_matched_CASC@0.235",
+      "delta_val_all": 0.0032467532467532756,
+      "descriptive_delta_val_u40": 0.0,
+      "margin": 0.01
+    }
+  },
+  "matching": {
+    "CASC_matched_CONF": {
+      "budget": 0.83,
+      "oof_flag_rate_target": 0.8548918493052571,
+      "source": "CASC_CONF@0.15"
+    },
+    "S56_matched_CASC": {
+      "budget": 0.235,
+      "oof_flag_rate_target": 0.32516831399512963,
+      "source": "CASC@0.15"
+    },
+    "S56_matched_CONF": {
+      "budget": 0.83,
+      "oof_flag_rate_target": 0.8540323735854463,
+      "source": "S56_CONF@0.2"
+    }
+  },
+  "oof_floors": {
+    "CASC": {
+      "0.1": 0.835,
+      "0.15": 0.87,
+      "0.2": 0.89,
+      "0.25": 0.89,
+      "0.3": 0.905
+    },
+    "S56": {
+      "0.1": 0.755,
+      "0.15": 0.81,
+      "0.2": 0.855,
+      "0.25": 0.88,
+      "0.3": 0.905
+    }
+  },
+  "operating_budget": {
+    "CASC": 0.15,
+    "S56": 0.2
+  },
+  "rule": "The rule, declared before val is scored (and restated in the plan):\n\n    1. Operating budget per stack: the smallest R in BUDGETS whose OOF nominal floor S* is\n       >= TARGET_FLOOR (0.85); 0.20 if none reaches it.\n    2. Lambda layer: stack ``CASC`` (lambda + abstention at its R0) is adopted over ``S56``\n       only if its **val all-ages** system sensitivity exceeds ``S56_matched_CASC`` (S56 at the\n       budget matching CASC's OOF flag rate) by >= STACK_MARGIN. Otherwise ``S56`` -- one layer\n       fewer. All-ages because val has 22 under-40 escalating images (S48 bars decisions on\n       <= 25 positives); the under-40 value is reported, and decides nothing.\n    3. Conformal layer: for the chosen stack, ``+CONF`` at R0 is adopted only if its val\n       all-ages system sensitivity exceeds ``{stack}_matched_CONF`` by >= STACK_MARGIN.\n       Otherwise conformal sets are an output field only (the S60 payload), not a decision layer.\n    4. Contract terms are issued from HAM: S* from the OOF fit, M and N from val.",
+  "score": "msp",
+  "stack": "S56",
+  "val_frontier_rows": 125
+}

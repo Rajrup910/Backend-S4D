@@ -1,0 +1,23 @@
+{
+  "cohort": "manifest_v4 split=reserved (S59)",
+  "executions": [
+    {
+      "completed_at": "2026-09-17T11:19:10.784800+00:00",
+      "execution": 1,
+      "git_head": "d8090d76ffc108367415827602559cd85e867eaa",
+      "items": {
+        "results/v4/s59/contrasts_reserved.csv": "9a68e28043c9df17a308df0c3152aeb5863ed1e9fd307a26851756a8b2e7c22b",
+        "results/v4/s59/frontier_reserved.csv": "44efeb774162fc0b19e32b523838c6383bb1315744269f2a12e6046a3bec0460",
+        "results/v4/s59/s59_report.json": "28b6583afa1feb2139246048c8e6b27fca6046c4892925ff958df9c0ff08e250"
+      },
+      "rerun_reason": null,
+      "started_at": "2026-09-17T11:18:06.936709+00:00",
+      "status": "completed",
+      "summary": {
+        "deployed_arm": "S56@0.2",
+        "joint": "CONTRACT_FAILS"
+      }
+    }
+  ],
+  "plan_sha256": "e7ebc3f59402f0e9406143ad83339f9a06f516e476eee55026a14e3f03b4538f"
+}

@@ -96,6 +96,15 @@ LABEL_SMOOTHING = 0.05
 GRAD_CLIP = 5.0
 EFFECTIVE_NUMBER_BETA = 0.999
 EARLY_STOPPING_PATIENCE = 8
+#: Ledger session and frozen plan for the S53 re-run the V4 audit ordered (colour fix, no early stop).
+RERUN_SESSION = "v4_s53r"
+RERUN_PLAN = REPO_ROOT / "results" / "v4" / "s53r_plan.json"
+
+
+def rerun_plan_sha256() -> str | None:
+    import hashlib
+
+    return hashlib.sha256(RERUN_PLAN.read_bytes()).hexdigest() if RERUN_PLAN.is_file() else None
 
 #: Refuse to start, or to continue, below these. On 2026-09-16 the disk reached 0.25 GB free; the
 #: auto-managed pagefile could not grow, the system commit limit pinned, and a dataloader worker
@@ -344,6 +353,9 @@ def run(args: argparse.Namespace) -> int:
     set_seed(args.seed, deterministic=False)
 
     run_id = f"{'+'.join(args.rungs)}_{args.corpus}_s{args.seed}"
+    if args.run_tag:
+        run_id = f"{run_id}_{args.run_tag}"
+    patience = args.patience if args.patience > 0 else None
     tag = f"v4_{run_id}"
     print(f"=== {run_id} ===")
     print(f"plan sha256 {plan_sha256() or 'NOT FROZEN -- run recipe.py --freeze-plan first'}")
@@ -481,18 +493,22 @@ def run(args: argparse.Namespace) -> int:
             print(f"        new best macro_f1={best_value:.4f}")
         else:
             stale += 1
-            if stale >= EARLY_STOPPING_PATIENCE:
+            if patience is not None and stale >= patience:
                 print(f"\nEarly stopping: no improvement for {stale} epochs.")
                 break
 
     elapsed = time.time() - started
     final = history[-1]
     summary: dict[str, Any] = {
-        "run_id": run_id, "session": RUN_SESSION, "rungs": args.rungs, "corpus": args.corpus,
+        "run_id": run_id, "session": RERUN_SESSION if args.run_tag else RUN_SESSION,
+        "rungs": args.rungs, "corpus": args.corpus,
         "seed": args.seed, "arch": ARCH, "model_kind": model_kind, "recipe": asdict(recipe),
         "batch_size": args.batch_size, "grad_accum": args.grad_accum,
         "effective_batch": args.batch_size * args.grad_accum,
         "num_workers": args.num_workers,
+        "run_tag": args.run_tag or None,
+        "early_stopping_patience": patience,
+        "rerun_plan_sha256": rerun_plan_sha256() if args.run_tag else None,
         "epochs_run": len(history),
         "best_val_macro_f1": best_value, "best_epoch": best_epoch,
         "final_val_macro_f1": final["val_macro_f1"],
@@ -569,16 +585,19 @@ def write_ledger(summary: dict[str, Any]) -> None:
     S20 recorded the hazard twice: a runner with no prune step appends a duplicate row set on
     every re-run, and when the values have moved the duplicates conflict rather than merely
     repeat. `eval_age_rule_transfer.py` was the only runner that pruned; this one does too.
+
+    Every metric column comes from the best epoch, the one `_best.pt` holds. Until S54 the row paired
+    best-epoch Macro-F1 with final-epoch accuracy/sensitivity/missed -- two checkpoints in one row.
     """
-    final = summary["history"][-1]
+    best = summary["history"][summary["best_epoch"] - 1]
     row = {
         "timestamp": pd.Timestamp.now(tz="UTC").isoformat(),
-        "session": RUN_SESSION, "method": summary["run_id"], "split": summary["corpus"],
-        "macro_f1": summary["best_val_macro_f1"],
-        "accuracy": final["val_accuracy"],
-        "balanced_accuracy": summary["final_val_balanced_accuracy"],
-        "escalation_sens": summary["final_val_escalation_sensitivity"],
-        "missed_serious": final["val_missed_serious"],
+        "session": summary["session"], "method": summary["run_id"], "split": summary["corpus"],
+        "macro_f1": best["val_macro_f1"],
+        "accuracy": best["val_accuracy"],
+        "balanced_accuracy": best["val_balanced_accuracy"],
+        "escalation_sens": best["val_escalation_sensitivity"],
+        "missed_serious": best["val_missed_serious"],
         # The runbook is emphatic that batch size is logged for every run: it changes the effective
         # LR schedule, and S44's whole finding was that unrecorded run-to-run variance swamped the
         # effect being measured.
@@ -588,13 +607,15 @@ def write_ledger(summary: dict[str, Any]) -> None:
                   f"num_workers={summary.get('num_workers', '?')} "
                   f"image_size={summary['recipe']['image_size']} "
                   f"epochs_run={summary['epochs_run']} best_epoch={summary['best_epoch']} "
-                  f"minutes={summary['train_time_seconds'] / 60:.1f} "
+                  f"patience={summary.get('early_stopping_patience', EARLY_STOPPING_PATIENCE)} "
+                  f"final_macro_f1={summary['final_val_macro_f1']:.4f} "
+                  f"metrics_epoch=best minutes={summary['train_time_seconds'] / 60:.1f} "
                   f"plan={str(summary['plan_sha256'])[:16]}"),
     }
     frame = pd.DataFrame([row])
     if LEDGER_PATH.is_file():
         old = pd.read_csv(LEDGER_PATH, low_memory=False)
-        kept = old[~((old["session"] == RUN_SESSION) & (old["method"] == row["method"]))]
+        kept = old[~((old["session"] == row["session"]) & (old["method"] == row["method"]))]
         print(f"ledger: pruned {len(old) - len(kept)} prior rows for {row['method']}")
         frame = pd.concat([kept, frame], ignore_index=True)
     frame.to_csv(LEDGER_PATH, index=False)
@@ -621,6 +642,13 @@ def main(argv: list[str] | None = None) -> int:
                              "would confound the resolution rung with a batch-size change.")
     parser.add_argument("--num-workers", type=int, default=2)
     parser.add_argument("--device", default="auto")
+    parser.add_argument("--patience", type=int, default=EARLY_STOPPING_PATIENCE,
+                        help="early-stopping patience in epochs; 0 disables it. The V4 audit found "
+                             "patience 8 stopping cosine runs at high LR (R6 at 19 of 60), so the "
+                             "S53 re-run trains every arm to the end of its schedule.")
+    parser.add_argument("--run-tag", default="",
+                        help="suffix for run id, checkpoints, run JSON and ledger method, so a "
+                             "re-run never overwrites the run it repeats (S53 re-run: 'rerun')")
     parser.add_argument("--smoke", action="store_true",
                         help="two batches, one epoch, no checkpoint, no ledger row -- proves the "
                              "arm constructs and steps before an overnight is spent on it")

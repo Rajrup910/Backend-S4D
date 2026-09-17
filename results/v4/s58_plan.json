@@ -1,0 +1,99 @@
+{
+  "arms": {
+    "D1_routed_mskcc3": "H2 with the 3-class MSKCC head -- descriptive, not deployable (label space is an archive-curation artifact)",
+    "H0_ham_head": "checkpoint final layer (control)",
+    "H1_pooled_head": "one head on all train rows",
+    "H2_routed": "router -> domain head (the system)",
+    "H3_oracle_routed": "H2 heads, true archive (diagnostic: router cost H3 - H2)"
+  },
+  "components": {
+    "c_grid": [
+      0.0001,
+      0.0003,
+      0.001,
+      0.003,
+      0.01,
+      0.03,
+      0.1,
+      0.3,
+      1.0,
+      3.0
+    ],
+    "eligibility": "own head only if every class has >= 20 train images in the domain, else the pooled head",
+    "gate": "research.selective.mahalanobis (tied, Ledoit-Wolf), 7 classes, fit on train; threshold = held-out in-scope 0.95 quantile",
+    "heads": "L2 multinomial logistic, standardised, balanced, C by held-out Macro-F1 of the head's own domain (pooled: all held-out rows); HAM = checkpoint layer",
+    "router": "L2 multinomial logistic over (ham, bcn20000, mskcc), balanced, C by held-out log loss"
+  },
+  "design_rule": "stage 3 = H2 if (H2 - H1 Macro-F1) >= 0 and its CI lower > -0.005; otherwise stage 3 = H1 and the router is a provenance / drift signal only",
+  "deviations": [
+    "runbook lists head training as a GPU step; the heads are logistic regressions on cached features and are fit on CPU -- same model class, exact solver",
+    "HAM train features are in-sample for the trunk; they enter the pooled head and the gate fit",
+    "MSKCC routes to the pooled head (eligibility rule); its own 3-class head is D1 only"
+  ],
+  "eligible_domains": {
+    "bcn20000": true,
+    "ham": true,
+    "mskcc": false
+  },
+  "evaluation": "manifest_v4 split=reserved (4,733 images, 0 HAM, 104 under-40 escalating lesions); features re-extracted with the deployed transform; read once, receipt results/v4/s58/reserved_receipt.json",
+  "fit_split": "manifest_v4 split=train (HAM 6,981 in-sample for the trunk; BCN 6,704 and MSKCC 1,609 out-of-sample)",
+  "fit_state": {
+    "results/v4/s58/fit_state.npz": "8be3745906af0972b179fe0d5b5e4586c0627fb92dfe280fe41e7ced82b1f9f9"
+  },
+  "holm_family": [
+    "macro_f1 H2 - H0 (all reserved)",
+    "escalation-mass pAUC@0.2 McClish H2 - H0 (<40 rows, bootstrap over that band's groups -- S51/S54 convention)"
+  ],
+  "inputs": {
+    "ml/checkpoints/convnext_tiny_best.HAM-only.pt": "d872d8687a83f7a1c486b50e682c44139dd66a4646b7ebc6ee9e86be8656b453",
+    "ml/data/manifest_v4.csv": "43be63926df1bb6dbe18d11937f70740ffe610495e12381b2dbfe87ff3f8c2f9",
+    "research/v4/features/convnext_tiny_s58_fit.npz": "4475dcf403e61d491a18d4eeb6c252ed855fa1fd075c4951586a4c2c9600044e",
+    "research/v4/features/convnext_tiny_s58_pad.npz": "4ab324a6dfaae1f6197eedcaf60581ce89f76683523480d4d0d2496d8122cf68",
+    "research/v4/features/convnext_tiny_s58_reserved.npz": "2091297ec04ed18209e75bffcc955962f32ad853f28157807e654343a607bd8d"
+  },
+  "not_done": [
+    "no HAM test read",
+    "no trunk weight updated",
+    "no calibration, lambda or abstention: S59 composes those"
+  ],
+  "ood_probe": "PAD-UFES-20, all 2,106 images, same transform (not sealed; S8b scored it)",
+  "p_value": "two-sided bootstrap: min(1, 2 * min((#d<=0)+1, (#d>=0)+1) / (B+1))",
+  "primary_endpoint": {
+    "interval": "lesion-grouped (group_id) paired percentile bootstrap, 2000 draws, seed 42",
+    "mcid": 0.02,
+    "outcomes": {
+      "HARM": "CI upper < 0",
+      "NOT_RESOLVED": "CI contains 0",
+      "POSITIVE_BELOW_MCID": "CI lower > 0 and delta < MCID",
+      "SUPPORTED": "delta >= MCID and CI lower > 0"
+    },
+    "quantity": "reserved 7-class Macro-F1, H2 - H0"
+  },
+  "references_descriptive": [
+    "deployed V1 ensemble (S54 frozen reserved probabilities)",
+    "V4 pooled control R0 seeds 42/43/44 _last (S54 predictions)"
+  ],
+  "selected": {
+    "head_bcn20000": 0.003,
+    "head_mskcc": 0.001,
+    "pooled": 0.001,
+    "router": 0.01
+  },
+  "selection_file": {
+    "results/v4/s58/selection_val.json": "b826bcaa83154e61ff6962a8e95ff8096952102b7596ee7233848888edff16ba"
+  },
+  "selection_split": "manifest_v4 split in {val, ham_val} (BCN 1,853, MSKCC 417, HAM 1,532)",
+  "session": "S58",
+  "stage_reports": [
+    "gate: reserved false-reject rate (overall, escalating, per band), PAD reject rate, AUROC reserved-vs-PAD and ham_val-vs-PAD",
+    "router: reserved accuracy overall / per archive / within nv and mel",
+    "head: marginals per arm, per archive, per band; H2 - H0 on the gate-accepted subset (descriptive)"
+  ],
+  "stage_targets": {
+    "gate_pad_reject_min": 0.8,
+    "gate_reserved_false_reject_max": 0.1,
+    "router_reserved_accuracy_min": 0.95
+  },
+  "title": "Domain router + domain-matched head (three-stage front end)",
+  "trunk": "ml/checkpoints/convnext_tiny_best.HAM-only.pt frozen, penultimate features, 224 px, 1 view, deployed eval transform (bilinear 256 -> crop 224)"
+}

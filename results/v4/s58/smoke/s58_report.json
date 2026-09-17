@@ -1,0 +1,61 @@
+{
+  "session": "S58",
+  "smoke": true,
+  "test_read": false,
+  "meta": {
+    "smoke": true
+  },
+  "plan_sha256": null,
+  "n_boot": 100,
+  "gate": {
+    "threshold": 5254.162960430823,
+    "reserved_false_reject": 0.0703125,
+    "pad_reject": 0.34375,
+    "pad_n": 64,
+    "auroc_reserved_vs_pad": 0.8292236328125
+  },
+  "router": {
+    "accuracy": 0.7109375,
+    "per_archive": {
+      "bcn20000": 0.828125,
+      "mskcc": 0.59375
+    },
+    "within_class": {
+      "nv": 0.6714285714285714,
+      "mel": 0.6756756756756757
+    },
+    "confusion": {
+      "ham": {
+        "bcn20000": 3,
+        "mskcc": 24
+      },
+      "bcn20000": {
+        "bcn20000": 53,
+        "mskcc": 2
+      },
+      "mskcc": {
+        "bcn20000": 8,
+        "mskcc": 38
+      }
+    }
+  },
+  "verdict": {
+    "primary": {
+      "delta": -0.002870771515178283,
+      "ci": [
+        -0.10787321025200095,
+        0.15819472340148824
+      ],
+      "p_holm": 1.0,
+      "outcome": "NOT_RESOLVED"
+    },
+    "stage3": "H1_pooled_head",
+    "router_role": "provenance / drift signal only",
+    "stage_checks": {
+      "gate_reserved_false_reject": true,
+      "gate_pad_reject": false,
+      "router_accuracy": false
+    }
+  },
+  "generated_at": "2026-09-16T20:06:25.321278+00:00"
+}

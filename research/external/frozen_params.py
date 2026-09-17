@@ -167,6 +167,57 @@ def calibrate(probs: np.ndarray, state: CalibrationState | None = None) -> np.nd
     return apply_calibration(state, np.log(np.clip(probs, EPS, None)))
 
 
+#: S55's per-age-band Dirichlet maps (multicalibration). Closes the sign-flip the global map
+#: leaves behind (<40 stays under-confident, 60+ over-confident after `load_dirichlet()`) --
+#: see `research/multical/results_oof/session55_report.md`. Not yet the default calibrator for
+#: any published number; a later session opts in explicitly by calling `calibrate_by_band`.
+GROUP_DIRICHLET_STATE = "research/multical/results_oof/fit_state.json"
+
+
+def load_group_dirichlet(
+    path: str = GROUP_DIRICHLET_STATE,
+) -> tuple[dict[str, CalibrationState], CalibrationState]:
+    """Per-band Dirichlet states plus the global map any under-powered band falls back to.
+
+    Returns ``(states_by_band, global_fallback)``. A band absent from `states_by_band` -- or
+    present with no fitted map -- must use `global_fallback`; `calibrate_by_band` does this.
+    """
+    payload = json.loads(resolve(path).read_text(encoding="utf-8"))
+    states: dict[str, CalibrationState] = {}
+    for band, entry in payload["by_band"].items():
+        if not entry["fitted"]:
+            continue
+        states[band] = CalibrationState(
+            method="dirichlet",
+            weight=np.asarray(entry["state"]["weight"], dtype=np.float64),
+            bias=np.asarray(entry["state"]["bias"], dtype=np.float64),
+            temperature=float("nan"),
+        )
+    fallback = load_dirichlet()  # payload["global_fallback_source"] == DIRICHLET_STATE
+    return states, fallback
+
+
+def calibrate_by_band(
+    probs: np.ndarray,
+    bands: np.ndarray,
+    states: dict[str, CalibrationState] | None = None,
+    fallback: CalibrationState | None = None,
+) -> np.ndarray:
+    """Apply the S55 per-band maps, falling back to the global map for an unfitted band."""
+    if states is None or fallback is None:
+        loaded_states, loaded_fallback = load_group_dirichlet()
+        states = loaded_states if states is None else states
+        fallback = loaded_fallback if fallback is None else fallback
+    bands = np.asarray(bands).astype(str)
+    log_probs = np.log(np.clip(probs, EPS, None))
+    out = np.empty_like(probs)
+    for band in np.unique(bands):
+        mask = bands == band
+        state = states.get(band, fallback)
+        out[mask] = apply_calibration(state, log_probs[mask])
+    return out
+
+
 # ------------------------------------------------------------------------- HAM panels
 class HamPanel:
     """One in-distribution HAM panel: calibrated ensemble probabilities plus its metadata."""

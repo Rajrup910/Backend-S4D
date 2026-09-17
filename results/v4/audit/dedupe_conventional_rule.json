@@ -1,0 +1,32 @@
+{
+  "source": "research.v4.dedupe cache (chance_rate seed 0), readable images",
+  "n_images": 27629,
+  "rules": {
+    "either_within_3": {
+      "pairs_dhash": 27787,
+      "pairs_phash": 459,
+      "pairs_either": 28023,
+      "chance_rate_dhash": 7.750387519375969e-05,
+      "chance_rate_phash": 7.500375018750938e-06,
+      "expected_dhash": 29580.67199859993,
+      "expected_phash": 2862.645677283864,
+      "expected_either": 29580.67199859993,
+      "enrichment_either_over_chance": 0.9473415614535852,
+      "largest_component": 3307,
+      "largest_component_share": 0.11969307611567556
+    },
+    "either_within_6": {
+      "pairs_dhash": 360363,
+      "pairs_phash": 7909,
+      "pairs_either": 366606,
+      "chance_rate_dhash": 0.0008750437521876093,
+      "chance_rate_phash": 1.5000750037501876e-05,
+      "expected_dhash": 333975.3290164508,
+      "expected_phash": 5725.291354567728,
+      "expected_either": 339700.62037101854,
+      "enrichment_either_over_chance": 1.0792032101666331,
+      "largest_component": 10498,
+      "largest_component_share": 0.3799630822686308
+    }
+  }
+}

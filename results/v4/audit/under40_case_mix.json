@@ -1,0 +1,40 @@
+{
+  "source": "HAM OOF, 6-CNN 24-view TTA soft-vote, S5 cross-fitted Dirichlet (research.v4.lambda_age.dev_panel); score = escalation mass",
+  "reserved_read": false,
+  "test_read": false,
+  "bands": {
+    "<40": {
+      "n": 1319,
+      "escalating_mix": {
+        "akiec": 1,
+        "bcc": 12,
+        "mel": 51
+      },
+      "auc_all_escalating_vs_benign": 0.8892679282868526,
+      "auc_melanoma_vs_benign": 0.8730255448793063,
+      "auc_melanoma_vs_nevus": 0.8717100934333465
+    },
+    "40-59": {
+      "n": 3112,
+      "escalating_mix": {
+        "akiec": 43,
+        "bcc": 74,
+        "mel": 280
+      },
+      "auc_all_escalating_vs_benign": 0.9525381428856387,
+      "auc_melanoma_vs_benign": 0.939850039463299,
+      "auc_melanoma_vs_nevus": 0.9477330705009276
+    },
+    "60+": {
+      "n": 2512,
+      "escalating_mix": {
+        "akiec": 178,
+        "bcc": 275,
+        "mel": 440
+      },
+      "auc_all_escalating_vs_benign": 0.9334505490857101,
+      "auc_melanoma_vs_benign": 0.9090544106912235,
+      "auc_melanoma_vs_nevus": 0.9318090543994159
+    }
+  }
+}

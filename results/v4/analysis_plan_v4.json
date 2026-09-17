@@ -1,0 +1,167 @@
+{
+  "session": "S62",
+  "statement": "Index of every V4 pre-registered gate. Each session froze its own plan before its read; this file indexes them and is written after those reads, ahead of S63. Verdicts are read from the listed reports.",
+  "reserved_reads": 7,
+  "ham_test_receipt": {
+    "path": "results/test_pass_receipt.json",
+    "n_executions": 2
+  },
+  "lambda_curve_frozen": false,
+  "lambda_curve_reason": "S57b verdict REJECT-cost; the 3-band rule stays deployed",
+  "holm_families": "research/stats/families.py (v4_* families)",
+  "sessions": {
+    "S51": {
+      "plan": "results/v4/backbone_probe_plan.json",
+      "plan_sha256": "09d5795ef02eca14cc501901a3e90399c0d68a5b8fbe22c9c4178d4c638a01aa",
+      "report": "results/v4/backbone_probe.json",
+      "report_sha256": "8cba996242c446d1ab8624722451985bd9d85bbb1d8ee22c1b3e26334aa07639",
+      "verdict": {
+        "contrast": "panderm_vitb16 - convnext_tiny",
+        "delta_pauc": -0.03630093397349232,
+        "ci": [
+          -0.0827509430719189,
+          0.012668963643240059
+        ]
+      }
+    },
+    "S53r": {
+      "plan": "results/v4/s53r_plan.json",
+      "plan_sha256": "2ef2e91bf5db6df5d0530209482c9401ee9d2379af7f662f620a94b36c471948",
+      "report": "results/v4/s53r/s53r_report.json",
+      "report_sha256": "434b0f7fef164f1eb73c8cdac0989b90e2d75694249916abfceafa55368d05a8",
+      "verdict": {
+        "R2": "NULL",
+        "R6": "NULL",
+        "R5": "NULL",
+        "R7": "NULL",
+        "R1": "LEVER",
+        "R4": "NULL"
+      }
+    },
+    "S54": {
+      "plan": "results/v4/s54_plan.json",
+      "plan_sha256": "990320b6ce22f92aaed9ac8565f93fbbe2ec31314f432b6d5fc3e6691e0f4bbc",
+      "report": "results/v4/s54/s54_gate.json",
+      "report_sha256": "43af6c72dc00dce385ceb4f8d807c5c06843b7cc4a0cff05b69165b47b08d6da",
+      "verdict": 4,
+      "receipt": {
+        "path": "results/v4/s54/reserved_receipt.json",
+        "plan_sha256": "990320b6ce22f92aaed9ac8565f93fbbe2ec31314f432b6d5fc3e6691e0f4bbc",
+        "executions_per_stage": {
+          "v1_topup": 1,
+          "infer": 1,
+          "gate": 1
+        },
+        "rerun_reasons": []
+      }
+    },
+    "S56": {
+      "plan": "results/v4/s56_plan.json",
+      "plan_sha256": "4e142ad2c423a0ecdc9b0c36e6516be519701f9e9fcc4156d508775b4ff98102",
+      "report": "results/v4/s56/s56_report.json",
+      "report_sha256": "436fd112eb13c77bbc1d20ad61dd6417d384fd6fb56419a1abc46746f10d71df",
+      "verdict": "SUPPORTED",
+      "receipt": {
+        "path": "results/v4/s56/reserved_receipt.json",
+        "plan_sha256": "4e142ad2c423a0ecdc9b0c36e6516be519701f9e9fcc4156d508775b4ff98102",
+        "executions_per_stage": {
+          "read": 1
+        },
+        "rerun_reasons": []
+      }
+    },
+    "S57b": {
+      "plan": "results/v4/s57b_plan.json",
+      "plan_sha256": "e00aafd837e62d74a2d25688a298a3987701d337f3cf4ab8e83af72385d1bd24",
+      "report": "results/v4/lambda_verdict.json",
+      "report_sha256": "bab74ab5a78e23c4de7f5cfce23d2c00839ded94caf064d9136af801873df395",
+      "verdict": "REJECT-cost",
+      "receipt": {
+        "path": "results/v4/s57b/reserved_receipt.json",
+        "plan_sha256": "e00aafd837e62d74a2d25688a298a3987701d337f3cf4ab8e83af72385d1bd24",
+        "executions_per_stage": {
+          "read": 1
+        },
+        "rerun_reasons": []
+      }
+    },
+    "S58": {
+      "plan": "results/v4/s58_plan.json",
+      "plan_sha256": "cc4b205a2b60f1dc9856fb19c2b7df3b9966f2994240427c2724d784d201879d",
+      "report": "results/v4/s58/s58_report.json",
+      "report_sha256": "f3bd97f30a66f71f2680795838c3943be2cf0ea9db120a01ebad0d22290f737f",
+      "verdict": "SUPPORTED",
+      "receipt": {
+        "path": "results/v4/s58/reserved_receipt.json",
+        "plan_sha256": "cc4b205a2b60f1dc9856fb19c2b7df3b9966f2994240427c2724d784d201879d",
+        "executions_per_stage": {
+          "read": 1
+        },
+        "rerun_reasons": []
+      }
+    },
+    "S59": {
+      "plan": "results/v4/s59_plan.json",
+      "plan_sha256": "e7ebc3f59402f0e9406143ad83339f9a06f516e476eee55026a14e3f03b4538f",
+      "report": "results/v4/s59/s59_report.json",
+      "report_sha256": "28b6583afa1feb2139246048c8e6b27fca6046c4892925ff958df9c0ff08e250",
+      "verdict": {
+        "stack": "S56",
+        "contract": "CONTRACT_FAILS"
+      },
+      "receipt": {
+        "path": "results/v4/s59/reserved_receipt.json",
+        "plan_sha256": "e7ebc3f59402f0e9406143ad83339f9a06f516e476eee55026a14e3f03b4538f",
+        "executions_per_stage": {
+          "read": 1
+        },
+        "rerun_reasons": []
+      }
+    },
+    "S64": {
+      "plan": "results/v4/s64/ceiling.json",
+      "plan_sha256": "cc08eff26bc19ab67fa34c88368b5c3db72d173b78403b5c9df644b10a3de93b",
+      "report": "results/v4/s64/ceiling.json",
+      "report_sha256": "cc08eff26bc19ab67fa34c88368b5c3db72d173b78403b5c9df644b10a3de93b",
+      "verdict": "oracle_bins is in-sample and optimistic; any dynamic lambda(age) is bounded by it"
+    },
+    "S65": {
+      "plan": "results/v4/s65_plan.json",
+      "plan_sha256": "22c964fdb5810ab66f15db15ca3e78cafc6f56a92b07a721bf3c94ca86cee06d",
+      "report": "results/v4/s65/s65_report.json",
+      "report_sha256": "394cea824174cd5bcb7f72c06d6c0cdfaa222c50e0ff01bdab10cf725a6288e5",
+      "verdict": "REJECT-cost",
+      "receipt": {
+        "path": "results/v4/s65/reserved_receipt.json",
+        "plan_sha256": "22c964fdb5810ab66f15db15ca3e78cafc6f56a92b07a721bf3c94ca86cee06d",
+        "executions_per_stage": {
+          "read": 1
+        },
+        "rerun_reasons": []
+      }
+    },
+    "S66": {
+      "plan": "results/v4/s66_plan.json",
+      "plan_sha256": "caf910c5a71962dd70753fb4e1f39adfe7e37a040c88aae878f819e2ed1d4616",
+      "report": "results/v4/s66/s66_report.json",
+      "report_sha256": "5994f787c62c7209b51cfa6c2def24a6a207ba9910d844e5e3ef4d6791237a11",
+      "verdict": "REJECT-cost",
+      "receipt": {
+        "path": "results/v4/s66/reserved_receipt.json",
+        "plan_sha256": "caf910c5a71962dd70753fb4e1f39adfe7e37a040c88aae878f819e2ed1d4616",
+        "executions_per_stage": {
+          "read": 1
+        },
+        "rerun_reasons": []
+      }
+    },
+    "S67": {
+      "plan": "results/v4/s67/stage1_plan.json",
+      "plan_sha256": "20405144a988444535350be35e41d34aeb749c8b9e1c89dc3992261e72fcc9ab",
+      "report": "results/v4/s67/probes.json",
+      "report_sha256": "575f5a27a09cea908dd6653f9c6058a8ad02f098927ae39ee1fb10e46fda4ddb",
+      "verdict": "STAGE2_NO_GO"
+    }
+  },
+  "self_sha256": "0e5c84b00872a4834ded89021620b25e0a00c6467364a90b44901f67cb647676"
+}

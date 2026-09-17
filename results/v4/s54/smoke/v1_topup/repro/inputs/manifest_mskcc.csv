@@ -1,0 +1,9 @@
+image_id,lesion_id,class_code,class_index,path,age_approx,sex
+ISIC_0000016,,nv,5,data/external/isic2019_images/ISIC_2019_Training_Input/ISIC_0000016.jpg,55.0,female
+ISIC_0000019_downsampled,,nv,5,data/external/isic2019_images/ISIC_2019_Training_Input/ISIC_0000019_downsampled.jpg,30.0,female
+ISIC_0000022_downsampled,,mel,4,data/external/isic2019_images/ISIC_2019_Training_Input/ISIC_0000022_downsampled.jpg,55.0,female
+ISIC_0000023_downsampled,,nv,5,data/external/isic2019_images/ISIC_2019_Training_Input/ISIC_0000023_downsampled.jpg,30.0,female
+ISIC_0000034_downsampled,,nv,5,data/external/isic2019_images/ISIC_2019_Training_Input/ISIC_0000034_downsampled.jpg,30.0,female
+ISIC_0000041_downsampled,,nv,5,data/external/isic2019_images/ISIC_2019_Training_Input/ISIC_0000041_downsampled.jpg,40.0,female
+ISIC_0000046_downsampled,,mel,4,data/external/isic2019_images/ISIC_2019_Training_Input/ISIC_0000046_downsampled.jpg,60.0,female
+ISIC_0000049_downsampled,,mel,4,data/external/isic2019_images/ISIC_2019_Training_Input/ISIC_0000049_downsampled.jpg,80.0,female

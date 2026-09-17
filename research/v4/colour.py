@@ -12,7 +12,14 @@ V4's section 3 is a re-run rather than a new experiment.
 each colour channel and divides it out:
 
     e_c = ( mean( I_c(x)^p ) )^(1/p)        for c in {R, G, B}
-    I'_c = I_c * ( sqrt(3) * ||e|| ) / e_c    -- von Kries scaling, grey-world normalised
+    I'_c = I_c * ||e|| / ( sqrt(3) * e_c )    -- von Kries scaling, grey-world normalised
+
+A neutral illuminant (e_R = e_G = e_B) leaves the image unchanged.
+
+**Fixed 2026-09-17 (V4 audit).** The first version scaled by `||e|| / e_c`, i.e. `sqrt(3)` times
+too much: a neutral image came out 1.73x brighter and, on 60 training images, a median 79% of
+pixels clipped to white. S53's R2 rung and S49's archive probe ran on that version and are
+superseded (CHANGELOG, V4 audit).
 
 `p = 1` recovers grey-world, `p = inf` recovers max-RGB; **p = 6** is the value Finlayson and
 Trezzi report as best on average and the value used in the dermoscopy literature that adopts
@@ -41,9 +48,10 @@ def shades_of_grey(image: Image.Image, p: int = MINKOWSKI_P) -> Image.Image:
     illuminant = np.power(np.mean(np.power(array, p), axis=(0, 1)), 1.0 / p)
     illuminant = np.where(illuminant < 1e-6, 1e-6, illuminant)
 
-    # von Kries scaling, normalised so overall brightness is preserved rather than driven to 1.
-    scale = np.sqrt(3.0) * np.linalg.norm(illuminant)
-    corrected = array * (scale / (illuminant * np.sqrt(3.0)))
+    # von Kries scaling, normalised so overall brightness is preserved rather than driven to 1:
+    # gain_c = ||e|| / (sqrt(3) * e_c), which is exactly 1 for a neutral illuminant.
+    gain = np.linalg.norm(illuminant) / (np.sqrt(3.0) * illuminant)
+    corrected = array * gain
     return Image.fromarray(np.clip(corrected, 0, 255).astype(np.uint8))
 
 

@@ -2,7 +2,7 @@
   "session": "S49",
   "phase": "U_corpus",
   "test_read": false,
-  "generated_at": "2026-09-15T15:05:46+00:00",
+  "generated_at": "2026-09-17T01:34:56+00:00",
   "checkpoint": "ml/checkpoints/convnext_tiny_best.HAM-only.pt",
   "minkowski_p": 6,
   "raw_arm_reproduces_s43_cache": {
@@ -44,9 +44,9 @@
     {
       "cohort_set": "ham_val_vs_bcn20000",
       "arm": "shades_of_grey",
-      "auc": 0.9517799329654413,
-      "ci_lo": 0.9431121320324092,
-      "ci_hi": 0.9603525832822442,
+      "auc": 0.971551531993667,
+      "ci_lo": 0.9635533922771364,
+      "ci_hi": 0.9783060854333466,
       "n": 5099,
       "within_modality_only": true,
       "entangled": true
@@ -64,9 +64,9 @@
     {
       "cohort_set": "ham_val_vs_mskcc",
       "arm": "shades_of_grey",
-      "auc": 0.8683355390121348,
-      "ci_lo": 0.8508128100626482,
-      "ci_hi": 0.8844338907617701,
+      "auc": 0.8969402181381482,
+      "ci_lo": 0.8824120052814833,
+      "ci_hi": 0.9110477860517808,
       "n": 2406,
       "within_modality_only": true,
       "entangled": true
@@ -84,16 +84,16 @@
     {
       "cohort_set": "all_three",
       "arm": "shades_of_grey",
-      "auc": 0.912644123012047,
-      "ci_lo": 0.9041644832201244,
-      "ci_hi": 0.920531975289366,
+      "auc": 0.9460342580678333,
+      "ci_lo": 0.9395269473686354,
+      "ci_hi": 0.9524663586060551,
       "n": 5973,
       "within_modality_only": true,
       "entangled": true
     }
   ],
   "primary_contrast": "ham_val_vs_bcn20000",
-  "primary_delta_auc": -0.03868326097729313,
+  "primary_delta_auc": -0.01891166194906746,
   "intervals_overlap": false,
-  "verdict": "colour constancy materially reduces within-modality archive decodability (0.9905 -> 0.9518, non-overlapping intervals), so illuminant statistics carry part of archive identity and the V4 re-pool is a different experiment rather than a re-run. TWO things this does not license: the residual AUC is still 0.952, so archive identity is reduced and nowhere near removed -- most of it survives colour normalisation and lives in something else; and a mechanism for archive separability is not a mechanism for H4's failure, which may have had reasons unrelated to colour. The pooling experiment still has to be run and can still fail."
+  "verdict": "colour constancy does NOT materially reduce within-modality archive decodability; H4's failure gets no mechanism from illuminant statistics and the V4 re-pool is a re-run rather than a new experiment"
 }

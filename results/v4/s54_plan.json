@@ -1,0 +1,163 @@
+{
+  "arms": {
+    "composite": {
+      "checkpoints": "ml/checkpoints/convnext_tiny-v4_R1+R4_pooled_s{seed}_{last,best}.pt",
+      "corpus": "pooled",
+      "image_size": 384,
+      "recipe_diff_vs_control": {
+        "balanced_sampler": true,
+        "image_size": 384
+      },
+      "rungs": [
+        "R1",
+        "R4"
+      ],
+      "seeds": [
+        42,
+        43,
+        44
+      ]
+    },
+    "control": {
+      "checkpoints": "ml/checkpoints/convnext_tiny-v4_R0_pooled_s{seed}_{last,best}.pt",
+      "corpus": "pooled",
+      "image_size": 224,
+      "recipe_diff_vs_control": {},
+      "rungs": [
+        "R0"
+      ],
+      "seeds": [
+        42,
+        43,
+        44
+      ]
+    }
+  },
+  "cohort": {
+    "expected": {
+      "groups": 1992,
+      "images": 4733,
+      "scc_topup_images": 146,
+      "under40_escalating_images": 279,
+      "under40_escalating_lesions": 104,
+      "v1_frozen_images": 4587
+    },
+    "grouping": "manifest_v4 group_id (S49: lesion_id union perceptual-hash duplicate cluster), used for BOTH arms of every contrast",
+    "split": "manifest_v4 split=reserved"
+  },
+  "decision_rule": {
+    "conjunction": "BOTH must move with a lesion-grouped CI excluding zero. A conjunction is conservative by construction, so no multiplicity correction is applied across the two endpoints.",
+    "harm": "CI upper bound < 0 -- reported as harm; the endpoint did not move",
+    "mcid": "not part of the gate as S52 declared it; Macro-F1 delta vs 0.020 and pAUC delta vs 0.05 are reported descriptively",
+    "moves": "lesion-grouped CI lower bound > 0 (composite better)",
+    "multiplicity": "none across the two endpoints (conjunction); none across gates, because Gate A is not a decision",
+    "outcome_source": "Gate B, _last.pt, seed-averaged",
+    "outcomes": {
+      "1": "both move -> the representation was the bottleneck; section 4 is built on the new backbone",
+      "2": "macro-F1 only -> general accuracy gain, under-40 untouched; section 4 carries the under-40 burden alone",
+      "3": "under-40 pAUC only -> the shortcut fix worked without a general gain, the most interesting outcome",
+      "4": "neither -> the representation is not reachable by recipe; section 4 is the whole contribution, and that is still a deployable result"
+    },
+    "requires": "all 3 seeds of both arms; a missing seed refuses the gate rather than reading a 1- or 2-seed outcome"
+  },
+  "declared_choices": {
+    "calibration": "none fitted for V4; argmax of softmax and softmax escalation mass",
+    "checkpoint": {
+      "integrity": "_last payload epoch must equal the run JSON's epochs_run and _best's must equal best_epoch, or the checkpoint is refused",
+      "primary": "_last.pt",
+      "secondary": "_best.pt, reported as a sensitivity row, never sets the outcome",
+      "why": "Every V4 arm is two-stage (3 head epochs on a frozen backbone, then fine-tune); the runbook's rule for multi-stage rungs is _last (S45's checkpoint-selection trap). _best is a max over ~30 noisy val readings (~0.02 jitter, S53)."
+    },
+    "endpoints": {
+      "macro_f1": "full coverage, argmax, 7 classes (class_index_7; scc -> akiec), all reserved rows including unknown age, sklearn-equivalent with zero_division=0 over all 7 labels",
+      "under40_pauc": {
+        "band": "<40",
+        "fpr_max": 0.2,
+        "label": "manifest_v4 escalating_7",
+        "rows": "age_band == '<40' only; bootstrap over that band's groups (S51 convention)",
+        "score": "escalation mass (sum of p over escalating classes)",
+        "standardisation": "McClish (research.v2.frontier.partial_auc)"
+      }
+    },
+    "seeds": {
+      "equivalence": "with one seed the seed-mean interval equals paired_delta_ci exactly (asserted in --selftest)",
+      "estimate": "mean over seeds of the seed-matched paired delta",
+      "interval": "lesion-grouped percentile bootstrap, 2000 resamples, seed 42; one resample applied to all models at once (research.stats.calibration_slices.grouped_bootstrap_scalar, the engine inside research.v3.oos_probe.paired_delta_ci)",
+      "never": "the best seed",
+      "per_seed_intervals": "research.v3.oos_probe.paired_delta_ci for pAUC; the same engine for Macro-F1",
+      "range": "min and max of the per-seed paired deltas, always reported",
+      "required": [
+        42,
+        43,
+        44
+      ]
+    },
+    "tta": {
+      "consequence": "Gate B compares like with like. Gate A is additionally biased against V4 (V1 has TTA and a calibrator, V4 has neither).",
+      "v1_comparator": "the deployed V1 system as frozen by S13/S14: 6-CNN uniform soft-vote over 24-view TTA + deployed HAM-OOF Dirichlet map",
+      "v4_arms": "none -- one deterministic view, research.v4.recipe.build_eval_transform(recipe) at the checkpoint's own image_size, the view each checkpoint was selected with"
+    }
+  },
+  "gates": {
+    "A": {
+      "comparator_rows": "4,587 frozen (results/external/predictions/ensemble_dirichlet_{bcn20000,mskcc}.csv) + 146 scc top-up (research/v4/s54_topup_v1.py, same extractor and assembler)",
+      "contrast": "composite - frozen V1 ensemble",
+      "pairing": "each composite seed against the single V1 system, identical rows",
+      "role": "DEPLOYMENT DELTA ONLY -- confounded by training corpus and by TTA/calibration; never read as evidence about the representation"
+    },
+    "B": {
+      "contrast": "composite - control",
+      "pairing": "seed-matched (42-42, 43-43, 44-44), identical rows",
+      "role": "DECIDES the outcome"
+    }
+  },
+  "inherits": {
+    "file": "results/v4/recipe_ladder_plan.json",
+    "key": "s54_gate",
+    "s54_gate": {
+      "cohort": "reserved, 4,733 images / 1,992 groups / 104 under-40 escalating lesions -- identical to S51's cohort so the two sessions are directly comparable",
+      "conjunction": "BOTH must move with a lesion-grouped CI excluding zero. A conjunction is conservative by construction, so no multiplicity correction is applied across the two endpoints.",
+      "gate_A": {
+        "comparator_already_frozen": "4,587 of the 4,733 reserved images already have predictions in results/external/predictions/ from S13/S14. No new training-set read is needed.",
+        "confound": "The V1 ensemble is HAM-only; the reserved cohort is 100% BCN-20000 + MSKCC (verified: 0 HAM images). The V4 arms train on those archives and V1 never did. S14 measured V1's BCN transfer at Macro-F1 0.402 against 0.784 in-domain, so Gate A is expected to fire on macro-F1 for training-corpus reasons alone. Report it as the DEPLOYMENT delta, never as evidence about the representation.",
+        "contrast": "V4 composite vs frozen V1 ensemble (6-CNN soft-vote + 24-view TTA + deployed HAM-OOF Dirichlet map)",
+        "required_top_up": "The 146 missing images are exactly the class_8=scc rows S13 excluded by pre-registration. Without them the cohort drops to 103 under-40 escalating lesions -- one below S48's power target of 104, and no longer S51-comparable. S54 must score those 146 images with the 6 frozen checkpoints (minutes of GPU, inside S54's existing inference budget) so both arms are read on one 4,733-image cohort.",
+        "status": "AS THE RUNBOOK DECLARES IT, AND CONFOUNDED"
+      },
+      "gate_B": {
+        "contrast": "V4 composite vs V4 pooled control -- same corpus, same split, seed-matched paired",
+        "deviation": "The runbook named only the V1 comparator. S52 adds Gate B because Gate A cannot separate a corpus effect from a recipe effect, and reading the four outcomes off a confounded contrast would license 'the representation was the bottleneck' from a training-data change.",
+        "status": "ADDED BY S52. This is the clean recipe contrast and the runbook's four outcomes are read from it."
+      },
+      "outcomes_read_from_gate_B": {
+        "1": "both move -> the representation was the bottleneck; section 4 is built on the new backbone",
+        "2": "macro-F1 only -> general accuracy gain, under-40 untouched; section 4 carries the under-40 burden alone",
+        "3": "under-40 pAUC only -> the shortcut fix worked without a general gain, the most interesting outcome",
+        "4": "neither -> the representation is not reachable by recipe; section 4 is the whole contribution, and that is still a deployable result"
+      },
+      "primary_endpoints": [
+        "full-coverage macro-F1",
+        "under-40 escalation partial AUC, FPR in [0, 0.20]"
+      ]
+    },
+    "sha256": "eff9d79f36f351ffcad05f005aa9a7dccbd1c12a44e4c0ddda8914145039bf5e"
+  },
+  "ledger_session": "v4_s54",
+  "phase": "R_readout",
+  "read_once": {
+    "receipt": "results/v4/s54/reserved_receipt.json",
+    "rule": "a completed stage refuses to repeat without --rerun-reason (kept permanently); an unfinished one resumes with --resume and skips items already scored; the receipt pins this plan's sha256",
+    "stages": [
+      "v1_topup",
+      "infer",
+      "gate"
+    ]
+  },
+  "session": "S54",
+  "smoke": {
+    "band_substitution": "V4 val holds ZERO under-40 escalating images (S48 routed all of them to reserved), so the smoke reads the pAUC endpoint on the all-ages band. Plumbing only; no smoke number is a finding.",
+    "split": "manifest_v4 split=val (never reserved)",
+    "writes": "results/v4/s54/smoke -- no receipt, no ledger row"
+  },
+  "test_read": false
+}

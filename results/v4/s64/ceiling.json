@@ -1,0 +1,292 @@
+{
+  "session": "v4_s64",
+  "split": "oof (HAM train, cross-fitted)",
+  "test_read": false,
+  "reserved_read": false,
+  "panel": "6-CNN soft-vote, 24-view TTA, S5 cross-fitted Dirichlet (lambda_age.dev_panel)",
+  "score": "d = p_maxE - p_maxN (the lambda rule flags iff lambda > -d)",
+  "bands": {
+    "<40": {
+      "n_rows": 1319,
+      "n_escalating": 64,
+      "prevalence": 0.04852160727824109,
+      "n_escalating_lesions": 34,
+      "auc_d": 0.8777763944223108,
+      "auc_mass": 0.8892679282868526,
+      "auc_d_ci": [
+        0.8108716245693356,
+        0.9422178821215643
+      ],
+      "sens_at_spec": {
+        "0.95": 0.625,
+        "0.90": 0.671875,
+        "0.85": 0.703125
+      },
+      "binormal_sens_at_spec": {
+        "0.95": 0.5004827215133065,
+        "0.90": 0.6422621670113959,
+        "0.85": 0.7289466128468112
+      },
+      "sens_at_referral": {
+        "0.076": {
+          "constant": 0.625,
+          "oracle_bins": 0.65625,
+          "mass": 0.625
+        },
+        "0.100": {
+          "constant": 0.640625,
+          "oracle_bins": 0.6875,
+          "mass": 0.640625
+        },
+        "0.150": {
+          "constant": 0.703125,
+          "oracle_bins": 0.765625,
+          "mass": 0.703125
+        },
+        "0.200": {
+          "constant": 0.71875,
+          "oracle_bins": 0.859375,
+          "mass": 0.75
+        },
+        "0.300": {
+          "constant": 0.84375,
+          "oracle_bins": 0.9375,
+          "mass": 0.859375
+        }
+      },
+      "referral_for_sens": {
+        "0.70": {
+          "constant": 0.14859742228961334,
+          "oracle_bins": 0.10310841546626232
+        },
+        "0.80": {
+          "constant": 0.25928733889310085,
+          "oracle_bins": 0.1683093252463988
+        },
+        "0.90": {
+          "constant": 0.40106141015921154,
+          "oracle_bins": 0.2532221379833207
+        }
+      }
+    },
+    "40-59": {
+      "n_rows": 3112,
+      "n_escalating": 397,
+      "prevalence": 0.1275706940874036,
+      "n_escalating_lesions": 224,
+      "auc_d": 0.9478547671068928,
+      "auc_mass": 0.9525381428856387,
+      "auc_d_ci": [
+        0.9287693586215773,
+        0.9625925081226776
+      ],
+      "sens_at_spec": {
+        "0.95": 0.7304785894206549,
+        "0.90": 0.8614609571788413,
+        "0.85": 0.906801007556675
+      },
+      "binormal_sens_at_spec": {
+        "0.95": 0.7429267707871239,
+        "0.90": 0.8451131404658858,
+        "0.85": 0.8963122693082197
+      },
+      "sens_at_referral": {
+        "0.076": {
+          "constant": 0.5138539042821159,
+          "oracle_bins": 0.5239294710327456,
+          "mass": 0.5163727959697733
+        },
+        "0.100": {
+          "constant": 0.6020151133501259,
+          "oracle_bins": 0.6297229219143576,
+          "mass": 0.5994962216624685
+        },
+        "0.150": {
+          "constant": 0.7758186397984886,
+          "oracle_bins": 0.7934508816120907,
+          "mass": 0.7858942065491183
+        },
+        "0.200": {
+          "constant": 0.8639798488664987,
+          "oracle_bins": 0.8816120906801007,
+          "mass": 0.8790931989924433
+        },
+        "0.300": {
+          "constant": 0.947103274559194,
+          "oracle_bins": 0.9546599496221663,
+          "mass": 0.947103274559194
+        }
+      },
+      "referral_for_sens": {
+        "0.70": {
+          "constant": 0.125,
+          "oracle_bins": 0.11857326478149101
+        },
+        "0.80": {
+          "constant": 0.16034704370179947,
+          "oracle_bins": 0.15231362467866325
+        },
+        "0.90": {
+          "constant": 0.2358611825192802,
+          "oracle_bins": 0.2185089974293059
+        }
+      }
+    },
+    "60+": {
+      "n_rows": 2512,
+      "n_escalating": 893,
+      "prevalence": 0.3554936305732484,
+      "n_escalating_lesions": 559,
+      "auc_d": 0.928538277606281,
+      "auc_mass": 0.9334505490857101,
+      "auc_d_ci": [
+        0.9162768853114477,
+        0.9408255236160155
+      ],
+      "sens_at_spec": {
+        "0.95": 0.6662933930571109,
+        "0.90": 0.7592385218365062,
+        "0.85": 0.8376259798432251
+      },
+      "binormal_sens_at_spec": {
+        "0.95": 0.6652943641625434,
+        "0.90": 0.7853115048610781,
+        "0.85": 0.8497534141100825
+      },
+      "sens_at_referral": {
+        "0.076": {
+          "constant": 0.21052631578947367,
+          "oracle_bins": 0.2127659574468085,
+          "mass": 0.20940649496080627
+        },
+        "0.100": {
+          "constant": 0.27547592385218367,
+          "oracle_bins": 0.2777155655095185,
+          "mass": 0.2777155655095185
+        },
+        "0.150": {
+          "constant": 0.4008958566629339,
+          "oracle_bins": 0.4087346024636058,
+          "mass": 0.406494960806271
+        },
+        "0.200": {
+          "constant": 0.5240761478163494,
+          "oracle_bins": 0.5307950727883539,
+          "mass": 0.528555431131019
+        },
+        "0.300": {
+          "constant": 0.7122060470324748,
+          "oracle_bins": 0.7222844344904815,
+          "mass": 0.7166853303471444
+        }
+      },
+      "referral_for_sens": {
+        "0.70": {
+          "constant": 0.2898089171974522,
+          "oracle_bins": 0.285828025477707
+        },
+        "0.80": {
+          "constant": 0.3682324840764331,
+          "oracle_bins": 0.3535031847133758
+        },
+        "0.90": {
+          "constant": 0.45979299363057324,
+          "oracle_bins": 0.4482484076433121
+        }
+      }
+    }
+  },
+  "ensemble_under40": {
+    "single_model_auc": {
+      "convnext_tiny": 0.8669073705179283,
+      "convnext_small": 0.8593500996015936,
+      "densenet121": 0.8223979083665338,
+      "efficientnet_b0": 0.815824203187251,
+      "efficientnet_b3": 0.8027888446215139,
+      "resnet50": 0.8123132470119522
+    },
+    "best_single": "convnext_tiny",
+    "ensemble_raw_auc": 0.8705926294820718,
+    "ensemble_calibrated_auc": 0.8777763944223108,
+    "delta_raw_vs_best_single": 0.003685258964143512,
+    "delta_raw_vs_best_single_ci": [
+      -0.042084644465641745,
+      0.0516411457469546
+    ],
+    "delta_cal_vs_raw": 0.007183764940238979,
+    "note": "best single model is chosen in-sample, which favours the single model"
+  },
+  "s60_auc_targets": [
+    {
+      "sens": 0.7,
+      "spec": 0.95,
+      "referral": 0.08153904473085674,
+      "auc_needed_binormal": 0.9374721722573572
+    },
+    {
+      "sens": 0.7,
+      "spec": 0.9,
+      "referral": 0.12911296436694464,
+      "auc_needed_binormal": 0.8991990460133705
+    },
+    {
+      "sens": 0.7,
+      "spec": 0.85,
+      "referral": 0.17668688400303262,
+      "auc_needed_binormal": 0.8651331962564438
+    },
+    {
+      "sens": 0.8,
+      "spec": 0.95,
+      "referral": 0.08639120545868087,
+      "auc_needed_binormal": 0.9606435325062272
+    },
+    {
+      "sens": 0.8,
+      "spec": 0.9,
+      "referral": 0.13396512509476877,
+      "auc_needed_binormal": 0.933362285134116
+    },
+    {
+      "sens": 0.8,
+      "spec": 0.85,
+      "referral": 0.18153904473085675,
+      "auc_needed_binormal": 0.907908495176746
+    },
+    {
+      "sens": 0.9,
+      "spec": 0.95,
+      "referral": 0.09124336618650497,
+      "auc_needed_binormal": 0.9807401351775784
+    },
+    {
+      "sens": 0.9,
+      "spec": 0.9,
+      "referral": 0.13881728582259287,
+      "auc_needed_binormal": 0.9650368366397468
+    },
+    {
+      "sens": 0.9,
+      "spec": 0.85,
+      "referral": 0.18639120545868085,
+      "auc_needed_binormal": 0.9493999176570274
+    }
+  ],
+  "binormal_fit_check_under40": {
+    "0.95": {
+      "empirical": 0.625,
+      "binormal": 0.5004827215133065
+    },
+    "0.90": {
+      "empirical": 0.671875,
+      "binormal": 0.6422621670113959
+    },
+    "0.85": {
+      "empirical": 0.703125,
+      "binormal": 0.7289466128468112
+    }
+  },
+  "lambda_candidates_sha256": "f77b70cd0621ff00d4b6b4d6a200c445dbaf78ae7072cf087d4b37652607d3d4",
+  "a1_reference_session": "v4_s57a",
+  "reading": "oracle_bins is in-sample and optimistic; any dynamic lambda(age) is bounded by it"
+}

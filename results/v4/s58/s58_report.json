@@ -1,0 +1,69 @@
+{
+  "session": "S58",
+  "smoke": false,
+  "test_read": false,
+  "meta": {
+    "cohort": {
+      "images": 4733,
+      "groups": 1992,
+      "under40_escalating_lesions": 104,
+      "under40_escalating_images": 279,
+      "scc_topup_images": 146
+    }
+  },
+  "plan_sha256": "cc4b205a2b60f1dc9856fb19c2b7df3b9966f2994240427c2724d784d201879d",
+  "n_boot": 2000,
+  "gate": {
+    "threshold": 3586.644766666222,
+    "reserved_false_reject": 0.06655398267483625,
+    "pad_reject": 0.37844254510921177,
+    "pad_n": 2106,
+    "auroc_reserved_vs_pad": 0.7992213447879342,
+    "auroc_ham_val_vs_pad": 0.8941092712850764,
+    "ham_val_false_reject_in_sample_threshold": 0.025456919060052218
+  },
+  "router": {
+    "accuracy": 0.9317557574477076,
+    "per_archive": {
+      "bcn20000": 0.9476141078838174,
+      "mskcc": 0.8620296465222349
+    },
+    "within_class": {
+      "nv": 0.9022198731501057,
+      "mel": 0.9310051107325383
+    },
+    "confusion": {
+      "ham": {
+        "bcn20000": 79,
+        "mskcc": 64
+      },
+      "bcn20000": {
+        "bcn20000": 3654,
+        "mskcc": 57
+      },
+      "mskcc": {
+        "bcn20000": 123,
+        "mskcc": 756
+      }
+    }
+  },
+  "verdict": {
+    "primary": {
+      "delta": 0.10708845683498758,
+      "ci": [
+        0.07487221875677325,
+        0.13600287168754893
+      ],
+      "p_holm": 0.001999000499750125,
+      "outcome": "SUPPORTED"
+    },
+    "stage3": "H1_pooled_head",
+    "router_role": "provenance / drift signal only",
+    "stage_checks": {
+      "gate_reserved_false_reject": true,
+      "gate_pad_reject": false,
+      "router_accuracy": false
+    }
+  },
+  "generated_at": "2026-09-16T20:23:46.372512+00:00"
+}

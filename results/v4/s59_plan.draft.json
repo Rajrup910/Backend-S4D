@@ -1,0 +1,262 @@
+{
+  "base": {
+    "model": "frozen V1: 6-CNN uniform soft-vote, 24-view TTA, deployed HAM-OOF Dirichlet (research/selective/results_oof/fit_state.json)",
+    "pending": "S53r may nominate a V4 base. A V4 base has no cross-fitted OOF predictions, so the fit split would change -- that is a plan revision, not a flag. --freeze-plan accepts only base v1."
+  },
+  "budgets": [
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3
+  ],
+  "caveats": [
+    "reserved has been read 7 times in V4 (S54, S56, S57a, S57b, S58, S65, S66); this is the 8th question on a reused evaluation set",
+    "HAM-calibrated budgets and floors do not transfer (S56); the contract is a HAM-issued promise checked off-distribution",
+    "OOF conformal flags are in-sample for the calibration half (used only to set the matched budget)"
+  ],
+  "evaluation": "manifest_v4 split=reserved (4,733 images, 104 under-40 escalating lesions); frozen V1 predictions (S13 + S54 top-up); read once under results/v4/s59/reserved_receipt.json",
+  "fit_split": "HAM OOF (6,981 rows), cross-fitted deployed Dirichlet; conformal on the OOF calibration half (grouped_halves seed 42)",
+  "interval": "lesion-grouped (group_id) paired bootstrap, 2000 draws, seed 42; proportions via research.stats.intervals.proportion",
+  "no_p_values": "descriptive contrasts; the contract is the deliverable, no Holm family",
+  "not_done": [
+    "no HAM test read",
+    "no reserved read in this session",
+    "no ledger write outside --reserved"
+  ],
+  "open_decisions_for_owner": [
+    "base model after S53r (v1 unless a V4 base is nominated)",
+    "whether to add a target-side recalibration arm (thresholds refit on BCN/MSKCC V4 train rows scored by V1, the S66 fitting data) -- S56 says off-HAM floors need it; not built here"
+  ],
+  "operating_budget_rule": "smallest R with OOF S* >= 0.85; else 0.2",
+  "primary_deliverable": {
+    "composition": "measured end-to-end on the same rows; not a union bound",
+    "expectation": "CONTRACT_FAILS -- S56 met 0/15 floors on reserved and the deployed 40-59 lambda breaks its specificity floor there (S57a). A failure is the expected transfer finding, not a surprise.",
+    "joint": "CONTRACT_HOLDS iff every term MET; CONTRACT_FAILS if any NOT_MET; else CONTRACT_UNRESOLVED",
+    "quantity": "the contract of the deployed arm on reserved: per-band system sensitivity >= S and FRR <= 1-S (S = OOF nominal floor), all-ages retained Macro-F1 >= M (val), realised referral <= R + 0.05, NNB(pi 0.03) <= N (val)",
+    "term_status": "MET if the interval clears the target, NOT_MET if it lies wholly on the wrong side, UNRESOLVED otherwise; NNB by point estimate"
+  },
+  "secondary_contrasts": [
+    {
+      "a": "S56@0.2",
+      "b": "V1@0",
+      "band": "ALL",
+      "label": "deployed_vs_V1",
+      "stat": "system_sens"
+    },
+    {
+      "a": "S56@0.2",
+      "b": "V1@0",
+      "band": "ALL",
+      "label": "deployed_vs_V1",
+      "stat": "referral_rate"
+    },
+    {
+      "a": "S56@0.2",
+      "b": "V1@0",
+      "band": "<40",
+      "label": "deployed_vs_V1",
+      "stat": "system_sens"
+    },
+    {
+      "a": "S56@0.2",
+      "b": "V1@0",
+      "band": "<40",
+      "label": "deployed_vs_V1",
+      "stat": "referral_rate"
+    },
+    {
+      "a": "S56@0.2",
+      "b": "V1@0",
+      "band": "40-59",
+      "label": "deployed_vs_V1",
+      "stat": "system_sens"
+    },
+    {
+      "a": "S56@0.2",
+      "b": "V1@0",
+      "band": "40-59",
+      "label": "deployed_vs_V1",
+      "stat": "referral_rate"
+    },
+    {
+      "a": "S56@0.2",
+      "b": "V1@0",
+      "band": "60+",
+      "label": "deployed_vs_V1",
+      "stat": "system_sens"
+    },
+    {
+      "a": "S56@0.2",
+      "b": "V1@0",
+      "band": "60+",
+      "label": "deployed_vs_V1",
+      "stat": "referral_rate"
+    },
+    {
+      "a": "S56@0.2",
+      "b": "V1@0",
+      "band": "ALL",
+      "label": "deployed_vs_V1",
+      "stat": "retained_macro_f1"
+    },
+    {
+      "a": "CASC@0.15",
+      "b": "S56_matched_CASC@0.235",
+      "band": "ALL",
+      "label": "lambda_layer_workload_matched",
+      "stat": "system_sens"
+    },
+    {
+      "a": "CASC@0.15",
+      "b": "S56_matched_CASC@0.235",
+      "band": "<40",
+      "label": "lambda_layer_workload_matched",
+      "stat": "system_sens"
+    },
+    {
+      "a": "CASC@0.15",
+      "b": "S56_matched_CASC@0.235",
+      "band": "40-59",
+      "label": "lambda_layer_workload_matched",
+      "stat": "system_sens"
+    },
+    {
+      "a": "CASC@0.15",
+      "b": "S56_matched_CASC@0.235",
+      "band": "60+",
+      "label": "lambda_layer_workload_matched",
+      "stat": "system_sens"
+    },
+    {
+      "a": "CASC@0.15",
+      "b": "S56_matched_CASC@0.235",
+      "band": "ALL",
+      "label": "lambda_layer_workload_matched",
+      "stat": "flag_rate"
+    },
+    {
+      "a": "CASC@0.15",
+      "b": "S56@0.15",
+      "band": "<40",
+      "label": "lambda_layer_same_budget",
+      "stat": "system_sens"
+    },
+    {
+      "a": "CASC@0.15",
+      "b": "S56@0.15",
+      "band": "60+",
+      "label": "lambda_layer_same_budget",
+      "stat": "system_sens"
+    },
+    {
+      "a": "CASC@0.15",
+      "b": "S56@0.15",
+      "band": "ALL",
+      "label": "lambda_layer_same_budget",
+      "stat": "system_sens"
+    },
+    {
+      "a": "S56_CONF@0.2",
+      "b": "S56_matched_CONF@0.83",
+      "band": "<40",
+      "label": "conformal_layer_workload_matched",
+      "stat": "system_sens"
+    },
+    {
+      "a": "S56_CONF@0.2",
+      "b": "S56_matched_CONF@0.83",
+      "band": "ALL",
+      "label": "conformal_layer_workload_matched",
+      "stat": "system_sens"
+    }
+  ],
+  "selection": {
+    "contract_terms": {
+      "deployed_arm": "S56@0.2",
+      "floor_S": 0.855,
+      "frr_F": 0.14500000000000002,
+      "nnb_pi003_N": 7.921812506096966,
+      "nominal_budget_R": 0.2,
+      "referral_tolerance": 0.05,
+      "retained_macro_f1_M": 0.8882415376504612,
+      "val_realised_referral": 0.20496083550913838
+    },
+    "decisions": {
+      "conformal_layer": {
+        "adopted": false,
+        "arm": "S56_CONF@0.2",
+        "comparator": "S56_matched_CONF@0.83",
+        "delta_val_all": -0.0032467532467532756,
+        "margin": 0.01
+      },
+      "lambda_layer": {
+        "adopted": false,
+        "casc": "CASC@0.15",
+        "comparator": "S56_matched_CASC@0.235",
+        "delta_val_all": 0.0032467532467532756,
+        "descriptive_delta_val_u40": 0.0,
+        "margin": 0.01
+      }
+    },
+    "matching": {
+      "CASC_matched_CONF": {
+        "budget": 0.83,
+        "oof_flag_rate_target": 0.8548918493052571,
+        "source": "CASC_CONF@0.15"
+      },
+      "S56_matched_CASC": {
+        "budget": 0.235,
+        "oof_flag_rate_target": 0.32516831399512963,
+        "source": "CASC@0.15"
+      },
+      "S56_matched_CONF": {
+        "budget": 0.83,
+        "oof_flag_rate_target": 0.8540323735854463,
+        "source": "S56_CONF@0.2"
+      }
+    },
+    "oof_floors": {
+      "CASC": {
+        "0.1": 0.835,
+        "0.15": 0.87,
+        "0.2": 0.89,
+        "0.25": 0.89,
+        "0.3": 0.905
+      },
+      "S56": {
+        "0.1": 0.755,
+        "0.15": 0.81,
+        "0.2": 0.855,
+        "0.25": 0.88,
+        "0.3": 0.905
+      }
+    },
+    "operating_budget": {
+      "CASC": 0.15,
+      "S56": 0.2
+    },
+    "rule": "The rule, declared before val is scored (and restated in the plan):\n\n    1. Operating budget per stack: the smallest R in BUDGETS whose OOF nominal floor S* is\n       >= TARGET_FLOOR (0.85); 0.20 if none reaches it.\n    2. Lambda layer: stack ``CASC`` (lambda + abstention at its R0) is adopted over ``S56``\n       only if its **val all-ages** system sensitivity exceeds ``S56_matched_CASC`` (S56 at the\n       budget matching CASC's OOF flag rate) by >= STACK_MARGIN. Otherwise ``S56`` -- one layer\n       fewer. All-ages because val has 22 under-40 escalating images (S48 bars decisions on\n       <= 25 positives); the under-40 value is reported, and decides nothing.\n    3. Conformal layer: for the chosen stack, ``+CONF`` at R0 is adopted only if its val\n       all-ages system sensitivity exceeds ``{stack}_matched_CONF`` by >= STACK_MARGIN.\n       Otherwise conformal sets are an output field only (the S60 payload), not a decision layer.\n    4. Contract terms are issued from HAM: S* from the OOF fit, M and N from val.",
+    "stack": "S56"
+  },
+  "selection_file": "results/v4/s59/selection_val.json",
+  "selection_sha256": "d6719d80ae993a6c96bacafb1202e971d4ad39029758dbbd74d994447dbdd2ea",
+  "selection_split": "HAM val (1,532 rows)",
+  "session": "S59",
+  "stages": [
+    "V1 probabilities (deployed map)",
+    "decision: argmax (S56) or frozen 3-band lambda (frozen_params.apply_age_rule) (CASC)",
+    "S56 per-band CRC-floor abstention refit on OOF under that decision; score pinned to S56's val-selected 'msp'",
+    "optional conformal safety net: RAPS bipartite alpha 0.05, conformal Dirichlet map, frozen S6 hyperparameters, cell quantiles asserted equal to research/conformal/results_hierarchical_oof/fit_state.json; refers retained benign-called rows whose set holds an escalating class"
+  ],
+  "stages_excluded": {
+    "admissibility_gate": "S58: PAD reject 0.378 (target >= 0.80); escalating lesions rejected more often (0.087 vs 0.067)",
+    "domain_head": "S58 H1 supported but sits on a different base (frozen HAM ConvNeXt features); revisit only if the S53r base decision allows",
+    "domain_router": "S58: routed head not non-inferior to pooled; accuracy 0.932 < 0.95",
+    "lambda_age_and_per_centre": "S57b and S66 REJECT-cost; frozen 3-band rule kept",
+    "per_band_calibration": "S65: undoes the frozen under-40 lambda (0.409 -> 0.262 on reserved); stacking needs a lambda refit (a new tool)"
+  },
+  "status": "DRAFT -- not frozen; base model pending the S53r readout",
+  "title": "Re-scoped cascade: frozen V1 + frozen 3-band lambda + S56 abstention (+ conformal if it composes), and its contract measured end-to-end",
+  "workload_matching": "matched budget = smallest band-abstention budget on a 0.005 grid (0.05-0.90) whose OOF all-ages flag rate (decision-escalated or referred) reaches the source arm's (S65 precedent)"
+}

@@ -232,12 +232,23 @@ credentials.json
 # Temporary scratch and PDF raster directories
 tmp/
 scratch/
+scratchpad/
+scratch_*.json
 
 # Personal reference and viva deliverables (kept local only)
 output/
-review1_infographic.html
-scripts/build_viva_package.py
+review1_infographic*.html
 *viva*
+scripts/build_*.py
+scripts/check_*.py
+scripts/check_*.js
+scripts/inspect_*.py
+scripts/debug_layout.py
+scripts/test_*.py
+scripts/test_*.js
+scripts/verify_counts.py
+temp_*.js
+tmp_script.js
 
 
 
@@ -258,5 +269,3 @@ results/v2/S3[4-9]_*.md
 results/v2/stale_artifacts.md
 results/v2/synthetic_validation.md
 
-# Narrative record kept locally only (CLAUDE.md standing rule), not published
-CHANGELOG.md

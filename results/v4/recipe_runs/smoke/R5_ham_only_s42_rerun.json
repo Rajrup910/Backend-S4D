@@ -1,0 +1,63 @@
+{
+  "run_id": "R5_ham_only_s42_rerun",
+  "session": "v4_s53r",
+  "rungs": [
+    "R5"
+  ],
+  "corpus": "ham_only",
+  "seed": 42,
+  "arch": "convnext_tiny",
+  "model_kind": "image",
+  "recipe": {
+    "image_size": 224,
+    "epochs": 30,
+    "colour_constancy": false,
+    "randaugment": true,
+    "mixup_cutmix": true,
+    "balanced_sampler": false,
+    "ema": false,
+    "metadata_branch": false
+  },
+  "batch_size": 32,
+  "grad_accum": 1,
+  "effective_batch": 32,
+  "num_workers": 0,
+  "run_tag": "rerun",
+  "early_stopping_patience": null,
+  "rerun_plan_sha256": "2ef2e91bf5db6df5d0530209482c9401ee9d2379af7f662f620a94b36c471948",
+  "epochs_run": 1,
+  "best_val_macro_f1": 0.09854596237574961,
+  "best_epoch": 1,
+  "final_val_macro_f1": 0.09854596237574961,
+  "final_val_balanced_accuracy": 0.22466777408637872,
+  "final_val_escalation_sensitivity": 0.5,
+  "train_images": 128,
+  "val_images": 64,
+  "train_time_seconds": 20.4,
+  "device": "cuda",
+  "plan_sha256": "eff9d79f36f351ffcad05f005aa9a7dccbd1c12a44e4c0ddda8914145039bf5e",
+  "smoke": true,
+  "test_read": false,
+  "vram_peak_gb": 2.407906816,
+  "vram_total_gb": 8.546484224,
+  "vram_headroom_gb": 6.138577408,
+  "checkpoints": {
+    "best": "results\\v4\\recipe_runs\\smoke\\convnext_tiny-v4_R5_ham_only_s42_rerun_best.pt",
+    "last": "results\\v4\\recipe_runs\\smoke\\convnext_tiny-v4_R5_ham_only_s42_rerun_last.pt"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "train_loss": 0.8282253444194794,
+      "train_accuracy": 0.140625,
+      "val_macro_f1": 0.09854596237574961,
+      "val_balanced_accuracy": 0.22466777408637872,
+      "val_accuracy": 0.171875,
+      "val_escalation_sensitivity": 0.5,
+      "val_missed_serious": 7,
+      "learning_rate": 0.0,
+      "seconds": 20.20069456100464
+    }
+  ]
+}
