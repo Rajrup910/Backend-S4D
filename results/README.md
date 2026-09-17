@@ -40,3 +40,34 @@ the manuscript's own dependency list, and
 there is no compiler here to measure it.
 
 Frozen artifact set: 34 prediction matrices, declared 2026-09-05T17:58:46+00:00.
+
+---
+
+## Phase V4 Artifacts (`results/v4/`)
+
+Canonical storage for all V4 research session plans, receipts, run summaries, and diagnostic benchmarks (Sessions S48–S67). Verified by `python -m research.v4.audit_v4 --check` (76/76 checks passing).
+
+| Artifact | Produced by / Session | Role & Contents |
+|---|---|---|
+| `analysis_plan_v4.json` | `s62_freeze.py` (S62) | Master V4 pre-registration index (SHA-256 registered in `results/frozen_artifacts.json`) |
+| `final_verdict_v4.json` | `s63_final_verdict.py` (S63) | Comprehensive final verdicts, unrun accounting, 8 reserved receipts, and open decisions |
+| `block3_status.json` | `scripts/run_block3.ps1` | Status tracker for S53 Block 3 multi-seed pooled training runs |
+| `recipe_runs/*.json` | `train_v4.py` (S52, S53r) | R0–R7 rung training runs across seeds 42, 43, 44 on HAM and pooled corpora |
+| `s53r_plan.json`, `s53r/` | `ladder_rerun.py` (S53r) | Schedule, smoke receipts, and final report for the colour-constancy corrected re-run |
+| `s54_plan.json`, `s54/` | `s54_gate.py` (S54) | Representation Gate B evaluation, contrasts, marginals, and reserved receipt |
+| `s56_plan.json`, `s56/` | `s56_abstention.py` (S56) | Band-conditional selective abstention frontiers, policies, and reserved receipt |
+| `s57b_plan.json`, `lambda_verdict.json` | `lambda_crossfit.py` (S57b) | Continuous $\lambda(\text{age})$ candidate fits, cross-fitting, stability, and verdict (`REJECT-cost`) |
+| `s58_plan.json`, `s58/` | `s58_front_end.py` (S58) | Domain-matched front-end heads (H0 vs H1), gate/router checks, and reserved receipt |
+| `s59_plan.json`, `s59/` | `s59_cascade.py` (S59) | Composed cascade evaluation on reserved (`S56@0.20`, `CONTRACT_FAILS` verdict, 8th receipt) |
+| `s64/ceiling.json`, `frontier_oof.csv` | `ceiling_u40.py` (S64) | Under-40 decision rule ROC frontier and ceiling audit |
+| `s65_plan.json`, `s65/` | `s65_combined_policy.py` (S65) | Multi-mechanism combination policy (S55 + $\lambda$ + S56) verdict (`REJECT-cost`) |
+| `s66_plan.json`, `s66/` | `s66_lambda_centre.py` (S66) | Per-hospital hierarchical $\lambda$ evaluation and verdict (`REJECT-cost`) |
+| `s67/stage1_plan.json`, `probes.json` | `s67_ranking_probe.py` (S67) | Stage-1 ranking probes (specialist, reweighting, metadata; `STAGE2_NO_GO`) |
+| `audit/` | `audit_v4.py --emit` | Supplementary audit artifacts (`dedupe_conventional_rule.json`, etc.) |
+
+### V4 Verification Tools
+
+- `python -m research.v4.audit_v4 --check`: Asserts 76 consistency, data-split, receipt, and numerical claims.
+- `python -m research.v4.audit_manuscript_v4`: Asserts all 179 claims in `paper/v4/manuscript_v4.tex` against underlying JSON/CSV files with zero tolerance.
+- `pytest tests/test_s60_service.py`: Runs 19 automated integration and unit tests for the V4 inference service.
+
