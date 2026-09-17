@@ -2,16 +2,17 @@
 
 <p align="center">
   <a href="#executive-summary"><img src="https://img.shields.io/badge/Status-IEEE_TMI_Target-blue.svg?style=for-the-badge&logo=ieee" alt="Status: IEEE TMI Target"></a>
-  <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Audit-357%2F357_Passed-success.svg?style=for-the-badge&logo=checkmarx" alt="Audit: 357/357 Passed"></a>
-  <a href="#multi-centre-replication--transportability"><img src="https://img.shields.io/badge/Multi--Centre-14%2C885_Lesions-purple.svg?style=for-the-badge&logo=databricks" alt="Multi-Centre: 14,885 Lesions"></a>
+  <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Audit-433%2F433_Passed-success.svg?style=for-the-badge&logo=checkmarx" alt="Audit: 433/433 Passed"></a>
+  <a href="#phase-v4--multi-archive-representation-safety-cascades--ranking-limit-s48s67"><img src="https://img.shields.io/badge/ISIC_2019_Corpus-25%2C331_Images-purple.svg?style=for-the-badge&logo=databricks" alt="ISIC-2019: 25,331 Images"></a>
   <a href="#zero-leakage-protocol"><img src="https://img.shields.io/badge/Leakage_Guard-0_Cross--Split_Leaks-brightgreen.svg?style=for-the-badge&logo=shield" alt="Leakage Guard: 0 Leaks"></a>
   <a href="#how-to-reproduce"><img src="https://img.shields.io/badge/Python-3.12_%7C_PyTorch_2.11-yellow.svg?style=for-the-badge&logo=python" alt="Python 3.12 | PyTorch 2.11"></a>
 </p>
 <p align="center">
-  <a href="#post-manuscript-falsification-programme-v2--v3"><img src="https://img.shields.io/badge/Falsification-5_of_6_Hypotheses-critical.svg?style=flat-square&logo=target" alt="Falsification: 5 of 6 hypotheses"></a>
+  <a href="#phase-v4--multi-archive-representation-safety-cascades--ranking-limit-s48s67"><img src="https://img.shields.io/badge/Phase_V4-Closed_(S48--S67)-success.svg?style=flat-square&logo=git" alt="Phase V4: Closed (S48-S67)"></a>
+  <a href="#phase-v4--multi-archive-representation-safety-cascades--ranking-limit-s48s67"><img src="https://img.shields.io/badge/Contract-CONTRACT__FAILS_(All_NOT__MET)-critical.svg?style=flat-square&logo=target" alt="Contract: CONTRACT_FAILS"></a>
   <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Pre--Registered-SHA256_Frozen_Plans-informational.svg?style=flat-square&logo=gitbook" alt="Pre-registered SHA256 frozen plans"></a>
   <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Test_Reads-2_(Locked)-important.svg?style=flat-square&logo=lock" alt="Test reads: 2, locked"></a>
-  <a href="#an-endpoint-retired-on-evidence"><img src="https://img.shields.io/badge/Negative_Results-Retained-blueviolet.svg?style=flat-square&logo=bookstack" alt="Negative results retained"></a>
+  <a href="#phase-y--post-contract-programme--external-generalization-s68s75-in-progress--placeholders"><img src="https://img.shields.io/badge/Phase_Y-S68--S75_(Placeholders)-orange.svg?style=flat-square&logo=clock" alt="Phase Y: S68-S75 (Placeholders)"></a>
 </p>
 
 ---
@@ -303,6 +304,74 @@ the external holdout**, raising the positive count from 22 to **76**.
 
 ---
 
+## Phase V4 — Multi-Archive Representation, Safety Cascades & Ranking Limit (S48–S67)
+
+Phase V4 (sessions S48–S67) targeted the root methodological limit discovered in S44: the **0.2273 seed spread on n=22** that swamped every intervention. V4 expanded the evaluation surface to the full ISIC-2019 corpus, instituted pre-registered multi-seed ladders, and conducted the definitive safety audit on held-out reserved data.
+
+### 1. Multi-Archive Corpus & Preprocessing Normalisation (S48–S50)
+- **ISIC-2019 Unified Corpus (`ml/data/manifest_v4.csv`)**: Indexes **25,331 images** across HAM10000 (10,015), BCN20000 (12,413), and MSKCC (2,903).
+  - **Pooled Train**: 15,294 images across all three archives (81 under-40 escalating lesions).
+  - **Reserved Cohort**: 4,733 images, strictly zero HAM images, **104 under-40 escalating lesions**.
+  - Evaluated across 8 pre-registered reserved reads (each receipted once in `results/v4/`).
+- **Endpoint Discipline (S48)**: Required $\ge 3$ seeds for every training arm. Declared MCID **0.10** on the 104-lesion reserved cohort; retired Bare $n \le 25$ sensitivity endpoints.
+- **Colour Constancy & Normalisation (S49 / S53r)**: Corrected Shades-of-Grey ($p=6$) von Kries normalisation to fix the $\sqrt{3}$ over-scaling bug ($\max |\Delta| = 0.0$ on neutral gray). Re-evaluating HAM val vs BCN within-modality decodability shifted AUC from 0.9905 to **0.9716** ($\Delta -0.0189$), missing the pre-registered $-0.02$ threshold and proving illuminant statistics carry only a minor, separable part of archive identity.
+
+### 2. Backbone Probes & The Recipe Ladder (S51–S54)
+- **Foundation Models Falsified (S51)**: Dermatological foundation models failed to lift under-40 ranking over the in-repo ConvNeXt-Tiny control (pAUC 0.7319):
+  - **PanDerm ViT-B/16**: under-40 pAUC **0.6956** ($\Delta -0.0363 [-0.0828, +0.0127]$).
+  - **DINOv2 ViT-B/14**: under-40 pAUC **0.6593** ($\Delta -0.0725 [-0.1180, -0.0288]$).
+  - *Result*: Representation is not the bottleneck; foundation model arm dropped.
+- **Recipe Ladder (S52 / S53r)**: Evaluated 7 candidate rungs across seeds 42, 43, 44:
+  - **R1 (384px resolution)**: Mean final delta **+0.0297** Macro-F1 (`LEVER` — the only positive rung).
+  - **R2 (Colour constancy)**: Mean final delta **-0.0045** (`NULL`).
+  - **R4 (Class reweighting)**: Mean final delta **+0.0134** (`NULL`).
+  - **R5 (Exponential Moving Average)**: Mean final delta **-0.0112** (`NULL`).
+  - **R6 (Cosine Annealing LR)**: Mean final delta **-0.0139** (`NULL`).
+  - **R7 (Explicit Metadata Branch)**: Mean final delta **+0.0058** (`NULL`).
+- **Gate B on Reserved (S54)**: R1+R4 composite failed to beat R0 pooled control under 40 (Macro-F1 $\Delta -0.0121$, pAUC $\Delta +0.0089$ on `_last.pt`). Pooled models beat V1 on reserved by $+0.18$ Macro-F1 (Gate A, confounded by training corpus).
+
+### 3. Safety Mechanisms & Cascade Evaluation (S55–S59)
+- **Groupwise Multi-Calibration (S55)**: Per-band Dirichlet maps eliminated opposite-signed ECE gaps across age brackets.
+- **Band-Conditional Abstention (S56)**: Selective deferral raised under-40 sensitivity by **+0.1541** at nominal 20% referral (`SUPPORTED`), but floor transfer across medical centres failed completely (12 violated, 3 within CI, 0 met).
+- **Continuous $\lambda(\text{age})$ Curve (S57a/b)**: A3 kernel fit lifted sensitivity by $+0.208$ but doubled under-40 referral and degraded specificity to 0.857; A7 shrunk table failed stability Gate 5 $\to$ `REJECT-cost`. The 3-band $\lambda$ rule was retained.
+- **Domain-Matched Front-End Heads (S58)**: Pooled head H1 improved Macro-F1 from $0.4188 \to 0.5340$ (pAUC $0.7110 \to 0.7315$), but domain router and smartphone admissibility gate failed.
+- **End-to-End Safety Contract (S59)**: Evaluated the deployed cascade (`S56@0.20` on V1 base) on the 4,733-image reserved cohort:
+  - **Selective Coverage**: **0.6142** ($1 - \text{referral}$). Referral rate: **0.3858** (target $\le 0.25$, `NOT_MET`).
+  - **System Escalation Sensitivity**:
+    - Patient Age $<40$: **0.7634 [0.6554, 0.8526]** (nominal floor: 0.855, **NOT_MET**)
+    - Patient Age $40-59$: **0.7040 [0.6313, 0.7709]** (nominal floor: 0.855, **NOT_MET**)
+    - Patient Age $\ge 60$: **0.6744 [0.6384, 0.7130]** (nominal floor: 0.855, **NOT_MET**)
+  - **Gain over V1**: All-ages system sensitivity **+0.3009**.
+  - **Joint Contract Verdict**: **`CONTRACT_FAILS`** (every pre-registered term `NOT_MET`).
+
+### 4. Diagnostic Ceiling & Ranking Limits (S64–S67)
+- **Decision-Rule ROC Ceiling (S64)**: Measured the intrinsic ROC frontier of the under-40 decision score $d$:
+  - Under-40 AUC: **0.8778 [0.811, 0.942]** vs. **0.9479 [0.929, 0.963]** in 40–59 and **0.9285 [0.916, 0.941]** in 60+.
+  - Sensitivity 0.80 under 40 requires **0.259** referral rate under constant $\lambda$.
+- **Policy Combinations Falsified (S65 / S66)**: Combined policy (S55 + $\lambda$ + S56) and centre-specific hierarchical $\lambda$ both returned `REJECT-cost` — neither offered gains over S56 alone at matched referral workload.
+- **Ranking Probes Battery (S67)**: Under-40 specialist head (0.6886), hard-case reweighting (0.7276), and metadata inputs (0.7348) all failed to exceed the control head (0.7279) by the $+0.03$ pAUC threshold $\to$ `STAGE2_NO_GO`.
+- **Central Scientific Verdict**: The under-40 melanoma blind spot is a **representation ranking limit** of models trained on these archives. Decision layers (calibration, thresholds, abstention) redistribute referral burden between cohorts; they cannot manufacture ranking capability at matched workload.
+- **Closure (S63)**: Gated HAM test read remained **CLOSED** (`test_pass_receipt.json` preserved at 2 executions). Monograph reframed around diagnostic limits (`paper/v4/manuscript_v4.tex`, 179 claims audited with 0 failures).
+
+---
+
+## Phase Y — Post-Contract Programme & External Generalization (S68–S75) [In Progress / Placeholders]
+
+Following the V4 contract verdict, four open engineering decisions govern Phase Y:
+
+| Session | Scope | Compute & Tier | Status / Deliverable |
+|:--|:--|:--|:--|
+| **S68** | Target-side referral recalibration on BCN/MSKCC train rows | CPU | 🟡 **Placeholder** — Pre-register & fit thresholds on V1 scores; evaluate in S73 |
+| **S69** | Smartphone admissibility gate (HAM-only Mahalanobis / classifier) | CPU | 🟡 **Placeholder** — Gate must not preferentially reject escalating lesions |
+| **S70** | Fresh-cohort audit & contract decision checkpoint | CPU | ✅ **Complete (2026-09-17)** — 0 unread cohorts on disk; GPU benchmark run (RTX 5050: 224px @ 102ms/batch, 2.41 GB VRAM, ~4.1 h total for 5 folds); Owner decisions approved: D1 (source fresh external cohort via S75), D2 (retain 0.855 floor + add relative term vs V1 stack with MCID 0.05), D3 (R0 control, 224px, 5-fold, 30 epochs) |
+| **S71** | V4 K-fold trainer implementation & pre-registration | CPU | 🟡 **Placeholder** — Add `--fold/--n-folds` to `train_v4.py`; freeze fold splits by hash |
+| **S72** | V4 K-fold cross-fit training (R0 pooled, 5 folds, 30 epochs) | GPU (User-run) | 🟡 **Placeholder** — ~4.1 h total compute; output cross-fitted predictions |
+| **S73** | V4-based stack composition & fresh-cohort confirmatory read | GPU (User-run) | 🟡 **Placeholder** — Refit S56 on V4 OOF, add S68/S69, single confirmatory read on fresh cohort |
+| **S74** | Monograph & audit finalisation | CPU | 🟡 **Placeholder** — Update manuscript, model card, and all audit assertions |
+| **S75 ∥** | Under-40 external cohort sourcing & verification | CPU (Parallel) | 🟡 **Placeholder** — Identify external archive with patient age, verify license, deduplicate against corpus |
+
+---
+
 ## Strict Research Integrity & Audit Gates
 
 This codebase enforces strict automated verification protocols to prevent data leakage, metric inflation, or hand-entered results:
@@ -311,7 +380,9 @@ This codebase enforces strict automated verification protocols to prevent data l
 2. **Single-Test-Read Discipline**: Evaluated through `research/testguard.py` using process-wide file locks and receipts stored in `results/test_pass_receipt.json`. Test sets are read only for final pre-registered confirmations.
 3. **100% Scripted Table Reconstruction**: All manuscript numbers, p-values, confidence intervals, and tables are generated by reproducible code.
    - `python research/ablation/audit_manuscript.py`: Asserts 357 numerical checks across the published paper.
-   - `python research/ablation/audit_manuscript.py --target paper/manuscript_edited.tex`: Validates the condensed 11-page manuscript (269 passed, 91 intentional skips, 0 failed).
+   - `python -m research.v4.audit_v4 --check`: Asserts 76 consistency, data-split, receipt, and numerical claims across Phase V4.
+   - `python -m research.v4.audit_manuscript_v4`: Asserts all 179 claims in `paper/v4/manuscript_v4.tex` with zero failure tolerance.
+   - `pytest tests/test_s60_service.py`: Validates 19 unit and contract integration tests for the production triage API.
    - `python research/ablation/verify_edited_tables.py`: Reconstructs 4 edited LaTeX tables (137 lines) byte-for-byte from underlying JSON/CSV artifacts.
    - `python research/ablation/validate_structure.py`: Validates citation, label, figure, and nested input resolution.
 4. **Pre-Registration Before Data**: Every post-manuscript campaign freezes its hypotheses, gates
@@ -346,38 +417,57 @@ Backend-S4D/
 │   ├── dca/                           # Decision Curve Analysis & Net Benefit calculations
 │   ├── ensembling/                    # Arithmetic soft-vote, stacking, Caruana greedy search
 │   ├── external/                      # Multi-centre replication engine (BCN20000, MSKCC, PAD-UFES)
+│   ├── multical/                      # S55 groupwise multi-calibration by age band
 │   ├── selective/                     # Selective classification, margin & MSP risk-coverage curves
+│   ├── stats/                         # Multiplicity families & statistical testing frameworks
 │   ├── tta/                           # 24-view dihedral test-time augmentation pipelines
-│   ├── v2/                            # Post-manuscript campaign: frontier efficiency, escalation
-│   │                                  #   heads, rescue conformal, transport decomposition
+│   ├── v2/                            # Post-manuscript campaign: frontier efficiency, escalation heads
 │   ├── v3/                            # Falsification programme (S40–S47)
-│   │   ├── ceiling.py                 #   Representation ceiling instrument (rho_g, Delta_head)
-│   │   ├── probes.py                  #   Bottleneck battery: age_band, age_residual, archive
-│   │   ├── build_multiarchive.py      #   4 multi-archive training conditions + split generation
-│   │   ├── eval_conditions.py         #   Condition evaluation with the pre-registered gate
-│   │   ├── external_by_cohort.py      #   Separates in-domain fit from zero-shot transfer
-│   │   ├── age_invariant.py           #   Gradient-reversal age-invariance primitives
-│   │   ├── train_age_invariant.py     #   Adversarial trainer (alternating k_inner schedule)
-│   │   ├── eval_d2.py                 #   Paired mechanism + endpoint evaluation
-│   │   ├── safety_refit.py            #   Dirichlet / abstention / conformal refit
-│   │   ├── plan.py                    #   Frozen analysis plan + artifact registration
-│   │   └── final_verdict.py           #   Per-hypothesis verdicts computed from artifacts
+│   ├── v4/                            # Phase V4 representation ladder, cascades & audit suite (S48–S67)
+│   │   ├── recipe.py                  #   Pre-registered 7-rung training registry (R0-R7)
+│   │   ├── train_v4.py                #   Multi-seed training engine with early-stopping controls
+│   │   ├── colour.py                  #   Shades-of-Grey colour constancy with von Kries normalisation
+│   │   ├── s54_gate.py                #   Representation Gate B evaluation engine
+│   │   ├── s56_abstention.py          #   Band-conditional selective abstention optimizer
+│   │   ├── s58_front_end.py           #   Domain-matched front-end head adaptation
+│   │   ├── s59_cascade.py             #   End-to-end cascade composition & safety contract evaluator
+│   │   ├── s60_api.py                 #   FastAPI production inference & triage service
+│   │   ├── s62_freeze.py              #   V4 analysis plan hash verification & registry freeze
+│   │   ├── s63_final_verdict.py       #   Final verdict compiler across all V4 sessions
+│   │   ├── ceiling_u40.py             #   Under-40 decision-rule ceiling & ROC frontier audit
+│   │   ├── audit_v4.py                #   76-check automated V4 integrity suite
+│   │   └── audit_manuscript_v4.py     #   179-claim zero-tolerance manuscript audit
 │   └── experiments.csv                # Central append-only ledger of all experimental runs
+├── tests/                             # Automated Test Suites
+│   └── test_s60_service.py            # FastAPI service contract, schema, & error handling tests
 ├── paper/                              # Publication Manuscripts & Camera-Ready Artifacts
 │   ├── manuscript.tex                 # Full comprehensive paper draft (~24 pages)
 │   ├── manuscript_edited.tex          # Condensed 11-page draft targeting IEEE TMI
 │   ├── supplementary.tex              # Comprehensive supplementary material & CLAIM/TRIPOD tables
 │   ├── tables/                        # Generated LaTeX tables for full manuscript
 │   ├── tables_edited/                 # Formatted LaTeX tables for 11-page edited paper
-│   └── figures/                       # Vector & high-res PNG camera-ready figures
+│   ├── figures/                       # Vector & high-res PNG camera-ready figures
+│   └── v4/                            # Phase V4 Monograph & Diagnostic Documentation
+│       ├── manuscript_v4.tex          #   V4 monograph on ranking limits & decision layer bounds
+│       ├── model_card.md              #   CLAIM/TRIPOD+AI production model card
+│       └── v4_findings.md             #   Comprehensive findings & settled verdicts document
 ├── results/                            # Frozen JSON, CSV, and ledger experimental artifacts
 │   ├── frozen_artifacts.json          # SHA256 registry: 34 prediction matrices + analysis plans
 │   ├── test_pass_receipt.json         # Append-only test-read receipt (n_executions: 2)
 │   ├── v2/                            # V2 campaign outputs, panels & frozen plan
-│   └── v3/                            # V3 outputs: conditions, probes, verdicts, frozen plan
-├── scripts/                            # Utility Scripts
+│   ├── v3/                            # V3 outputs: conditions, probes, verdicts, frozen plan
+│   └── v4/                            # Phase V4 outputs: plans, receipts, runs, verdicts
+│       ├── analysis_plan_v4.json      #   Master registered V4 analysis plan
+│       ├── final_verdict_v4.json      #   Consolidated final verdicts & open decision accounting
+│       ├── recipe_runs/               #   Banked run JSONs across seeds 42, 43, 44
+│       └── s54/ to s67/               #   Per-session receipts, contrasts, and plans
+├── scripts/                            # Utility & Runner Scripts
 │   ├── verify_env.py                  # CUDA kernel launch & package environment verifier
+│   ├── run_block3.ps1                 # Resilient runner for Block 3 multi-seed pooled runs
+│   ├── run_s53r.ps1                   # Self-healing runner for S53r overnight rerun ladder
+│   ├── status.ps1                     # Status monitoring utility for active training jobs
 │   └── sample_predict.py              # CLI sample inference and triage verification
+├── CHANGELOG.md                        # Master chronological session and viva defense record
 └── README.md                           # This document
 ```
 
@@ -404,54 +494,60 @@ source .venv/bin/activate
 python scripts/verify_env.py
 ```
 
-### 2. Verify Manuscript Numerical Integrity & Table Reconstruction
+### 2. Verify Numerical Integrity & Audit Suites
 
 Verify that every number and table reconstructs byte-for-byte from raw experiment artifacts:
 
 ```bash
-# 1. Audit published manuscript claims (357 checks)
+# 1. Audit published V1 manuscript claims (357 checks)
 python research/ablation/audit_manuscript.py
 
-# 2. Audit edited 11-page IEEE TMI manuscript (269 checks)
-python research/ablation/audit_manuscript.py --target paper/manuscript_edited.tex
+# 2. Audit Phase V4 integrity, receipts, splits, and numerical claims (76 checks)
+python -m research.v4.audit_v4 --check
 
-# 3. Verify edited LaTeX tables against raw artifacts
+# 3. Audit V4 diagnostic monograph claims (179 claims with 0 tolerance)
+python -m research.v4.audit_manuscript_v4
+
+# 4. Run automated test suite for production inference API (19 tests)
+pytest tests/test_s60_service.py
+
+# 5. Verify edited LaTeX tables against raw artifacts
 python research/ablation/verify_edited_tables.py
 
-# 4. Check structural integrity of LaTeX references and figures
-python research/ablation/validate_structure.py --manuscript manuscript_edited.tex
-
-# 5. Measure IEEE TMI two-column page budget
-python research/ablation/estimate_pages.py --manuscript paper/manuscript_edited.tex
+# 6. Check structural integrity of LaTeX references and figures
+python research/ablation/validate_structure.py --manuscript v4/manuscript_v4.tex
 ```
 
-### 3. Run Inference & Clinical Triage Simulation
+### 3. Run Inference & Production Service
 
 ```bash
 # Evaluate baseline model on held-out test split
 python -m ml.evaluation.evaluate --checkpoint ml/checkpoints/convnext_tiny_best.HAM-only.pt --split test
 
-# Execute clinical workflow triage simulation with iso-referral baselines
-python research/external/simulate_clinical_workflow.py
+# Launch production triage FastAPI service
+uvicorn research.v4.s60_api:app --host 0.0.0.0 --port 8000
 
-# Build camera-ready Overleaf bundle for submission
-python research/ablation/build_overleaf_bundle.py --manuscript paper/manuscript_edited.tex
+# Execute clinical workflow triage simulation
+python research/external/simulate_clinical_workflow.py
 ```
 
 ---
 
 ## Publication Details & Manuscripts
 
-This project prepares two companion manuscripts for academic dissemination:
+This project maintains three companion manuscripts reflecting the evolving empirical evidence:
 
-1. **Condensed 11-Page Manuscript** ([`paper/manuscript_edited.tex`](paper/manuscript_edited.tex)):
+1. **V4 Diagnostic Monograph** ([`paper/v4/manuscript_v4.tex`](paper/v4/manuscript_v4.tex)):
+   - **Title**: *"Decision Layers Cannot Fix a Ranking Failure: A Pre-Registered Study of the Under-40 Melanoma Blind Spot in Dermoscopy Triage"*
+   - **Focus**: The diagnostic ceiling of representation learning, limits of post-hoc decision layers, and full V4 safety contract evaluation.
+   - **Audited**: 179 claims asserted with zero discrepancy against frozen JSON/CSV artifacts.
+2. **Condensed 11-Page Manuscript** ([`paper/manuscript_edited.tex`](paper/manuscript_edited.tex)):
    - **Target**: *IEEE Transactions on Medical Imaging (TMI)*
    - **Focus**: Age-stratified blind spots, conformal coverage guarantees, and subgroup decision rules.
    - **Budget**: 10.6–11.0 pages, 4 tables, 3 figures, 39 references.
-2. **Comprehensive Full Monograph** ([`paper/manuscript.tex`](paper/manuscript.tex)):
+3. **Comprehensive Full Monograph** ([`paper/manuscript.tex`](paper/manuscript.tex)):
    - **Target**: Extended monograph / *Medical Image Analysis (MedIA)*
    - **Focus**: Full 11-rung ablation ladder, cross-domain smartphone shift (PAD-UFES-20), Grad-CAM explainability, and TRIPOD+AI / CLAIM checklists.
-   - **Budget**: ~24 pages with full supplementary appendices.
 
 ---
 

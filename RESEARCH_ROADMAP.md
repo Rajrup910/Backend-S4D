@@ -287,19 +287,56 @@ timestamp,session,method,split,macro_f1,accuracy,balanced_accuracy,weighted_f1,m
 | 4 | Cross-domain adaptation, selective classification, fairness, conformal | ✅ Complete |
 | 5 | Ablation synthesis, statistical inference, manuscript | ✅ Complete — manuscript + supplementary frozen |
 | 6 | Post-manuscript falsification programme (V2 · V3) | ✅ Complete — 5 of 6 hypotheses falsified |
+| 6b | Phase V4: Multi-Archive Representation, Safety Cascades & Ranking Limit (S48–S67) | ✅ Complete — 76/76 audit passed; contract evaluated on reserved; under-40 ceiling proved |
+| 7 | Phase Y: Post-Contract Programme & External Generalization (S68–S75) | 🟡 In Progress / Placeholders — S70 checkpoint plan approved; S68–S69 & S71–S75 open |
 
-### Open items
+---
 
-1. **The remaining test read is unspent.** V3's gate (winning system beats the control by
-   $\ge 0.03$ HAM-val Macro-F1 with a CI excluding zero) was **not met** by any candidate, so S47
-   did not spend it. Whether the V3 result justifies spending it is a manuscript question, not a
-   pipeline one.
-2. **Page budget.** `research/ablation/estimate_pages.py` puts the full manuscript at ~24 pages
-   against IEEE TMI's 10; prose is 16.2 of those, so deleting every float still leaves ~18. The
-   honest options remain splitting the paper or targeting a venue without a ten-page limit.
-3. **Optional — a converged invariance frontier.** Two points exist: $\lambda = 1$ (inert; no cost,
-   no benefit) and $\lambda = 3$ (engaged; $-0.1422$ Macro-F1, $-0.1049$ under-40 AUC, but only 6
-   epochs and not re-converged). Three full runs (~6 h) would turn "no cheap setting was found"
-   into a measured cost curve. Only worth it if the invariance claim becomes load-bearing.
-4. **D1 (dual-view input) remains documented and unrefuted**, though Phase C weakened its premise —
-   pooling archives produced 0 of 2 zero-shot transfer gains.
+## 5. Phase V4: Multi-Archive Representation & Safety Cascades (Sessions S48–S67)
+
+Phase V4 addressed the methodological bottleneck discovered in S44 (the 0.2273 same-data seed spread on n=22):
+
+1. **Phase U — Endpoint Hardening (S48–S50)**:
+   - S48: Established seed-variance floor ($\ge 3$ seeds required); primary endpoint declared on reserved cohort (104 under-40 escalating lesions, MCID 0.10); bare $n \le 25$ endpoints retired.
+   - S49: Constructed unified 25,331-image ISIC-2019 corpus (`manifest_v4.csv`, 15,294 pooled train split, 4,733 reserved); corrected Shades-of-Grey colour normalisation ($\sqrt{3}$ von Kries bug fixed; HAM val vs BCN decodability AUC shifted $0.9905 \to 0.9716$, $\Delta -0.019$, not material).
+   - S50: Spatial shortcut audit confirmed exterior vs interior decodability gap $\Delta +0.0297$, below MCID 0.05.
+2. **Phase R — Representation & Recipe Ladder (S51–S54)**:
+   - S51: Foundation model probes falsified (PanDerm ViT-B/16 under-40 pAUC $0.6956$ vs ConvNeXt-Tiny control $0.7319$, $\Delta -0.0363 [-0.0828, +0.0127]$; DINOv2 $0.6593$, $\Delta -0.0725$).
+   - S52 / S53r: 7-rung recipe ladder trained across seeds 42, 43, 44. R1 (384px resolution) proved a true lever ($+0.0297$ Macro-F1); all other rungs (R2 colour, R4 weighting, R5 EMA, R6 Cosine LR, R7 metadata) returned NULL.
+   - S54: Multi-archive Gate B on reserved (R0 pooled control vs R1+R4 composite): composite failed to beat pooled control under 40; pooled models beat V1 by $+0.18$ Macro-F1 on reserved (Gate A, corpus-confounded).
+3. **Phase M — Mechanisms & Safety Cascades (S55–S59)**:
+   - S55: Groupwise Dirichlet calibration by age band eliminated opposite-signed directional ECE gaps.
+   - S56: Band-conditional selective abstention raised under-40 system sensitivity by $+0.1541$ at 20% nominal referral, but failed transfer across hospital centres (12 violated floor cells, 3 within CI, 0 met).
+   - S57a/b: Continuous $\lambda(\text{age})$ curve ablation rejected (`REJECT-cost`) due to doubled referral burden and loss of specificity; 3-band $\lambda$ rule retained.
+   - S58: Domain-matched front-end heads lifted Macro-F1 ($0.4188 \to 0.5340$), but domain router and smartphone admissibility gate failed safety tripwires.
+   - S59: End-to-end evaluation of deployed stack (`S56@0.20` on V1) on reserved: selective coverage $0.6142$, referral rate $0.3858$; system sensitivity $<40$: $0.7634 [0.655, 0.853]$ (floor 0.855, `NOT_MET`), $40-59$: $0.7040$ (`NOT_MET`), $60+$: $0.6744$ (`NOT_MET`); joint verdict **`CONTRACT_FAILS`** (all terms `NOT_MET`).
+4. **Phase P & W — Service, Freeze & Falsification Ceiling (S60–S67)**:
+   - S60: Production FastAPI service implemented and tested (`tests/test_s60_service.py` 19/19 passed).
+   - S61: CLAIM and TRIPOD+AI model card written (`paper/v4/model_card.md`).
+   - S62 / S63: Pre-registration plan frozen (`results/v4/analysis_plan_v4.json`, SHA-256 registered); final verdict compiled (`results/v4/final_verdict_v4.json`); HAM test read gate remained CLOSED (receipt locked at 2); monograph reframed around ranking limits (`paper/v4/manuscript_v4.tex`, 179 claims audited with 0 failures).
+   - S64–S67 (Under-40 Rescue): S64 proved under-40 ROC ceiling is $0.8778$ (vs $0.9479$ in 40-59); S65 combined policy and S66 per-centre $\lambda$ rejected at matched workload; S67 stage-1 ranking probes returned `STAGE2_NO_GO`.
+   - **Central Verdict**: The under-40 blind spot is a **representation ranking limit** of dermoscopy models; decision layers move referrals between cohorts but cannot manufacture ranking capability at equal workload.
+
+---
+
+## 6. Phase Y: Post-Contract Programme & External Generalization (Sessions S68–S75)
+
+Following S59's contract failure, four open engineering decisions govern Phase Y:
+
+| Session | Scope | Tier & Compute | Status / Deliverable |
+|:--|:--|:--|:--|
+| **S68** | Target-side referral recalibration on BCN/MSKCC train rows | CPU | 🟡 **Placeholder** — Pre-register & fit thresholds on V1 scores; evaluate in S73 |
+| **S69** | Smartphone admissibility gate (HAM-only Mahalanobis / modality classifier) | CPU | 🟡 **Placeholder** — Build gate that does not preferentially reject escalating lesions |
+| **S70** | Fresh-cohort audit & contract decision checkpoint | CPU | ✅ **Complete (2026-09-17)** — 0 unread cohorts on disk; GPU benchmark run (RTX 5050: 224px @ 102ms/batch, 2.41 GB VRAM, ~4.1 h total for 5 folds); Owner decisions approved: D1 (source fresh external cohort via S75), D2 (retain 0.855 floor + add relative term vs V1 stack with MCID 0.05), D3 (R0 control, 224px, 5-fold, 30 epochs) |
+| **S71** | V4 K-fold trainer implementation & pre-registration | CPU | 🟡 **Placeholder** — Add `--fold/--n-folds` to `train_v4.py`; freeze fold splits by hash |
+| **S72** | V4 K-fold cross-fit training (R0 pooled, 5 folds, 30 epochs) | GPU (User-run) | 🟡 **Placeholder** — ~4.1 h total compute; output cross-fitted predictions |
+| **S73** | V4-based stack composition & fresh-cohort confirmatory read | GPU (User-run) | 🟡 **Placeholder** — Refit S56 on V4 OOF, add S68/S69, single confirmatory read on fresh cohort |
+| **S74** | Monograph & audit finalisation | CPU | 🟡 **Placeholder** — Update manuscript, model card, and all audit assertions |
+| **S75 ∥** | Under-40 external cohort sourcing & verification | CPU (Parallel) | 🟡 **Placeholder** — Identify external archive with patient age, verify license, deduplicate against corpus |
+
+### Open Items & Administrative Placeholders
+
+1. **External Evaluation Cohort**: S73 confirmatory read awaits S75 external cohort sourcing; reserved read 9 remains descriptive-only.
+2. **S67 Stage 0 Read**: Descriptive reserved read of the V4 pooled ensemble remains available at owner's discretion.
+3. **Overleaf Monograph Compilation**: Final compilation of `paper/v4/manuscript_v4.tex` in Overleaf once S73–S74 close.
+
