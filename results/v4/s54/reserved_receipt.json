@@ -1,0 +1,226 @@
+{
+  "cohort": "manifest_v4 split=reserved",
+  "plan_sha256": "990320b6ce22f92aaed9ac8565f93fbbe2ec31314f432b6d5fc3e6691e0f4bbc",
+  "created_at": "2026-09-16T14:50:08.710113+00:00",
+  "executions": [
+    {
+      "stage": "v1_topup",
+      "execution": 1,
+      "status": "completed",
+      "started_at": "2026-09-16T14:50:08.710113+00:00",
+      "completed_at": "2026-09-16T14:53:17.401244+00:00",
+      "rerun_reason": null,
+      "git_head": "d8090d76ffc108367415827602559cd85e867eaa",
+      "argv": [],
+      "items": {
+        "convnext_tiny_bcn20000.csv": {
+          "path": "results/v4/s54/v1_topup/convnext_tiny_bcn20000.csv",
+          "sha256": "aa47cfb021340faacaf8778e2fa4edc84bbebbf1eba7e3037e91f9eb554777da",
+          "recorded_at": "2026-09-16T14:53:17.383524+00:00"
+        },
+        "convnext_small_bcn20000.csv": {
+          "path": "results/v4/s54/v1_topup/convnext_small_bcn20000.csv",
+          "sha256": "8090f6bc3be3898cd8362060304f827c8f4c1e077ac8313d68e403526a5553a8",
+          "recorded_at": "2026-09-16T14:53:17.385524+00:00"
+        },
+        "densenet121_bcn20000.csv": {
+          "path": "results/v4/s54/v1_topup/densenet121_bcn20000.csv",
+          "sha256": "47a544c7cbd0b329753b5b81bcc37be8093b8ef39fecef65f84202268234ee9d",
+          "recorded_at": "2026-09-16T14:53:17.388030+00:00"
+        },
+        "efficientnet_b0_bcn20000.csv": {
+          "path": "results/v4/s54/v1_topup/efficientnet_b0_bcn20000.csv",
+          "sha256": "b4f115cb54b6e0624a4fb7ea6c7ce87d4aca54aa47a45bc233bd0772e0867731",
+          "recorded_at": "2026-09-16T14:53:17.390029+00:00"
+        },
+        "efficientnet_b3_bcn20000.csv": {
+          "path": "results/v4/s54/v1_topup/efficientnet_b3_bcn20000.csv",
+          "sha256": "e1df86f8cbdbc1a859cea41150aa1a394f55e75c50cb76cbd7c0a110b1b4fa58",
+          "recorded_at": "2026-09-16T14:53:17.392031+00:00"
+        },
+        "resnet50_bcn20000.csv": {
+          "path": "results/v4/s54/v1_topup/resnet50_bcn20000.csv",
+          "sha256": "7fb7241f930a998ecbd9756825e0a9083498ba7d07deed25fe4794e2bf60fe07",
+          "recorded_at": "2026-09-16T14:53:17.394030+00:00"
+        },
+        "ensemble_dirichlet_bcn20000.csv": {
+          "path": "results/v4/s54/v1_topup/ensemble_dirichlet_bcn20000.csv",
+          "sha256": "fd8399540c8fe8473716753df2d7f27450e5c07aa918e0122d5e8f9c18f4f4d2",
+          "recorded_at": "2026-09-16T14:53:17.400241+00:00"
+        }
+      },
+      "summary": {
+        "images": 146
+      }
+    },
+    {
+      "stage": "infer",
+      "execution": 1,
+      "status": "completed",
+      "started_at": "2026-09-16T14:57:01.547530+00:00",
+      "completed_at": "2026-09-16T15:12:29.169571+00:00",
+      "rerun_reason": null,
+      "git_head": "d8090d76ffc108367415827602559cd85e867eaa",
+      "argv": [],
+      "items": {
+        "R0_pooled_s42_last": {
+          "path": "results/v4/s54/predictions/R0_pooled_s42_last.csv",
+          "sha256": "f65f646372258876a325d09b7a3d1e0cb908ee1f031ffe3d7312eecb39d948e7",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R0_pooled_s42_last.pt",
+          "checkpoint_sha256": "b0d8fa6a1e929d66a7b5ced35ae5ec940ac8df37fc5b38345f9eae70d2941475",
+          "epoch": 15,
+          "image_size": 224,
+          "rows": 4733,
+          "seconds": 63.2,
+          "recorded_at": "2026-09-16T14:58:04.883450+00:00"
+        },
+        "R1+R4_pooled_s42_last": {
+          "path": "results/v4/s54/predictions/R1+R4_pooled_s42_last.csv",
+          "sha256": "65cf6e902d1239f3cae65bd069ca8790be7d46c7e0fec49939808705ce55c1b4",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R1+R4_pooled_s42_last.pt",
+          "checkpoint_sha256": "ec620c2c7e7410f9356a19dc9567e384a6fd698f3e34dde052354b3499a4864b",
+          "epoch": 16,
+          "image_size": 384,
+          "rows": 4733,
+          "seconds": 95.1,
+          "recorded_at": "2026-09-16T14:59:40.066962+00:00"
+        },
+        "R0_pooled_s43_last": {
+          "path": "results/v4/s54/predictions/R0_pooled_s43_last.csv",
+          "sha256": "571ac57408f7bbf01e9dd44bdb8d093afe750682daa5bf6f91693a358b994d11",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R0_pooled_s43_last.pt",
+          "checkpoint_sha256": "3400d5eb0b488052dc46d932b584b8daf4bb6241e1603769a7efe02d173ac2ff",
+          "epoch": 22,
+          "image_size": 224,
+          "rows": 4733,
+          "seconds": 58.3,
+          "recorded_at": "2026-09-16T15:00:38.468574+00:00"
+        },
+        "R1+R4_pooled_s43_last": {
+          "path": "results/v4/s54/predictions/R1+R4_pooled_s43_last.csv",
+          "sha256": "8b9536f35e5a2368bb00a5ee99a0372d5247734cf18977ae05e5bbe05cf06c06",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R1+R4_pooled_s43_last.pt",
+          "checkpoint_sha256": "d3a7ae309ba334c5326e4fb34246d8c11ed403bd48f77f448e7b82c9553f82aa",
+          "epoch": 19,
+          "image_size": 384,
+          "rows": 4733,
+          "seconds": 94.9,
+          "recorded_at": "2026-09-16T15:02:13.482464+00:00"
+        },
+        "R0_pooled_s44_last": {
+          "path": "results/v4/s54/predictions/R0_pooled_s44_last.csv",
+          "sha256": "0d3691b7b939c176f885f54b0061b38294df1933ce6688396dc7f086faf0b2d5",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R0_pooled_s44_last.pt",
+          "checkpoint_sha256": "1d4821f34bacb2b74da670c82bce8c025a464fbe6fc5071e51e4607a16b3c637",
+          "epoch": 14,
+          "image_size": 224,
+          "rows": 4733,
+          "seconds": 57.6,
+          "recorded_at": "2026-09-16T15:03:11.184305+00:00"
+        },
+        "R1+R4_pooled_s44_last": {
+          "path": "results/v4/s54/predictions/R1+R4_pooled_s44_last.csv",
+          "sha256": "393c0087ddbb5b1267f26eb23390fb443771bbb15a595bae6b87f7a9d8aae612",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R1+R4_pooled_s44_last.pt",
+          "checkpoint_sha256": "7d2d7c920e1f40daf9f64708c340bd202aa432b24a978e68e6cfe08ac8c35270",
+          "epoch": 19,
+          "image_size": 384,
+          "rows": 4733,
+          "seconds": 96.8,
+          "recorded_at": "2026-09-16T15:04:48.055142+00:00"
+        },
+        "R0_pooled_s42_best": {
+          "path": "results/v4/s54/predictions/R0_pooled_s42_best.csv",
+          "sha256": "f71edad5249fe9b9795bbdbc82e8f7819794ce653e4f6ef57de24c8c7b6d58ef",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R0_pooled_s42_best.pt",
+          "checkpoint_sha256": "98b9397a917fd08b2b143a61ee0e285951005fa75c56f38026366beee5355e3a",
+          "epoch": 7,
+          "image_size": 224,
+          "rows": 4733,
+          "seconds": 58.6,
+          "recorded_at": "2026-09-16T15:05:46.797464+00:00"
+        },
+        "R1+R4_pooled_s42_best": {
+          "path": "results/v4/s54/predictions/R1+R4_pooled_s42_best.csv",
+          "sha256": "178970f150d5fdb986a44c1f1b8ea11a5cdb86411b5051c48e78ec7570c30264",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R1+R4_pooled_s42_best.pt",
+          "checkpoint_sha256": "be9b236937fb0ff0e37bd8891eb2cdee7f4874d0fa18948061e48469572f4964",
+          "epoch": 8,
+          "image_size": 384,
+          "rows": 4733,
+          "seconds": 97.7,
+          "recorded_at": "2026-09-16T15:07:24.555739+00:00"
+        },
+        "R0_pooled_s43_best": {
+          "path": "results/v4/s54/predictions/R0_pooled_s43_best.csv",
+          "sha256": "76204d32a188045361ac97e597c08d9e613c202d2cc659c6cf58b1d0e6d04b3d",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R0_pooled_s43_best.pt",
+          "checkpoint_sha256": "e1f0f7cd65c18c24d7b5a64d0c021390197c798b5c0d55474903d85bd4c5cc4e",
+          "epoch": 14,
+          "image_size": 224,
+          "rows": 4733,
+          "seconds": 58.4,
+          "recorded_at": "2026-09-16T15:08:23.024396+00:00"
+        },
+        "R1+R4_pooled_s43_best": {
+          "path": "results/v4/s54/predictions/R1+R4_pooled_s43_best.csv",
+          "sha256": "1644c55182773cf630896253cf02160d9408f42f86b9af2002cde7f889906553",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R1+R4_pooled_s43_best.pt",
+          "checkpoint_sha256": "7af669f536cdeb9c152e3700e53f3671b17d85662bd48feabc0a440888cf8ac0",
+          "epoch": 11,
+          "image_size": 384,
+          "rows": 4733,
+          "seconds": 97.4,
+          "recorded_at": "2026-09-16T15:10:00.557927+00:00"
+        },
+        "R0_pooled_s44_best": {
+          "path": "results/v4/s54/predictions/R0_pooled_s44_best.csv",
+          "sha256": "9284591162d2a9fa85f0926de3f73732d1561bce7b7342bb64b112708aef6081",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R0_pooled_s44_best.pt",
+          "checkpoint_sha256": "bbcbd7755039014903941b7466199133b6632ee2106905957ce6c4cbb5687210",
+          "epoch": 6,
+          "image_size": 224,
+          "rows": 4733,
+          "seconds": 55.5,
+          "recorded_at": "2026-09-16T15:10:56.140176+00:00"
+        },
+        "R1+R4_pooled_s44_best": {
+          "path": "results/v4/s54/predictions/R1+R4_pooled_s44_best.csv",
+          "sha256": "244606defdcfbe3c00ae6f4385f613bcc3ea9c3c48862881dce06d764c61367c",
+          "checkpoint": "ml/checkpoints/convnext_tiny-v4_R1+R4_pooled_s44_best.pt",
+          "checkpoint_sha256": "caf34c8b5e7272033831db5a4fddcbb6cd7e03607cf1e1dfcbcfba81daf2e88b",
+          "epoch": 11,
+          "image_size": 384,
+          "rows": 4733,
+          "seconds": 92.9,
+          "recorded_at": "2026-09-16T15:12:29.168570+00:00"
+        }
+      },
+      "summary": {
+        "items": 12,
+        "rows_per_item": 4733
+      }
+    },
+    {
+      "stage": "gate",
+      "execution": 1,
+      "status": "completed",
+      "started_at": "2026-09-16T15:24:34.053735+00:00",
+      "completed_at": "2026-09-16T15:26:08.663519+00:00",
+      "rerun_reason": null,
+      "git_head": "d8090d76ffc108367415827602559cd85e867eaa",
+      "argv": [],
+      "items": {},
+      "summary": {
+        "outcome": 4,
+        "report": "results/v4/s54/s54_gate.json",
+        "report_sha256": "43af6c72dc00dce385ceb4f8d807c5c06843b7cc4a0cff05b69165b47b08d6da"
+      }
+    }
+  ],
+  "n_executions": {
+    "v1_topup": 1,
+    "infer": 1,
+    "gate": 1
+  }
+}

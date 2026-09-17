@@ -1,0 +1,161 @@
+{
+  "base": "v1",
+  "conformal": {
+    "40-59": {
+      "coverage": 0.8249180327868852,
+      "extra_flag_rate": 0.5927868852459016,
+      "mean_set_size": 1.9442622950819672,
+      "n": 1525,
+      "set_frr": 0.137123745819398
+    },
+    "60+": {
+      "coverage": 0.7792515395547134,
+      "extra_flag_rate": 0.48792041686404547,
+      "mean_set_size": 2.3003315963998103,
+      "n": 2111,
+      "set_frr": 0.1204481792717087
+    },
+    "<40": {
+      "coverage": 0.8537832310838446,
+      "extra_flag_rate": 0.49897750511247446,
+      "mean_set_size": 1.705521472392638,
+      "n": 978,
+      "set_frr": 0.22580645161290325
+    },
+    "ALL": {
+      "coverage": 0.8119585886330023,
+      "extra_flag_rate": 0.5254595394041834,
+      "mean_set_size": 2.0519754912317767,
+      "n": 4733,
+      "set_frr": 0.13760683760683756
+    },
+    "alpha": 0.05,
+    "method": "RAPS bipartite"
+  },
+  "contract": {
+    "composition": "measured end-to-end on the same rows with lesion-grouped intervals; not a union bound",
+    "coverage": 0.6141981829706318,
+    "deployed_arm": "S56@0.2",
+    "expectation_declared": "CONTRACT_FAILS (S56: 0/15 floors met on reserved; S57a: 40-59 lambda specificity 0.748 on reserved)",
+    "joint": "CONTRACT_FAILS",
+    "panel": "reserved",
+    "terms": [
+      {
+        "ci_hi": 0.8525933935490912,
+        "ci_lo": 0.6553672578698116,
+        "ci_method": "boot",
+        "direction": ">=",
+        "n_escalating": 279,
+        "n_escalating_groups": 104,
+        "status": "NOT_MET",
+        "target": 0.855,
+        "term": "sensitivity[<40]",
+        "value": 0.7634408602150538
+      },
+      {
+        "ci_hi": 0.34463274213018835,
+        "ci_lo": 0.14740660645090875,
+        "direction": "<=",
+        "note": "complement of the sensitivity term",
+        "status": "NOT_MET",
+        "target": 0.14500000000000002,
+        "term": "frr[<40]",
+        "value": 0.23655913978494625
+      },
+      {
+        "ci_hi": 0.7709050480138532,
+        "ci_lo": 0.6312993159839609,
+        "ci_method": "boot",
+        "direction": ">=",
+        "n_escalating": 598,
+        "n_escalating_groups": 174,
+        "status": "NOT_MET",
+        "target": 0.855,
+        "term": "sensitivity[40-59]",
+        "value": 0.7040133779264214
+      },
+      {
+        "ci_hi": 0.36870068401603906,
+        "ci_lo": 0.22909495198614682,
+        "direction": "<=",
+        "note": "complement of the sensitivity term",
+        "status": "NOT_MET",
+        "target": 0.14500000000000002,
+        "term": "frr[40-59]",
+        "value": 0.2959866220735786
+      },
+      {
+        "ci_hi": 0.7129931018050374,
+        "ci_lo": 0.6383707489449287,
+        "ci_method": "boot",
+        "direction": ">=",
+        "n_escalating": 1428,
+        "n_escalating_groups": 479,
+        "status": "NOT_MET",
+        "target": 0.855,
+        "term": "sensitivity[60+]",
+        "value": 0.6743697478991597
+      },
+      {
+        "ci_hi": 0.36162925105507127,
+        "ci_lo": 0.2870068981949626,
+        "direction": "<=",
+        "note": "complement of the sensitivity term",
+        "status": "NOT_MET",
+        "target": 0.14500000000000002,
+        "term": "frr[60+]",
+        "value": 0.3256302521008403
+      },
+      {
+        "ci_hi": 0.5155200634411652,
+        "ci_lo": 0.40140040513587116,
+        "direction": ">=",
+        "status": "NOT_MET",
+        "target": 0.8882415376504612,
+        "term": "retained_macro_f1[ALL]",
+        "value": 0.4645527240724504
+      },
+      {
+        "ci_hi": 0.40791519831496376,
+        "ci_lo": 0.36293813497199146,
+        "direction": "<=",
+        "note": "nominal R 0.2 + tolerance 0.05",
+        "status": "NOT_MET",
+        "target": 0.25,
+        "term": "referral_rate[ALL]",
+        "value": 0.3858018170293683
+      },
+      {
+        "direction": "<=",
+        "note": "point estimate only (upper bound on biopsy burden)",
+        "status": "NOT_MET",
+        "target": 7.921812506096966,
+        "term": "nnb_pi0.03[ALL]",
+        "value": 13.639084848802014
+      }
+    ]
+  },
+  "n_boot": 2000,
+  "panel": "reserved",
+  "panel_meta": {
+    "calibration_max_abs_drift": 1.1102230246251565e-15,
+    "cohort": {
+      "groups": 1992,
+      "images": 4733,
+      "scc_topup_images": 146,
+      "under40_escalating_images": 279,
+      "under40_escalating_lesions": 104
+    },
+    "sources": {
+      "results/external/predictions/ensemble_dirichlet_bcn20000.csv": 3710,
+      "results/external/predictions/ensemble_dirichlet_mskcc.csv": 877,
+      "results/v4/s54/v1_topup/ensemble_dirichlet_bcn20000.csv": 146
+    }
+  },
+  "plan_sha256": "e7ebc3f59402f0e9406143ad83339f9a06f516e476eee55026a14e3f03b4538f",
+  "selection_sha256": "d6719d80ae993a6c96bacafb1202e971d4ad39029758dbbd74d994447dbdd2ea",
+  "session": "S59",
+  "smoke": false,
+  "stack": "S56",
+  "test_read": false
+}

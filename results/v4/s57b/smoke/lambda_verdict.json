@@ -1,0 +1,347 @@
+{
+  "session": "v4_s57b",
+  "smoke": true,
+  "panel": "ham_val_smoke",
+  "plan": "results/v4/s57b_plan.json",
+  "plan_sha256": "e00aafd837e62d74a2d25688a298a3987701d337f3cf4ab8e83af72385d1bd24",
+  "verdict": "REJECT-unstable",
+  "members": {
+    "A3": {
+      "verdict": "REJECT-flat",
+      "gate1": {
+        "delta": 0.09090909090909083,
+        "ci": [
+          0.0,
+          0.23536414565826297
+        ],
+        "p_boot": 0.28785607196401797,
+        "n_boot_valid": 2000,
+        "p_holm": 0.5757121439280359,
+        "pass": false,
+        "directional": false,
+        "mcid": 0.1
+      },
+      "gate2": {
+        "development_pass": true,
+        "reserved": {
+          "<40": {
+            "candidate": 0.8734693877551021,
+            "A1": 0.9469387755102041,
+            "pass": false,
+            "floor_met": true
+          },
+          "40-59": {
+            "candidate": 0.8791208791208791,
+            "A1": 0.8555729984301413,
+            "pass": true,
+            "floor_met": true
+          },
+          "60+": {
+            "candidate": 0.8433734939759037,
+            "A1": 0.8463855421686747,
+            "pass": true,
+            "floor_met": false
+          }
+        },
+        "pass": false
+      },
+      "gate3": {
+        "macro_f1": {
+          "delta": -0.000726220403012956,
+          "ci": [
+            -0.0076497281852023315,
+            0.005754666214891113
+          ],
+          "p_boot": 0.8775612193903048,
+          "n_boot_valid": 2000
+        },
+        "balanced_accuracy": {
+          "delta": -0.0005049332172646359,
+          "ci": [
+            -0.007191687097123245,
+            0.005494143347797435
+          ],
+          "p_boot": 0.9395302348825587,
+          "n_boot_valid": 2000
+        },
+        "older_bands": {
+          "40-59": {
+            "candidate": 0.7833333333333333,
+            "A1": 0.8166666666666667,
+            "A1_cp_lo": 0.6956039452592238,
+            "pass": true
+          },
+          "60+": {
+            "candidate": 0.8805309734513275,
+            "A1": 0.8805309734513275,
+            "A1_cp_lo": 0.8309552616466683,
+            "pass": true
+          }
+        },
+        "pass": true
+      },
+      "gate4": {
+        "per_band": {
+          "all": {
+            "candidate": 0.2748041775456919,
+            "A1": 0.27219321148825065,
+            "delta": 0.0026109660574412663,
+            "delta_nnb_pi0.03": 0.12469219275619992
+          },
+          "<40": {
+            "candidate": 0.17228464419475656,
+            "A1": 0.09737827715355805,
+            "delta": 0.0749063670411985,
+            "delta_nnb_pi0.03": 3.096961451247165
+          },
+          "40-59": {
+            "candidate": 0.17790530846484937,
+            "A1": 0.20229555236728838,
+            "delta": -0.02439024390243902,
+            "delta_nnb_pi0.03": -0.7286516597353376
+          },
+          "60+": {
+            "candidate": 0.449820788530466,
+            "A1": 0.44802867383512546,
+            "delta": 0.0017921146953405187,
+            "delta_nnb_pi0.03": 0.11060321688765118
+          }
+        },
+        "under40_referral_ratio": 1.7692307692307692,
+        "blowout": true
+      },
+      "gate5": {
+        "pass": true
+      }
+    },
+    "A7": {
+      "verdict": "REJECT-unstable",
+      "gate1": {
+        "delta": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "p_boot": 1.0,
+        "n_boot_valid": 2000,
+        "p_holm": 1.0,
+        "pass": false,
+        "directional": false,
+        "mcid": 0.1
+      },
+      "gate2": {
+        "development_pass": true,
+        "reserved": {
+          "<40": {
+            "candidate": 0.9428571428571428,
+            "A1": 0.9469387755102041,
+            "pass": true,
+            "floor_met": true
+          },
+          "40-59": {
+            "candidate": 0.8759811616954474,
+            "A1": 0.8555729984301413,
+            "pass": true,
+            "floor_met": true
+          },
+          "60+": {
+            "candidate": 0.8283132530120482,
+            "A1": 0.8463855421686747,
+            "pass": true,
+            "floor_met": false
+          }
+        },
+        "pass": true
+      },
+      "gate3": {
+        "macro_f1": {
+          "delta": 0.001291931039008487,
+          "ci": [
+            -0.0052767191767755465,
+            0.007794145073817859
+          ],
+          "p_boot": 0.6306846576711644,
+          "n_boot_valid": 2000
+        },
+        "balanced_accuracy": {
+          "delta": -0.0008934802460559554,
+          "ci": [
+            -0.008348443777655775,
+            0.006389114319555436
+          ],
+          "p_boot": 0.8505747126436781,
+          "n_boot_valid": 2000
+        },
+        "older_bands": {
+          "40-59": {
+            "candidate": 0.7833333333333333,
+            "A1": 0.8166666666666667,
+            "A1_cp_lo": 0.6956039452592238,
+            "pass": true
+          },
+          "60+": {
+            "candidate": 0.8761061946902655,
+            "A1": 0.8805309734513275,
+            "A1_cp_lo": 0.8309552616466683,
+            "pass": true
+          }
+        },
+        "pass": true
+      },
+      "gate4": {
+        "per_band": {
+          "all": {
+            "candidate": 0.26631853785900783,
+            "A1": 0.27219321148825065,
+            "delta": -0.0058746736292428214,
+            "delta_nnb_pi0.03": -0.13266669345572435
+          },
+          "<40": {
+            "candidate": 0.10112359550561797,
+            "A1": 0.09737827715355805,
+            "delta": 0.0037453183520599204,
+            "delta_nnb_pi0.03": 0.22333856619570858
+          },
+          "40-59": {
+            "candidate": 0.18077474892395984,
+            "A1": 0.20229555236728838,
+            "delta": -0.021520803443328546,
+            "delta_nnb_pi0.03": -0.5990548128132636
+          },
+          "60+": {
+            "candidate": 0.45698924731182794,
+            "A1": 0.44802867383512546,
+            "delta": 0.008960573476702482,
+            "delta_nnb_pi0.03": 0.6954596213390181
+          }
+        },
+        "under40_referral_ratio": 1.0384615384615383,
+        "blowout": false
+      },
+      "gate5": {
+        "pass": false
+      }
+    }
+  },
+  "consequence": "the data support broad conditioning, not fine resolution, at this sample size; A1 stays deployed; S57c stays locked",
+  "ablation_steps_reserved": {
+    "A0->A1": {
+      "attributes": "age conditioning",
+      "under40_sensitivity": {
+        "delta": 0.045454545454545525,
+        "ci": [
+          0.0,
+          0.18181818181818182
+        ],
+        "p_boot": 0.7586206896551724,
+        "n_boot_valid": 2000
+      },
+      "under40_referral_delta": 0.033707865168539325,
+      "all_sensitivity_delta": 0.13311688311688308,
+      "macro_f1_delta": 0.007500659817187616,
+      "label": "exploratory (development)"
+    },
+    "A1->A2": {
+      "attributes": "5-year resolution",
+      "under40_sensitivity": {
+        "delta": 0.09090909090909083,
+        "ci": [
+          0.0,
+          0.2631578947368421
+        ],
+        "p_boot": 0.2698650674662669,
+        "n_boot_valid": 2000
+      },
+      "under40_referral_delta": 0.0749063670411985,
+      "all_sensitivity_delta": -0.016233766233766156,
+      "macro_f1_delta": -0.010752298063586574,
+      "label": "exploratory (development)"
+    },
+    "A2->A3": {
+      "attributes": "kernel smoothing",
+      "under40_sensitivity": {
+        "delta": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "p_boot": 1.0,
+        "n_boot_valid": 2000
+      },
+      "under40_referral_delta": 0.0,
+      "all_sensitivity_delta": 0.016233766233766156,
+      "macro_f1_delta": 0.010026077660573618,
+      "label": "exploratory (development)"
+    },
+    "A2->A6": {
+      "attributes": "spline smoothing",
+      "under40_sensitivity": {
+        "delta": -0.09090909090909083,
+        "ci": [
+          -0.25,
+          0.0
+        ],
+        "p_boot": 0.28585707146426786,
+        "n_boot_valid": 2000
+      },
+      "under40_referral_delta": -0.07116104868913858,
+      "all_sensitivity_delta": 0.01298701298701288,
+      "macro_f1_delta": 0.012724986584703113,
+      "label": "exploratory (development)"
+    },
+    "A2->A7": {
+      "attributes": "shrinkage",
+      "under40_sensitivity": {
+        "delta": -0.09090909090909083,
+        "ci": [
+          -0.25,
+          0.0
+        ],
+        "p_boot": 0.2698650674662669,
+        "n_boot_valid": 2000
+      },
+      "under40_referral_delta": -0.07116104868913858,
+      "all_sensitivity_delta": 0.00649350649350644,
+      "macro_f1_delta": 0.012044229102595061,
+      "label": "exploratory (development)"
+    },
+    "A1->A7": {
+      "attributes": "primary candidate vs frozen rule",
+      "under40_sensitivity": {
+        "delta": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "p_boot": 1.0,
+        "n_boot_valid": 2000
+      },
+      "under40_referral_delta": 0.0037453183520599204,
+      "all_sensitivity_delta": -0.009740259740259716,
+      "macro_f1_delta": 0.001291931039008487,
+      "label": "exploratory (development)"
+    }
+  },
+  "deviance_diagnostic_dev": {
+    "model_steps": "logit P(esc) ~ logit(escalation mass) + 3 band steps",
+    "model_spline": "+ cubic B-spline(age), interior knots (17.0, 34.0, 51.0, 68.0)",
+    "n": 6943,
+    "loglik_steps": -1498.681114392582,
+    "loglik_spline": -1480.8789786252469,
+    "lr_statistic": 35.60427153467026,
+    "df": 7,
+    "p_value": 8.60813824463428e-06,
+    "reading": "tests whether age carries structure beyond three steps; says nothing about whether that structure clears a clinical MCID",
+    "under40_linear_age": {
+      "n": 1319,
+      "n_escalating": 64,
+      "lr_statistic": 16.32130851887439,
+      "df": 1,
+      "p_value": 5.3459423530707654e-05
+    }
+  },
+  "panel_meta": {
+    "smoke": "HAM val stands in for reserved"
+  },
+  "not_read": "HAM test"
+}

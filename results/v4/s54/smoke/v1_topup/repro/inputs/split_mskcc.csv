@@ -1,0 +1,9 @@
+image_id,lesion_id,class_code,class_index,split
+ISIC_0000016,,nv,5,test
+ISIC_0000019_downsampled,,nv,5,test
+ISIC_0000022_downsampled,,mel,4,test
+ISIC_0000023_downsampled,,nv,5,test
+ISIC_0000034_downsampled,,nv,5,test
+ISIC_0000041_downsampled,,nv,5,test
+ISIC_0000046_downsampled,,mel,4,test
+ISIC_0000049_downsampled,,mel,4,test

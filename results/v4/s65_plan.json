@@ -1,0 +1,95 @@
+{
+  "arms": {
+    "CAL_S56": "per-band map, argmax, band abstention (decomposition)",
+    "COMB": "per-band map, frozen lambda, band abstention, score entropy",
+    "COMB_global": "COMB decision, one global threshold",
+    "LAM": "global map, frozen lambda, no referral",
+    "LAM_S56": "global map, frozen lambda, band abstention (decomposition)",
+    "S56": "global map, argmax, S56 band abstention, S56's frozen score (msp); must reproduce results/v4/s56 frontiers exactly",
+    "S56_matched": "S56 at budget 0.305, the smallest on a 0.005 grid whose OOF all-ages flag rate reaches COMB's at R=0.2 (0.3823)"
+  },
+  "budgets": [
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3
+  ],
+  "carry_forward": [
+    "nominal budgets do not transfer (S56: 20% nominal -> ~39-40% realised on reserved); realised referral and flag rates are reported as measured",
+    "floors are nominal off HAM: S56 met 0 of 15 cells; the deployed 40-59 lambda gives specificity 0.748 on reserved (S57a)",
+    "S64: calibration is ranking-neutral, so a gain should come from lambda x abstention"
+  ],
+  "composition": [
+    "per-band Dirichlet: research/multical/results_oof/fit_state.json via frozen_params.calibrate_by_band (unknown band -> deployed global map); OOF rows cross-fitted within band (research.multical.groupwise.crossfit_group_dirichlet)",
+    "frozen 3-band lambda: research/agerule/results_oof/age_rule_lambda.json via frozen_params.apply_age_rule; NOT refit on the per-band probabilities (declared mismatch: fit under the global map)",
+    "per-band CRC-floor abstention (research.v4.s56_abstention.fit_band) refit on OOF on the per-band-calibrated scores, silent misses defined by the lambda decision"
+  ],
+  "declared_cost_table": [
+    "per-band referral rate",
+    "per-band flag rate",
+    "per-band system sensitivity",
+    "all-ages system sensitivity",
+    "per-band decision specificity (0.85 floor, nominal off HAM)",
+    "retained Macro-F1",
+    "NNB at pi 0.01/0.03/0.05 (upper bound)"
+  ],
+  "evaluation": "manifest_v4 split=reserved (4,733 images, 104 under-40 escalating lesions), S13/S54 frozen raw V1 soft-votes; read once",
+  "fit_split": "HAM OOF (6,981 rows)",
+  "model": "frozen V1: 6-CNN uniform soft-vote, 24-view TTA (S54 outcome 4 keeps it)",
+  "non_inferiority": {
+    "companion": "COMB band minus COMB_global on 60+ restates S56's -0.100 cost; reported",
+    "margin": -0.05,
+    "outcomes": {
+      "INCONCLUSIVE": "otherwise",
+      "INFERIOR": "CI upper bound < -0.05",
+      "NONINFERIOR": "CI lower bound > -0.05"
+    },
+    "quantity": "60+ system sensitivity, COMB at R=0.2 minus LAM (frozen lambda rule, full coverage), reserved, same paired bootstrap"
+  },
+  "not_done": [
+    "no HAM test read",
+    "no image scored",
+    "lambda not refit",
+    "no per-hospital lambda (S66 REJECT-cost)"
+  ],
+  "pre_read_observations": [
+    "OOF/val only, recorded before the reserved read: the per-band map largely undoes the frozen <40 lambda (it was fit under the global map). <40 decision sensitivity LAM -> COMB_none: OOF 0.625 -> 0.438, val 0.591 -> 0.273. COMB's <40 floor is then bought by abstention: OOF <40 referral 0.608 at R=0.20 (S56: 0.317)",
+    "COMB_global refers 0.046 of <40 on OOF: the band arm is what carries <40"
+  ],
+  "primary_budget": 0.2,
+  "primary_endpoint": {
+    "interval": "lesion-grouped paired bootstrap (group_id), 2000 draws, seed 42",
+    "mcid": 0.05,
+    "outcomes": {
+      "HARM": "CI upper bound < 0",
+      "NOT_RESOLVED": "CI contains 0",
+      "POSITIVE_BELOW_MCID": "CI lower bound > 0 and delta < MCID",
+      "SUPPORTED": "delta >= MCID and CI lower bound > 0"
+    },
+    "quantity": "under-40 system escalation sensitivity, COMB minus S56, R=0.2, reserved"
+  },
+  "referral_semantics": "R is the abstention budget, as in S56. Cases the lambda rule escalates are flagged outside it; flag rate = escalated or referred is reported for every arm and band",
+  "score_selection": {
+    "candidates": [
+      "msp",
+      "margin",
+      "entropy",
+      "esc_risk"
+    ],
+    "rule": "The rule, declared before val was scored (and restated in the plan):\n\n    Among the four scores, under the **band** arm, pick the highest val **all-ages** system\n    escalation sensitivity averaged over the five budgets -- all-ages because val has 22\n    under-40 escalating cases and S48 retires <=25-positive quantities from any decision --\n    among scores whose mean retained Macro-F1 is within ``F1_NONINFERIORITY`` of the best\n    score's. Ties (to 1e-9) go to the earlier name in ``SCORES``.",
+    "selected": "entropy",
+    "selection_file": "results/v4/s65/selection_val.json",
+    "selection_sha256": "74f6f7c62fb13a4a45b48cc50071f4d34b1149efbe2d9704fbb94b4aee2d650b"
+  },
+  "selection_split": "HAM val (1,532 rows); S56's declared score rule applied to COMB",
+  "session": "S65",
+  "title": "Combined per-band triage policy: S55 calibration -> frozen lambda -> S56 abstention",
+  "verdict_rule": {
+    "ADOPT": "primary SUPPORTED, non-inferiority NONINFERIOR, and the workload-matched <40 contrast (COMB - S56_matched) has CI lower bound > 0",
+    "REJECT-60plus": "SUPPORTED but not NONINFERIOR",
+    "REJECT-cost": "SUPPORTED and NONINFERIOR, but the gain does not survive matching S56's flag rate (it is bought by lambda's extra escalations)",
+    "REJECT-flat": "primary NOT_RESOLVED or POSITIVE_BELOW_MCID",
+    "REJECT-harm": "primary HARM"
+  }
+}

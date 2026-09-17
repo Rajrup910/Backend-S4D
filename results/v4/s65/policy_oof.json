@@ -1,0 +1,512 @@
+{
+  "lambda_by_band": {
+    "40-59": 0.74,
+    "60+": 0.33,
+    "<40": 0.26,
+    "unknown": 0.65,
+    "pooled": 0.65
+  },
+  "calibration": {
+    "per_band": "research/multical/results_oof/fit_state.json",
+    "global": "research/selective/results_oof/fit_state.json"
+  },
+  "policies": {
+    "S56_none@0": {
+      "view": "S56",
+      "kind": "none"
+    },
+    "LAM@0": {
+      "view": "LAM",
+      "kind": "none"
+    },
+    "COMB_none@0": {
+      "view": "COMB",
+      "kind": "none"
+    },
+    "S56@0.1": {
+      "view": "S56",
+      "kind": "band",
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.1,
+      "floor": 0.755,
+      "tau_band": {
+        "<40": 0.11195316590862914,
+        "40-59": 0.33746823826605044,
+        "60+": 0.5602639656950874
+      },
+      "tau_global": 0.5255812051114077,
+      "fit_counts": {
+        "<40": 312,
+        "40-59": 276,
+        "60+": 75,
+        "global_topup": 35
+      }
+    },
+    "COMB@0.1": {
+      "view": "COMB",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.1,
+      "floor": 0.865,
+      "tau_band": {
+        "<40": 0.0932536959756086,
+        "40-59": Infinity,
+        "60+": 1.2929871490788634
+      },
+      "tau_global": 1.2599533520288442,
+      "fit_counts": {
+        "<40": 638,
+        "40-59": 0,
+        "60+": 36,
+        "global_topup": 24
+      }
+    },
+    "COMB_global@0.1": {
+      "view": "COMB",
+      "kind": "global",
+      "arm": "global",
+      "score": "entropy",
+      "budget": 0.1,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.8797199140197576,
+      "fit_counts": {
+        "ALL": 698
+      }
+    },
+    "CAL_S56@0.1": {
+      "view": "CAL",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.1,
+      "floor": 0.775,
+      "tau_band": {
+        "<40": 0.15907442748616613,
+        "40-59": 0.7342262849972347,
+        "60+": 1.5290857513920004
+      },
+      "tau_global": 1.331274390468966,
+      "fit_counts": {
+        "<40": 369,
+        "40-59": 307,
+        "60+": 2,
+        "global_topup": 20
+      }
+    },
+    "LAM_S56@0.1": {
+      "view": "LAM",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.1,
+      "floor": 0.85,
+      "tau_band": {
+        "<40": 0.32141260259639104,
+        "40-59": Infinity,
+        "60+": 0.970937295363669
+      },
+      "tau_global": 1.4129915308394432,
+      "fit_counts": {
+        "<40": 407,
+        "40-59": 0,
+        "60+": 287,
+        "global_topup": 4
+      }
+    },
+    "S56@0.15": {
+      "view": "S56",
+      "kind": "band",
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.15,
+      "floor": 0.81,
+      "tau_band": {
+        "<40": 0.09642849734702785,
+        "40-59": 0.2763821998801379,
+        "60+": 0.4292930659374785
+      },
+      "tau_global": 0.42214507690510017,
+      "fit_counts": {
+        "<40": 343,
+        "40-59": 359,
+        "60+": 322,
+        "global_topup": 23
+      }
+    },
+    "COMB@0.15": {
+      "view": "COMB",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.15,
+      "floor": 0.875,
+      "tau_band": {
+        "<40": 0.0932536959756086,
+        "40-59": Infinity,
+        "60+": 1.0761234488514708
+      },
+      "tau_global": 0.9917492647539644,
+      "fit_counts": {
+        "<40": 638,
+        "40-59": 0,
+        "60+": 209,
+        "global_topup": 200
+      }
+    },
+    "COMB_global@0.15": {
+      "view": "COMB",
+      "kind": "global",
+      "arm": "global",
+      "score": "entropy",
+      "budget": 0.15,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.7641099541858053,
+      "fit_counts": {
+        "ALL": 1047
+      }
+    },
+    "CAL_S56@0.15": {
+      "view": "CAL",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.15,
+      "floor": 0.82,
+      "tau_band": {
+        "<40": 0.13378790059363893,
+        "40-59": 0.694180342850864,
+        "60+": 1.0775548241083408
+      },
+      "tau_global": 1.060798167282486,
+      "fit_counts": {
+        "<40": 448,
+        "40-59": 371,
+        "60+": 208,
+        "global_topup": 20
+      }
+    },
+    "LAM_S56@0.15": {
+      "view": "LAM",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.15,
+      "floor": 0.875,
+      "tau_band": {
+        "<40": 0.29000906530070036,
+        "40-59": Infinity,
+        "60+": 0.8121524629597984
+      },
+      "tau_global": 1.1793385404351366,
+      "fit_counts": {
+        "<40": 469,
+        "40-59": 0,
+        "60+": 543,
+        "global_topup": 35
+      }
+    },
+    "S56@0.2": {
+      "view": "S56",
+      "kind": "band",
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.2,
+      "floor": 0.855,
+      "tau_band": {
+        "<40": 0.07148993334109954,
+        "40-59": 0.20535960718218416,
+        "60+": 0.34395075797674346
+      },
+      "tau_global": 0.37250286262959076,
+      "fit_counts": {
+        "<40": 418,
+        "40-59": 478,
+        "60+": 498,
+        "global_topup": 2
+      }
+    },
+    "COMB@0.2": {
+      "view": "COMB",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.2,
+      "floor": 0.89,
+      "tau_band": {
+        "<40": 0.0733766604316051,
+        "40-59": Infinity,
+        "60+": 0.922051872591105
+      },
+      "tau_global": 0.9101398941811405,
+      "fit_counts": {
+        "<40": 802,
+        "40-59": 0,
+        "60+": 439,
+        "global_topup": 155
+      }
+    },
+    "COMB_global@0.2": {
+      "view": "COMB",
+      "kind": "global",
+      "arm": "global",
+      "score": "entropy",
+      "budget": 0.2,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.6657827258236079,
+      "fit_counts": {
+        "ALL": 1396
+      }
+    },
+    "CAL_S56@0.2": {
+      "view": "CAL",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.2,
+      "floor": 0.845,
+      "tau_band": {
+        "<40": 0.12588356092843184,
+        "40-59": 0.6396541676634728,
+        "60+": 0.9756626973013742
+      },
+      "tau_global": 0.8975645698601633,
+      "fit_counts": {
+        "<40": 483,
+        "40-59": 436,
+        "60+": 341,
+        "global_topup": 136
+      }
+    },
+    "LAM_S56@0.2": {
+      "view": "LAM",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.2,
+      "floor": 0.89,
+      "tau_band": {
+        "<40": 0.25588288750427246,
+        "40-59": Infinity,
+        "60+": 0.7252300499812563
+      },
+      "tau_global": 0.9305591497420255,
+      "fit_counts": {
+        "<40": 522,
+        "40-59": 0,
+        "60+": 713,
+        "global_topup": 161
+      }
+    },
+    "S56@0.25": {
+      "view": "S56",
+      "kind": "band",
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.25,
+      "floor": 0.88,
+      "tau_band": {
+        "<40": 0.052164898407408566,
+        "40-59": 0.1669438424306624,
+        "60+": 0.28293922328863796
+      },
+      "tau_global": 0.279070364020791,
+      "fit_counts": {
+        "<40": 526,
+        "40-59": 562,
+        "60+": 643,
+        "global_topup": 14
+      }
+    },
+    "COMB@0.25": {
+      "view": "COMB",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.25,
+      "floor": 0.89,
+      "tau_band": {
+        "<40": 0.0733766604316051,
+        "40-59": Infinity,
+        "60+": 0.922051872591105
+      },
+      "tau_global": 0.7861477126837737,
+      "fit_counts": {
+        "<40": 802,
+        "40-59": 0,
+        "60+": 439,
+        "global_topup": 504
+      }
+    },
+    "COMB_global@0.25": {
+      "view": "COMB",
+      "kind": "global",
+      "arm": "global",
+      "score": "entropy",
+      "budget": 0.25,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.541668824296338,
+      "fit_counts": {
+        "ALL": 1745
+      }
+    },
+    "CAL_S56@0.25": {
+      "view": "CAL",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.25,
+      "floor": 0.875,
+      "tau_band": {
+        "<40": 0.0932536959756086,
+        "40-59": 0.5548634159983831,
+        "60+": 0.8726731776486606
+      },
+      "tau_global": 0.8531739929354379,
+      "fit_counts": {
+        "<40": 638,
+        "40-59": 537,
+        "60+": 526,
+        "global_topup": 44
+      }
+    },
+    "LAM_S56@0.25": {
+      "view": "LAM",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.25,
+      "floor": 0.89,
+      "tau_band": {
+        "<40": 0.25588288750427246,
+        "40-59": Infinity,
+        "60+": 0.7252300499812563
+      },
+      "tau_global": 0.677847801733581,
+      "fit_counts": {
+        "<40": 522,
+        "40-59": 0,
+        "60+": 713,
+        "global_topup": 510
+      }
+    },
+    "S56@0.3": {
+      "view": "S56",
+      "kind": "band",
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.3,
+      "floor": 0.905,
+      "tau_band": {
+        "<40": 0.04493420243623669,
+        "40-59": 0.11866029651417276,
+        "60+": 0.22727022114159623
+      },
+      "tau_global": 0.2150284319340633,
+      "fit_counts": {
+        "<40": 588,
+        "40-59": 675,
+        "60+": 787,
+        "global_topup": 44
+      }
+    },
+    "COMB@0.3": {
+      "view": "COMB",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.3,
+      "floor": 0.9,
+      "tau_band": {
+        "<40": 0.06884846846291891,
+        "40-59": 0.4733253354582157,
+        "60+": 0.8517724788639192
+      },
+      "tau_global": 0.8275248510988392,
+      "fit_counts": {
+        "<40": 845,
+        "40-59": 628,
+        "60+": 569,
+        "global_topup": 52
+      }
+    },
+    "COMB_global@0.3": {
+      "view": "COMB",
+      "kind": "global",
+      "arm": "global",
+      "score": "entropy",
+      "budget": 0.3,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.4268790213792633,
+      "fit_counts": {
+        "ALL": 2094
+      }
+    },
+    "CAL_S56@0.3": {
+      "view": "CAL",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.3,
+      "floor": 0.895,
+      "tau_band": {
+        "<40": 0.06884846846291891,
+        "40-59": 0.47729914992910066,
+        "60+": 0.8294072108110427
+      },
+      "tau_global": 0.8262380246373595,
+      "fit_counts": {
+        "<40": 845,
+        "40-59": 624,
+        "60+": 613,
+        "global_topup": 12
+      }
+    },
+    "LAM_S56@0.3": {
+      "view": "LAM",
+      "kind": "band",
+      "arm": "band",
+      "score": "entropy",
+      "budget": 0.3,
+      "floor": 0.905,
+      "tau_band": {
+        "<40": 0.23721292593254842,
+        "40-59": 0.4828979669656545,
+        "60+": 0.6769968040928155
+      },
+      "tau_global": 0.6177407761665614,
+      "fit_counts": {
+        "<40": 553,
+        "40-59": 645,
+        "60+": 797,
+        "global_topup": 99
+      }
+    },
+    "S56_matched@0.305": {
+      "view": "S56",
+      "kind": "band",
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.305,
+      "floor": 0.91,
+      "tau_band": {
+        "<40": 0.04284405359348531,
+        "40-59": 0.11399307470330666,
+        "60+": 0.22198449051567493
+      },
+      "tau_global": 0.2122823217826577,
+      "fit_counts": {
+        "<40": 600,
+        "40-59": 691,
+        "60+": 805,
+        "global_topup": 33
+      }
+    }
+  }
+}

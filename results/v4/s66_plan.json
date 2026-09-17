@@ -1,0 +1,304 @@
+{
+  "session": "v4_s66",
+  "frozen_at": "2026-09-16T20:43:26.497349+00:00",
+  "git_head": "d8090d76ffc108367415827602559cd85e867eaa",
+  "question": "does a per-centre lambda (hierarchically shrunk) beat the frozen HAM lambda off HAM?",
+  "evaluation_surface": {
+    "primary": "manifest_v4 split=reserved, BCN rows (79 under-40 escalating lesions), deployed V1 ensemble, read once",
+    "descriptive": "reserved MSKCC rows (24 under-40 escalating lesions)",
+    "ham": "HAM has no reserved rows; HAM tables are dev-only",
+    "ham_test": "not read"
+  },
+  "arms": {
+    "A0": "argmax",
+    "P0": "frozen HAM 3-band lambda (comparator)",
+    "PC": "pooled over centres per band (attribution reference)",
+    "P1": "independent per centre, 30-positive gate -> PC",
+    "P2": "hierarchical, alpha = P/(P+tau), tau* = inf (primary)",
+    "P2r": "P2 with S58's router-predicted centre (router 'ham' -> HAM table)"
+  },
+  "tables": {
+    "A0": {
+      "ham": {
+        "<40": 0.0,
+        "40-59": 0.0,
+        "60+": 0.0,
+        "all": 0.0
+      },
+      "bcn20000": {
+        "<40": 0.0,
+        "40-59": 0.0,
+        "60+": 0.0,
+        "all": 0.0
+      },
+      "mskcc": {
+        "<40": 0.0,
+        "40-59": 0.0,
+        "60+": 0.0,
+        "all": 0.0
+      }
+    },
+    "P0": {
+      "ham": {
+        "<40": 0.26,
+        "40-59": 0.74,
+        "60+": 0.33,
+        "all": 0.65
+      },
+      "bcn20000": {
+        "<40": 0.26,
+        "40-59": 0.74,
+        "60+": 0.33,
+        "all": 0.65
+      },
+      "mskcc": {
+        "<40": 0.26,
+        "40-59": 0.74,
+        "60+": 0.33,
+        "all": 0.65
+      }
+    },
+    "PC": {
+      "ham": {
+        "<40": 0.66,
+        "40-59": 0.69,
+        "60+": 0.32,
+        "all": 0.57
+      },
+      "bcn20000": {
+        "<40": 0.66,
+        "40-59": 0.69,
+        "60+": 0.32,
+        "all": 0.57
+      },
+      "mskcc": {
+        "<40": 0.66,
+        "40-59": 0.69,
+        "60+": 0.32,
+        "all": 0.57
+      }
+    },
+    "P1": {
+      "ham": {
+        "<40": 0.26,
+        "40-59": 0.74,
+        "60+": 0.33,
+        "all": 0.65
+      },
+      "bcn20000": {
+        "<40": 0.66,
+        "40-59": 0.58,
+        "60+": 0.26,
+        "all": 0.49
+      },
+      "mskcc": {
+        "<40": 0.66,
+        "40-59": 0.45,
+        "60+": 0.43,
+        "all": 0.54
+      }
+    },
+    "P2": {
+      "ham": {
+        "<40": 0.66,
+        "40-59": 0.69,
+        "60+": 0.32,
+        "all": 0.57
+      },
+      "bcn20000": {
+        "<40": 0.66,
+        "40-59": 0.58,
+        "60+": 0.26,
+        "all": 0.57
+      },
+      "mskcc": {
+        "<40": 0.66,
+        "40-59": 0.5299999999999999,
+        "60+": 0.32,
+        "all": 0.57
+      }
+    }
+  },
+  "primary_endpoint": {
+    "quantity": "BCN reserved under-40 escalation sensitivity (image-level), P2 - P0",
+    "interval": "lesion-grouped (group_id) paired percentile bootstrap, 2000 resamples, seed 42, resampling lesions within BCN under-40",
+    "p_value": "two-sided bootstrap p; family = {P2 vs P0 on BCN}, a single member, no Holm",
+    "always_quoted_with": "BCN under-40 referral P2 vs P0 and its paired delta"
+  },
+  "secondary_descriptive": [
+    "P1 - P0, PC - P0, P2 - PC, P2r - P0 on BCN under-40 sensitivity",
+    "per centre x band: sensitivity, specificity, referral, NNB (pi 0.01/0.03/0.05)",
+    "Macro-F1 and balanced accuracy per centre",
+    "MSKCC: every quantity above, descriptive only (24 lesions)"
+  ],
+  "gates": {
+    "1_primary": "delta >= 0.1 AND 95% CI lower bound > 0 AND p < 0.05; directional if delta >= 0.1 with CI including 0",
+    "2_specificity": "BCN reserved, per band: P2 specificity >= P0's - 0.02; the 0.85 floor is reported, not relaxed (P0 already misses it at 40-59 on reserved, S57a)",
+    "3_noninferiority": "BCN Macro-F1 and balanced accuracy: lower 95% bound of (P2 - P0) > -0.02; BCN 40-59 and 60+ P2 sensitivity >= P0's Clopper-Pearson lower bound",
+    "4_referral": "BLOWOUT if BCN under-40 referral P2 / P0 > 1.5",
+    "5_router": "BCN under-40 sensitivity P2r - P0: 95% CI lower bound > 0 (the gain survives routing)"
+  },
+  "verdict_logic": [
+    "ADOPT: gates 1-5 pass",
+    "REJECT-cost: gate 1 passes and gate 4 BLOWOUT",
+    "PROMISING: gate 1 directional, gates 2, 3, 5 pass, no BLOWOUT (P0 stays deployed)",
+    "REJECT-router: gates 1-4 pass, gate 5 fails",
+    "REJECT-flat: otherwise"
+  ],
+  "on_adopt": "freeze tables into research/agerule/results_oof/lambda_by_centre.json and add frozen_params.load_lambda_by_centre() as the only loader (S65 may then take P2)",
+  "caveat_declared": "a BCN gain compensates for V1's poor BCN transfer (Macro-F1 0.402); it does not fix ranking -- no lambda beats a centre's own ROC curve (S64)",
+  "stated_before_the_read": {
+    "tau_star_is_inf": "the tau grid is flat within 1 SE, so the declared rule takes full shrinkage: P2 = PC except where the per-centre floor repair lowers a band. The data do not support a per-centre deviation beyond what the floor forces.",
+    "bcn_under40_is_floor_bound": "BCN's local under-40 lambda (0.66) sits where the 0.85 specificity floor binds, not at the cost optimum; S14's 0.91 had no floor.",
+    "p0_cheapest_by_breaking_the_floor": "P0 has the lowest CV cost only because it is not floor-held: its cross-fitted BCN 40-59 specificity is ~0.75. Cost across arms with and without the floor is not like-for-like.",
+    "gate4_expected_to_fire": "cross-fitted BCN under-40 referral P0 ~0.062 vs P2 ~0.199 (ratio ~3.2). The 1.5x rule is S57b's, kept unchanged; P0's base referral is below BCN's under-40 prevalence (0.119), so the ratio is harsh here. Extra referrals per extra caught case is reported beside it, descriptive.",
+    "p2_moves_ham_too": "with tau* = inf HAM's under-40 lambda becomes the pooled 0.66 (frozen 0.26); cross-fitted HAM under-40 referral 0.076 -> 0.153. HAM has no reserved rows, so this is a dev-only finding S65 must weigh.",
+    "dev_crossfit": [
+      {
+        "centre": "ham",
+        "arm": "A0",
+        "sensitivity|<40": 0.546875,
+        "referral_rate|<40": 0.0523123578468536
+      },
+      {
+        "centre": "ham",
+        "arm": "P0",
+        "sensitivity|<40": 0.625,
+        "referral_rate|<40": 0.0758150113722517
+      },
+      {
+        "centre": "ham",
+        "arm": "PC",
+        "sensitivity|<40": 0.703125,
+        "referral_rate|<40": 0.1531463229719484
+      },
+      {
+        "centre": "ham",
+        "arm": "P1",
+        "sensitivity|<40": 0.609375,
+        "referral_rate|<40": 0.0727824109173616
+      },
+      {
+        "centre": "ham",
+        "arm": "P2",
+        "sensitivity|<40": 0.703125,
+        "referral_rate|<40": 0.1531463229719484
+      },
+      {
+        "centre": "bcn20000",
+        "arm": "A0",
+        "sensitivity|<40": 0.188034188034188,
+        "referral_rate|<40": 0.037716615698267
+      },
+      {
+        "centre": "bcn20000",
+        "arm": "P0",
+        "sensitivity|<40": 0.2649572649572649,
+        "referral_rate|<40": 0.0621814475025484
+      },
+      {
+        "centre": "bcn20000",
+        "arm": "PC",
+        "sensitivity|<40": 0.5811965811965812,
+        "referral_rate|<40": 0.2069317023445464
+      },
+      {
+        "centre": "bcn20000",
+        "arm": "P1",
+        "sensitivity|<40": 0.5641025641025641,
+        "referral_rate|<40": 0.1967380224260958
+      },
+      {
+        "centre": "bcn20000",
+        "arm": "P2",
+        "sensitivity|<40": 0.5641025641025641,
+        "referral_rate|<40": 0.1987767584097859
+      },
+      {
+        "centre": "mskcc",
+        "arm": "A0",
+        "sensitivity|<40": 0.0833333333333333,
+        "referral_rate|<40": 0.0237529691211401
+      },
+      {
+        "centre": "mskcc",
+        "arm": "P0",
+        "sensitivity|<40": 0.1666666666666666,
+        "referral_rate|<40": 0.0380047505938242
+      },
+      {
+        "centre": "mskcc",
+        "arm": "PC",
+        "sensitivity|<40": 0.4166666666666667,
+        "referral_rate|<40": 0.1235154394299287
+      },
+      {
+        "centre": "mskcc",
+        "arm": "P1",
+        "sensitivity|<40": 0.4166666666666667,
+        "referral_rate|<40": 0.1235154394299287
+      },
+      {
+        "centre": "mskcc",
+        "arm": "P2",
+        "sensitivity|<40": 0.4166666666666667,
+        "referral_rate|<40": 0.1235154394299287
+      }
+    ]
+  },
+  "deviations": {
+    "D1": "tau by lesion-grouped 5-fold CV within centres (centre-equal-weighted held-out cost, 1-SE toward more shrinkage), not leave-one-centre-out: a held-out centre has no local estimate, so every tau collapses to PC there.",
+    "D2": "HAM folds use S57a's nested panels (inner cross-fit calibration); BCN/MSKCC need none (HAM-fit map).",
+    "D3": "alpha counts escalating images (S5/A7 unit); BCN has ~3.3 images per lesion; tau absorbs the scale.",
+    "D4": "scc rows lack S13 V1 probabilities and are not fitting data; reserved includes S54's 146 top-ups.",
+    "D5": "V4 val has zero under-40 escalating images: descriptive older-band check only.",
+    "D6": "V1 ensemble probabilities only; S58's pooled head would need cross-fitted outputs (not built).",
+    "D7": "dev ablation cross-fitted at tau*, which was chosen on the same folds (mildly optimistic for P2)."
+  },
+  "inputs": {
+    "lambda_by_centre": {
+      "path": "results/v4/s66/lambda_by_centre.json",
+      "sha256": "93a28761d879bfbe062ec048cf82852532199d6d1b9dc54010c5eba285ee4fe1"
+    },
+    "ablation_dev": {
+      "path": "results/v4/s66/ablation_dev.csv",
+      "sha256": "c4f80f220ca2a4dc516bde8c9c0935acd5e77338facf75147a3940ef05574cfe"
+    },
+    "manifest_v4": {
+      "path": "ml/data/manifest_v4.csv",
+      "sha256": "43be63926df1bb6dbe18d11937f70740ffe610495e12381b2dbfe87ff3f8c2f9"
+    },
+    "frozen_band_lambda": {
+      "path": "research/agerule/results_oof/age_rule_lambda.json",
+      "sha256": "737beac72b84114d4498d078ce21127ad850f5dbcb69f58b3323a32b28e2b84e"
+    },
+    "deployed_dirichlet": {
+      "path": "research/selective/results_oof/fit_state.json",
+      "sha256": "721f7442ce642b747b03865da8582391964bfcb39ebc9b082bba16f4106913b7"
+    },
+    "lambda_rule_py": {
+      "path": "research/agerule/lambda_rule.py",
+      "sha256": "7d1b44becbb65561c59a246325319679decaa05a09de6b6450065823ff6f62f9"
+    },
+    "s58_router_state": {
+      "path": "results/v4/s58/fit_state.npz",
+      "sha256": "8be3745906af0972b179fe0d5b5e4586c0627fb92dfe280fe41e7ced82b1f9f9"
+    },
+    "s58_reserved_features": {
+      "path": "research/v4/features/convnext_tiny_s58_reserved.npz",
+      "sha256": "2091297ec04ed18209e75bffcc955962f32ad853f28157807e654343a607bd8d"
+    },
+    "v1_bcn20000": {
+      "path": "results/external/predictions/ensemble_dirichlet_bcn20000.csv",
+      "sha256": "ee427b9d762e898d10f6ad6fbca34ae8ecd536dba58f0f5b9e6896534cfa9d31"
+    },
+    "v1_mskcc": {
+      "path": "results/external/predictions/ensemble_dirichlet_mskcc.csv",
+      "sha256": "4f8aaccaeea369e126cc06849896bcda50c8e43381ff491326f69afe063e16e0"
+    },
+    "v1_topup_ensemble_dirichlet_bcn20000": {
+      "path": "results/v4/s54/v1_topup/ensemble_dirichlet_bcn20000.csv",
+      "sha256": "fd8399540c8fe8473716753df2d7f27450e5c07aa918e0122d5e8f9c18f4f4d2"
+    }
+  }
+}

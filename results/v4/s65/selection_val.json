@@ -1,0 +1,67 @@
+{
+  "selected": "entropy",
+  "eligible": [
+    "msp",
+    "margin",
+    "entropy"
+  ],
+  "table": {
+    "msp": {
+      "mean_system_sens_all": 0.888961038961039,
+      "mean_retained_macro_f1": 0.8464343316792806,
+      "mean_referral_rate": 0.1845953002610966,
+      "descriptive_mean_system_sens_u40": 1.0,
+      "oof_floors": {
+        "0.1": 0.86,
+        "0.15": 0.87,
+        "0.2": 0.89,
+        "0.25": 0.89,
+        "0.3": 0.9
+      }
+    },
+    "margin": {
+      "mean_system_sens_all": 0.8883116883116884,
+      "mean_retained_macro_f1": 0.8429489400545289,
+      "mean_referral_rate": 0.1866840731070496,
+      "descriptive_mean_system_sens_u40": 1.0,
+      "oof_floors": {
+        "0.1": 0.86,
+        "0.15": 0.865,
+        "0.2": 0.89,
+        "0.25": 0.89,
+        "0.3": 0.905
+      }
+    },
+    "entropy": {
+      "mean_system_sens_all": 0.8948051948051947,
+      "mean_retained_macro_f1": 0.847571480959387,
+      "mean_referral_rate": 0.1744125326370757,
+      "descriptive_mean_system_sens_u40": 1.0,
+      "oof_floors": {
+        "0.1": 0.865,
+        "0.15": 0.875,
+        "0.2": 0.89,
+        "0.25": 0.89,
+        "0.3": 0.9
+      }
+    },
+    "esc_risk": {
+      "mean_system_sens_all": 0.940909090909091,
+      "mean_retained_macro_f1": 0.776046292638884,
+      "mean_referral_rate": 0.17428198433420367,
+      "descriptive_mean_system_sens_u40": 1.0,
+      "oof_floors": {
+        "0.1": 0.875,
+        "0.15": 0.905,
+        "0.2": 0.935,
+        "0.25": 0.95,
+        "0.3": 0.965
+      }
+    }
+  },
+  "rule": "The rule, declared before val was scored (and restated in the plan):\n\n    Among the four scores, under the **band** arm, pick the highest val **all-ages** system\n    escalation sensitivity averaged over the five budgets -- all-ages because val has 22\n    under-40 escalating cases and S48 retires <=25-positive quantities from any decision --\n    among scores whose mean retained Macro-F1 is within ``F1_NONINFERIORITY`` of the best\n    score's. Ties (to 1e-9) go to the earlier name in ``SCORES``.",
+  "s56_score": "msp",
+  "s56_selection_sha256": "4cbb63bc607c46598d9e13a51f6a1fbd2998c7472f8e55624237d652af42e276",
+  "matched_budget": 0.305,
+  "matched_target_flag_rate": 0.3823234493625555
+}

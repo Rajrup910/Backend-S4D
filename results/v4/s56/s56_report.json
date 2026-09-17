@@ -1,0 +1,174 @@
+{
+  "plan_sha256": "4e142ad2c423a0ecdc9b0c36e6516be519701f9e9fcc4156d508775b4ff98102",
+  "score": "msp",
+  "reserved": {
+    "cohort": {
+      "images": 4733,
+      "groups": 1992,
+      "under40_escalating_lesions": 104,
+      "under40_escalating_images": 279,
+      "scc_topup_images": 146
+    },
+    "sources": {
+      "results/external/predictions/ensemble_dirichlet_bcn20000.csv": 3710,
+      "results/external/predictions/ensemble_dirichlet_mskcc.csv": 877,
+      "results/v4/s54/v1_topup/ensemble_dirichlet_bcn20000.csv": 146
+    },
+    "calibration_max_abs_drift": 1.1102230246251565e-15
+  },
+  "floors_oof": {
+    "0.1": 0.755,
+    "0.15": 0.81,
+    "0.2": 0.855,
+    "0.25": 0.88,
+    "0.3": 0.905
+  },
+  "primary": {
+    "budget": 0.2,
+    "contrast": "band-global",
+    "band": "<40",
+    "stat": "system_sens",
+    "delta": 0.15412186379928317,
+    "ci_lo": 0.10442831590533848,
+    "ci_hi": 0.21558780398386893,
+    "outcome": "SUPPORTED",
+    "mcid": 0.1
+  },
+  "floor_transfer": [
+    {
+      "budget": 0.1,
+      "band": "<40",
+      "nominal_floor": 0.755,
+      "realised": 0.7132616487455197,
+      "ci_lo": 0.5914264237707818,
+      "ci_hi": 0.811265574991445,
+      "status": "below_point_within_ci"
+    },
+    {
+      "budget": 0.1,
+      "band": "40-59",
+      "nominal_floor": 0.755,
+      "realised": 0.6086956521739131,
+      "ci_lo": 0.5312414772727273,
+      "ci_hi": 0.6835855605692467,
+      "status": "violated"
+    },
+    {
+      "budget": 0.1,
+      "band": "60+",
+      "nominal_floor": 0.755,
+      "realised": 0.5063025210084033,
+      "ci_lo": 0.46601015341288077,
+      "ci_hi": 0.5491987648230691,
+      "status": "violated"
+    },
+    {
+      "budget": 0.15,
+      "band": "<40",
+      "nominal_floor": 0.81,
+      "realised": 0.7311827956989247,
+      "ci_lo": 0.6132717993951613,
+      "ci_hi": 0.8265012847257556,
+      "status": "below_point_within_ci"
+    },
+    {
+      "budget": 0.15,
+      "band": "40-59",
+      "nominal_floor": 0.81,
+      "realised": 0.6555183946488294,
+      "ci_lo": 0.580023182199882,
+      "ci_hi": 0.728725658131987,
+      "status": "violated"
+    },
+    {
+      "budget": 0.15,
+      "band": "60+",
+      "nominal_floor": 0.81,
+      "realised": 0.6043417366946778,
+      "ci_lo": 0.5658738670451247,
+      "ci_hi": 0.6449867926353074,
+      "status": "violated"
+    },
+    {
+      "budget": 0.2,
+      "band": "<40",
+      "nominal_floor": 0.855,
+      "realised": 0.7634408602150538,
+      "ci_lo": 0.6553672578698116,
+      "ci_hi": 0.8525933935490912,
+      "status": "violated"
+    },
+    {
+      "budget": 0.2,
+      "band": "40-59",
+      "nominal_floor": 0.855,
+      "realised": 0.7040133779264214,
+      "ci_lo": 0.6312993159839609,
+      "ci_hi": 0.7709050480138532,
+      "status": "violated"
+    },
+    {
+      "budget": 0.2,
+      "band": "60+",
+      "nominal_floor": 0.855,
+      "realised": 0.6743697478991597,
+      "ci_lo": 0.6383707489449287,
+      "ci_hi": 0.7129931018050374,
+      "status": "violated"
+    },
+    {
+      "budget": 0.25,
+      "band": "<40",
+      "nominal_floor": 0.88,
+      "realised": 0.8100358422939068,
+      "ci_lo": 0.7147756108407891,
+      "ci_hi": 0.8866731448763251,
+      "status": "below_point_within_ci"
+    },
+    {
+      "budget": 0.25,
+      "band": "40-59",
+      "nominal_floor": 0.88,
+      "realised": 0.7207357859531772,
+      "ci_lo": 0.6497292627233364,
+      "ci_hi": 0.7870582301493166,
+      "status": "violated"
+    },
+    {
+      "budget": 0.25,
+      "band": "60+",
+      "nominal_floor": 0.88,
+      "realised": 0.7247899159663865,
+      "ci_lo": 0.6888751868460389,
+      "ci_hi": 0.7602577622587698,
+      "status": "violated"
+    },
+    {
+      "budget": 0.3,
+      "band": "<40",
+      "nominal_floor": 0.905,
+      "realised": 0.8315412186379928,
+      "ci_lo": 0.7456520649558942,
+      "ci_hi": 0.9006421232876712,
+      "status": "violated"
+    },
+    {
+      "budget": 0.3,
+      "band": "40-59",
+      "nominal_floor": 0.905,
+      "realised": 0.7759197324414716,
+      "ci_lo": 0.7090121296269513,
+      "ci_hi": 0.8360451611565201,
+      "status": "violated"
+    },
+    {
+      "budget": 0.3,
+      "band": "60+",
+      "nominal_floor": 0.905,
+      "realised": 0.7878151260504201,
+      "ci_lo": 0.7543363702750967,
+      "ci_hi": 0.8186316768086545,
+      "status": "violated"
+    }
+  ]
+}

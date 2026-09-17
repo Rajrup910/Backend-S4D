@@ -1,0 +1,22 @@
+{
+  "cohort": "manifest_v4 split=reserved (S57b gates)",
+  "plan": "results/v4/s57b_plan.json",
+  "plan_sha256": "e00aafd837e62d74a2d25688a298a3987701d337f3cf4ab8e83af72385d1bd24",
+  "executions": [
+    {
+      "execution": 1,
+      "status": "completed",
+      "started_at": "2026-09-16T19:47:05.761441+00:00",
+      "rerun_reason": null,
+      "git_head": "d8090d76ffc108367415827602559cd85e867eaa",
+      "completed_at": "2026-09-16T19:47:34.723943+00:00",
+      "verdict": "REJECT-cost",
+      "items": {
+        "results/v4/lambda_verdict.json": "bab74ab5a78e23c4de7f5cfce23d2c00839ded94caf064d9136af801873df395",
+        "results/v4/lambda_ablation.csv": "6a85882df7eee5d94b2677292c369984d2c54092e7f48ec4a0083e37ce846330",
+        "paper/tables/lambda_ablation.tex": "4ea720b1b9d10d36a6076c9db4e38b8c2167be7cf91f4af326d94e36508df939",
+        "results/v4/s57b/ablation_reserved.csv": "4923830e5e6bccaf101e7928cb7eb55ca6a5dfbc2d52ecbbe08660200bf98848"
+      }
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "panel": "reserved",
+  "lambda_by_band": {
+    "40-59": 0.74,
+    "60+": 0.33,
+    "<40": 0.26,
+    "unknown": 0.65,
+    "pooled": 0.65
+  },
+  "min_specificity": 0.85,
+  "rows": [
+    {
+      "arm": "A0",
+      "band": "all",
+      "negatives": 2393,
+      "specificity": 0.9573756790639365,
+      "cp": [
+        0.9484946571597803,
+        0.9651136957365961
+      ]
+    },
+    {
+      "arm": "A0",
+      "band": "<40",
+      "negatives": 699,
+      "specificity": 0.9814020028612304,
+      "cp": [
+        0.9684068263905939,
+        0.9900611154183283
+      ]
+    },
+    {
+      "arm": "A0",
+      "band": "40-59",
+      "negatives": 927,
+      "specificity": 0.9784250269687162,
+      "cp": [
+        0.966875124276367,
+        0.9867728344058333
+      ]
+    },
+    {
+      "arm": "A0",
+      "band": "60+",
+      "negatives": 683,
+      "specificity": 0.9033674963396779,
+      "cp": [
+        0.8787016846972165,
+        0.9244753910964207
+      ]
+    },
+    {
+      "arm": "A1",
+      "band": "all",
+      "negatives": 2393,
+      "specificity": 0.8332636857501045,
+      "cp": [
+        0.8177148180466178,
+        0.8479920402662843
+      ]
+    },
+    {
+      "arm": "A1",
+      "band": "<40",
+      "negatives": 699,
+      "specificity": 0.9599427753934192,
+      "cp": [
+        0.9426243535024148,
+        0.9732200857713437
+      ]
+    },
+    {
+      "arm": "A1",
+      "band": "40-59",
+      "negatives": 927,
+      "specificity": 0.7475728155339806,
+      "cp": [
+        0.7183097095074662,
+        0.7752532971510286
+      ]
+    },
+    {
+      "arm": "A1",
+      "band": "60+",
+      "negatives": 683,
+      "specificity": 0.8272327964860908,
+      "cp": [
+        0.7967515572826317,
+        0.854853142625811
+      ]
+    }
+  ],
+  "deployed_40_59": {
+    "arm": "A1",
+    "band": "40-59",
+    "negatives": 927,
+    "specificity": 0.7475728155339806,
+    "cp": [
+      0.7183097095074662,
+      0.7752532971510286
+    ],
+    "verdict": "FLOOR VIOLATED -- a finding about the deployed rule, not a reason to relax the floor"
+  },
+  "not_computed": "no sensitivity of any kind (S57 must not select on reserved)",
+  "panel_meta": {
+    "cohort": {
+      "images": 4733,
+      "groups": 1992,
+      "under40_escalating_lesions": 104,
+      "under40_escalating_images": 279,
+      "scc_topup_images": 146
+    },
+    "sources": {
+      "results/external/predictions/ensemble_dirichlet_bcn20000.csv": 3710,
+      "results/external/predictions/ensemble_dirichlet_mskcc.csv": 877,
+      "results/v4/s54/v1_topup/ensemble_dirichlet_bcn20000.csv": 146
+    },
+    "calibration_max_abs_drift": 1.1102230246251565e-15
+  }
+}

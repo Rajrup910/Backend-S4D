@@ -186,5 +186,11 @@
     "sha256": "cd72a53b7502a70a644bc198b0fe3dbee3fafd04ea1f3abd91105b809d940984",
     "bytes": 7039,
     "registered_at": "2026-09-14T14:25:22.655730+00:00"
+  },
+  "analysis_plan_v4": {
+    "path": "results/v4/analysis_plan_v4.json",
+    "sha256": "bd320319e1d9fff67980774cc861b4658b4e83f0daa0d59200d888537f521ecf",
+    "bytes": 6567,
+    "registered_at": "2026-09-17T11:21:20.309813+00:00"
   }
 }

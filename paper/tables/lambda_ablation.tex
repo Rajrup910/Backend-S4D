@@ -1,0 +1,22 @@
+\begin{table*}[t]
+\centering
+\caption{Age-resolution ablation for the escalation bias $\lambda(\mathrm{age})$. Development columns are cross-fitted HAM OOF (nested: calibrator, hyperparameters and $\lambda$ never see the scored fold); reserved columns are the BCN\,+\,MSKCC cohort, read once. Sens.\ = escalation sensitivity; Ref.\ = share referred (called escalating); Spec.\ = lowest per-band escalation specificity. $\dagger$ confirmatory family.}
+\label{tab:lambda_ablation}
+\small
+\begin{tabular}{llrrrrrrrr}
+\toprule
+ & & \multicolumn{3}{c}{Development (cross-fitted OOF)} & \multicolumn{5}{c}{Reserved cohort} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-10}
+Arm & Mechanism & Cost & $<$40 Sens. & $<$40 Ref. & $<$40 Sens. & $<$40 Ref. & All Sens. & Macro-F1 & Spec. \\
+\midrule
+A0 & argmax & 0.616 & 0.547 & 0.052 & 0.341 & 0.110 & 0.392 & 0.4108 & 0.903 \\
+A1 & frozen 3-band & 0.398 & 0.609 & 0.073 & 0.409 & 0.145 & 0.579 & 0.4452 & 0.748 \\
+A2 & 5-year, unsmoothed & 0.431 & 0.688 & 0.148 & 0.513 & 0.225 & 0.561 & 0.4414 & 0.784 \\
+A3$^\dagger$ & kernel & 0.406 & 0.703 & 0.149 & 0.616 & 0.278 & 0.598 & 0.4487 & 0.817 \\
+A4 & linear & 0.438 & 0.656 & 0.103 & 0.487 & 0.189 & 0.542 & 0.4438 & 0.826 \\
+A5 & quadratic & 0.417 & 0.625 & 0.077 & 0.477 & 0.171 & 0.560 & 0.4440 & 0.824 \\
+A6 & P-spline & 0.411 & 0.641 & 0.121 & 0.477 & 0.173 & 0.577 & 0.4486 & 0.807 \\
+A7$^\dagger$ & shrunk 5-year & 0.417 & 0.641 & 0.121 & 0.477 & 0.173 & 0.575 & 0.4482 & 0.807 \\
+\bottomrule
+\end{tabular}
+\end{table*}

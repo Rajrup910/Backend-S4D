@@ -1,0 +1,20 @@
+{
+  "images": "60 manifest_v4 train images, random_state=0",
+  "clipped": "fraction of pixels with any channel >= 255",
+  "mean": {
+    "input_mean": 149.3009530773168,
+    "input_clipped": 0.004252077332044496,
+    "old_buggy_mean": 217.98788661070006,
+    "old_buggy_clipped": 0.722575730211995,
+    "fixed_mean": 149.2980748251419,
+    "fixed_clipped": 0.003990767956983539
+  },
+  "median": {
+    "input_mean": 157.258512345679,
+    "input_clipped": 0.0,
+    "old_buggy_mean": 234.28894033663715,
+    "old_buggy_clipped": 0.787105785228588,
+    "fixed_mean": 157.97986918306702,
+    "fixed_clipped": 0.0
+  }
+}
