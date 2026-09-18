@@ -1,0 +1,63 @@
+{
+  "session": "S61",
+  "built_from": "development data only; no reserved or test read",
+  "mahalanobis_in_domain": {
+    "median": 485.08113936059794,
+    "p95": 7097.728603195109
+  },
+  "mahalanobis_pad_anchor": {
+    "median": 8717.0,
+    "source": "research/xdomain/results/mahalanobis_shift.json (S8b)",
+    "note": "the scale a genuine modality shift reaches, for calibrating the ratio thresholds"
+  },
+  "age_histogram_fit_population": {
+    "bands": [
+      "<40",
+      "40-59",
+      "60+"
+    ],
+    "counts": [
+      2721.0,
+      5825.0,
+      6497.0
+    ],
+    "source": "manifest_v4 train split -- the population the frozen 3-band lambda was fit against"
+  },
+  "band_coverage_reference": {
+    "per_band": {
+      "40-59": 0.8249180327868852,
+      "60+": 0.7792515395547134,
+      "<40": 0.8537832310838446
+    },
+    "aggregate_coverage": 0.6141981829706318,
+    "source": "results/v4/s59/s59_report.json",
+    "note": "S59's reserved measurement of the deployed stack; the reference a live window's coverage is compared against"
+  },
+  "archive_probe_reference": {
+    "features": "research/selective/features/convnext_tiny_train.npz",
+    "n": 6981,
+    "note": "the window is probed against these rows"
+  },
+  "thresholds": {
+    "archive_probe_auc": {
+      "warn": 0.7,
+      "alert": 0.85,
+      "reading": "AUC of separating the window from the training archives; 0.5 is indistinguishable"
+    },
+    "mahalanobis_median_ratio": {
+      "warn": 2.0,
+      "alert": 5.0,
+      "reading": "window median / frozen in-domain median; S8b measured 18x between HAM val and PAD"
+    },
+    "band_coverage_drop": {
+      "warn": 0.05,
+      "alert": 0.1,
+      "reading": "largest per-band drop in realised coverage against the frozen reference"
+    },
+    "age_histogram_js": {
+      "warn": 0.1,
+      "alert": 0.2,
+      "reading": "Jensen-Shannon distance between the window's age-band histogram and the fit population's"
+    }
+  }
+}

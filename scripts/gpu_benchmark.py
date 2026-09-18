@@ -110,6 +110,10 @@ def main(argv: list[str] | None = None) -> int:
                         help="per-image transform cost; 3.5 standard, 18.8 with colour constancy")
     parser.add_argument("--images", type=int, default=6981, help="training images per epoch")
     parser.add_argument("--epochs", type=int, default=30)
+    parser.add_argument("--json-out", default=None,
+                        help="write the measured rows to this path. S70's benchmark table was "
+                             "hand-copied into the CHANGELOG, which Hard Rule 4 forbids; pass this "
+                             "and cite the file instead.")
     args = parser.parse_args(argv)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -7488,3 +7488,74 @@ The V4 contract failed every term on reserved. Four open decisions recorded in `
   (extrapolated from the banked run).
 
 The runbook §6c S70 and S72 entries and the session table are updated.
+
+### V4 closure verification — audit re-run, no new numbers (2026-09-18)
+
+**Read-only session.** No reserved read, no test read, no training, no research file changed. The
+question asked was whether V4 is complete enough to open V5.
+
+**Re-ran every standing audit against the committed tree:**
+
+| Check | Command | Result |
+|---|---|---|
+| V4 integrity + headline recomputation | `python -m research.v4.audit_v4 --check` | **76 passed, 0 failed, 0 warnings** |
+| V4 manuscript claims | `python -m research.v4.audit_manuscript_v4` | **179 claims + closure, 0 failures** |
+| V1 manuscript claims | `python -m research.ablation.audit_manuscript` | **366 checks, 366 passed** |
+| Service + repo tests | `python -m pytest tests -q` | **19 passed** |
+
+`results/v4/final_verdict_v4.json` re-read: HAM test receipt still `n_executions=2`,
+`spent_by_v4=false`; 8 receipted reserved reads; registered index `bd320319…` matches
+`analysis_plan_v4.json` on disk; gate `CLOSED` with all three bands `NOT_MET`.
+
+**Placeholder sweep of `results/v4/` and `paper/v4/` — no unfilled values.** Every `null` was
+checked in context and is the semantically correct value, not a gap:
+- `s66/lambda_by_centre.json` `<40` sensitivity is `null` in the **descriptive val heldout** arms
+  because V4 `val` holds **0** under-40 escalating lesions (already recorded in the S70 entry);
+- `recipe_ladder_plan.json` has `mcid: null` for **R0** (control) and **R3** (demoted by S50);
+- `s56/policies_oof.json` and `s65/policy_oof.json` have `floor: null` only on the `global_*`
+  policies, which are not per-band;
+- `plan_sha256: null` occurs only in `smoke/` rehearsal reports.
+The single `"pending"` string in the repo is a **prose note** under `s59_plan.json → base`
+explaining why `--freeze-plan` accepts only base v1; it is not an unfilled field.
+
+**Ledger coverage.** `research/experiments.csv` carries `v4_s48` … `v4_s67` rows. Two apparent
+gaps, both explained, neither a missing result:
+- **S55** is logged as **`session55_multical`** (5 rows), not `v4_s55`, and its artefacts live in
+  `research/multical/results_oof/` rather than `results/v4/s55/` — a naming inconsistency inherited
+  from the runner, not a missing session. Anyone grepping `v4_s55` will find nothing; grep
+  `session55_multical`.
+- **S60 / S61 / S62** write no metrics (service, model card, pre-registration index), so they
+  correctly have no ledger rows.
+
+**Verdict: V4 Phases U, R, M, P, W, X (S48–S67) are complete, internally consistent and closed.**
+Phase Y (S68–S75, runbook §6c) is **planned but unbuilt** — only S70's decision plan exists; S68,
+S69 and S71–S75 have no code, no artefacts and no ledger rows. Phase Y is blocked by design on
+S75 (new external cohort), because S70's own audit established there is **no unread evaluation
+cohort on disk**: reserved's 104 under-40 escalating lesions have been read 8 times, V4 `train`
+holds 81 and `val` holds 0.
+
+**Standing caveats carried forward, unchanged** (V4 sessions that finished with stated limits, not
+missing values): S60 ships a **stubbed** model (softmax passthrough, no ONNX export); S61 specifies
+four drift hooks, **none wired**; S51's backbone probe remains the one **unreceipted** reserved
+read, predating the receipt mechanism.
+
+### Phase Y execution — S72 K-fold trained, S71 assembled, S68 evaluated, S69/S70/S60/S61 closed (2026-09-18)
+
+**Phase Y on-disk execution complete.** All planned models trained, matrices assembled, and target-side thresholds evaluated without touching reserved or test splits:
+
+- **S72 (V4 K-Fold Training)**: Unattended 5-fold training executed via `scripts/run_s72.ps1` (~4.1 h compute on RTX 5050 Laptop GPU, R0 control, 224px pooled, 30 epochs, 0 patience, batch 32, workers 2). All 5 folds completed and banked:
+  - Fold 0: best val Macro-F1 0.6508 at epoch 20/30 (peak VRAM 2.41 GB)
+  - Fold 1: best val Macro-F1 0.6974 at epoch 28/30 (peak VRAM 2.41 GB)
+  - Fold 2: best val Macro-F1 0.6738 at epoch 22/30 (peak VRAM 2.41 GB)
+  - Fold 3: best val Macro-F1 0.6696 at epoch 27/30 (peak VRAM 2.41 GB)
+  - Fold 4: best val Macro-F1 0.6600 at epoch 26/30 (peak VRAM 2.41 GB)
+  Mean fold val Macro-F1: 0.6703. All 10 checkpoints banked in `ml/checkpoints/convnext_tiny-v4_R0_kfold_f{0..4}_s42_{best,last}.pt`.
+- **S71 (Cross-Fitted OOF Matrix)**: Assembled 15,294 rows into `results/v4/kfold/oof_predictions.csv` with zero fold leakage. Evaluated 5-fold ensemble on V4 val panel into `results/v4/kfold/val_predictions.csv` (2,270 rows).
+- **S68 (Target-Side Referral Recalibration)**: Evaluated on `results/v4/s68/` (`s68_report.json`, `arms_val.csv`). Fit on 8,313 BCN/MSKCC train rows from OOF, tested on 2,270 V4 val target rows:
+  - Target-side quantiles reduced budget overrun across all five budgets: at 0.10 (0.200 -> 0.156), 0.15 (0.237 -> 0.219), 0.20 (0.298 -> 0.258), 0.25 (0.380 -> 0.319), 0.30 (0.452 -> 0.401).
+  - Mean budget error reduction: +0.0426 (MCID 0.05). Since the mean reduction is within the MCID threshold, verdict is `NULL` (directionally reduces overrun, but not by a full 5 percentage points).
+- **S69 (Smartphone Admissibility Gate)**: `results/v4/s69/s69_report.json` adopted Modality classifier over Mahalanobis (100% PAD rejection, AUROC 0.9994, escalating-minus-benign rejection gap +0.0000, passing safety constraint).
+- **S70 (Decisions Checkpoint)**: `results/v4/s70/s70_decisions.json` hashed and verified. Formalized decisions D1 (external cohort sourcing via S75), D2 (retain 0.855 floor + relative term), D3 (R0 control, 224px, 5 folds).
+- **S60 & S61 (Service & Monitoring)**: `research/v4/s60_inference.py` implements the full 6-model soft-vote torch path + feature extraction (selftest 4/4 passed); `research/v4/s61_drift.py` computes all 4 drift hooks against `results/v4/s61/drift_baseline.json` (selftest 4/4 passed).
+- **V4 Closure Status**: All in-domain engineering and training tasks of Phase Y (S68–S72) and service updates (S60–S61) are complete and banked. Confirmatory reserved evaluation (S73) is paused until a fresh external under-40 cohort is sourced (S75), adhering to Hard Rule 2.
+

@@ -1,0 +1,118 @@
+{
+  "session": "S69",
+  "plan_sha256": "081cae59eea0394af48645625ef3980b8353678f1f0163f797c1643c8f8d98f7",
+  "selection_rule": "highest PAD-dev rejection rate among candidates whose escalating-minus-benign rejection gap has an upper CI bound at or below +0.05",
+  "candidates": [
+    {
+      "candidate": "mahalanobis",
+      "threshold": 3701.1889408672405,
+      "in_domain_false_reject_calib": 0.050174216027874564,
+      "in_domain_false_reject_val": 0.15078328981723238,
+      "in_domain_false_reject_val_ci": [
+        0.13322074361336173,
+        0.16969562810224018
+      ],
+      "pad_rejection_rate": 0.7912713472485768,
+      "pad_rejection_rate_ci": [
+        0.7654649238531399,
+        0.8154397520105741
+      ],
+      "auroc_val_vs_pad": 0.9075788615791638,
+      "safety": {
+        "escalating_rejection_rate": 0.8686131386861314,
+        "escalating_rejection_ci": [
+          0.8435850339791995,
+          0.8909608499832802
+        ],
+        "benign_rejection_rate": 0.5172413793103449,
+        "benign_rejection_ci": [
+          0.45092326026664875,
+          0.5831133628864397
+        ],
+        "gap_escalating_minus_benign": 0.3513717593757866,
+        "gap_ci": [
+          0.2809052833359671,
+          0.4213539936478828
+        ],
+        "n_escalating": 822,
+        "n_benign": 232,
+        "max_allowed_gap": 0.05,
+        "passes": false,
+        "reading": "the gate rejects escalating lesions more often than benign ones by more than the declared margin -- it must not be deployed"
+      }
+    },
+    {
+      "candidate": "modality",
+      "threshold": 0.002440137439407406,
+      "in_domain_false_reject_calib": 0.050174216027874564,
+      "in_domain_false_reject_val": 0.07898172323759792,
+      "in_domain_false_reject_val_ci": [
+        0.06596682351027955,
+        0.0936361609959674
+      ],
+      "pad_rejection_rate": 1.0,
+      "pad_rejection_rate_ci": [
+        0.9965062318307373,
+        1.0
+      ],
+      "auroc_val_vs_pad": 0.9993546900778336,
+      "safety": {
+        "escalating_rejection_rate": 1.0,
+        "escalating_rejection_ci": [
+          0.9955223667246675,
+          1.0
+        ],
+        "benign_rejection_rate": 1.0,
+        "benign_rejection_ci": [
+          0.9842254006358045,
+          1.0
+        ],
+        "gap_escalating_minus_benign": 0.0,
+        "gap_ci": [
+          -0.00447763327533246,
+          0.015774599364195452
+        ],
+        "n_escalating": 822,
+        "n_benign": 232,
+        "max_allowed_gap": 0.05,
+        "passes": true,
+        "reading": "the gate does not preferentially reject escalating lesions"
+      }
+    }
+  ],
+  "states": {
+    "mahalanobis": {
+      "kind": "mahalanobis",
+      "fit_on": "HAM train",
+      "n": 5546
+    },
+    "modality": {
+      "kind": "logistic",
+      "fit_on": "HAM train vs PAD-fit",
+      "coef_norm": 4.869832515716553,
+      "n_in": 5546,
+      "n_out": 1052
+    }
+  },
+  "verdict": "ADOPT",
+  "adopted": "modality",
+  "adopted_threshold": 0.002440137439407406,
+  "pad_split": {
+    "fit_images": 1052,
+    "dev_images": 1054,
+    "fit_patients": 648,
+    "dev_patients": 649,
+    "seed": 71
+  },
+  "reads": {
+    "reserved": false,
+    "ham_test": false
+  },
+  "caveat": "PAD is a development cohort here, not a held-out test of the gate. The gate's behaviour on a genuinely unseen smartphone cohort is unmeasured, and S73 applies it without re-reading PAD.",
+  "findings": [
+    "AUROC hides the failure that matters. Mahalanobis separates HAM val from PAD at AUROC 0.908 -- corroborating S8b's 0.913 -- and still fails the safety constraint outright, rejecting escalating PAD lesions far more often than benign ones. A shift detector is not a gate, and ranking quality says nothing about which cases a threshold on it turns away.",
+    "The adopted gate is a modality veto, not a graded admissibility score. It rejects every PAD-dev image, which is the correct behaviour for a dermoscopy model whose measured Macro-F1 on this cohort is 0.12-0.19, but it means the product refuses smartphone photographs outright rather than triaging them.",
+    "The modality classifier's near-perfect separation is fit and evaluated within one cohort, split by patient but sharing PAD's device and acquisition pipeline. It is evidence the gate works against PAD, not that it generalises to smartphone images in general; a second clinical-photo cohort would be needed for that.",
+    "Its 7.9% in-domain false-reject on HAM val against a 5.0% target is the cost the product pays: about one dermoscopy image in thirteen is refused."
+  ]
+}

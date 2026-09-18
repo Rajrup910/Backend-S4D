@@ -1,0 +1,32 @@
+{
+  "session": "s68",
+  "purpose": "place S56's per-band referral cuts at the target domain's quantiles so the realised referral rate matches the declared budget under domain shift",
+  "depends_on": [
+    "S71 (fold partition)",
+    "S72 (cross-fitted OOF + val ensemble scores)"
+  ],
+  "arms": {
+    "source": "quantile over all OOF rows (status quo, restated on a V4 base)",
+    "target": "quantile over OOF rows whose archive is in ['bcn20000', 'mskcc']"
+  },
+  "score": "msp",
+  "score_provenance": "inherited from S56's val selection; not re-selected here",
+  "budgets": [
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3
+  ],
+  "endpoint": "|realised referral - nominal budget| on V4 val's BCN/MSKCC rows",
+  "mcid": 0.05,
+  "cost_term": "under-40 system sensitivity at the deployed 0.20 budget, reported beside the endpoint; a rule that hits its budget by referring fewer of the cases that need referring has not helped",
+  "decision_rule": "ADOPT if the mean budget-error reduction reaches the MCID and the reduction at 0.20 is positive; NULL if the mean is within the MCID of zero; REJECT otherwise",
+  "reads": {
+    "reserved": false,
+    "ham_test": false
+  },
+  "not_done": [
+    "S68 fits and develops only; the reserved read belongs to S73."
+  ]
+}

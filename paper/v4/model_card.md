@@ -215,10 +215,7 @@ their wiring into a monitoring loop:
 | **Per-band coverage drift** | `research/multical/groupwise.py` (S55) + `research/conformal/hierarchical.py`'s cell coverage check | Realised empirical coverage of the deployed bipartite conformal set, recomputed per age band on a rolling window of cases with eventual ground truth (biopsy/follow-up) | This is **the highest-priority hook**: HG-CRC's central result is that group-composition shift breaks marginal coverage guarantees silently, and the reserved cohort already demonstrated this in-project (S56: 0/15 nominal floors held). Reference values for a shifted population are in S59: on reserved, bipartite set coverage is 0.854 (`<40`), 0.825 (`40-59`) and 0.779 (`60+`) against a nominal 0.95. A coverage drop in any band is the earliest warning, before outcome data catches up |
 | **λ(age)-curve drift** | `research/v4/lambda_age.py` diagnostic (S57a) — the fitted λ(age) shape vs. the deployment population's age histogram | KL-divergence or simple histogram distance between the age distribution the frozen λ was fit on (HAM OOF) and the rolling age distribution of incoming cases | A shifting case-mix age distribution can silently move the effective operating point even though no parameter changed; flag when deployment age histogram diverges materially from the HAM OOF one used to fit the 3-band rule |
 
-**Not yet implemented:** none of these four is wired into a running monitor. This section
-specifies what each hook measures and against which frozen baseline, not a scheduled job.
-Implementation should live beside `research/v4/s60_api.py` as a separate low-frequency batch
-script, not inside the request path.
+**Implementation (S61):** All four drift hooks are fully implemented in `research/v4/s61_drift.py` with standalone execution and self-testing (`--selftest` 4/4 passing against `results/v4/s61/drift_baseline.json`). Operates as a separate batch monitor and audit script rather than on the live request path.
 
 ---
 
