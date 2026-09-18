@@ -1,0 +1,150 @@
+{
+  "session": "s71",
+  "purpose": "cross-fitted out-of-fold predictions over the pooled V4 train split, so a V4 base can carry the fitted layers S59 had to leave on the V1 base",
+  "decided_by": "S70 D3 -- R0 control at 224 px, 5-fold, 30 epochs, patience off",
+  "assignments": "results\\v4\\kfold\\fold_assignments.csv",
+  "assignments_sha256": "439786ca0df31d67afec37ce854a8a7e5a39d8f75fe631af1604b39f20762a1d",
+  "n_folds": 5,
+  "seed": 42,
+  "grouping_column": "group_id",
+  "stratification": {
+    "label": "most severe class in the group",
+    "order": [
+      "mel",
+      "akiec",
+      "bcc",
+      "vasc",
+      "df",
+      "bkl",
+      "nv"
+    ]
+  },
+  "arch": "convnext_tiny",
+  "rungs": [
+    "R0"
+  ],
+  "training": {
+    "image_size": 224,
+    "epochs": 30,
+    "batch_size": 32,
+    "num_workers": 2,
+    "patience": 0,
+    "device": "cuda",
+    "corpus": "pooled (manifest_v4 split == train)"
+  },
+  "totals": {
+    "images": 15294,
+    "groups": 8734,
+    "lesions": 8748
+  },
+  "per_fold": [
+    {
+      "fold": 0,
+      "val_images": 3059,
+      "val_groups": 1745,
+      "val_lesions": 1746,
+      "train_images": 12235,
+      "class_counts": {
+        "akiec": 175,
+        "bcc": 389,
+        "bkl": 330,
+        "df": 23,
+        "mel": 505,
+        "nv": 1606,
+        "vasc": 31
+      },
+      "escalating_images": 1069,
+      "under40_escalating_lesions": 16
+    },
+    {
+      "fold": 1,
+      "val_images": 3059,
+      "val_groups": 1746,
+      "val_lesions": 1749,
+      "train_images": 12235,
+      "class_counts": {
+        "akiec": 175,
+        "bcc": 377,
+        "bkl": 338,
+        "df": 23,
+        "mel": 505,
+        "nv": 1609,
+        "vasc": 32
+      },
+      "escalating_images": 1057,
+      "under40_escalating_lesions": 12
+    },
+    {
+      "fold": 2,
+      "val_images": 3059,
+      "val_groups": 1747,
+      "val_lesions": 1751,
+      "train_images": 12235,
+      "class_counts": {
+        "akiec": 175,
+        "bcc": 389,
+        "bkl": 330,
+        "df": 23,
+        "mel": 505,
+        "nv": 1605,
+        "vasc": 32
+      },
+      "escalating_images": 1069,
+      "under40_escalating_lesions": 17
+    },
+    {
+      "fold": 3,
+      "val_images": 3059,
+      "val_groups": 1748,
+      "val_lesions": 1753,
+      "train_images": 12235,
+      "class_counts": {
+        "akiec": 175,
+        "bcc": 383,
+        "bkl": 330,
+        "df": 22,
+        "mel": 504,
+        "nv": 1613,
+        "vasc": 32
+      },
+      "escalating_images": 1062,
+      "under40_escalating_lesions": 17
+    },
+    {
+      "fold": 4,
+      "val_images": 3058,
+      "val_groups": 1748,
+      "val_lesions": 1749,
+      "train_images": 12236,
+      "class_counts": {
+        "akiec": 174,
+        "bcc": 390,
+        "bkl": 329,
+        "df": 23,
+        "mel": 506,
+        "nv": 1605,
+        "vasc": 31
+      },
+      "escalating_images": 1070,
+      "under40_escalating_lesions": 19
+    }
+  ],
+  "time_budget": {
+    "source": "results/v4/recipe_runs/R0_pooled_s43.json, scaled to one fold",
+    "note": "extrapolation, not a measurement of this configuration; S72 records the actual per-fold seconds and the audit compares them"
+  },
+  "outputs": {
+    "checkpoints": "ml/checkpoints/convnext_tiny-v4_R0_kfold_f{fold}_s42_{best,last}.pt",
+    "oof_predictions": "results/v4/kfold/predictions/fold{fold}.csv",
+    "assembled": "results/v4/kfold/oof_predictions.csv"
+  },
+  "reads": {
+    "reserved": false,
+    "ham_test": false,
+    "note": "S71 and S72 touch only manifest_v4 split == train"
+  },
+  "not_done": [
+    "S72 trains the folds; this module only partitions and pre-registers.",
+    "The assembled OOF matrix is written by --assemble once every fold has banked."
+  ]
+}

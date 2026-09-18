@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="#executive-summary"><img src="https://img.shields.io/badge/Status-IEEE_TMI_Target-blue.svg?style=for-the-badge&logo=ieee" alt="Status: IEEE TMI Target"></a>
-  <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Audit-433%2F433_Passed-success.svg?style=for-the-badge&logo=checkmarx" alt="Audit: 433/433 Passed"></a>
+  <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Audit-640%2F640_Passed-success.svg?style=for-the-badge&logo=checkmarx" alt="Audit: 640/640 Passed"></a>
   <a href="#phase-v4--multi-archive-representation-safety-cascades--ranking-limit-s48s67"><img src="https://img.shields.io/badge/ISIC_2019_Corpus-25%2C331_Images-purple.svg?style=for-the-badge&logo=databricks" alt="ISIC-2019: 25,331 Images"></a>
   <a href="#zero-leakage-protocol"><img src="https://img.shields.io/badge/Leakage_Guard-0_Cross--Split_Leaks-brightgreen.svg?style=for-the-badge&logo=shield" alt="Leakage Guard: 0 Leaks"></a>
   <a href="#how-to-reproduce"><img src="https://img.shields.io/badge/Python-3.12_%7C_PyTorch_2.11-yellow.svg?style=for-the-badge&logo=python" alt="Python 3.12 | PyTorch 2.11"></a>
@@ -12,7 +12,7 @@
   <a href="#phase-v4--multi-archive-representation-safety-cascades--ranking-limit-s48s67"><img src="https://img.shields.io/badge/Contract-CONTRACT__FAILS_(All_NOT__MET)-critical.svg?style=flat-square&logo=target" alt="Contract: CONTRACT_FAILS"></a>
   <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Pre--Registered-SHA256_Frozen_Plans-informational.svg?style=flat-square&logo=gitbook" alt="Pre-registered SHA256 frozen plans"></a>
   <a href="#strict-research-integrity--audit-gates"><img src="https://img.shields.io/badge/Test_Reads-2_(Locked)-important.svg?style=flat-square&logo=lock" alt="Test reads: 2, locked"></a>
-  <a href="#phase-y--post-contract-programme--external-generalization-s68s75-in-progress--placeholders"><img src="https://img.shields.io/badge/Phase_Y-S68--S75_(Placeholders)-orange.svg?style=flat-square&logo=clock" alt="Phase Y: S68-S75 (Placeholders)"></a>
+  <a href="#phase-y--post-contract-programme--external-generalization-s68s75"><img src="https://img.shields.io/badge/Phase_Y-S68--S72_Banked-blue.svg?style=flat-square&logo=git" alt="Phase Y: S68-S72 Banked"></a>
 </p>
 
 ---
@@ -51,6 +51,11 @@ This repository hosts a publication-grade research framework and safety audit pi
 
 ## End-to-End System Architecture
 
+<p align="center">
+  <img src="paper/figures/figure1_architecture.png" alt="End-to-End System Architecture: 6-Backbone Soft-Vote Ensemble, 24-View TTA, Multi-Class Dirichlet Calibration, Equalized Bipartite Conformal Sets, and Age-Conditional Decision Rule" width="90%">
+  <br>
+  <em>Figure 1: Full research and clinical deployment architecture. An input dermoscopy image passes through six heterogeneous deep CNN backbones, aggregated via arithmetic soft-voting, augmented with 24-view TTA, calibrated by multi-class Dirichlet scaling, and safeguarded by equalized bipartite conformal prediction and age-conditional triage rules.</em>
+</p>
 
 ```
                                               ┌──────────────────────────────────────────────┐
@@ -132,6 +137,12 @@ All baseline models were trained with identical random seeds (42), effective-num
 
 > **Key Statistical Finding**: Soft-voting achieves a statistically significant improvement over ConvNeXt-Tiny (McNemar Holm-adjusted $p = 2.0 \times 10^{-4}$). In contrast, SwinV2-Tiny (Macro-F1 0.7273, $p = 0.38$) and multimodal patient metadata fusion (Macro-F1 0.7411, $p = 0.79$) failed to surpass the best CNN.
 
+<p align="center">
+  <img src="paper/figures/figure2_reliability.png" alt="Reliability Diagrams Before and After Dirichlet Calibration" width="85%">
+  <br>
+  <em>Figure 2: Reliability calibration diagrams across 7 skin lesion categories on HAM10000 held-out test data. Left: Uncalibrated ensemble showing systematic under-confidence (ECE: 0.1575). Right: Post-Dirichlet calibration restoring near-optimal probability alignment (ECE: 0.0206).</em>
+</p>
+
 ---
 
 ### 2. The Age-Stratified Blind Spot & Safety Net Breakdown
@@ -149,6 +160,12 @@ Evaluation stratified across patient age brackets on held-out test data reveals 
 | **Bipartite Conformal Coverage ($\alpha=0.10$)**| **95.2% (20 of 21)** | 91.0% (91 of 100) | 90.5% (153 of 169) | **Restored to safety floor** |
 | **Post-λ Rule Sensitivity** | **0.238** [0.082, 0.472] | **0.860** [0.785, 0.923] | **0.888** [0.833, 0.933] | **+0.095 gain (partially mitigated)**|
 
+<p align="center">
+  <img src="paper/figures/figure4_selective.png" alt="Selective Abstention and Risk-Coverage Curves by Age Strata" width="85%">
+  <br>
+  <em>Figure 3: Selective classification and risk-coverage trade-offs across patient age strata. Deferring the most uncertain cases fails to protect young patients whose malignant misclassifications are confidently wrong, requiring explicit subgroup-conditional triage rules.</em>
+</p>
+
 ---
 
 ### 3. Conformal Coverage & False Reassurance Across Methods
@@ -162,6 +179,12 @@ Finite-sample prediction set guarantees evaluated on HAM10000 held-out test spli
 | **RAPS**| 0.10 | Mondrian (Class-Cond.) | 90.9% | 94.1% | 66.7% | 1.58 | 0.015 |
 | **LAC** | 0.10 | **Equalized Bipartite** | 90.8% | **94.8%** | **95.2%** | 1.76 | 0.013 |
 | **RAPS**| 0.05 | **Equalized Bipartite** | **95.4%** | **98.3%** | **95.2%** | **1.87** | **0.014 [0.004, 0.035]** |
+
+<p align="center">
+  <img src="paper/figures/figure5_conformal_coverage.png" alt="Conformal Prediction Coverage Across Age Subgroups" width="85%">
+  <br>
+  <em>Figure 4: Empirical coverage of conformal prediction sets across patient age brackets and calibration levels. While marginal conformal guarantees fail young patients (23.8% coverage), equalized bipartite conformal prediction restores young malignant coverage to 95.2% with a compact mean set size of 1.87.</em>
+</p>
 
 ---
 
@@ -177,6 +200,12 @@ Evaluating the frozen HAM-trained ensemble and age-conditional decision rule acr
 | **PAD-UFES-20**| Clinical Smartphone Photography | 2,298 | 0.000 (Mel. Recall) | 0.625 (Warm-Start) | +0.625 | Modality collapse; OOD detected |
 
 > **Takeaway**: Class-conditional Mahalanobis distance separates dermoscopy from smartphone clinical photography with **AUROC 0.913**, providing a reliable tripwire against unintended modality shift.
+
+<p align="center">
+  <img src="paper/figures/external_figure_decision_curve.png" alt="Decision Curve Analysis Across Decision Thresholds" width="85%">
+  <br>
+  <em>Figure 5: Decision Curve Analysis (DCA) evaluating Net Clinical Benefit across intervention thresholds (p_t in [0.01, 0.50]) on external evaluation cohorts (BCN20000 and MSKCC), demonstrating positive net benefit over treat-all / treat-none strategies.</em>
+</p>
 
 > **Note on scope.** In Sections 1–4 above, BCN20000 and MSKCC serve as **frozen external
 > evaluation** cohorts only. Section 5 promotes them to **training archives** — a distinct
@@ -353,36 +382,120 @@ Phase V4 (sessions S48–S67) targeted the root methodological limit discovered 
 - **Central Scientific Verdict**: The under-40 melanoma blind spot is a **representation ranking limit** of models trained on these archives. Decision layers (calibration, thresholds, abstention) redistribute referral burden between cohorts; they cannot manufacture ranking capability at matched workload.
 - **Closure (S63)**: Gated HAM test read remained **CLOSED** (`test_pass_receipt.json` preserved at 2 executions). Monograph reframed around diagnostic limits (`paper/v4/manuscript_v4.tex`, 179 claims audited with 0 failures).
 
+<p align="center">
+  <img src="paper/figures/under40_ceiling.png" alt="Under-40 Diagnostic Ranking Ceiling and ROC Frontier" width="75%">
+  <br>
+  <em>Figure 6: Diagnostic ranking ceiling of the under-40 decision score d (AUC 0.8778 vs 0.9479 in 40–59 and 0.9285 in 60+), proving the young-patient melanoma blind spot is a fundamental representation ranking limit that cannot be solved by post-hoc decision layers at matched workload.</em>
+</p>
+
 ---
 
-## Phase Y — Post-Contract Programme & External Generalization (S68–S75) [In Progress / Placeholders]
+## Phase Y — Post-Contract Programme & External Generalization (S68–S75)
 
 Following the V4 contract verdict, four open engineering decisions govern Phase Y:
 
 | Session | Scope | Compute & Tier | Status / Deliverable |
 |:--|:--|:--|:--|
-| **S68** | Target-side referral recalibration on BCN/MSKCC train rows | CPU | 🟡 **Placeholder** — Pre-register & fit thresholds on V1 scores; evaluate in S73 |
-| **S69** | Smartphone admissibility gate (HAM-only Mahalanobis / classifier) | CPU | 🟡 **Placeholder** — Gate must not preferentially reject escalating lesions |
-| **S70** | Fresh-cohort audit & contract decision checkpoint | CPU | ✅ **Complete (2026-09-17)** — 0 unread cohorts on disk; GPU benchmark run (RTX 5050: 224px @ 102ms/batch, 2.41 GB VRAM, ~4.1 h total for 5 folds); Owner decisions approved: D1 (source fresh external cohort via S75), D2 (retain 0.855 floor + add relative term vs V1 stack with MCID 0.05), D3 (R0 control, 224px, 5-fold, 30 epochs) |
-| **S71** | V4 K-fold trainer implementation & pre-registration | CPU | 🟡 **Placeholder** — Add `--fold/--n-folds` to `train_v4.py`; freeze fold splits by hash |
-| **S72** | V4 K-fold cross-fit training (R0 pooled, 5 folds, 30 epochs) | GPU (User-run) | 🟡 **Placeholder** — ~4.1 h total compute; output cross-fitted predictions |
-| **S73** | V4-based stack composition & fresh-cohort confirmatory read | GPU (User-run) | 🟡 **Placeholder** — Refit S56 on V4 OOF, add S68/S69, single confirmatory read on fresh cohort |
-| **S74** | Monograph & audit finalisation | CPU | 🟡 **Placeholder** — Update manuscript, model card, and all audit assertions |
-| **S75 ∥** | Under-40 external cohort sourcing & verification | CPU (Parallel) | 🟡 **Placeholder** — Identify external archive with patient age, verify license, deduplicate against corpus |
+| **S68** | Target-side referral recalibration on BCN/MSKCC train rows | CPU | ✅ **Complete (2026-09-18)** — Fit on 8,313 BCN/MSKCC train OOF rows, evaluated on 2,270 val target rows (`results/v4/s68/s68_report.json`). Reduced budget error across all 5 nominal budgets (mean error reduction +0.0426); verdict **`NULL`** (within MCID 0.05). |
+| **S69** | Smartphone admissibility gate (HAM-only Mahalanobis / classifier) | CPU | ✅ **Complete (2026-09-17)** — Evaluated on patient-split PAD-UFES-20 (`results/v4/s69/s69_report.json`). Modality gate adopted over Mahalanobis (100% PAD rejection, AUROC 0.9994, escalating-minus-benign gap +0.0000 passing safety constraint $\le +0.05$). |
+| **S70** | Fresh-cohort audit & contract decision checkpoint | CPU | ✅ **Complete (2026-09-17)** — 0 unread cohorts on disk; GPU benchmark run; Owner decisions approved and hashed (`results/v4/s70/s70_decisions.json`, sha256 `7ab8e9a316b27620`): D1 (source fresh external cohort via S75), D2 (retain 0.855 floor + add relative term vs V1 stack with MCID 0.05), D3 (R0 control, 224px, 5-fold, 30 epochs). |
+| **S71** | V4 K-fold trainer implementation & pre-registration | CPU | ✅ **Complete (2026-09-18)** — 15,294 pooled train rows partitioned into 5 balanced folds with zero group/lesion leakage (`results/v4/kfold/fold_assignments.csv`). Assembled cross-fitted OOF matrix (`oof_predictions.csv`, 15,294 rows) and scored val panel (`val_predictions.csv`, 2,270 rows). |
+| **S72** | V4 K-fold cross-fit training (R0 pooled, 5 folds, 30 epochs) | GPU (User-run) | ✅ **Complete (2026-09-18)** — ~3.5 h unattended run on RTX 5050 Laptop GPU via `scripts/run_s72.ps1`. All 5 folds trained and banked (val Macro-F1 0.6508, 0.6974, 0.6738, 0.6696, 0.6600; mean 0.6703). 10 checkpoints banked in `ml/checkpoints/`. |
+| **S73** | V4-based stack composition & fresh-cohort confirmatory read | GPU (User-run) | 🟡 **Gated on S75** — Reserved cohort read 8 times (exhausted for confirmatory claims); single confirmatory read waits for fresh S75 external cohort. |
+| **S74** | Monograph & audit finalisation | CPU | 🟡 **Planned** — Update manuscript, model card, and all audit assertions post-S73. |
+| **S75 ∥** | Under-40 external cohort sourcing & verification | CPU (Parallel) | 🟡 **Open Priority** — Identify external archive with patient age, verify license, deduplicate against corpus. |
+
+```
+                                  ┌────────────────────────────────────────────────────────┐
+                                  │               Input Clinical Image (x)                 │
+                                  └───────────────────────────┬────────────────────────────┘
+                                                              │
+                                                              ▼
+                                  ┌────────────────────────────────────────────────────────┐
+                                  │      S69 Modality Admissibility Gate (Penultimate)     │
+                                  │      • 100% Smartphone Rejection (AUROC 0.9994)        │
+                                  │      • Zero Cancer Penalty (+0.0000 Safety Gap)        │
+                                  └───────────────┬────────────────────────┬───────────────┘
+                                                  │ Pass (Dermoscopy)      │ Reject (Smartphone)
+                                                  ▼                        ▼
+                                  ┌───────────────────────────────┐ ┌──────────────────────────────┐
+                                  │ S72 5-Fold Cross-Fit Ensemble │ │ Refusal: Modality Mismatch   │
+                                  │ • R0 Pooled Corpus (224px)    │ │ (Protects Against OOD Drift) │
+                                  │ • Mean Val Macro-F1: 0.6703   │ └──────────────────────────────┘
+                                  └───────────────┬───────────────┘
+                                                  │ Cross-Fitted 7-Class Probs
+                                                  ▼
+                                  ┌───────────────────────────────┐
+                                  │ S55 Group-Conditional         │
+                                  │ Dirichlet Calibrator          │
+                                  │ • <40 ECE: 0.0276 → 0.0095    │
+                                  └───────────────┬───────────────┘
+                                                  │ Calibrated Probabilities
+                                                  ▼
+                                  ┌───────────────────────────────┐
+                                  │ S68 Target-Side Recalibrated  │
+                                  │ Selective Abstention (S56)    │
+                                  │ • Target Quantiles Reduce     │
+                                  │   Referral Overrun (+0.0426)  │
+                                  └───────────────┬───────────────┘
+                                                  │
+                                  ┌───────────────┴───────────────┐
+                                  ▼                               ▼
+                  ┌───────────────────────────────┐ ┌───────────────────────────────┐
+                  │ S61 Continuous Drift Monitors │ │ S9 Bipartite Conformal Sets   │
+                  │ • Archive Probe AUC: 0.589    │ │ • 95.2% Malignant Coverage    │
+                  │ • Mahalanobis Shift Ratio     │ │ • 1.38% False Reassurance Rate│
+                  │ • Realised Subgroup Coverage  │ │ • Compact Mean Set: 1.87      │
+                  └───────────────────────────────┘ └───────────────────────────────┘
+```
+
+### Phase Y Empirical Results & Banked Data Tables
+
+#### 1. S72 5-Fold Cross-Validation Performance (R0 Pooled Corpus, 15,294 Images)
+All 5 folds trained on RTX 5050 Laptop GPU (30 epochs, patience off, effective batch 32, num_workers 2) with zero lesion/group leakage:
+
+| Fold | Held-Out Val Macro-F1 | Best Epoch | Final Macro-F1 | Balanced Acc | Escalation Sens | Compute Time | Checkpoint Banked |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---|
+| **Fold 0** | **0.6508** | 20 / 30 | 0.6394 | 0.6445 | 0.7465 | 41.0 min | `convnext_tiny-v4_R0_kfold_f0_s42_{best,last}.pt` |
+| **Fold 1** | **0.6974** | 28 / 30 | 0.6903 | 0.6925 | 0.7975 | 40.7 min | `convnext_tiny-v4_R0_kfold_f1_s42_{best,last}.pt` |
+| **Fold 2** | **0.6738** | 22 / 30 | 0.6605 | 0.6865 | 0.8185 | 41.2 min | `convnext_tiny-v4_R0_kfold_f2_s42_{best,last}.pt` |
+| **Fold 3** | **0.6696** | 27 / 30 | 0.6614 | 0.6714 | 0.7928 | 41.2 min | `convnext_tiny-v4_R0_kfold_f3_s42_{best,last}.pt` |
+| **Fold 4** | **0.6600** | 26 / 30 | 0.6499 | 0.6454 | 0.7972 | 41.2 min | `convnext_tiny-v4_R0_kfold_f4_s42_{best,last}.pt` |
+| **Mean / Ensemble** | **0.6703** | — | — | — | — | **~3.5 h** | **15,294-row cross-fitted OOF matrix banked** |
+
+#### 2. S68 Target-Side Referral Recalibration (BCN/MSKCC Target Shift)
+Fit on 8,313 BCN/MSKCC training OOF rows; evaluated on 2,270 V4 validation target rows (`results/v4/s68/s68_report.json`):
+
+| Nominal Referral Budget | Source Arm Realised Referral | Target Arm Realised Referral | Source Budget Error | Target Budget Error | Error Reduction ($\Delta$) |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+| **0.10** | 0.2004 | 0.1564 | 0.1004 | 0.0564 | **+0.0441** |
+| **0.15** | 0.2370 | 0.2194 | 0.0870 | 0.0694 | **+0.0176** |
+| **0.20** | 0.2978 | 0.2581 | 0.0978 | 0.0581 | **+0.0396** |
+| **0.25** | 0.3797 | 0.3185 | 0.1297 | 0.0685 | **+0.0612** |
+| **0.30** | 0.4520 | 0.4013 | 0.1520 | 0.1013 | **+0.0507** |
+| **Mean Across Budgets** | — | — | — | — | **+0.0426 (MCID 0.05 $\to$ Verdict: `NULL`)** |
+
+#### 3. S69 Smartphone Modality Admissibility Gating (PAD-UFES-20 Dev Cohort)
+Evaluated on patient-split PAD-UFES-20 (`results/v4/s69/s69_report.json`) to prevent catastrophic modality-collapse failures:
+
+| Candidate Gate | Threshold | In-Domain False Reject (Calib) | In-Domain False Reject (Val) | Smartphone Rejection Rate | AUROC (Val vs. PAD) | Cancer vs. Benign Rejection Gap | Safety Verdict |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Mahalanobis Distance** | 3701.19 | 5.0% | 15.1% [13.3%, 17.0%] | 79.1% [76.5%, 81.5%] | 0.9076 | +0.3514 [+0.281, +0.421] | ❌ **FAIL** (rejects cancer preferentially) |
+| **Modality Classifier** | 0.00244 | 5.0% | 7.9% [6.6%, 9.4%] | **100.0%** [99.7%, 100.0%] | **0.9994** | **+0.0000** [-0.004, +0.016] | ✅ **ADOPT** (clears $\le +0.05$ safety gate) |
 
 ---
 
 ## Strict Research Integrity & Audit Gates
 
-This codebase enforces strict automated verification protocols to prevent data leakage, metric inflation, or hand-entered results:
+This codebase enforces strict automated verification protocols to prevent data leakage, metric inflation, or hand-entered results (**640 automated checks passed across all suites**):
 
 1. **Lesion-Grouped Splitting (`assert_no_leakage`)**: Splitting is strictly performed on `lesion_id`, ensuring no patient has images shared between train, validation, and test splits.
 2. **Single-Test-Read Discipline**: Evaluated through `research/testguard.py` using process-wide file locks and receipts stored in `results/test_pass_receipt.json`. Test sets are read only for final pre-registered confirmations.
 3. **100% Scripted Table Reconstruction**: All manuscript numbers, p-values, confidence intervals, and tables are generated by reproducible code.
-   - `python research/ablation/audit_manuscript.py`: Asserts 357 numerical checks across the published paper.
-   - `python -m research.v4.audit_v4 --check`: Asserts 76 consistency, data-split, receipt, and numerical claims across Phase V4.
-   - `python -m research.v4.audit_manuscript_v4`: Asserts all 179 claims in `paper/v4/manuscript_v4.tex` with zero failure tolerance.
-   - `pytest tests/test_s60_service.py`: Validates 19 unit and contract integration tests for the production triage API.
+   - `python -m research.ablation.audit_manuscript`: Asserts **366 numerical checks** across the published V1 paper.
+   - `python -m research.v4.audit_v4 --check`: Asserts **76 consistency, data-split, receipt, and numerical claims** across Phase V4.
+   - `python -m research.v4.audit_manuscript_v4`: Asserts all **179 claims** in `paper/v4/manuscript_v4.tex` with zero failure tolerance.
+   - `pytest tests/ -q`: Validates **19 unit and contract integration tests** for the production triage API.
    - `python research/ablation/verify_edited_tables.py`: Reconstructs 4 edited LaTeX tables (137 lines) byte-for-byte from underlying JSON/CSV artifacts.
    - `python research/ablation/validate_structure.py`: Validates citation, label, figure, and nested input resolution.
 4. **Pre-Registration Before Data**: Every post-manuscript campaign freezes its hypotheses, gates
@@ -423,7 +536,7 @@ Backend-S4D/
 │   ├── tta/                           # 24-view dihedral test-time augmentation pipelines
 │   ├── v2/                            # Post-manuscript campaign: frontier efficiency, escalation heads
 │   ├── v3/                            # Falsification programme (S40–S47)
-│   ├── v4/                            # Phase V4 representation ladder, cascades & audit suite (S48–S67)
+│   ├── v4/                            # Phase V4 & Phase Y research modules (S48–S75)
 │   │   ├── recipe.py                  #   Pre-registered 7-rung training registry (R0-R7)
 │   │   ├── train_v4.py                #   Multi-seed training engine with early-stopping controls
 │   │   ├── colour.py                  #   Shades-of-Grey colour constancy with von Kries normalisation
@@ -432,8 +545,15 @@ Backend-S4D/
 │   │   ├── s58_front_end.py           #   Domain-matched front-end head adaptation
 │   │   ├── s59_cascade.py             #   End-to-end cascade composition & safety contract evaluator
 │   │   ├── s60_api.py                 #   FastAPI production inference & triage service
+│   │   ├── s60_inference.py           #   Real 6-CNN soft-vote image inference & feature extraction
+│   │   ├── s61_drift.py               #   Continuous monitoring: 4 drift hooks (archive, Mahalanobis, etc.)
 │   │   ├── s62_freeze.py              #   V4 analysis plan hash verification & registry freeze
 │   │   ├── s63_final_verdict.py       #   Final verdict compiler across all V4 sessions
+│   │   ├── s68_target_thresholds.py   #   Phase Y: Target-side referral recalibration engine
+│   │   ├── s69_admissibility.py       #   Phase Y: Smartphone modality admissibility gating
+│   │   ├── s70_decisions.py           #   Phase Y: Fresh-cohort audit & decision checkpoint
+│   │   ├── s71_kfold.py               #   Phase Y: V4 K-fold partition & OOF matrix assembly
+│   │   ├── s72_infer.py               #   Phase Y: 5-fold ensemble panel inference engine
 │   │   ├── ceiling_u40.py             #   Under-40 decision-rule ceiling & ROC frontier audit
 │   │   ├── audit_v4.py                #   76-check automated V4 integrity suite
 │   │   └── audit_manuscript_v4.py     #   179-claim zero-tolerance manuscript audit
@@ -481,8 +601,8 @@ The research suite requires Python 3.12 with PyTorch and CUDA support:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Rajrup910/Backend-S4D-.git
-cd Backend-S4D-
+git clone https://github.com/Rajrup910/Backend-S4D.git
+cd Backend-S4D
 
 # Activate the virtual environment
 # Windows:
@@ -499,8 +619,8 @@ python scripts/verify_env.py
 Verify that every number and table reconstructs byte-for-byte from raw experiment artifacts:
 
 ```bash
-# 1. Audit published V1 manuscript claims (357 checks)
-python research/ablation/audit_manuscript.py
+# 1. Audit published V1 manuscript claims (366 checks)
+python -m research.ablation.audit_manuscript
 
 # 2. Audit Phase V4 integrity, receipts, splits, and numerical claims (76 checks)
 python -m research.v4.audit_v4 --check
@@ -509,7 +629,7 @@ python -m research.v4.audit_v4 --check
 python -m research.v4.audit_manuscript_v4
 
 # 4. Run automated test suite for production inference API (19 tests)
-pytest tests/test_s60_service.py
+pytest tests/ -q
 
 # 5. Verify edited LaTeX tables against raw artifacts
 python research/ablation/verify_edited_tables.py
@@ -574,4 +694,4 @@ If you utilize this codebase, benchmark protocols, or safety audit pipelines in 
 - **Uddhav Gupta** (23BAI10146) — Statistical Audits & Bootstrapping
 
 *Affiliation: School of Computing Science and Engineering, VIT Bhopal University*  
-*Repository: [Rajrup910/Backend-S4D-](https://github.com/Rajrup910/Backend-S4D-)*
+*Repository: [Rajrup910/Backend-S4D](https://github.com/Rajrup910/Backend-S4D)*

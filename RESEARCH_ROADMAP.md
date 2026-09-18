@@ -288,7 +288,7 @@ timestamp,session,method,split,macro_f1,accuracy,balanced_accuracy,weighted_f1,m
 | 5 | Ablation synthesis, statistical inference, manuscript | ✅ Complete — manuscript + supplementary frozen |
 | 6 | Post-manuscript falsification programme (V2 · V3) | ✅ Complete — 5 of 6 hypotheses falsified |
 | 6b | Phase V4: Multi-Archive Representation, Safety Cascades & Ranking Limit (S48–S67) | ✅ Complete — 76/76 audit passed; contract evaluated on reserved; under-40 ceiling proved |
-| 7 | Phase Y: Post-Contract Programme & External Generalization (S68–S75) | 🟡 In Progress / Placeholders — S70 checkpoint plan approved; S68–S69 & S71–S75 open |
+| 7 | Phase Y: Post-Contract Programme & External Generalization (S68–S75) | 🟡 S68–S72 Complete & Banked (K-fold trained, OOF assembled, recalibrated, gated); S73 gated on S75 external cohort |
 
 ---
 
@@ -311,8 +311,8 @@ Phase V4 addressed the methodological bottleneck discovered in S44 (the 0.2273 s
    - S58: Domain-matched front-end heads lifted Macro-F1 ($0.4188 \to 0.5340$), but domain router and smartphone admissibility gate failed safety tripwires.
    - S59: End-to-end evaluation of deployed stack (`S56@0.20` on V1) on reserved: selective coverage $0.6142$, referral rate $0.3858$; system sensitivity $<40$: $0.7634 [0.655, 0.853]$ (floor 0.855, `NOT_MET`), $40-59$: $0.7040$ (`NOT_MET`), $60+$: $0.6744$ (`NOT_MET`); joint verdict **`CONTRACT_FAILS`** (all terms `NOT_MET`).
 4. **Phase P & W — Service, Freeze & Falsification Ceiling (S60–S67)**:
-   - S60: Production FastAPI service implemented and tested (`tests/test_s60_service.py` 19/19 passed).
-   - S61: CLAIM and TRIPOD+AI model card written (`paper/v4/model_card.md`).
+   - S60: Production FastAPI service implemented and tested (`tests/test_s60_service.py` 19/19 passed); real 6-CNN soft-vote torch path + feature extraction added in `research/v4/s60_inference.py`.
+   - S61: CLAIM and TRIPOD+AI model card written (`paper/v4/model_card.md`); four continuous drift hooks wired in `research/v4/s61_drift.py` (archive probe, Mahalanobis, band coverage, JS distance; selftest 4/4 passed).
    - S62 / S63: Pre-registration plan frozen (`results/v4/analysis_plan_v4.json`, SHA-256 registered); final verdict compiled (`results/v4/final_verdict_v4.json`); HAM test read gate remained CLOSED (receipt locked at 2); monograph reframed around ranking limits (`paper/v4/manuscript_v4.tex`, 179 claims audited with 0 failures).
    - S64–S67 (Under-40 Rescue): S64 proved under-40 ROC ceiling is $0.8778$ (vs $0.9479$ in 40-59); S65 combined policy and S66 per-centre $\lambda$ rejected at matched workload; S67 stage-1 ranking probes returned `STAGE2_NO_GO`.
    - **Central Verdict**: The under-40 blind spot is a **representation ranking limit** of dermoscopy models; decision layers move referrals between cohorts but cannot manufacture ranking capability at equal workload.
@@ -325,14 +325,14 @@ Following S59's contract failure, four open engineering decisions govern Phase Y
 
 | Session | Scope | Tier & Compute | Status / Deliverable |
 |:--|:--|:--|:--|
-| **S68** | Target-side referral recalibration on BCN/MSKCC train rows | CPU | 🟡 **Placeholder** — Pre-register & fit thresholds on V1 scores; evaluate in S73 |
-| **S69** | Smartphone admissibility gate (HAM-only Mahalanobis / modality classifier) | CPU | 🟡 **Placeholder** — Build gate that does not preferentially reject escalating lesions |
-| **S70** | Fresh-cohort audit & contract decision checkpoint | CPU | ✅ **Complete (2026-09-17)** — 0 unread cohorts on disk; GPU benchmark run (RTX 5050: 224px @ 102ms/batch, 2.41 GB VRAM, ~4.1 h total for 5 folds); Owner decisions approved: D1 (source fresh external cohort via S75), D2 (retain 0.855 floor + add relative term vs V1 stack with MCID 0.05), D3 (R0 control, 224px, 5-fold, 30 epochs) |
-| **S71** | V4 K-fold trainer implementation & pre-registration | CPU | 🟡 **Placeholder** — Add `--fold/--n-folds` to `train_v4.py`; freeze fold splits by hash |
-| **S72** | V4 K-fold cross-fit training (R0 pooled, 5 folds, 30 epochs) | GPU (User-run) | 🟡 **Placeholder** — ~4.1 h total compute; output cross-fitted predictions |
-| **S73** | V4-based stack composition & fresh-cohort confirmatory read | GPU (User-run) | 🟡 **Placeholder** — Refit S56 on V4 OOF, add S68/S69, single confirmatory read on fresh cohort |
-| **S74** | Monograph & audit finalisation | CPU | 🟡 **Placeholder** — Update manuscript, model card, and all audit assertions |
-| **S75 ∥** | Under-40 external cohort sourcing & verification | CPU (Parallel) | 🟡 **Placeholder** — Identify external archive with patient age, verify license, deduplicate against corpus |
+| **S68** | Target-side referral recalibration on BCN/MSKCC train rows | CPU | ✅ **Complete (2026-09-18)** — Fit on 8,313 BCN/MSKCC train OOF rows, evaluated on 2,270 val target rows (`results/v4/s68/s68_report.json`). Reduced budget error across all 5 nominal budgets (mean error reduction +0.0426); verdict **`NULL`** (within MCID 0.05). |
+| **S69** | Smartphone admissibility gate (HAM-only Mahalanobis / classifier) | CPU | ✅ **Complete (2026-09-17)** — Evaluated on patient-split PAD-UFES-20 (`results/v4/s69/s69_report.json`). Modality gate adopted (100% PAD rejection, AUROC 0.9994, escalating-minus-benign gap +0.0000 passing safety constraint $\le +0.05$). |
+| **S70** | Fresh-cohort audit & contract decision checkpoint | CPU | ✅ **Complete (2026-09-17)** — 0 unread cohorts on disk; GPU benchmark run; Owner decisions approved and hashed (`results/v4/s70/s70_decisions.json`, sha256 `7ab8e9a316b27620`): D1 (source fresh external cohort via S75), D2 (retain 0.855 floor + relative term vs V1 stack with MCID 0.05), D3 (R0 control, 224px, 5-fold, 30 epochs). |
+| **S71** | V4 K-fold trainer implementation & pre-registration | CPU | ✅ **Complete (2026-09-18)** — 15,294 pooled train rows partitioned into 5 balanced folds with zero group/lesion leakage (`results/v4/kfold/fold_assignments.csv`). Assembled cross-fitted OOF matrix (`oof_predictions.csv`, 15,294 rows) and scored val panel (`val_predictions.csv`, 2,270 rows). |
+| **S72** | V4 K-fold cross-fit training (R0 pooled, 5 folds, 30 epochs) | GPU (User-run) | ✅ **Complete (2026-09-18)** — ~3.5 h unattended run on RTX 5050 Laptop GPU via `scripts/run_s72.ps1`. All 5 folds trained and banked (val Macro-F1 0.6508, 0.6974, 0.6738, 0.6696, 0.6600; mean 0.6703). 10 checkpoints banked in `ml/checkpoints/`. |
+| **S73** | V4-based stack composition & fresh-cohort confirmatory read | GPU (User-run) | 🟡 **Gated on S75** — Reserved cohort read 8 times (exhausted for confirmatory claims); single confirmatory read waits for fresh S75 external cohort. |
+| **S74** | Monograph & audit finalisation | CPU | 🟡 **Planned** — Update manuscript, model card, and all audit assertions post-S73. |
+| **S75 ∥** | Under-40 external cohort sourcing & verification | CPU (Parallel) | 🟡 **Open Priority** — Identify external archive with patient age, verify license, deduplicate against corpus. |
 
 ### Open Items & Administrative Placeholders
 

@@ -99,6 +99,9 @@ EARLY_STOPPING_PATIENCE = 8
 #: Ledger session and frozen plan for the S53 re-run the V4 audit ordered (colour fix, no early stop).
 RERUN_SESSION = "v4_s53r"
 RERUN_PLAN = REPO_ROOT / "results" / "v4" / "s53r_plan.json"
+#: Ledger session for the S72 K-fold runs, kept separate so the fold models never mix with the
+#: ladder's arms in any later `groupby("session")`.
+KFOLD_SESSION = "v4_s72"
 
 
 def rerun_plan_sha256() -> str | None:
@@ -353,6 +356,8 @@ def run(args: argparse.Namespace) -> int:
     set_seed(args.seed, deterministic=False)
 
     run_id = f"{'+'.join(args.rungs)}_{args.corpus}_s{args.seed}"
+    if args.fold is not None:
+        run_id = f"{'+'.join(args.rungs)}_kfold_f{args.fold}_s{args.seed}"
     if args.run_tag:
         run_id = f"{run_id}_{args.run_tag}"
     patience = args.patience if args.patience > 0 else None
@@ -366,8 +371,32 @@ def run(args: argparse.Namespace) -> int:
 
     manifest = pd.read_csv(MANIFEST, low_memory=False)
     train_selector, val_selector = CORPORA[args.corpus]
-    train_frame = select_rows(manifest, train_selector)
-    val_frame = select_rows(manifest, val_selector)
+    if args.fold is None:
+        train_frame = select_rows(manifest, train_selector)
+        val_frame = select_rows(manifest, val_selector)
+    else:
+        # S72. The fold partition is the frozen S71 artefact and is never recomputed here: a
+        # trainer that re-derived its own folds could drift from the one the OOF matrix is
+        # assembled against, and the leak would be invisible in every downstream number.
+        from research.v4.s71_kfold import load_assignments
+
+        if args.corpus != "pooled":
+            raise SystemExit("--fold partitions the pooled train split; pass --corpus pooled")
+        assignments = load_assignments()
+        if args.fold not in set(assignments["fold"]):
+            raise SystemExit(f"fold {args.fold} is not in the frozen partition "
+                             f"({sorted(set(assignments['fold']))})")
+        pooled = select_rows(manifest, train_selector)
+        held_out = set(assignments.loc[assignments["fold"] == args.fold, "image_id"].astype(str))
+        is_val = pooled["image_id"].astype(str).isin(held_out)
+        train_frame = pooled[~is_val].reset_index(drop=True)
+        val_frame = pooled[is_val].reset_index(drop=True)
+        shared = set(train_frame["group_id"]) & set(val_frame["group_id"])
+        if shared:
+            raise AssertionError(f"fold {args.fold} shares {len(shared)} groups with its "
+                                 f"training rows -- the partition is not leak-free")
+        print(f"fold {args.fold} of {assignments['fold'].nunique()}: "
+              f"{len(train_frame):,} train / {len(val_frame):,} held out, no shared group")
     if args.smoke:
         train_frame = train_frame.head(args.batch_size * 4)
         val_frame = val_frame.head(args.batch_size * 2)
@@ -415,6 +444,12 @@ def run(args: argparse.Namespace) -> int:
     best_value = -float("inf")
     best_epoch = 0
     stale = 0
+    # S72 keeps the best epoch's held-out probabilities as they are produced. Re-loading `_best.pt`
+    # afterwards and re-inferring would cost a second pass over the fold and, with a non-
+    # deterministic eval transform, would not be guaranteed to reproduce the numbers the checkpoint
+    # was selected on. These are the same arrays `compute_metrics` scored.
+    best_probabilities: np.ndarray | None = None
+    best_truth: np.ndarray | None = None
     history: list[dict[str, Any]] = []
     optimizer = scheduler = None
     stage_now = None
@@ -490,6 +525,7 @@ def run(args: argparse.Namespace) -> int:
         if metrics["macro_f1"] > best_value:
             best_value, best_epoch, stale = metrics["macro_f1"], epoch + 1, 0
             torch.save(payload, destination / f"{ARCH}-{tag}_best.pt")
+            best_probabilities, best_truth = probabilities, truth
             print(f"        new best macro_f1={best_value:.4f}")
         else:
             stale += 1
@@ -500,7 +536,9 @@ def run(args: argparse.Namespace) -> int:
     elapsed = time.time() - started
     final = history[-1]
     summary: dict[str, Any] = {
-        "run_id": run_id, "session": RERUN_SESSION if args.run_tag else RUN_SESSION,
+        "run_id": run_id,
+        "session": (KFOLD_SESSION if args.fold is not None
+                    else RERUN_SESSION if args.run_tag else RUN_SESSION),
         "rungs": args.rungs, "corpus": args.corpus,
         "seed": args.seed, "arch": ARCH, "model_kind": model_kind, "recipe": asdict(recipe),
         "batch_size": args.batch_size, "grad_accum": args.grad_accum,
@@ -559,7 +597,14 @@ def run(args: argparse.Namespace) -> int:
               f"{'REPRODUCES' if inside else 'DOES NOT REPRODUCE -- the screen is void, '
                                              'do not start Block 2'}")
 
+    if args.fold is not None and best_probabilities is not None:
+        summary["fold"] = args.fold
+        summary["oof_predictions"] = write_fold_predictions(
+            args, run_id, val_frame, best_truth, best_probabilities, mapping, best_epoch)
+
     out_dir = SMOKE_DIR if args.smoke else RUN_DIR
+    if args.fold is not None and not args.smoke:
+        out_dir = REPO_ROOT / "results" / "v4" / "kfold" / "runs"
     out_dir.mkdir(parents=True, exist_ok=True)
     out = out_dir / f"{run_id}.json"
     out.write_text(json.dumps(summary, indent=2), encoding="utf-8")
@@ -577,6 +622,49 @@ def run(args: argparse.Namespace) -> int:
         print(f"finished in {elapsed / 60:.1f} min  "
               f"best val macro-F1 {best_value:.4f} at epoch {best_epoch}")
     return 0
+
+
+def write_fold_predictions(args: argparse.Namespace, run_id: str, val_frame: pd.DataFrame,
+                           truth: np.ndarray, probabilities: np.ndarray, mapping: Any,
+                           best_epoch: int) -> str:
+    """The fold's held-out probabilities, in the S54 prediction schema plus a `fold` column.
+
+    These are what make a V4 base usable downstream: every row is scored by a model that never saw
+    its group, so S73 can refit S56's per-band thresholds on them exactly as S56 was fitted on the
+    V1 OOF matrix.
+    """
+    if len(val_frame) != len(probabilities):
+        raise AssertionError(f"{len(probabilities)} predictions for {len(val_frame)} held-out rows")
+    if not np.array_equal(np.asarray(truth), val_frame["class_index_7"].to_numpy()):
+        raise AssertionError("evaluation row order does not match the held-out frame; refusing to "
+                             "write a prediction file whose labels may be misaligned")
+    escalating = [index for index, code in enumerate(mapping.codes)
+                  if code in {"mel", "akiec", "bcc"}]
+    frame = pd.DataFrame({
+        "image_id": val_frame["image_id"].astype(str).to_numpy(),
+        "group_id": val_frame["group_id"].to_numpy(),
+        "effective_lesion_id": val_frame["effective_lesion_id"].to_numpy(),
+        "age_band": val_frame["age_band"].to_numpy(),
+        "archive": val_frame["archive"].to_numpy(),
+        "y_true": np.asarray(truth),
+        "y_esc": val_frame["escalating_7"].astype(bool).to_numpy(),
+        "pred_index": probabilities.argmax(1),
+    })
+    for index, code in enumerate(mapping.codes):
+        frame[f"p_{code}"] = probabilities[:, index]
+    frame["escalation_mass"] = probabilities[:, escalating].sum(1)
+    frame["fold"] = args.fold
+    frame["run_id"] = run_id
+    frame["checkpoint"] = "best"
+    frame["best_epoch"] = best_epoch
+    directory = REPO_ROOT / "results" / "v4" / "kfold" / "predictions"
+    if args.smoke:
+        directory = directory / "smoke"
+    directory.mkdir(parents=True, exist_ok=True)
+    destination = directory / f"fold{args.fold}.csv"
+    frame.to_csv(destination, index=False)
+    print(f"wrote {destination.relative_to(REPO_ROOT)}  {len(frame):,} held-out rows")
+    return str(destination.relative_to(REPO_ROOT))
 
 
 def write_ledger(summary: dict[str, Any]) -> None:
@@ -627,6 +715,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--rungs", nargs="+", required=True,
                         help="rung ids from research/v4/recipe.py; several compose into one arm")
     parser.add_argument("--corpus", choices=sorted(CORPORA), default="ham_only")
+    parser.add_argument("--fold", type=int, default=None,
+                        help="S72: train on the pooled train rows outside this fold and validate "
+                             "on the fold itself, using the frozen S71 partition. Requires "
+                             "--corpus pooled. Writes held-out predictions for the fold.")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--batch-size", type=int, default=32)
     # 2, not torch's usual 4. Measured on this host in S52's Block 0: at 384 px on the pooled

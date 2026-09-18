@@ -1,0 +1,61 @@
+{
+  "session": "S61",
+  "window": "C:\\Users\\RAJ\\AppData\\Local\\Temp\\claude\\C--Users-RAJ-Downloads-Capstone-review-1\\bddf5dd6-2cd0-40e2-b614-98b645d06830\\scratchpad\\window_shifted.csv",
+  "rows": 400,
+  "baseline_sha256": "9b381430b892671f79e454c988f17e90457d257298ae4d3858e5214d4c35d12f",
+  "hooks": {
+    "archive_probe": {
+      "value": 0.9995595186935968,
+      "baseline": 0.5,
+      "status": "alert",
+      "warn": 0.7,
+      "alert": 0.85,
+      "reading": "AUC of separating the window from the training archives; 0.5 is indistinguishable"
+    },
+    "mahalanobis": {
+      "window_median": 8797.321515301588,
+      "window_p95": 20078.140313242344,
+      "baseline_median": 485.08113936059794,
+      "value": 18.135773175798256,
+      "status": "alert",
+      "warn": 2.0,
+      "alert": 5.0,
+      "reading": "window median / frozen in-domain median; S8b measured 18x between HAM val and PAD"
+    },
+    "band_coverage": {
+      "window": {
+        "<40": 0.5111111111111111,
+        "40-59": 0.512,
+        "60+": 0.42000000000000004
+      },
+      "reference": {
+        "40-59": 0.8249180327868852,
+        "60+": 0.7792515395547134,
+        "<40": 0.8537832310838446
+      },
+      "value": 0.35925153955471334,
+      "status": "alert",
+      "warn": 0.05,
+      "alert": 0.1,
+      "reading": "largest per-band drop in realised coverage against the frozen reference"
+    },
+    "age_histogram": {
+      "value": 0.37625075085536674,
+      "status": "alert",
+      "window_counts": [
+        225.0,
+        125.0,
+        50.0
+      ],
+      "baseline_counts": [
+        2721.0,
+        5825.0,
+        6497.0
+      ],
+      "warn": 0.1,
+      "alert": 0.2,
+      "reading": "Jensen-Shannon distance between the window's age-band histogram and the fit population's"
+    }
+  },
+  "overall": "alert"
+}

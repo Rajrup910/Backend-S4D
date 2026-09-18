@@ -1,0 +1,37 @@
+{
+  "session": "s69",
+  "purpose": "a smartphone admissibility gate that refuses out-of-domain images before the classifier sees them",
+  "arch": "convnext_tiny",
+  "features": {
+    "train": "research/selective/features/convnext_tiny_train.npz",
+    "val": "research/selective/features/convnext_tiny_val.npz",
+    "pad": "research/selective/features/convnext_tiny_pad.npz"
+  },
+  "candidates": [
+    "mahalanobis",
+    "modality"
+  ],
+  "target_in_domain_false_reject": 0.05,
+  "threshold_fit_on": "a held-out 20% of HAM train, grouped by lesion, that the score itself was not fit on",
+  "selection_rule": "highest PAD-dev rejection rate among candidates whose escalating-minus-benign rejection gap has an upper CI bound at or below +0.05",
+  "safety_constraint": {
+    "statement": "the gate must not reject escalating lesions more often than benign ones",
+    "test": "Newcombe score interval on the difference of PAD-dev rejection rates",
+    "max_allowed_gap": 0.05,
+    "decides": "a candidate failing this cannot be adopted regardless of its rejection rate"
+  },
+  "pad_split": {
+    "unit": "patient_id",
+    "seed": 71,
+    "halves": [
+      "fit",
+      "dev"
+    ],
+    "note": "PAD is developed on here and is not a fresh cohort; S73 does not read it again"
+  },
+  "reads": {
+    "reserved": false,
+    "ham_test": false,
+    "pad": "development only"
+  }
+}

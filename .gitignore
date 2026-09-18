@@ -216,6 +216,7 @@ DATASET_REFINING.md
 .cursor/
 .gemini/
 .agents/
+.relay/
 AGENTS.md
 GEMINI.md
 *copilot*
