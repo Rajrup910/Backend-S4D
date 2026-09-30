@@ -1,0 +1,118 @@
+{
+  "question": "S01: 384 px (R1) vs 224 px (R0), pooled partition, fold 0, last epoch",
+  "rule_source": "master plan V5-A1 two-hurdle rule; A01 A5; audit AU29; runsheet 6, 8.3",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "n_rows": 3059,
+  "n_lesions": 1746,
+  "per_seed": [
+    {
+      "seed": 42,
+      "macro_f1_384": 0.6340539723547882,
+      "balanced_accuracy_384": 0.6373213299230244,
+      "mel_f1_384": 0.6145038167938931,
+      "bcc_recall_384": 0.7660668380462725,
+      "pauc_all_384": 0.7996015050828407,
+      "pauc_u40_384": 0.7939852824910296,
+      "macro_f1_224": 0.6394323267549685,
+      "balanced_accuracy_224": 0.644557391644447,
+      "mel_f1_224": 0.599601593625498,
+      "bcc_recall_224": 0.7917737789203085,
+      "pauc_all_224": 0.8088261179089502,
+      "pauc_u40_224": 0.7750106428267347,
+      "delta_macro_f1": -0.005378354400180307,
+      "delta_mel_f1": 0.014902223168395068,
+      "delta_bcc_recall": -0.02570694087403602,
+      "delta_pauc_all": -0.009224612826109535,
+      "delta_pauc_u40": 0.018974639664294912,
+      "delta_balanced_accuracy": -0.00723606172142266
+    },
+    {
+      "seed": 43,
+      "macro_f1_384": 0.6325921557829454,
+      "balanced_accuracy_384": 0.634464920323962,
+      "mel_f1_384": 0.6051587301587301,
+      "bcc_recall_384": 0.7840616966580977,
+      "pauc_all_384": 0.8113345022587212,
+      "pauc_u40_384": 0.7537249893571734,
+      "macro_f1_224": 0.6218379546302365,
+      "balanced_accuracy_224": 0.6185553501905987,
+      "mel_f1_224": 0.631163708086785,
+      "bcc_recall_224": 0.7763496143958869,
+      "pauc_all_224": 0.8127290647186667,
+      "pauc_u40_224": 0.8063309615033754,
+      "delta_macro_f1": 0.010754201152708864,
+      "delta_mel_f1": -0.026004977928054895,
+      "delta_bcc_recall": 0.007712082262210762,
+      "delta_pauc_all": -0.0013945624599455142,
+      "delta_pauc_u40": -0.052605972146201996,
+      "delta_balanced_accuracy": 0.01590957013336325
+    },
+    {
+      "seed": 44,
+      "macro_f1_384": 0.6457555043202824,
+      "balanced_accuracy_384": 0.6571339235987697,
+      "mel_f1_384": 0.6140350877192983,
+      "bcc_recall_384": 0.7737789203084833,
+      "pauc_all_384": 0.8120487584999104,
+      "pauc_u40_384": 0.7667396460499909,
+      "macro_f1_224": 0.6408552069522818,
+      "balanced_accuracy_224": 0.6531891069237108,
+      "mel_f1_224": 0.6134122287968441,
+      "bcc_recall_224": 0.7712082262210797,
+      "pauc_all_224": 0.7976043297247072,
+      "pauc_u40_224": 0.7907620263942103,
+      "delta_macro_f1": 0.004900297368000572,
+      "delta_mel_f1": 0.0006228589224541725,
+      "delta_bcc_recall": 0.0025706940874036244,
+      "delta_pauc_all": 0.014444428775203244,
+      "delta_pauc_u40": -0.02402238034421944,
+      "delta_balanced_accuracy": 0.00394481667505886
+    }
+  ],
+  "mean_delta_macro_f1": 0.0034253813735097096,
+  "hierarchical_bootstrap": {
+    "n_boot": 2000,
+    "rng_seed": 20260930,
+    "ci95": [
+      -0.01627312298957346,
+      0.024525526310885584
+    ],
+    "p_delta_le_0": 0.388
+  },
+  "t_interval_descriptive": [
+    -0.01686203613731033,
+    0.023712798884329752
+  ],
+  "seed_sd_of_delta": 0.008166784560637531,
+  "mean_delta_mel_f1": -0.003493298612401885,
+  "mean_delta_bcc_recall": -0.0051413881748072114,
+  "mean_delta_pauc_all_descriptive": 0.0012750844963827317,
+  "mean_delta_pauc_u40_descriptive": -0.019217904275375508,
+  "thresholds": {
+    "mcid": 0.015,
+    "seed_floor": -0.01,
+    "class_floor": -0.02
+  },
+  "hurdles": {
+    "1_hierarchical_ci_lower_gt_0": false,
+    "2_mean_delta_ge_mcid": false,
+    "3_consistency": true,
+    "4_per_class_safety": true
+  },
+  "pass": false,
+  "resolution": 224,
+  "consequence": "runsheet 8.3 fallback: composite and confirmation at 224 px; the 384 px rescue (AU20) cannot fire",
+  "inputs_sha256": {
+    "R1_kfold_f0_s42_v5s01_last.csv": "36d0b2eaf88983ded2ff3d2d6e2e5b835884febdecfff7f9b8b8d982277e5ab6",
+    "R0_kfold_f0_s42_last.csv": "70e5a9e65d7c09b8da165c96dfd9085a1c5c0e19892880fa1d9760317d7dcf18",
+    "R1_kfold_f0_s43_v5s01_last.csv": "d4cc85a85e0a8d119ec509317dd9cb0907b90bcb806d777a353df89845e1b4fc",
+    "R0_kfold_f0_s43_v5s01_last.csv": "81135de8206ead5e9a2f26fba6dfec674f733dd5832b170c81ec2640d8a9bea2",
+    "R1_kfold_f0_s44_v5s01_last.csv": "455683eeade14cc6c818027e59ab542166af0eae202c50095d42589b4e2a5d0a",
+    "R0_kfold_f0_s44_v5s01_last.csv": "e95ae901936ba63f1046d5500a209be76a6ee4c780c5fc6993ba9871e8ed9786"
+  },
+  "test_read": false
+}

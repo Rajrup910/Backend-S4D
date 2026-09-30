@@ -1,0 +1,31 @@
+{
+  "task2_images": 2594,
+  "overlap_by_split": {
+    "ham_test": 0,
+    "ham_val": 0,
+    "reserved": 242,
+    "train": 416,
+    "val": 114
+  },
+  "overlap_train_rows": 416,
+  "train_overlap_by_archive": {
+    "mskcc": 416
+  },
+  "val_or_reserved_rows_used": 0,
+  "task2_ids_in_val_or_reserved_not_used": 356,
+  "under40_mskcc_mel_train": 12,
+  "under40_mskcc_mel_with_masks": 4,
+  "pixel_agreement_sample": {
+    "n": 50,
+    "same_size": 50,
+    "same_aspect_resized": 0,
+    "mismatch": 0,
+    "nonempty_masks": 44,
+    "pass": true
+  },
+  "pass_rule": ">= 1000 train rows overlap, 0 val/reserved rows used, and the 50-image sample's masks sit on the image grid",
+  "pass": false,
+  "licence_note": "ISIC 2018 Task 2 ground truth: CC-BY-NC (per ATTRIBUTION.txt in the zip)",
+  "test_read": false,
+  "reserved_read": false
+}

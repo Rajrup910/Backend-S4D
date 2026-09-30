@@ -1,0 +1,244 @@
+{
+  "title": "V5 Research Plan Preservation Audit — Final Session Reconciliation",
+  "audit_timestamp": "2026-09-18T21:50:00+05:30",
+  "verdict": "100% PRESERVED (22/22 experiments intact: A1-A5, B1-B12, X1-X5; 0 removed; all mapped to explicit Sessions S76-S85 and Run IDs)",
+  "preservation_summary": {
+    "total_core_a_experiments": 5,
+    "total_biological_b_experiments": 12,
+    "total_exploratory_deferred_x_experiments": 5,
+    "total_experiments_preserved": 22,
+    "total_experiments_removed": 0
+  },
+  "experiment_inventory": [
+    {
+      "experiment_id": "V5-A1",
+      "original_name": "V5-A1 — 384px global control",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §6 / docs/V5_FINAL_RUNSHEET.md Stage 1",
+      "session": "Session S77",
+      "run_id": "V5-S01-384-CONTROL",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Evaluated on Fold 0 screening partition across 3 seeds (42, 43, 44) taking ~4.6 h, paired against matched 224px control. Two-Hurdle Gate: 95% bootstrap CI > 0.000 AND mean paired gain >= +0.015 (MCID). Initial screening fold; 5-fold OOF reserved for finalists."
+    },
+    {
+      "experiment_id": "V5-A2",
+      "original_name": "V5-A2 — Dual-stream global + lesion-aware local",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §7 / docs/V5_FINAL_RUNSHEET.md Stage 2",
+      "session": "Session S78",
+      "run_id": "V5-S02-DUALSTREAM",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Added mandatory capacity-matched single-stream control (~50-56M params) to verify structural information gain separate from parameter scale."
+    },
+    {
+      "experiment_id": "V5-A3",
+      "original_name": "V5-A3 — Group-DRO and subgroup-aware representation learning",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §10 / docs/V5_FINAL_RUNSHEET.md Stage 4",
+      "session": "Session S80",
+      "run_id": "V5-S13-GROUPDRO",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Subgroups defined as G = {age_band x escalation}. S76 verification ensures N >= 30 cells; if cells < 30, S80 marked BLOCKED/DEFERRED while pipeline proceeds. Seed stability s_seed is diagnostic warning."
+    },
+    {
+      "experiment_id": "V5-A4",
+      "original_name": "V5-A4 — Modern high-resolution heterogeneous backbones",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §11 / docs/V5_FINAL_RUNSHEET.md Stage 5",
+      "session": "Session S81 & S81-T3",
+      "run_id": "V5-S14-CONVNEXTV2, V5-S15-EFFNETV2, V5-S16-SWINV2",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Frozen models: ConvNeXt-V2-Tiny (28.6M), EfficientNetV2-M (54.1M), SwinV2-Tiny-384 (28.35M). Evaluated across 3 seeds in S81; promoted finalists generate full 5-fold cross-fitted OOF (N=15,294) in S81-T3."
+    },
+    {
+      "experiment_id": "V5-A5",
+      "original_name": "V5-A5 — Fresh external cohort confirmation",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §15 / docs/V5_FINAL_RUNSHEET.md Stage 8",
+      "session": "Session S84",
+      "run_id": "V5-S20-EXTERNAL",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Locked single-read hierarchical confirmatory protocol on fresh S75 external cohort: Step 1 (Primary Macro-F1 >= 0.7500 at alpha=0.05) -> Step 2 (Secondary Under-40 Sens >= 0.700 vs H0 <= 0.500, exact binomial p < 0.05, N >= 40 lesions floor for 80.7% exact power)."
+    },
+    {
+      "experiment_id": "V5-B1",
+      "original_name": "V5-B1 — Age-stratified morphology audit",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.1 / docs/V5_FINAL_RUNSHEET.md Stage 0",
+      "session": "Session S76",
+      "run_id": "V5-S00b-MORPH-AUDIT",
+      "status": "CORE_MANDATORY_CPU",
+      "modified": "yes",
+      "modification_reason": "Preserved. Descriptive age-stratified morphology feature extraction on CPU. Serves as baseline hypothesis generator prior to Stage 3."
+    },
+    {
+      "experiment_id": "V5-B2",
+      "original_name": "V5-B2 — Trainable escalation head",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.2 / docs/V5_FINAL_RUNSHEET.md Stage 2",
+      "session": "Session S78",
+      "run_id": "V5-S03-ESCALATION",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. End-to-end joint trunk training with binary escalation auxiliary head (lambda_esc=0.50 default) to prevent repeating frozen linear head failure of S40/S42."
+    },
+    {
+      "experiment_id": "V5-B3",
+      "original_name": "V5-B3 — Hierarchical diagnosis",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.3 / docs/V5_FINAL_RUNSHEET.md Stage 2",
+      "session": "Session S78",
+      "run_id": "V5-S04-HIERARCHICAL",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Coarse binary escalation to fine 7-class diagnostic tree head with joint training."
+    },
+    {
+      "experiment_id": "V5-B4",
+      "original_name": "V5-B4 — Multi-resolution local patch attention",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.4 / docs/V5_FINAL_RUNSHEET.md Stage 2",
+      "session": "Session S78",
+      "run_id": "V5-S05-LOCALPATCH",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Native-resolution 128px micro-patch attention. Data-path QC verifies crops from native un-downsampled image. Gate A under-40 pAUC gain >= +0.050 vs capacity control."
+    },
+    {
+      "experiment_id": "V5-B5",
+      "original_name": "V5-B5 — Soft interior / boundary / context decomposition",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.5 / docs/V5_FINAL_RUNSHEET.md Stage 3",
+      "session": "Session S79",
+      "run_id": "V5-S06-CONTEXT",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Evaluates soft context mixing (alpha=0.25) vs full context (alpha=1.0) on top S78 survivor trunk. Requires valid segmentation masks from S76."
+    },
+    {
+      "experiment_id": "V5-B6",
+      "original_name": "V5-B6 — Melanoma-versus-nevus end-to-end branch",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.6 / docs/V5_FINAL_RUNSHEET.md Stage 3",
+      "session": "Session S79",
+      "run_id": "V5-S09b-MELNV-BRANCH",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Independent architectural hypothesis (dedicated end-to-end binary MEL-NV branch). Artificial dependency on S09 ranking loss removed; evaluated independently against Gate A/B."
+    },
+    {
+      "experiment_id": "V5-B7",
+      "original_name": "V5-B7 — Class-aware supervised contrastive learning",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.7 / docs/V5_FINAL_RUNSHEET.md Stage 3",
+      "session": "Session S79",
+      "run_id": "V5-S08-SUPCON",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Multi-task CE + SupCon representation learning (tau=0.07, lambda=0.30) on top S78 survivor trunk."
+    },
+    {
+      "experiment_id": "V5-B8",
+      "original_name": "V5-B8 — High-frequency / wavelet branch",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.8 / docs/V5_FINAL_RUNSHEET.md Stage 3",
+      "session": "Session S79",
+      "run_id": "V5-S10-DWT",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Haar 2D DWT sub-bands fed to parallel lightweight branch with capacity-matched CNN baseline."
+    },
+    {
+      "experiment_id": "V5-B9",
+      "original_name": "V5-B9 — Boundary/radial representation",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.9 / docs/V5_FINAL_RUNSHEET.md Stage 3",
+      "session": "Session S79",
+      "run_id": "V5-S06b-RADIAL-POLAR",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Unwrapped polar coordinate representation for peripheral growth pattern detection. Data-dependent on segmentation masks; artificial gating on S06 removed."
+    },
+    {
+      "experiment_id": "V5-B10",
+      "original_name": "V5-B10 — Morphology-gated ensemble",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.10 / docs/V5_FINAL_RUNSHEET.md Stage 6",
+      "session": "Session S82",
+      "run_id": "V5-S17b-MORPH-GATE",
+      "status": "DEPENDENCY_GATED",
+      "modified": "yes",
+      "modification_reason": "Preserved. Eligible if ANY validated morphology signal exists (B1 audit, B5 context, B6 branch, V5-MORPH-ATTR). Shallow gate, strictly dev-controlled, no raw age variable input."
+    },
+    {
+      "experiment_id": "V5-B11",
+      "original_name": "V5-B11 — Adaptive Feature Pooling (GeM / Attention Pooling)",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.11 / docs/V5_FINAL_RUNSHEET.md Stage 3",
+      "session": "Session S79",
+      "run_id": "V5-S12-GEM",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. Generalized Mean (GeM) pooling (p=3) vs GAP; lightweight parameter-neutral comparison on top S78 survivor trunk."
+    },
+    {
+      "experiment_id": "V5-B12",
+      "original_name": "V5-B12 — Pairwise MEL-vs-NV Margin Ranking Loss",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §8.12 / docs/V5_FINAL_RUNSHEET.md Stage 3",
+      "session": "Session S79",
+      "run_id": "V5-S09-MELNV-RANK",
+      "status": "CORE_MANDATORY",
+      "modified": "yes",
+      "modification_reason": "Preserved. End-to-end pairwise ranking loss (margin=0.20, lambda=0.30) on dev-derived lesion-disjoint pairs."
+    },
+    {
+      "experiment_id": "V5-MORPH-ATTR",
+      "original_name": "Auxiliary Morphology Attribute Supervision",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §10 / docs/V5_FINAL_RUNSHEET.md Stage 3",
+      "session": "Session S79",
+      "run_id": "V5-S11-MORPH-ATTR",
+      "status": "DEPENDENCY_GATED",
+      "modified": "yes",
+      "modification_reason": "Preserved. Formally designated as V5-MORPH-ATTR (disambiguated from V5-B2 trainable escalation head). Evaluates Derm7pt attribute supervision; requires external provenance check."
+    },
+    {
+      "experiment_id": "V5-X1",
+      "original_name": "V5-X1 — 384px Mixup/CutMix Sensitivity Analysis",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §14b / docs/V5_FINAL_RUNSHEET.md Queue 2",
+      "session": "Session S85",
+      "run_id": "V5-X01-MIXUP-CUTMIX",
+      "status": "DEFERRED_NOT_CORE",
+      "modified": "yes",
+      "modification_reason": "Preserved as non-core exploratory. Non-blocking; colour-safe alpha <= 0.20."
+    },
+    {
+      "experiment_id": "V5-X2",
+      "original_name": "V5-X2 — Optional SWA Schedule Ablation",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §14b / docs/V5_FINAL_RUNSHEET.md Queue 2",
+      "session": "Session S85",
+      "run_id": "V5-X02-SWA",
+      "status": "DEFERRED_NOT_CORE",
+      "modified": "yes",
+      "modification_reason": "Preserved as non-core deferred. Triggered only if terminal validation loss displays sigma > 0.05."
+    },
+    {
+      "experiment_id": "V5-X3",
+      "original_name": "V5-X3 — Exploratory Imbalance-Loss Sensitivity (Focal Loss)",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §14b / docs/V5_FINAL_RUNSHEET.md Queue 2",
+      "session": "Session S85",
+      "run_id": "V5-X03-FOCAL-LOSS",
+      "status": "DEFERRED_NOT_CORE",
+      "modified": "yes",
+      "modification_reason": "Preserved as non-core deferred. Class-imbalance loss sensitivity probe on Stage 1 trunk."
+    },
+    {
+      "experiment_id": "V5-X4",
+      "original_name": "Balanced Softmax Subgroup Loss",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §14b / docs/V5_FINAL_RUNSHEET.md Queue 2",
+      "session": "Session S85",
+      "run_id": "V5-X04-BALANCED-SOFTMAX",
+      "status": "DEFERRED_NOT_CORE",
+      "modified": "yes",
+      "modification_reason": "Formally registered in Master Plan and Runsheet as DEFERRED — NOT CORE V5. Logit-adjustment secondary sensitivity probe."
+    },
+    {
+      "experiment_id": "V5-X5",
+      "original_name": "Derm Foundation Distillation",
+      "final_location": "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md §14b / docs/V5_FINAL_RUNSHEET.md Queue 2",
+      "session": "Session S85",
+      "run_id": "V5-X05-FOUNDATION-DISTILL",
+      "status": "DEFERRED_NOT_CORE",
+      "modified": "yes",
+      "modification_reason": "Formally registered in Master Plan and Runsheet as DEFERRED — NOT CORE V5. Feature distillation probe from PanDerm/DINOv2 to high-res student trunk."
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "A11": "No learned segmenter in V5. Lesion geometry comes from the no-gradient chromophore map (DRE-2), validated against the HAM expert masks by pre-check Q1, with the D4 fallback if Q1 fails; the learned segmenter with human QC moves to V6-1. Decided by the owner 2026-09-30.",
+  "B6": "Reader study deferred to V6, subject to ethics sign-off. Decided by the owner 2026-09-30."
+}

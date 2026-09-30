@@ -1,0 +1,178 @@
+{
+  "title": "V5 Research Programme Final Freeze Forensic Checklist",
+  "audit_timestamp": "2026-09-18T21:32:00+05:30",
+  "overall_status": "PASS — 16/16 FORENSIC CHECKS VERIFIED",
+  "checks": [
+    {
+      "check_id": "CHK-01",
+      "name": "Document Synchronization",
+      "status": "PASS",
+      "evidence": "All V5 core documents, runsheets, and supporting specifications verified identical in requirements, gates, and parameters; workspace docs/ and Downloads/ copies have identical SHA-256 hashes.",
+      "files_checked": [
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "docs/V5_FINAL_RUNSHEET.md",
+        "C:\\Users\\RAJ\\Downloads\\V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "C:\\Users\\RAJ\\Downloads\\V5_FINAL_RUNSHEET.md"
+      ]
+    },
+    {
+      "check_id": "CHK-02",
+      "name": "Unique Experiment IDs",
+      "status": "PASS",
+      "evidence": "All 22 V5 experiments mapped to unique Run IDs without collisions: Core A1-A5 (V5-S01, V5-S02, V5-S13, V5-S14/15/16, V5-S20); Biological B1-B12 (V5-S00b, V5-S03, V5-S04, V5-S05, V5-S06, V5-S09b, V5-S08, V5-S10, V5-S06b, V5-S17b, V5-S12, V5-S09); Deferred X1-X5 (V5-X01 to V5-X05).",
+      "files_checked": [
+        "docs/V5_FINAL_RUNSHEET.md",
+        "results/v5/v5_plan_preservation_audit.json"
+      ]
+    },
+    {
+      "check_id": "CHK-03",
+      "name": "No-Repeat Registry Consistency",
+      "status": "PASS",
+      "evidence": "12 permanently barred historical mechanisms documented with exact failure sessions and evidence files; all 22 V5 experiments demonstrate material divergence from prior falsifications.",
+      "files_checked": [
+        "results/v5/v5_no_repeat_registry.json",
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md"
+      ]
+    },
+    {
+      "check_id": "CHK-04",
+      "name": "Seed Policy Consistency",
+      "status": "PASS",
+      "evidence": "Authoritative seed sets verified across all documents: Tier 1 single default screening uses Seed 42; Tier 2 local ablation uses Seed 42; Tier 3 multi-seed confirmation, S01 baseline, Group-DRO, and modern backbones use Seeds 42, 43, 44.",
+      "files_checked": [
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "docs/V5_FINAL_RUNSHEET.md"
+      ]
+    },
+    {
+      "check_id": "CHK-05",
+      "name": "MCID Consistency",
+      "status": "PASS",
+      "evidence": "Authoritative S01 Macro-F1 improvement MCID is strictly +0.015 across all documents; Gate B degradation tolerance is strictly -0.010; no stale +0.010 improvement MCID remains.",
+      "files_checked": [
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "docs/V5_FINAL_RUNSHEET.md",
+        "results/v5/v5_plan_preservation_audit.json"
+      ]
+    },
+    {
+      "check_id": "CHK-06",
+      "name": "OOF Sample Size (N) Consistency",
+      "status": "PASS",
+      "evidence": "Correctly differentiated per-fold training subset (N_train=12,235), single-fold development validation split (N_val=3,059), and complete pooled 5-fold OOF population (N=15,294 rows, 8,748 lesions across 8,734 groups), exactly verified against manifest_v4.csv and s71_plan.json.",
+      "files_checked": [
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "results/v5/v5_oof_matrix_spec.md",
+        "results/v4/kfold/s71_plan.json",
+        "ml/data/manifest_v4.csv"
+      ]
+    },
+    {
+      "check_id": "CHK-07",
+      "name": "S01 Design & Gate Consistency",
+      "status": "PASS",
+      "evidence": "S01 is unambiguously specified as Fold 0 multi-seed development screening (3 seeds: 42, 43, 44; 4.6 h runtime); evaluated under two-hurdle gate requiring 95% bootstrap CI lower bound > 0.000 AND mean gain >= +0.015; full 5-fold OOF (N=15,294) reserved for finalists.",
+      "files_checked": [
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "docs/V5_FINAL_RUNSHEET.md",
+        "results/v5/v5_plan_preservation_audit.json"
+      ]
+    },
+    {
+      "check_id": "CHK-08",
+      "name": "Gate D Reproducibility Consistency",
+      "status": "PASS",
+      "evidence": "Removed ungrounded sigma <= 0.050 hard threshold; established empirical dispersion reporting and explicit stability flag (s_seed <= 0.015 for Macro-F1); requires mean > 0, >= 2/3 seeds positive, min seed >= -0.010.",
+      "files_checked": [
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "docs/V5_FINAL_RUNSHEET.md"
+      ]
+    },
+    {
+      "check_id": "CHK-09",
+      "name": "S20 Statistical Power Correctness",
+      "status": "PASS",
+      "evidence": "Exact binomial test power computed from first principles: N >= 40 independent escalating lesions provides 80.7% exact power (rejection critical value k >= 26/40, alpha = 0.0403) for H0 <= 0.50 vs H1 >= 0.70; target N >= 50 provides 85.9% power; uncorrected normal approximation (84.2% at N=35) formally corrected.",
+      "files_checked": [
+        "results/v5/v5_external_analysis_spec.md",
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "docs/V5_FINAL_RUNSHEET.md"
+      ]
+    },
+    {
+      "check_id": "CHK-10",
+      "name": "Endpoint Definition Consistency",
+      "status": "PASS",
+      "evidence": "External endpoints structured as Fixed-Sequence Hierarchical Testing: Step 1: Primary Confirmatory Endpoint (7-class Macro-F1 >= 0.7500 at alpha=0.05); Step 2: Key Secondary Confirmatory Subgroup Endpoint (under-40 escalating lesion sensitivity >= 0.700 at >= 80% non-escalating specificity, alpha=0.05).",
+      "files_checked": [
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "results/v5/v5_external_analysis_spec.md",
+        "docs/V5_FINAL_RUNSHEET.md"
+      ]
+    },
+    {
+      "check_id": "CHK-11",
+      "name": "Runtime Arithmetic & Hardware Feasibility",
+      "status": "PASS",
+      "evidence": "All timings verified: Minimum Path = 10.4 GPU hours; Conditional Expected Path = 42.8 GPU hours (5 nights of ~8.5 h); Worst-Case Path = 82.9 GPU hours; all runs fit within 8.55 GB VRAM on RTX 5050 Laptop GPU; measured vs extrapolated timings cleanly separated.",
+      "files_checked": [
+        "docs/V5_FINAL_RUNSHEET.md",
+        "results/v4/kfold/run.log"
+      ]
+    },
+    {
+      "check_id": "CHK-12",
+      "name": "Artifact Path Consistency",
+      "status": "PASS",
+      "evidence": "All referenced artifact paths verified against filesystem: results/v4/kfold/fold_assignments.csv, results/v4/kfold/s71_plan.json, ml/data/manifest_v4.csv, results/v3/oos_probe_report.json.",
+      "files_checked": [
+        "results/v5/v5_oof_matrix_spec.md",
+        "results/v5/v5_no_repeat_registry.json",
+        "docs/V5_FINAL_RUNSHEET.md"
+      ]
+    },
+    {
+      "check_id": "CHK-13",
+      "name": "Dependency Gating Consistency",
+      "status": "PASS",
+      "evidence": "Strict chronological stage execution enforced: Stage 0 (CPU) -> Stage 1 (384 control) -> Stage 2 (screening) -> Stage 3 (refinements) -> Stage 4 (Group-DRO) -> Stage 5 (backbones) -> Stage 6 (ensemble via V5-OOF-COMMON-MATRIX) -> Stage 7 (safety stack) -> Stage 8 (external read). No downstream run consumes unproduced data.",
+      "files_checked": [
+        "docs/V5_FINAL_RUNSHEET.md",
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md"
+      ]
+    },
+    {
+      "check_id": "CHK-14",
+      "name": "External Cohort Lock Integrity",
+      "status": "PASS",
+      "evidence": "S20 cohort is permanently locked; zero model selection, threshold tuning, or hyperparameter feedback permitted; single read; pre-registered null outcome pathway formally bound.",
+      "files_checked": [
+        "results/v5/v5_external_analysis_spec.md",
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "docs/V5_FINAL_RUNSHEET.md"
+      ]
+    },
+    {
+      "check_id": "CHK-15",
+      "name": "Historical Invalid Result Protection",
+      "status": "PASS",
+      "evidence": "Invalid ~0.993 feature probe permanently barred as in-sample leakage; valid 0.7182 probe traceable to results/v3/oos_probe_report.json; 21 images / 10 lesions caveat and 34 under-40 escalating OOF lesion limitation retained.",
+      "files_checked": [
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "results/v5/v5_no_repeat_registry.json"
+      ]
+    },
+    {
+      "check_id": "CHK-16",
+      "name": "Test & Reserved Split Protection",
+      "status": "PASS",
+      "evidence": "Strict read locks enforced: test split receipt count <= 2, reserved split receipt count <= 8; neither cohort may be opened during V5 development, model selection, or ensembling.",
+      "files_checked": [
+        "docs/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+        "docs/V5_FINAL_RUNSHEET.md",
+        "research/testguard.py"
+      ]
+    }
+  ]
+}

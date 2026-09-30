@@ -1,0 +1,100 @@
+{
+  "check": "d2_context_probe.json",
+  "context": {
+    "adoption": {
+      "amendment_index": 1,
+      "hashed_files": {
+        "docs/V5_RUNSHEET.md": "012ED3545AA1A49AB84E8E13C03CC20D0B665E90FFB7EB6C2DC6EB18DB5AC691",
+        "docs/v5_design/V5_PLAN_AMENDMENT_02.md": "073CF8A2277EF0B8826B8C98BA8109B8424BF233771A72B9CBDB7F149665BBE5",
+        "docs/v5_design/V5_DERM_REASONING_ENGINE.md": "57DFE48B438BE41C38BF98F4C5CEC9B939CA11F56FD57E04C0DB9477955DDFAE",
+        "research/v5/arms.py": "1371E588C1A9142BE99B167BA47E8653536781650BD4D7959B87410A12D02FAC",
+        "research/v5/screen_gate.py": "38403EBF21D165D35B58B890D49D1FBC5CB299DB4AFCE1619E8B75517C47FEA9",
+        "research/v5/confirmation.py": "63A9B6CC7DE758CDE1BAE9EACAC1419C2723B3710B8B9791A7E54C4A16B60AF7",
+        "research/v5/trunks.py": "7B7ABCCEC6DE3018F0EB3CFFCB323F9A770BDB5ECBC45950EC1D271710ADCBF4",
+        "results/v5/diagnostics/d5_acquisition.csv": "5555111EBFA0DD03DF07EBA8888F45F1071B5F641B5FE78299B8EB43C17DEE27"
+      },
+      "adopted_timestamp": "2026-09-30T07:04:58+05:30"
+    },
+    "headroom_gb_at_start": 10.09,
+    "threads": 4,
+    "started": "2026-09-30T19:59:18+0530"
+  },
+  "git": {
+    "head": "27b5ba9a82de9a7b0ff7a9fd264794c889454d1f",
+    "dirty_files": 41
+  },
+  "finished": "2026-09-30T20:00:45+0530",
+  "reads": "development rows only (manifest split == train); no test, reserved or external labels",
+  "implementation_declarations": {
+    "APERTURE_SRGB_MAX": 0.0784313725490196,
+    "RING_FRACTION": 0.1,
+    "REF_MEL_RGB": [
+      0.3,
+      0.6,
+      1.0
+    ],
+    "REF_HB_RGB": [
+      0.1,
+      1.0,
+      0.6
+    ],
+    "OTSU_BINS": 256,
+    "LESION_PIXEL_THRESHOLD": 0.5,
+    "MIN_OTSU_T": 0.001,
+    "ring_definition": "Chebyshev frame: |x-cx|/(W/2) > 0.9 or |y-cy|/(H/2) > 0.9",
+    "aperture_definition": "max(R,G,B) < 20/255 in sRGB; excluded like glare",
+    "component_naming": "ICA mixing vectors in the plane orthogonal to (1,1,1) are assigned melanin/haemoglobin (and sign-fixed) by maximum total cosine to the projected reference spectra; the references never enter unmixing"
+  },
+  "pass_rule": "descriptive (feeds V6 B5); (a) strong AND (b) above chance would justify context alpha and M7",
+  "n_images": 6975,
+  "features": [
+    "rgb_mean_r",
+    "rgb_mean_g",
+    "rgb_mean_b",
+    "rgb_sd_r",
+    "rgb_sd_g",
+    "rgb_sd_b",
+    "od_mean_r",
+    "od_mean_g",
+    "od_mean_b",
+    "od_sd_r",
+    "od_sd_g",
+    "od_sd_b",
+    "mel_mean",
+    "hb_mean",
+    "mel_sd",
+    "hb_sd",
+    "depth_ratio_mean",
+    "glare_fraction",
+    "aperture_fraction",
+    "ring_share"
+  ],
+  "results": {
+    "escalation": {
+      "n_pos_images": 1356,
+      "n_neg_images": 5619,
+      "n_pos_lesions": 818,
+      "n_neg_lesions": 4407,
+      "auc": 0.7927266632753075,
+      "ci_lo": 0.7789726810147155,
+      "ci_hi": 0.8064399302073251,
+      "n_boot_valid": 2000
+    },
+    "age_lt40_vs_60plus": {
+      "n_pos_images": 1316,
+      "n_neg_images": 2511,
+      "n_pos_lesions": 906,
+      "n_neg_lesions": 1764,
+      "auc": 0.7070924406774327,
+      "ci_lo": 0.6860882773631674,
+      "ci_hi": 0.7278269186575849,
+      "n_boot_valid": 2000
+    },
+    "age_band_one_vs_rest_auc": {
+      "<40": 0.638630881437482,
+      "40-59": 0.6650240199852666,
+      "60+": 0.7022911019471315
+    },
+    "age_band_macro_auc": 0.66864866778996
+  }
+}

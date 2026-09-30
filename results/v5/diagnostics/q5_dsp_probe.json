@@ -1,0 +1,464 @@
+{
+  "check": "q5_dsp_probe.json",
+  "context": {
+    "adoption": {
+      "amendment_index": 1,
+      "hashed_files": {
+        "docs/V5_RUNSHEET.md": "012ED3545AA1A49AB84E8E13C03CC20D0B665E90FFB7EB6C2DC6EB18DB5AC691",
+        "docs/v5_design/V5_PLAN_AMENDMENT_02.md": "073CF8A2277EF0B8826B8C98BA8109B8424BF233771A72B9CBDB7F149665BBE5",
+        "docs/v5_design/V5_DERM_REASONING_ENGINE.md": "57DFE48B438BE41C38BF98F4C5CEC9B939CA11F56FD57E04C0DB9477955DDFAE",
+        "research/v5/arms.py": "1371E588C1A9142BE99B167BA47E8653536781650BD4D7959B87410A12D02FAC",
+        "research/v5/screen_gate.py": "38403EBF21D165D35B58B890D49D1FBC5CB299DB4AFCE1619E8B75517C47FEA9",
+        "research/v5/confirmation.py": "63A9B6CC7DE758CDE1BAE9EACAC1419C2723B3710B8B9791A7E54C4A16B60AF7",
+        "research/v5/trunks.py": "7B7ABCCEC6DE3018F0EB3CFFCB323F9A770BDB5ECBC45950EC1D271710ADCBF4",
+        "results/v5/diagnostics/d5_acquisition.csv": "5555111EBFA0DD03DF07EBA8888F45F1071B5F641B5FE78299B8EB43C17DEE27"
+      },
+      "adopted_timestamp": "2026-09-30T07:04:58+05:30"
+    },
+    "headroom_gb_at_start": 10.04,
+    "threads": 4,
+    "started": "2026-09-30T19:50:27+0530"
+  },
+  "git": {
+    "head": "27b5ba9a82de9a7b0ff7a9fd264794c889454d1f",
+    "dirty_files": 41
+  },
+  "finished": "2026-09-30T19:59:15+0530",
+  "reads": "development rows only (manifest split == train); no test, reserved or external labels",
+  "implementation_declarations": {
+    "APERTURE_SRGB_MAX": 0.0784313725490196,
+    "RING_FRACTION": 0.1,
+    "REF_MEL_RGB": [
+      0.3,
+      0.6,
+      1.0
+    ],
+    "REF_HB_RGB": [
+      0.1,
+      1.0,
+      0.6
+    ],
+    "OTSU_BINS": 256,
+    "LESION_PIXEL_THRESHOLD": 0.5,
+    "MIN_OTSU_T": 0.001,
+    "ring_definition": "Chebyshev frame: |x-cx|/(W/2) > 0.9 or |y-cy|/(H/2) > 0.9",
+    "aperture_definition": "max(R,G,B) < 20/255 in sRGB; excluded like glare",
+    "component_naming": "ICA mixing vectors in the plane orthogonal to (1,1,1) are assigned melanin/haemoglobin (and sign-fixed) by maximum total cosine to the projected reference spectra; the references never enter unmixing",
+    "GABOR_GAMMA": 0.5,
+    "COVERAGE_PERCENTILE": 75.0,
+    "THIN_SIGMAS": [
+      1.0
+    ],
+    "DENSITY_SCALE": 1000.0,
+    "BORDER_SAMPLES": 5,
+    "blobness_definition": "Rb * (1 - exp(-S^2/2c^2)) where both Hessian eigenvalues < 0",
+    "network_regularity": "1 - CV of the dominant Gabor wavelength over network pixels",
+    "periphery_minus_centre": "mean c_mel on network pixels at rho in [0.6r,1.2r] minus at rho < 0.6r",
+    "polymorphism_classes": "thin-tubular (sigma 1), thick-tubular (sigma 2,4), blob",
+    "q2_direction": "every Q2/Q5 young-differential feature is tested one-sided, higher in <40 mel than in <40 histo-nv, except where the runsheet states the opposite (network regularity, Clark-Evans R: higher in nv)"
+  },
+  "pass_rule": ">= 3 of 5 signatures (AUC CI excludes 0.5 in the declared direction) AND >= 2 young-differential tokens with <40 AUC lower bound > 0.5",
+  "n_images_scored": 14770,
+  "n_fallback_excluded": 524,
+  "limit": null,
+  "partial_run": false,
+  "signatures": {
+    "S1_tubular_blob_bcc": {
+      "token": "tubular_blob_ratio",
+      "positive": [
+        "bcc"
+      ],
+      "negative": [
+        "akiec",
+        "bkl",
+        "df",
+        "mel",
+        "nv",
+        "vasc"
+      ],
+      "n_pos_images": 1906,
+      "n_neg_images": 12864,
+      "n_pos_lesions": 762,
+      "n_neg_lesions": 7759,
+      "auc": 0.4929425129729109,
+      "ci_lo": 0.4697563790736031,
+      "ci_hi": 0.5170448687114368,
+      "n_boot_valid": 2000,
+      "passes": false
+    },
+    "S2_network_melanocytic": {
+      "token": "network_coverage",
+      "positive": [
+        "mel",
+        "nv"
+      ],
+      "negative": [
+        "akiec",
+        "bcc",
+        "bkl",
+        "df",
+        "vasc"
+      ],
+      "n_pos_images": 10113,
+      "n_neg_images": 4657,
+      "n_pos_lesions": 6351,
+      "n_neg_lesions": 2170,
+      "auc": 0.5904177469280403,
+      "ci_lo": 0.5744360979122828,
+      "ci_hi": 0.605289660392108,
+      "n_boot_valid": 2000,
+      "passes": true
+    },
+    "S3_regularity_nv_over_mel": {
+      "token": "network_regularity",
+      "positive": [
+        "nv"
+      ],
+      "negative": [
+        "mel"
+      ],
+      "n_pos_images": 6949,
+      "n_neg_images": 2452,
+      "n_pos_lesions": 4877,
+      "n_neg_lesions": 961,
+      "auc": 0.5054382171950991,
+      "ci_lo": 0.4868260732530426,
+      "ci_hi": 0.5232465762323721,
+      "n_boot_valid": 2000,
+      "passes": false
+    },
+    "S4_clark_evans_nv_over_mel": {
+      "token": "dot_clark_evans",
+      "positive": [
+        "nv"
+      ],
+      "negative": [
+        "mel"
+      ],
+      "n_pos_images": 7597,
+      "n_neg_images": 2483,
+      "n_pos_lesions": 5371,
+      "n_neg_lesions": 974,
+      "auc": 0.40664126962383307,
+      "ci_lo": 0.39018168743426884,
+      "ci_hi": 0.42359423380348515,
+      "n_boot_valid": 2000,
+      "passes": false
+    },
+    "S5_veil_mel_over_nv": {
+      "token": "veil_fraction",
+      "positive": [
+        "mel"
+      ],
+      "negative": [
+        "nv"
+      ],
+      "n_pos_images": 2485,
+      "n_neg_images": 7628,
+      "n_pos_lesions": 974,
+      "n_neg_lesions": 5377,
+      "auc": 0.4007141960309313,
+      "ci_lo": 0.3847959575840453,
+      "ci_hi": 0.41759777118532576,
+      "n_boot_valid": 2000,
+      "passes": false
+    }
+  },
+  "signatures_passed": 1,
+  "young_differential": {
+    "vessel_coverage": {
+      "n_pos_images": 49,
+      "n_neg_images": 575,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 338,
+      "auc": 0.4483052351375333,
+      "ci_lo": 0.3679873341868053,
+      "ci_hi": 0.5273887280156307,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 mel",
+      "passes": false
+    },
+    "calibre_entropy": {
+      "n_pos_images": 49,
+      "n_neg_images": 575,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 338,
+      "auc": 0.5597160603371782,
+      "ci_lo": 0.4610557864053585,
+      "ci_hi": 0.6580761850194623,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 mel",
+      "passes": false
+    },
+    "vessel_polymorphism": {
+      "n_pos_images": 49,
+      "n_neg_images": 575,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 338,
+      "auc": 0.5654658385093168,
+      "ci_lo": 0.4663592645017137,
+      "ci_hi": 0.6572404396841247,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 mel",
+      "passes": false
+    },
+    "network_periphery_minus_centre": {
+      "n_pos_images": 45,
+      "n_neg_images": 497,
+      "n_pos_lesions": 27,
+      "n_neg_lesions": 309,
+      "auc": 0.6019673597138386,
+      "ci_lo": 0.49694656256033665,
+      "ci_hi": 0.7009945491669001,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 mel",
+      "passes": false
+    },
+    "dot_size_cv": {
+      "n_pos_images": 49,
+      "n_neg_images": 575,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 338,
+      "auc": 0.5248092280390417,
+      "ci_lo": 0.44368971238321364,
+      "ci_hi": 0.5946641352026081,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 mel",
+      "passes": false
+    },
+    "veil_fraction": {
+      "n_pos_images": 49,
+      "n_neg_images": 575,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 338,
+      "auc": 0.5353682342502218,
+      "ci_lo": 0.4622502099396254,
+      "ci_hi": 0.6221580048530879,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 mel",
+      "passes": false
+    },
+    "veil_eccentricity": {
+      "n_pos_images": 16,
+      "n_neg_images": 135,
+      "n_pos_lesions": 12,
+      "n_neg_lesions": 107,
+      "auc": 0.6226851851851852,
+      "ci_lo": 0.46422051540009285,
+      "ci_hi": 0.7664471708857482,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 mel",
+      "passes": false
+    },
+    "network_regularity": {
+      "n_pos_images": 46,
+      "n_neg_images": 561,
+      "n_pos_lesions": 27,
+      "n_neg_lesions": 334,
+      "auc": 0.549097109199411,
+      "ci_lo": 0.46112877907232747,
+      "ci_hi": 0.6372232617450907,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 histo-nv",
+      "passes": false
+    },
+    "network_orientation_coherence": {
+      "n_pos_images": 46,
+      "n_neg_images": 561,
+      "n_pos_lesions": 27,
+      "n_neg_lesions": 334,
+      "auc": 0.5155390219328838,
+      "ci_lo": 0.41356426492654313,
+      "ci_hi": 0.6213041120114177,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 histo-nv",
+      "passes": false
+    },
+    "dot_clark_evans": {
+      "n_pos_images": 49,
+      "n_neg_images": 575,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 338,
+      "auc": 0.5635847382431233,
+      "ci_lo": 0.475069551394067,
+      "ci_hi": 0.651559781790997,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 histo-nv",
+      "passes": false
+    },
+    "dot_mean_depth": {
+      "n_pos_images": 49,
+      "n_neg_images": 575,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 338,
+      "auc": 0.48472049689440994,
+      "ci_lo": 0.3738263070058524,
+      "ci_hi": 0.6022459091997199,
+      "n_boot_valid": 2000,
+      "direction": "higher in <40 histo-nv",
+      "passes": false
+    }
+  },
+  "young_tokens_passed": 0,
+  "young_cohort": {
+    "rows": "HAM only, <40, mel vs dx_type=histo nv",
+    "n_mel_images": 49,
+    "n_nv_images": 575
+  },
+  "untested_tokens_no_declared_direction": [
+    "dot_density",
+    "dot_fraction_peripheral",
+    "dot_sectors_occupied",
+    "network_coverage",
+    "tubular_blob_ratio"
+  ],
+  "class_medians": {
+    "vessel_coverage": {
+      "akiec": 0.3346682685889734,
+      "bcc": 0.2866955171363015,
+      "bkl": 0.30384242815628026,
+      "df": 0.2460780663379576,
+      "mel": 0.3480430785395324,
+      "nv": 0.3568364101366397,
+      "vasc": 0.3832951098616557
+    },
+    "tubular_blob_ratio": {
+      "akiec": 3.293741464614868,
+      "bcc": 3.201026439666748,
+      "bkl": 3.193310260772705,
+      "df": 3.3343725204467773,
+      "mel": 3.243609666824341,
+      "nv": 3.205159068107605,
+      "vasc": 2.9850330352783203
+    },
+    "calibre_entropy": {
+      "akiec": 0.7339630126953125,
+      "bcc": 0.7283274233341217,
+      "bkl": 0.825038731098175,
+      "df": 0.8198349475860596,
+      "mel": 0.7028064727783203,
+      "nv": 0.742502897977829,
+      "vasc": 0.610852837562561
+    },
+    "vessel_polymorphism": {
+      "akiec": 0.6858620643615723,
+      "bcc": 0.698538601398468,
+      "bkl": 0.7650085687637329,
+      "df": 0.8269205987453461,
+      "mel": 0.6960080862045288,
+      "nv": 0.744368851184845,
+      "vasc": 0.61811363697052
+    },
+    "network_coverage": {
+      "akiec": 0.056130972268626796,
+      "bcc": 0.060851384633254346,
+      "bkl": 0.14754340598448468,
+      "df": 0.020127629646091626,
+      "mel": 0.3012398295234405,
+      "nv": 0.12362918521363228,
+      "vasc": 0.16387674592174006
+    },
+    "network_regularity": {
+      "akiec": 1.0,
+      "bcc": 1.0,
+      "bkl": 0.9660355150699615,
+      "df": 1.0,
+      "mel": 0.9632273614406586,
+      "nv": 0.9694801568984985,
+      "vasc": 1.0
+    },
+    "network_orientation_coherence": {
+      "akiec": 0.42367278039455414,
+      "bcc": 0.47141650319099426,
+      "bkl": 0.3479485511779785,
+      "df": 0.5759407877922058,
+      "mel": 0.3166930079460144,
+      "nv": 0.4725880026817322,
+      "vasc": 0.36647486686706543
+    },
+    "network_periphery_minus_centre": {
+      "akiec": -0.035347700119018555,
+      "bcc": 0.02868935465812683,
+      "bkl": -0.02467183768749237,
+      "df": 0.04306894540786743,
+      "mel": 0.024897456169128418,
+      "nv": 0.034968096762895584,
+      "vasc": 0.30049198865890503
+    },
+    "dot_density": {
+      "akiec": 2.9849126234668404,
+      "bcc": 2.6981477875188142,
+      "bkl": 3.1850961538461537,
+      "df": 3.3255924785570237,
+      "mel": 2.890932982917214,
+      "nv": 3.2295462294994284,
+      "vasc": 2.6246719160104988
+    },
+    "dot_clark_evans": {
+      "akiec": 1.4762461185455322,
+      "bcc": 1.51816987991333,
+      "bkl": 1.4318593740463257,
+      "df": 1.437424123287201,
+      "mel": 1.311759352684021,
+      "nv": 1.190824031829834,
+      "vasc": 1.1199462413787842
+    },
+    "dot_fraction_peripheral": {
+      "akiec": 0.4893617033958435,
+      "bcc": 0.46666666865348816,
+      "bkl": 0.4156503975391388,
+      "df": 0.4566415995359421,
+      "mel": 0.5,
+      "nv": 0.40909090638160706,
+      "vasc": 0.39444445073604584
+    },
+    "dot_sectors_occupied": {
+      "akiec": 0.75,
+      "bcc": 0.75,
+      "bkl": 0.8125,
+      "df": 0.875,
+      "mel": 0.75,
+      "nv": 0.8125,
+      "vasc": 0.625
+    },
+    "dot_size_cv": {
+      "akiec": 0.32620538771152496,
+      "bcc": 0.31491830945014954,
+      "bkl": 0.32868412137031555,
+      "df": 0.319764643907547,
+      "mel": 0.31943827867507935,
+      "nv": 0.3231962323188782,
+      "vasc": 0.3165627270936966
+    },
+    "dot_mean_depth": {
+      "akiec": 0.24893824756145477,
+      "bcc": 0.226942777633667,
+      "bkl": 0.3126073628664017,
+      "df": 0.11797482520341873,
+      "mel": 0.44694994390010834,
+      "nv": 0.2113969326019287,
+      "vasc": 0.0015366413281299174
+    },
+    "veil_fraction": {
+      "akiec": 0.0,
+      "bcc": 0.0,
+      "bkl": 0.0,
+      "df": 0.0,
+      "mel": 0.0,
+      "nv": 0.0,
+      "vasc": 0.0
+    },
+    "veil_eccentricity": {
+      "akiec": 0.766833634214921,
+      "bcc": 0.7740512242864528,
+      "bkl": 0.6318652773561936,
+      "df": 0.6110483256995559,
+      "mel": 0.6079305193176566,
+      "nv": 0.41015336904779687,
+      "vasc": 0.7343358833968532
+    }
+  },
+  "verdict": "FAIL",
+  "consequence": "structure does not run; failed signatures reported as a finding",
+  "n_boot": 2000
+}

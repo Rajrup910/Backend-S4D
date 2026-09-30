@@ -1,0 +1,19 @@
+# Q3 -- arms with no pre-check (docs/V5_RUNSHEET.md section 8), fold 0, 224 px (S01 failed -> 224), trunk in22k
+# (trunk gate results/v5/screens/gate_control_in22k_vs_control.json: PASS; dinov3 FAIL). 15 runs.
+# Hours: in22k control measured 40.3 min clean (s44), 43.5-49.9 min under RAM pressure; arm heads unmeasured -> ~10.3-12.5 h.
+# Nested pairs (clues/twostep, gem/clues, m4/twostep) share this block (AU10). Resumable: finished runs are skipped.
+--arm twostep --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm twostep --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm twostep --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm clues --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm clues --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm clues --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm gem --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm gem --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm gem --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm m4 --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm m4 --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm m4 --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm memory --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm memory --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm memory --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr

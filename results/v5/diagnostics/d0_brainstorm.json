@@ -1,0 +1,181 @@
+{
+  "session": "v5_d0",
+  "source": "results\\v4\\kfold\\oof_predictions.csv",
+  "model": "S72 R0_kfold 224px ConvNeXt-Tiny seed 42",
+  "pauc": "McClish-standardised, FPR<=0.20",
+  "n_boot": 2000,
+  "test_read": false,
+  "reserved_read": false,
+  "multiview": {
+    "lesions": 8748,
+    "multi_image_lesions": 3014,
+    "images_in_multi_image_lesions": 9560,
+    "u40_escalating_lesions": 81,
+    "u40_escalating_lesions_with_gt1_image": 51,
+    "u40_pauc_image_level": 0.738631415651895,
+    "u40_pauc_lesion_mean": 0.735256434144844,
+    "u40_pauc_lesion_max": 0.7360860453189523,
+    "u40_delta_max_minus_mean": {
+      "ci_lo": -0.006352029363687156,
+      "ci_hi": 0.00822899643666976
+    }
+  },
+  "verification": {
+    "escalating_dx_types": [
+      "histo"
+    ],
+    "dx_type_by_class": {
+      "confocal": {
+        "akiec": 0,
+        "bcc": 0,
+        "bkl": 46,
+        "df": 0,
+        "mel": 0,
+        "nv": 0,
+        "vasc": 0
+      },
+      "consensus": {
+        "akiec": 0,
+        "bcc": 0,
+        "bkl": 194,
+        "df": 43,
+        "mel": 0,
+        "nv": 361,
+        "vasc": 55
+      },
+      "follow_up": {
+        "akiec": 0,
+        "bcc": 0,
+        "bkl": 0,
+        "df": 0,
+        "mel": 0,
+        "nv": 2592,
+        "vasc": 0
+      },
+      "histo": {
+        "akiec": 222,
+        "bcc": 361,
+        "bkl": 532,
+        "df": 28,
+        "mel": 773,
+        "nv": 1730,
+        "vasc": 44
+      }
+    },
+    "by_band": {
+      "<40": {
+        "all_rows_n": 1319,
+        "all_rows_pauc": 0.7951250553342186,
+        "histo_only_n": 729,
+        "histo_only_pauc": 0.7513314536340852,
+        "histo_benign_lesions": 368,
+        "escalating_lesions": 34
+      },
+      "40-59": {
+        "all_rows_n": 3114,
+        "all_rows_pauc": 0.8465777703928329,
+        "histo_only_n": 1194,
+        "histo_only_pauc": 0.7437601691160116,
+        "histo_benign_lesions": 432,
+        "escalating_lesions": 225
+      },
+      "60+": {
+        "all_rows_n": 2512,
+        "all_rows_pauc": 0.8131914294165887,
+        "histo_only_n": 1761,
+        "histo_only_pauc": 0.7449368674488784,
+        "histo_benign_lesions": 529,
+        "escalating_lesions": 559
+      }
+    },
+    "u40_minus_60p_all_rows": {
+      "point": -0.018066374082370107,
+      "ci_lo": -0.10393516971347658,
+      "median": -0.017447255254548266,
+      "ci_hi": 0.06124241706667564,
+      "n_boot_valid": 2000
+    },
+    "u40_minus_60p_histo_only": {
+      "point": 0.006394586185206719,
+      "ci_lo": -0.08078913106930702,
+      "median": 0.008546286207269882,
+      "ci_hi": 0.09395082498651813,
+      "n_boot_valid": 2000
+    }
+  },
+  "archives": {
+    "within_archive_band_pauc": {
+      "bcn20000": {
+        "<40": {
+          "escalating_lesions": 35,
+          "pauc": 0.6964196211881397
+        },
+        "40-59": {
+          "escalating_lesions": 248,
+          "pauc": 0.734214882072326
+        },
+        "60+": {
+          "escalating_lesions": 709,
+          "pauc": 0.6431533364394683
+        }
+      },
+      "ham": {
+        "<40": {
+          "escalating_lesions": 34,
+          "pauc": 0.7951250553342186
+        },
+        "40-59": {
+          "escalating_lesions": 225,
+          "pauc": 0.8465777703928329
+        },
+        "60+": {
+          "escalating_lesions": 559,
+          "pauc": 0.8131914294165887
+        }
+      },
+      "mskcc": {
+        "<40": {
+          "escalating_lesions": 12,
+          "pauc": 0.5070406592411483
+        },
+        "40-59": {
+          "escalating_lesions": 71,
+          "pauc": 0.7010834619341564
+        },
+        "60+": {
+          "escalating_lesions": 168,
+          "pauc": 0.7640157841307267
+        }
+      }
+    },
+    "u40_class_mix_images": {
+      "bcn20000": {
+        "akiec": 7,
+        "bcc": 40,
+        "bkl": 45,
+        "df": 3,
+        "mel": 70,
+        "nv": 808,
+        "vasc": 8
+      },
+      "ham": {
+        "akiec": 1,
+        "bcc": 12,
+        "bkl": 23,
+        "df": 15,
+        "mel": 51,
+        "nv": 1192,
+        "vasc": 25
+      },
+      "mskcc": {
+        "akiec": 0,
+        "bcc": 0,
+        "bkl": 4,
+        "df": 0,
+        "mel": 12,
+        "nv": 405,
+        "vasc": 0
+      }
+    }
+  }
+}

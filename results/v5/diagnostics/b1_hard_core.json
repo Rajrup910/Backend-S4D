@@ -1,0 +1,1936 @@
+{
+  "check": "b1_hard_core.json",
+  "context": {
+    "adoption": {
+      "amendment_index": 1,
+      "hashed_files": {
+        "docs/V5_RUNSHEET.md": "012ED3545AA1A49AB84E8E13C03CC20D0B665E90FFB7EB6C2DC6EB18DB5AC691",
+        "docs/v5_design/V5_PLAN_AMENDMENT_02.md": "073CF8A2277EF0B8826B8C98BA8109B8424BF233771A72B9CBDB7F149665BBE5",
+        "docs/v5_design/V5_DERM_REASONING_ENGINE.md": "57DFE48B438BE41C38BF98F4C5CEC9B939CA11F56FD57E04C0DB9477955DDFAE",
+        "research/v5/arms.py": "1371E588C1A9142BE99B167BA47E8653536781650BD4D7959B87410A12D02FAC",
+        "research/v5/screen_gate.py": "38403EBF21D165D35B58B890D49D1FBC5CB299DB4AFCE1619E8B75517C47FEA9",
+        "research/v5/confirmation.py": "63A9B6CC7DE758CDE1BAE9EACAC1419C2723B3710B8B9791A7E54C4A16B60AF7",
+        "research/v5/trunks.py": "7B7ABCCEC6DE3018F0EB3CFFCB323F9A770BDB5ECBC45950EC1D271710ADCBF4",
+        "results/v5/diagnostics/d5_acquisition.csv": "5555111EBFA0DD03DF07EBA8888F45F1071B5F641B5FE78299B8EB43C17DEE27"
+      },
+      "adopted_timestamp": "2026-09-30T07:04:58+05:30"
+    },
+    "headroom_gb_at_start": 10.01,
+    "threads": 4,
+    "started": "2026-09-30T20:00:48+0530"
+  },
+  "git": {
+    "head": "27b5ba9a82de9a7b0ff7a9fd264794c889454d1f",
+    "dirty_files": 41
+  },
+  "finished": "2026-09-30T20:00:50+0530",
+  "reads": "development rows only (manifest split == train); no test, reserved or external labels",
+  "pass_rule": "descriptive (no gate)",
+  "source": "results\\v4\\kfold\\oof_predictions.csv",
+  "threshold_escalation_mass_at_fpr20": 0.045813485200000004,
+  "n_young_escalating_lesions": 81,
+  "missed_at_fpr20": {
+    "n_lesions": 33,
+    "by_archive": {
+      "ham": 14,
+      "mskcc": 11,
+      "bcn20000": 8
+    },
+    "by_class": {
+      "mel": 32,
+      "bcc": 1
+    },
+    "by_site": {
+      "upper extremity": 9,
+      "lower extremity": 8,
+      "anterior torso": 7,
+      "head/neck": 4,
+      "posterior torso": 4
+    },
+    "predicted_as": {
+      "nv": 51,
+      "bkl": 4
+    },
+    "by_melanin_tercile": {
+      "high": 19,
+      "mid": 11,
+      "low": 3
+    }
+  },
+  "missed_argmax": {
+    "n_lesions": 42,
+    "by_archive": {
+      "ham": 17,
+      "bcn20000": 14,
+      "mskcc": 11
+    },
+    "by_class": {
+      "mel": 37,
+      "bcc": 4,
+      "akiec": 1
+    },
+    "by_site": {
+      "upper extremity": 12,
+      "anterior torso": 10,
+      "lower extremity": 9,
+      "head/neck": 5,
+      "posterior torso": 5
+    },
+    "predicted_as": {
+      "nv": 72,
+      "bkl": 5
+    },
+    "by_melanin_tercile": {
+      "high": 20,
+      "mid": 15,
+      "low": 7
+    }
+  },
+  "caught_at_fpr20": {
+    "n_lesions": 48,
+    "by_archive": {
+      "bcn20000": 27,
+      "ham": 20,
+      "mskcc": 1
+    },
+    "by_class": {
+      "mel": 26,
+      "bcc": 19,
+      "akiec": 3
+    },
+    "by_site": {
+      "head/neck": 19,
+      "anterior torso": 10,
+      "posterior torso": 8,
+      "upper extremity": 6,
+      "lower extremity": 5
+    },
+    "predicted_as": {
+      "mel": 50,
+      "bcc": 40,
+      "nv": 32,
+      "akiec": 11,
+      "bkl": 5
+    },
+    "by_melanin_tercile": {
+      "low": 24,
+      "mid": 16,
+      "high": 8
+    }
+  },
+  "lesions": [
+    {
+      "effective_lesion_id": "BCN_0000043",
+      "n_images": 4,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.092469335,
+      "predicted_classes": [
+        "nv",
+        "nv",
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.5208611190319061,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0000086",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.027594987,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.8703362345695496,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0000205",
+      "n_images": 7,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 15.0,
+      "sex": "male",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.86030805,
+      "predicted_classes": [
+        "nv",
+        "akiec",
+        "akiec",
+        "bkl",
+        "akiec",
+        "akiec",
+        "akiec"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.18243228484477317,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0000330",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 30.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.8930243,
+      "predicted_classes": [
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.23984414339065552,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0000474",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "upper extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.039280035,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.4967408627271652,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0000522",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 35.0,
+      "sex": "male",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.62638617,
+      "predicted_classes": [
+        "akiec",
+        "mel",
+        "bkl"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.02747448223332564,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0000538",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.026636995,
+      "predicted_classes": [
+        "nv",
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.6174203952153524,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0000614",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.028777774,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.4914143234491348,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0000662",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 20.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.35339245,
+      "predicted_classes": [
+        "mel",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.763639360666275,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0000663",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 25.0,
+      "sex": "male",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.3195997,
+      "predicted_classes": [
+        "nv",
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": true,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.08979419432580471,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0000828",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 35.0,
+      "sex": "male",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.8996804,
+      "predicted_classes": [
+        "bcc",
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.0876476156214873,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0000843",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 10.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.047144122,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": true,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.07856671884655952,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0001096",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "male",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.03821332,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.3627638518810272,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0001479",
+      "n_images": 17,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.8803879,
+      "predicted_classes": [
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.4239792547681752,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0001821",
+      "n_images": 4,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "male",
+      "site": "upper extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.042555116,
+      "predicted_classes": [
+        "nv",
+        "nv",
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.33081502094864845,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0001964",
+      "n_images": 5,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 20.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.06505647,
+      "predicted_classes": [
+        "nv",
+        "nv",
+        "nv",
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.3519088476896286,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0002016",
+      "n_images": 4,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.8607122,
+      "predicted_classes": [
+        "nv",
+        "nv",
+        "bcc",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.19458931870758533,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0002129",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.7643451,
+      "predicted_classes": [
+        "nv",
+        "akiec",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.28786154588063556,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0002133",
+      "n_images": 4,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.85984856,
+      "predicted_classes": [
+        "mel",
+        "mel",
+        "mel",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.28770728781819344,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0002294",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 35.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.19127528,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": true,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.1975586712360382,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0002353",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.0348649,
+      "predicted_classes": [
+        "nv",
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.49537556370099384,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0002367",
+      "n_images": 1,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.4515339,
+      "predicted_classes": [
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.4113994538784027,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0002573",
+      "n_images": 5,
+      "archive": "bcn20000",
+      "class": "akiec",
+      "age": 30.0,
+      "sex": "male",
+      "site": "upper extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.931916,
+      "predicted_classes": [
+        "bcc",
+        "akiec",
+        "bcc",
+        "mel",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.18445536941289903,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0003225",
+      "n_images": 1,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 30.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.7820858,
+      "predicted_classes": [
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.12292695790529251,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0003375",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 25.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.8785033,
+      "predicted_classes": [
+        "bcc",
+        "mel",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.3321082393328349,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0003551",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "akiec",
+      "age": 30.0,
+      "sex": "male",
+      "site": "upper extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.2854939,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": true,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.18339060992002487,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0003760",
+      "n_images": 8,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.9313826,
+      "predicted_classes": [
+        "bcc",
+        "mel",
+        "mel",
+        "bcc",
+        "bcc",
+        "bcc",
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.39840254187583923,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0003874",
+      "n_images": 4,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 30.0,
+      "sex": "male",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.89381135,
+      "predicted_classes": [
+        "bcc",
+        "bcc",
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.0629273965023458,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0004268",
+      "n_images": 1,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 20.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.90636593,
+      "predicted_classes": [
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.10689485818147659,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0004419",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 35.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.023938162,
+      "predicted_classes": [
+        "bkl",
+        "bkl",
+        "bkl"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.2958065867424011,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0004537",
+      "n_images": 1,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 30.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.89746684,
+      "predicted_classes": [
+        "akiec"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.03148423880338669,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "BCN_0004867",
+      "n_images": 2,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 30.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.90126437,
+      "predicted_classes": [
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.22417210787534714,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0005347",
+      "n_images": 1,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.9163988,
+      "predicted_classes": [
+        "akiec"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.5365313291549683,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "BCN_0005424",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "bcc",
+      "age": 35.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.8981146,
+      "predicted_classes": [
+        "bcc",
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.36742423971494037,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "BCN_0005531",
+      "n_images": 3,
+      "archive": "bcn20000",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.64650285,
+      "predicted_classes": [
+        "mel",
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.7132964134216309,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "HAM_0000009",
+      "n_images": 3,
+      "archive": "ham",
+      "class": "bcc",
+      "age": 35.0,
+      "sex": "male",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.891472,
+      "predicted_classes": [
+        "bcc",
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.008745216919730106,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0000394",
+      "n_images": 3,
+      "archive": "ham",
+      "class": "bcc",
+      "age": 25.0,
+      "sex": "male",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.89449674,
+      "predicted_classes": [
+        "bcc",
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.18662153681119284,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0000513",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.036710903,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.2769116759300232,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0000856",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.6102901,
+      "predicted_classes": [
+        "nv",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.17181001976132393,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0001203",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.04021914,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.1363384798169136,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0001243",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "bcc",
+      "age": 30.0,
+      "sex": "female",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.88981044,
+      "predicted_classes": [
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.09933438524603844,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0001378",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.026370192,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.30395686626434326,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0001506",
+      "n_images": 3,
+      "archive": "ham",
+      "class": "mel",
+      "age": 25.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.73775005,
+      "predicted_classes": [
+        "bkl",
+        "mel",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.060640434424082436,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0001811",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.027195388,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 1.0695732235908508,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "HAM_0002032",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 25.0,
+      "sex": "male",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.026445884,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.4903193712234497,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "HAM_0002143",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 25.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.027879372,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.40181100368499756,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "HAM_0002622",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "upper extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.23250735,
+      "predicted_classes": [
+        "bkl"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.08142326027154922,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0002719",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.040409587,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.16613467037677765,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0002770",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "male",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.03673997,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.5584355294704437,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "HAM_0002956",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.91162175,
+      "predicted_classes": [
+        "mel",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.25305576622486115,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0003039",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "bcc",
+      "age": 30.0,
+      "sex": "female",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.8079154,
+      "predicted_classes": [
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.0689878985285759,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0003602",
+      "n_images": 4,
+      "archive": "ham",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.030218538,
+      "predicted_classes": [
+        "nv",
+        "nv",
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.3024723380804062,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0003782",
+      "n_images": 3,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.88914216,
+      "predicted_classes": [
+        "mel",
+        "mel",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.13354173551003137,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0003843",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "anterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.88227135,
+      "predicted_classes": [
+        "mel",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.21029402315616608,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0003885",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 25.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.88045377,
+      "predicted_classes": [
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.194383442401886,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0003910",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "akiec",
+      "age": 30.0,
+      "sex": "male",
+      "site": "head/neck",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.92279994,
+      "predicted_classes": [
+        "akiec"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.20705856382846832,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0003941",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "bcc",
+      "age": 35.0,
+      "sex": "male",
+      "site": "head/neck",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.91560656,
+      "predicted_classes": [
+        "bcc",
+        "bcc"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.2455323338508606,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0004483",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.8770563,
+      "predicted_classes": [
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.2953343689441681,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0004779",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.6302863,
+      "predicted_classes": [
+        "mel",
+        "bkl"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.0840958021581173,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0004850",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": NaN,
+      "dx_type": "histo",
+      "max_escalation_mass": 0.026941713,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.8652338981628418,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "HAM_0005010",
+      "n_images": 3,
+      "archive": "ham",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.9005373,
+      "predicted_classes": [
+        "mel",
+        "nv",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.0363280326128006,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0005953",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.8802013,
+      "predicted_classes": [
+        "mel",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.014999767765402794,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "HAM_0006380",
+      "n_images": 3,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.032893978,
+      "predicted_classes": [
+        "nv",
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.9168054064114889,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "HAM_0006538",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 5.0,
+      "sex": "male",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.023371542,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.36281681060791016,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0006696",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 20.0,
+      "sex": "male",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.20110518,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": true,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.3603768050670624,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0006870",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "head/neck",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.02739599,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.21794943511486053,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0007016",
+      "n_images": 1,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.02200074,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.3422299325466156,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0007117",
+      "n_images": 3,
+      "archive": "ham",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "posterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.8955823,
+      "predicted_classes": [
+        "mel",
+        "mel",
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.3105907142162323,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "HAM_0007530",
+      "n_images": 2,
+      "archive": "ham",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "male",
+      "site": "anterior torso",
+      "dx_type": "histo",
+      "max_escalation_mass": 0.3709693,
+      "predicted_classes": [
+        "nv",
+        "nv"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.31148361042141914,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "MSK4_0010330",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.018604213,
+      "predicted_classes": [
+        "bkl"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.15713760256767273,
+      "melanin_tercile": "low"
+    },
+    {
+      "effective_lesion_id": "MSK4_0010946",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 25.0,
+      "sex": "male",
+      "site": "lower extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.87467974,
+      "predicted_classes": [
+        "mel"
+      ],
+      "missed_at_fpr20": false,
+      "missed_argmax": false,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.40044042468070984,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0000026_downsampled",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.025199246,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.32225364446640015,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0000043_downsampled",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "lower extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.028742772,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.7500746250152588,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0000054_downsampled",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 25.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.026812319,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        2
+      ],
+      "mean_melanin": 0.7177422046661377,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0000175",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "upper extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.035440534,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.7948595285415649,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0001105_downsampled",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "male",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.023502497,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        0
+      ],
+      "mean_melanin": 0.8351223468780518,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0010094",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 10.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.025294716,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.21950240433216095,
+      "melanin_tercile": "mid"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0010350",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 25.0,
+      "sex": "female",
+      "site": "anterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.025077656,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        1
+      ],
+      "mean_melanin": 0.48592349886894226,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0010852",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.024677467,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        3
+      ],
+      "mean_melanin": 0.8741668462753296,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0014735_downsampled",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 35.0,
+      "sex": "female",
+      "site": "lower extremity",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.02564137,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.8819912075996399,
+      "melanin_tercile": "high"
+    },
+    {
+      "effective_lesion_id": "__singleton__ISIC_0014928_downsampled",
+      "n_images": 1,
+      "archive": "mskcc",
+      "class": "mel",
+      "age": 30.0,
+      "sex": "female",
+      "site": "posterior torso",
+      "dx_type": NaN,
+      "max_escalation_mass": 0.02581432,
+      "predicted_classes": [
+        "nv"
+      ],
+      "missed_at_fpr20": true,
+      "missed_argmax": true,
+      "folds": [
+        4
+      ],
+      "mean_melanin": 0.4815760850906372,
+      "melanin_tercile": "high"
+    }
+  ]
+}

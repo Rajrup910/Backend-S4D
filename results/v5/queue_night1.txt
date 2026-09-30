@@ -1,0 +1,18 @@
+# Night 1 after the E1 hash (docs/V5_RUNSHEET.md section 8, Q0 -> Q1 -> Q2). Resumable: finished runs are skipped.
+# Q0 -- S01: 384 px x seeds 42/43/44 (R1), then 224 px x seeds 43/44 (R0). 4.6-5.2 h.
+v4 --rungs R1 --corpus pooled --fold 0 --seed 42 --batch-size 16 --grad-accum 2 --run-tag v5s01
+v4 --rungs R1 --corpus pooled --fold 0 --seed 43 --batch-size 16 --grad-accum 2 --run-tag v5s01
+v4 --rungs R1 --corpus pooled --fold 0 --seed 44 --batch-size 16 --grad-accum 2 --run-tag v5s01
+v4 --rungs R0 --corpus pooled --fold 0 --seed 43 --batch-size 32 --run-tag v5s01
+v4 --rungs R0 --corpus pooled --fold 0 --seed 44 --batch-size 32 --run-tag v5s01
+# Q1 -- control 224 px seeds 45/46/47 for the noise floor. 2.1 h.
+v4 --rungs R0 --corpus pooled --fold 0 --seed 45 --batch-size 32 --run-tag v5s01
+v4 --rungs R0 --corpus pooled --fold 0 --seed 46 --batch-size 32 --run-tag v5s01
+v4 --rungs R0 --corpus pooled --fold 0 --seed 47 --batch-size 32 --run-tag v5s01
+# Q2 -- trunk screen, 224 px, fold 0, seeds 42/43/44: IN-22k (primary) then DINOv3. ~4.1-4.2 h (unmeasured until the smokes).
+--arm control --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm control --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm control --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm control --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk dinov3 --no-save-best --run-tag v5scr
+--arm control --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk dinov3 --no-save-best --run-tag v5scr
+--arm control --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk dinov3 --no-save-best --run-tag v5scr

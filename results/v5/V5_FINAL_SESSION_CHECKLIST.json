@@ -1,0 +1,154 @@
+{
+  "title": "V5 Final Session Reconciliation Checklist",
+  "audit_timestamp": "2026-09-18T21:51:00+05:30",
+  "total_checks": 24,
+  "passed_checks": 24,
+  "failed_checks": 0,
+  "verdict": "ALL 24 FORENSIC CROSS-DOCUMENT CHECKS PASSED",
+  "checks": [
+    {
+      "id": "CHK-01",
+      "name": "Core A1-A5 Experiment Taxonomy Parity",
+      "status": "PASSED",
+      "evidence": "V5-A1 (384px control), V5-A2 (Dualstream), V5-A3 (Group-DRO), V5-A4 (Backbones), V5-A5 (External) match across Master Plan, Runsheet, and Session Plan."
+    },
+    {
+      "id": "CHK-02",
+      "name": "Biological B1-B12 Experiment Taxonomy Parity",
+      "status": "PASSED",
+      "evidence": "V5-B1 through V5-B12 are 100% present and identical across all three documents."
+    },
+    {
+      "id": "CHK-03",
+      "name": "Deferred & Exploratory X1-X5 Taxonomy Parity",
+      "status": "PASSED",
+      "evidence": "V5-X1 (Mixup/CutMix), V5-X2 (SWA), V5-X3 (Focal Loss), V5-X4 (Balanced Softmax), V5-X5 (Foundation Distillation) formally registered as DEFERRED — NOT CORE V5 across all documents."
+    },
+    {
+      "id": "CHK-04",
+      "name": "Zero Silent Omissions",
+      "status": "PASSED",
+      "evidence": "All 22 pre-registered experiments + V5-MORPH-ATTR mapped to explicit Run IDs and Sessions S76-S85."
+    },
+    {
+      "id": "CHK-05",
+      "name": "Consistent Run ID Naming",
+      "status": "PASSED",
+      "evidence": "Run IDs V5-S00 through V5-S20 and V5-X01 through V5-X05 mapped identically without contradiction."
+    },
+    {
+      "id": "CHK-06",
+      "name": "Disambiguated Morphology Attribute Supervision Label",
+      "status": "PASSED",
+      "evidence": "V5-B2 uniquely designates Trainable Escalation Head; auxiliary morphology attribute supervision is labeled V5-MORPH-ATTR."
+    },
+    {
+      "id": "CHK-07",
+      "name": "Stage-2 Survivor Multi-Seed Confirmation Present",
+      "status": "PASSED",
+      "evidence": "Sub-session S78-T3 formally created for multi-seed (seeds 42, 43, 44) confirmation of top qualifying Stage-2 survivor before S79."
+    },
+    {
+      "id": "CHK-08",
+      "name": "Finalist 5-Fold Cross-Fitted OOF Present",
+      "status": "PASSED",
+      "evidence": "Sub-session S81-T3 formally created for full 5-fold cross-fitting (N=15,294) of ensemble finalists before S82."
+    },
+    {
+      "id": "CHK-09",
+      "name": "Common OOF Matrix Hard Prerequisite",
+      "status": "PASSED",
+      "evidence": "V5-OOF-COMMON-MATRIX (N=15,294 rows) verified as mandatory gate before S82 ensemble selection; abort if matrices misalign."
+    },
+    {
+      "id": "CHK-10",
+      "name": "Rational S79 Biological Dependencies",
+      "status": "PASSED",
+      "evidence": "Artificial dependencies removed; radial/polar independent of context; MEL-NV branch independent of ranking loss; gated only on data prerequisites."
+    },
+    {
+      "id": "CHK-11",
+      "name": "Seed Stability Defined as Diagnostic / Reported Dispersion",
+      "status": "PASSED",
+      "evidence": "s_seed <= 0.015 repurposed as instability warning threshold rather than universal automatic hard rejection."
+    },
+    {
+      "id": "CHK-12",
+      "name": "Group-DRO Failure Contained to S80",
+      "status": "PASSED",
+      "evidence": "If S76 cell sizes N < 30, S80 marked BLOCKED/DEFERRED while remainder of V5 proceeds; no global pipeline abortion."
+    },
+    {
+      "id": "CHK-13",
+      "name": "Morphology-Gated Ensemble Dependency Rationalized",
+      "status": "PASSED",
+      "evidence": "V5-B10 eligible if any valid morphology signal exists (B1 audit, B5 context, B6 branch, V5-MORPH-ATTR); simple shallow gate; no age variable input."
+    },
+    {
+      "id": "CHK-14",
+      "name": "Locked Confirmatory External Read (S84)",
+      "status": "PASSED",
+      "evidence": "Single unread read on pristine S75 cohort; fixed-sequence hierarchical testing; zero retrospective tuning."
+    },
+    {
+      "id": "CHK-15",
+      "name": "Zero Test / Reserved Data Leakage",
+      "status": "PASSED",
+      "evidence": "HAM test (N=1,502) and reserved cohort (N=4,733) permanently barred from all model selection and hyperparameter optimization."
+    },
+    {
+      "id": "CHK-16",
+      "name": "Development Sample Size Limitation Acknowledged",
+      "status": "PASSED",
+      "evidence": "Under-40 escalating development cohort acknowledged as ~34 lesions; screening described as directional and hypothesis-testing."
+    },
+    {
+      "id": "CHK-17",
+      "name": "Historical Caveat Preserved (21 images / 10 lesions)",
+      "status": "PASSED",
+      "evidence": "Preserved historical caveat regarding small raw stratum counts in early cohorts."
+    },
+    {
+      "id": "CHK-18",
+      "name": "Historical Falsified Probes Preserved",
+      "status": "PASSED",
+      "evidence": "0.993 in-sample feature probe result explicitly barred from V5 discovery claims; 0.7182 baseline correctly documented."
+    },
+    {
+      "id": "CHK-19",
+      "name": "Native-Resolution Micro-Patch Policy Preserved",
+      "status": "PASSED",
+      "evidence": "Data-path QC asserts 128px patches cropped from native image before downsampling."
+    },
+    {
+      "id": "CHK-20",
+      "name": "Mandatory Capacity Controls Preserved",
+      "status": "PASSED",
+      "evidence": "Dual-stream, patch attention, and DWT models must strictly outperform parameter-matched single-stream controls."
+    },
+    {
+      "id": "CHK-21",
+      "name": "Exact External Statistical Power Grounding",
+      "status": "PASSED",
+      "evidence": "N_esc,<40 >= 40 independent lesions floor provides 80.7% exact binomial power at alpha=0.0403 (k >= 26/40 rejection threshold); target N >= 50 provides 85.9% power."
+    },
+    {
+      "id": "CHK-22",
+      "name": "Conditional Compute Paths Fully Accounted",
+      "status": "PASSED",
+      "evidence": "Minimum (29.1 h), Expected (65.9 h), and Worst-Case (98.5 h) compute paths explicitly budgeted with conditional finalist runs."
+    },
+    {
+      "id": "CHK-23",
+      "name": "Accurate CLI Implementation Status",
+      "status": "PASSED",
+      "evidence": "All CLI commands explicitly annotated with 'IMPLEMENTATION REQUIRED BEFORE EXECUTION' reflecting script authorship requirement."
+    },
+    {
+      "id": "CHK-24",
+      "name": "Hardware-Feasible Nightly Execution Schedule",
+      "status": "PASSED",
+      "evidence": "Scheduled across 8 sequential overnight execution blocks of <= 9.5 hours, safely within thermal limits of single RTX 5050 Laptop GPU."
+    }
+  ]
+}

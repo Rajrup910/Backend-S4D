@@ -1,0 +1,114 @@
+{
+  "cohort_label": "cohort-external, partly same-institution",
+  "source": {
+    "zip": "milk10k.zip",
+    "zip_sha256": "47cfe0870997657429d3578e40d22900521a7e0194b1e03fa946bfc4a3e93b58"
+  },
+  "lesions_total": 5240,
+  "lesions_with_dermoscopic_image": 5240,
+  "excluded": {
+    "total": 20,
+    "isic_id_match": 0,
+    "perceptual_hash_match": 20,
+    "rule": "S49: dHash AND pHash within Hamming 3 of any ISIC-2019 image"
+  },
+  "unreadable_images": 0,
+  "eligible_lesions": 5220,
+  "in_scope_lesions": 5113,
+  "out_of_scope_lesions": 107,
+  "out_of_scope_diagnoses": {
+    "Inflammatory or infectious diseases | nan": 46,
+    "Collision - At least one malignant proliferation | nan": 9,
+    "Benign - Other | nan": 8,
+    "Collision - Only benign proliferations | nan": 7,
+    "Flat melanotic pigmentations - not melanocytic nevus | Mucosal melanotic macule": 7,
+    "Exogenous | nan": 6,
+    "Benign epidermal proliferations | Clear cell acanthoma": 4,
+    "Benign adnexal epithelial proliferations - Follicular | Trichoblastoma": 3,
+    "Benign soft tissue proliferations - Fibro-histiocytic | Juvenile xanthogranuloma": 3,
+    "Benign epidermal proliferations | Porokeratosis": 3,
+    "Benign adnexal epithelial proliferations - Sebaceous | Sebaceous hyperplasia": 2,
+    "Cysts | Infundibular or epidermal cyst": 2,
+    "Flat melanotic pigmentations - not melanocytic nevus | Ink-spot lentigo": 2,
+    "Mast cell proliferations | Mastocytosis": 2,
+    "Benign soft tissue proliferations - Fibro-histiocytic | nan": 1,
+    "Benign adnexal epithelial proliferations - Apocrine or Eccrine | Supernumerary nipple": 1,
+    "Inflammatory or infectious diseases | Molluscum": 1
+  },
+  "counts_class_by_age_band": {
+    "akiec": {
+      "<40": 3,
+      "40-59": 146,
+      "60+": 627,
+      "unknown": 0
+    },
+    "bcc": {
+      "<40": 35,
+      "40-59": 628,
+      "60+": 1854,
+      "unknown": 0
+    },
+    "bkl": {
+      "<40": 10,
+      "40-59": 141,
+      "60+": 382,
+      "unknown": 0
+    },
+    "df": {
+      "<40": 8,
+      "40-59": 26,
+      "60+": 17,
+      "unknown": 0
+    },
+    "mel": {
+      "<40": 33,
+      "40-59": 133,
+      "60+": 281,
+      "unknown": 0
+    },
+    "nv": {
+      "<40": 290,
+      "40-59": 288,
+      "60+": 147,
+      "unknown": 16
+    },
+    "vasc": {
+      "<40": 11,
+      "40-59": 14,
+      "60+": 21,
+      "unknown": 2
+    }
+  },
+  "escalating_by_age_band": {
+    "<40": 71,
+    "40-59": 907,
+    "60+": 2762,
+    "unknown": 0
+  },
+  "under40_escalating_lesions": 71,
+  "under40_in_scope_lesions": 390,
+  "histopathology_confirmed_in_scope": 4908,
+  "counts_only": true,
+  "predictions_made": false,
+  "test_read": false,
+  "reserved_read": false,
+  "context": {
+    "adoption": {
+      "amendment_index": 1,
+      "hashed_files": {
+        "docs/V5_RUNSHEET.md": "012ED3545AA1A49AB84E8E13C03CC20D0B665E90FFB7EB6C2DC6EB18DB5AC691",
+        "docs/v5_design/V5_PLAN_AMENDMENT_02.md": "073CF8A2277EF0B8826B8C98BA8109B8424BF233771A72B9CBDB7F149665BBE5",
+        "docs/v5_design/V5_DERM_REASONING_ENGINE.md": "57DFE48B438BE41C38BF98F4C5CEC9B939CA11F56FD57E04C0DB9477955DDFAE",
+        "research/v5/arms.py": "1371E588C1A9142BE99B167BA47E8653536781650BD4D7959B87410A12D02FAC",
+        "research/v5/screen_gate.py": "38403EBF21D165D35B58B890D49D1FBC5CB299DB4AFCE1619E8B75517C47FEA9",
+        "research/v5/confirmation.py": "63A9B6CC7DE758CDE1BAE9EACAC1419C2723B3710B8B9791A7E54C4A16B60AF7",
+        "research/v5/trunks.py": "7B7ABCCEC6DE3018F0EB3CFFCB323F9A770BDB5ECBC45950EC1D271710ADCBF4",
+        "results/v5/diagnostics/d5_acquisition.csv": "5555111EBFA0DD03DF07EBA8888F45F1071B5F641B5FE78299B8EB43C17DEE27"
+      },
+      "adopted_timestamp": "2026-09-30T07:04:58+05:30"
+    },
+    "headroom_gb_at_start": 9.87,
+    "threads": 4,
+    "started": "2026-09-30T19:34:30+0530"
+  }
+}

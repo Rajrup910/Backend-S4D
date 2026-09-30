@@ -1,0 +1,73 @@
+{
+  "collection": 65,
+  "images": 25331,
+  "missing_from_api": 4370,
+  "by_archive": {
+    "bcn20000_benign": {
+      "n": 5579,
+      "confirm_type": {
+        "histopathology": 3713,
+        "missing": 1221,
+        "confocal microscopy with consensus dermoscopy": 645
+      },
+      "dermoscopic_type": {
+        "missing": 5579
+      }
+    },
+    "bcn20000_escalating": {
+      "n": 6834,
+      "confirm_type": {
+        "histopathology": 5835,
+        "confocal microscopy with consensus dermoscopy": 123,
+        "missing": 876
+      },
+      "dermoscopic_type": {
+        "missing": 6834
+      }
+    },
+    "ham_benign": {
+      "n": 8061,
+      "confirm_type": {
+        "serial imaging showing no change": 3704,
+        "histopathology": 3386,
+        "single image expert consensus": 902,
+        "confocal microscopy with consensus dermoscopy": 69
+      },
+      "dermoscopic_type": {
+        "missing": 8061
+      }
+    },
+    "ham_escalating": {
+      "n": 1954,
+      "confirm_type": {
+        "histopathology": 1954
+      },
+      "dermoscopic_type": {
+        "missing": 1954
+      }
+    },
+    "mskcc_benign": {
+      "n": 2351,
+      "confirm_type": {
+        "missing": 1899,
+        "histopathology": 338,
+        "single image expert consensus": 114
+      },
+      "dermoscopic_type": {
+        "missing": 2349,
+        "contact non-polarized": 2
+      }
+    },
+    "mskcc_escalating": {
+      "n": 552,
+      "confirm_type": {
+        "histopathology": 178,
+        "missing": 374
+      },
+      "dermoscopic_type": {
+        "missing": 551,
+        "contact non-polarized": 1
+      }
+    }
+  }
+}

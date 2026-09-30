@@ -1,0 +1,236 @@
+{
+  "title": "Backend-S4D — V5 Research Programme Final Plan Freeze & Session Reconciliation",
+  "freeze_timestamp": "2026-09-18T21:52:00+05:30",
+  "branch": "main",
+  "status": "FROZEN — READY FOR IMPLEMENTATION",
+  "freeze_rule": "No further conceptual, architectural, or planning changes permitted. All forensic consistency checks pass (24/24 cross-document checks passed, 0 critical, 0 major, 0 minor issues remaining). S01 execution rule confirmed: S01 evaluates whether 384px is reproducibly promising on the frozen screening fold; final performance claims require cross-fitted OOF (S81-T3). Direct execution on NVIDIA RTX 5050 Laptop GPU (8.55 GB VRAM) partitioned into 8 hardware-feasible nightly blocks of <= 9.5 h.",
+  "frozen_artifacts": [
+    {
+      "relative_path": "docs/v5_record/V5_MASTER_RESEARCH_PLAN_REVISED.md",
+      "sha256": "B7542DAB333D8EB3FA32169885C6EA5323E2DD5C687F5A81AEAA296D25D28E78",
+      "description": "Final V5 Master Research Plan Revised (Preregistration Specification with X4/X5 and B10 Clarifications)"
+    },
+    {
+      "relative_path": "docs/v5_record/V5_FINAL_RUNSHEET.md",
+      "sha256": "BA272023D29B359B63C74E71398F8CA7307C55EE0958F23573FB8FD7624EAE93",
+      "description": "Final V5 Execution Runsheet (Version 2.1.0, Staged Execution Protocol with S78-T3 & S81-T3)"
+    },
+    {
+      "relative_path": "docs/v5_record/V5_SESSION_PLAN.md",
+      "sha256": "C0F0EC737B7C533827E7710C305715E291DCBEB0474BA5EB8158F78836CA9F7A",
+      "description": "Executable Session Protocol Dividing V5 into Sessions S76 through S85 (Version 2.1.0)"
+    },
+    {
+      "relative_path": "results/v5/v5_oof_matrix_spec.md",
+      "sha256": "C403330D66518271989EC0A0BC0E4BDEC36ADB56F514D018EDD405F40CC15380",
+      "description": "Common Out-Of-Fold Evaluation Matrix Specification (V5-OOF-COMMON-MATRIX, N=15,294 rows)"
+    },
+    {
+      "relative_path": "results/v5/v5_external_analysis_spec.md",
+      "sha256": "FE978BC73564DB7C6ACB0AB6E13F647E5A501DC30099F7D1E85CB503D6F99621",
+      "description": "Locked Statistical Analysis Plan for V5-S20-EXTERNAL (Hierarchical Testing, N>=40 lesions)"
+    },
+    {
+      "relative_path": "results/v5/v5_no_repeat_registry.json",
+      "sha256": "ED188C8672D998056FFFF1F74770536283F095292884A7140C62D97EC64D71C9",
+      "description": "No-Repeat Registry & Historical Boundary Enforcement (22 experiments + 12 barred mechanisms)"
+    },
+    {
+      "relative_path": "results/v5/v5_plan_preservation_audit.json",
+      "sha256": "55A1A0E74170717C4C8D7F08F0BCC96A935598589889EC26E0F9BAC8F2E3801B",
+      "description": "Complete 22-Experiment Preservation, Session Mapping, and Disambiguation Audit"
+    },
+    {
+      "relative_path": "results/v5/V5_FINAL_SESSION_AUDIT.md",
+      "sha256": "F0CFEB3E65CE00CA6671FB2A9C68D807D2763AC01E4B01103D66E749E65F7F5C",
+      "description": "Forensic Session Reconciliation Audit Report on All 29 Requirements"
+    },
+    {
+      "relative_path": "results/v5/V5_FINAL_SESSION_CHECKLIST.json",
+      "sha256": "B6E84122E2C8DB3EAA6679E7841A7115C984C6C7FA99315C98AB114091AFC536",
+      "description": "Final Session Reconciliation Forensic Checklist (24/24 Verification Checks Passed)"
+    }
+  ],
+  "synced_external_locations": [
+    {
+      "external_path": "C:\\Users\\RAJ\\Downloads\\V5_MASTER_RESEARCH_PLAN_REVISED.md",
+      "sha256": "B7542DAB333D8EB3FA32169885C6EA5323E2DD5C687F5A81AEAA296D25D28E78",
+      "verified_identical": true
+    },
+    {
+      "external_path": "C:\\Users\\RAJ\\Downloads\\V5_FINAL_RUNSHEET.md",
+      "sha256": "BA272023D29B359B63C74E71398F8CA7307C55EE0958F23573FB8FD7624EAE93",
+      "verified_identical": true
+    },
+    {
+      "external_path": "C:\\Users\\RAJ\\Downloads\\V5_SESSION_PLAN.md",
+      "sha256": "C0F0EC737B7C533827E7710C305715E291DCBEB0474BA5EB8158F78836CA9F7A",
+      "verified_identical": true
+    }
+  ],
+  "forensic_audit_verification": {
+    "total_checks": 24,
+    "passed_checks": 24,
+    "failed_checks": 0,
+    "critical_issues_remaining": 0,
+    "major_issues_remaining": 0,
+    "minor_issues_remaining": 0
+  },
+  "execution_readiness": {
+    "gpu_target": "NVIDIA GeForce RTX 5050 Laptop GPU (8.55 GB VRAM)",
+    "training_environment": "Python 3.11 / PyTorch 2.5.1+cu124 / PowerShell 5.1 / Windows 11",
+    "compute_tiers": {
+      "minimum_path_hours": 29.1,
+      "conditional_expected_path_hours": 65.9,
+      "worst_case_path_hours": 98.5
+    },
+    "nightly_blocks": "8 sequential overnight blocks of <= 9.5 hours",
+    "entry_point": "research/v5/s76_integrity.py (Implementation Required Before Execution)",
+    "final_verdict": "V5 SESSION PLAN STATUS: FINAL — READY FOR IMPLEMENTATION"
+  },
+  "amendments": [
+    {
+      "index": 0,
+      "relative_path": "docs/v5_record/V5_PLAN_AMENDMENT_01.md",
+      "sha256": "219634DB3675E0A43A447FDC6108D2976E77CC0725FCFFAB67B62761E38DC8C8",
+      "adopted_timestamp": "2026-09-23T00:59:40+05:30",
+      "adopted_by": "owner (Rajrup910)",
+      "adopted_before_first_v5_gpu_run": true,
+      "precedence": "Overrides the master plan, runsheet, session plan and v5_external_analysis_spec.md wherever they conflict.",
+      "item_decisions": {
+        "A1": "ACCEPTED",
+        "A2": "ACCEPTED",
+        "A3": "ACCEPTED",
+        "A4": "ACCEPTED",
+        "A5": "ACCEPTED",
+        "A6": "ACCEPTED",
+        "A7": "ACCEPTED",
+        "A8": "ACCEPTED",
+        "A9": "ACCEPTED",
+        "A10": "ACCEPTED",
+        "A11": "ACCEPTED",
+        "A12": "ACCEPTED",
+        "A13": "ACCEPTED",
+        "B1": "ACCEPTED",
+        "B2": "ACCEPTED",
+        "B3": "ACCEPTED",
+        "B4": "ACCEPTED",
+        "B5": "ACCEPTED",
+        "B6": "ACCEPTED",
+        "B7": "ACCEPTED",
+        "B8": "ACCEPTED",
+        "B9": "ACCEPTED",
+        "B10": "ACCEPTED",
+        "B11": "ACCEPTED"
+      },
+      "open_owner_choices": {
+        "A11": "(a) learned segmenter with human QC vs (b) HAM-only restriction; decide before S02",
+        "B6": "reader study subject to ethics sign-off"
+      },
+      "description": "Pre-S01 review: pooled-partition gate counts, selection/confirmation fold split, _last checkpoint primary, paired-delta gates, hierarchical seed CI, 224px seeds 43/44, re-anchored runtime, Stage-7 rebuilt on S56, Gate F redesigned vs V1+S56, BCN/MSKCC removed from external, segmentation and native-resolution fixes; additions B1-B11."
+    },
+    {
+      "index": 1,
+      "files": [
+        {
+          "relative_path": "docs/V5_RUNSHEET.md",
+          "sha256": "012ED3545AA1A49AB84E8E13C03CC20D0B665E90FFB7EB6C2DC6EB18DB5AC691"
+        },
+        {
+          "relative_path": "docs/v5_design/V5_PLAN_AMENDMENT_02.md",
+          "sha256": "073CF8A2277EF0B8826B8C98BA8109B8424BF233771A72B9CBDB7F149665BBE5"
+        },
+        {
+          "relative_path": "docs/v5_design/V5_DERM_REASONING_ENGINE.md",
+          "sha256": "57DFE48B438BE41C38BF98F4C5CEC9B939CA11F56FD57E04C0DB9477955DDFAE"
+        },
+        {
+          "relative_path": "research/v5/arms.py",
+          "sha256": "1371E588C1A9142BE99B167BA47E8653536781650BD4D7959B87410A12D02FAC"
+        },
+        {
+          "relative_path": "research/v5/screen_gate.py",
+          "sha256": "38403EBF21D165D35B58B890D49D1FBC5CB299DB4AFCE1619E8B75517C47FEA9"
+        },
+        {
+          "relative_path": "research/v5/confirmation.py",
+          "sha256": "63A9B6CC7DE758CDE1BAE9EACAC1419C2723B3710B8B9791A7E54C4A16B60AF7"
+        },
+        {
+          "relative_path": "research/v5/trunks.py",
+          "sha256": "7B7ABCCEC6DE3018F0EB3CFFCB323F9A770BDB5ECBC45950EC1D271710ADCBF4"
+        },
+        {
+          "relative_path": "results/v5/diagnostics/d5_acquisition.csv",
+          "sha256": "5555111EBFA0DD03DF07EBA8888F45F1071B5F641B5FE78299B8EB43C17DEE27"
+        }
+      ],
+      "adopted_timestamp": "2026-09-30T07:04:58+05:30",
+      "adopted_by": "owner (Rajrup910)",
+      "adopted_before_first_v5_gpu_run": {
+        "amendment_02_items": true,
+        "note": "S01 (V5-S01-384-CONTROL) is registered by the master plan and Amendment 01 and is not governed by this amendment's items"
+      },
+      "precedence": "docs/V5_RUNSHEET.md -> Amendment 02 -> DRE -> Amendment 01 -> frozen record",
+      "item_decisions": {
+        "M1": "ACCEPTED",
+        "M2": "ACCEPTED",
+        "M3": "ACCEPTED",
+        "M4": "ACCEPTED",
+        "M5": "ACCEPTED",
+        "M6": "ACCEPTED",
+        "M7": "ACCEPTED",
+        "GeM": "ACCEPTED",
+        "G-to-V6": "ACCEPTED",
+        "DRE-0": "ACCEPTED",
+        "DRE-1": "ACCEPTED",
+        "DRE-2": "ACCEPTED",
+        "DRE-3": "ACCEPTED",
+        "DRE-4": "ACCEPTED",
+        "DRE-5": "ACCEPTED",
+        "DRE-6": "ACCEPTED",
+        "DRE-7": "ACCEPTED",
+        "DRE-8": "ACCEPTED",
+        "DRE-10": "ACCEPTED",
+        "RS-screen-gate": "ACCEPTED",
+        "RS-composite-rule": "ACCEPTED",
+        "RS-param-cards": "ACCEPTED",
+        "RS-schedule": "ACCEPTED",
+        "RS-MILK10k-S84": "ACCEPTED",
+        "RS-concurrency": "ACCEPTED",
+        "AU17-trunk-screen": "ACCEPTED",
+        "AU18-kseed-null-80pct": "ACCEPTED",
+        "AU19-pauc-histo-coprimary": "ACCEPTED",
+        "AU20-384-rescue": "ACCEPTED",
+        "AU21-continuous-queue": "ACCEPTED",
+        "AU22-dependency-order": "ACCEPTED",
+        "AU23-15-model-system": "ACCEPTED",
+        "AU24-youngdata-arm": "ACCEPTED",
+        "AU25-calibration-report": "ACCEPTED",
+        "AU26-trunk-attribution": "ACCEPTED",
+        "AU27-histo-definition": "ACCEPTED",
+        "AU28-disk": "ACCEPTED",
+        "AU29-s01-bootstrap": "ACCEPTED",
+        "AU30-gate-d-ranking": "ACCEPTED",
+        "AU31-gate-a-reading": "ACCEPTED",
+        "AU32-noise-aware-retention": "ACCEPTED",
+        "AU33-youngdata-within-band": "ACCEPTED",
+        "AU34-dino-prior": "ACCEPTED",
+        "AU35-unimplemented-modules": "ACCEPTED",
+        "AU36-in22k-primary": "ACCEPTED"
+      },
+      "arm_registry_sha256": "e85842c9c2a9fc9ff7e98a94a4e6a992d0c12387aa6a47b03554b87a2cfcf18e",
+      "amendment_01_open_choices_resolved": {
+        "A11": "No learned segmenter in V5. Lesion geometry comes from the no-gradient chromophore map (DRE-2), validated against the HAM expert masks by pre-check Q1, with the D4 fallback if Q1 fails; the learned segmenter with human QC moves to V6-1. Decided by the owner 2026-09-30.",
+        "B6": "Reader study deferred to V6, subject to ethics sign-off. Decided by the owner 2026-09-30."
+      },
+      "description": "Amendment 02 (biology-first mechanisms M1-M7, GeM control, Group-DRO to V6), the Dermatologist Reasoning Engine (DRE-0..10) and the single V5 runsheet (arms, pass rules, parameter cards, schedule, MILK10k S84), with the 30 Sep pre-hash audit AU17-AU36 (IN-22k/DINOv3 trunk screen, k-seed-mean screen null at the 80th percentile, pAUC_histo co-primary, histopathology definition from D5, youngdata arm, 15-model system), adopted together before any CPU pre-check (audit AU5). The gate code and D5 data are hashed with the documents."
+    }
+  ],
+  "post_freeze_notes": [
+    "2026-09-23: forensic_audit_verification counts (0 critical/major/minor) pre-date amendments[0], which found 6 critical and 5 major issues; read them as the 2026-09-18 state.",
+    "2026-09-23: execution_readiness.training_environment says Python 3.11 / PyTorch 2.5.1+cu124; the project CLAUDE.md and hardware anchors record Python 3.12 / PyTorch 2.11.0+cu128. S00 must record the actual environment in provenance.",
+    "2026-09-23: compute_tiers hours are pre-amendment; amendment 01 A6/A7/B9 changes are roughly budget-neutral, and new-backbone figures stay unmeasured until scripts/gpu_benchmark.py runs.",
+    "2026-09-29: relocation only, no content change. The four frozen plan files moved byte-identical from docs/ to docs/v5_record/ (master plan, final runsheet, session plan, amendment 01); relative_path fields updated; every sha256 re-verified unchanged. Paths quoted inside other frozen artifacts still read docs/<name> and refer to the same files."
+  ]
+}

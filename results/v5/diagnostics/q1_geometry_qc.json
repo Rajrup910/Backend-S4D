@@ -1,0 +1,121 @@
+{
+  "check": "q1_geometry_qc.json",
+  "context": {
+    "adoption": {
+      "amendment_index": 1,
+      "hashed_files": {
+        "docs/V5_RUNSHEET.md": "012ED3545AA1A49AB84E8E13C03CC20D0B665E90FFB7EB6C2DC6EB18DB5AC691",
+        "docs/v5_design/V5_PLAN_AMENDMENT_02.md": "073CF8A2277EF0B8826B8C98BA8109B8424BF233771A72B9CBDB7F149665BBE5",
+        "docs/v5_design/V5_DERM_REASONING_ENGINE.md": "57DFE48B438BE41C38BF98F4C5CEC9B939CA11F56FD57E04C0DB9477955DDFAE",
+        "research/v5/arms.py": "1371E588C1A9142BE99B167BA47E8653536781650BD4D7959B87410A12D02FAC",
+        "research/v5/screen_gate.py": "38403EBF21D165D35B58B890D49D1FBC5CB299DB4AFCE1619E8B75517C47FEA9",
+        "research/v5/confirmation.py": "63A9B6CC7DE758CDE1BAE9EACAC1419C2723B3710B8B9791A7E54C4A16B60AF7",
+        "research/v5/trunks.py": "7B7ABCCEC6DE3018F0EB3CFFCB323F9A770BDB5ECBC45950EC1D271710ADCBF4",
+        "results/v5/diagnostics/d5_acquisition.csv": "5555111EBFA0DD03DF07EBA8888F45F1071B5F641B5FE78299B8EB43C17DEE27"
+      },
+      "adopted_timestamp": "2026-09-30T07:04:58+05:30"
+    },
+    "headroom_gb_at_start": 10.05,
+    "threads": 4,
+    "started": "2026-09-30T19:48:15+0530"
+  },
+  "git": {
+    "head": "27b5ba9a82de9a7b0ff7a9fd264794c889454d1f",
+    "dirty_files": 41
+  },
+  "finished": "2026-09-30T19:49:27+0530",
+  "reads": "development rows only (manifest split == train); no test, reserved or external labels",
+  "implementation_declarations": {
+    "APERTURE_SRGB_MAX": 0.0784313725490196,
+    "RING_FRACTION": 0.1,
+    "REF_MEL_RGB": [
+      0.3,
+      0.6,
+      1.0
+    ],
+    "REF_HB_RGB": [
+      0.1,
+      1.0,
+      0.6
+    ],
+    "OTSU_BINS": 256,
+    "LESION_PIXEL_THRESHOLD": 0.5,
+    "MIN_OTSU_T": 0.001,
+    "ring_definition": "Chebyshev frame: |x-cx|/(W/2) > 0.9 or |y-cy|/(H/2) > 0.9",
+    "aperture_definition": "max(R,G,B) < 20/255 in sRGB; excluded like glare",
+    "component_naming": "ICA mixing vectors in the plane orthogonal to (1,1,1) are assigned melanin/haemoglobin (and sign-fixed) by maximum total cosine to the projected reference spectra; the references never enter unmixing"
+  },
+  "pass_rule": "median Dice >= 0.75 AND median centroid error <= 0.1 of the diagonal",
+  "n_images": 6981,
+  "limit": null,
+  "median_dice": 0.7813791018708226,
+  "median_centroid_error": 0.015736465165966666,
+  "dice_quartiles": [
+    0.6450977818611366,
+    0.7813791018708226,
+    0.8503954802259887
+  ],
+  "fallback_rate": 0.03967912906460393,
+  "by_class": [
+    {
+      "class_7": "akiec",
+      "n": 222,
+      "median_dice": 0.5115251320539,
+      "median_centroid_error": 0.05190065898571177,
+      "fallback_rate": 0.013513513513513514
+    },
+    {
+      "class_7": "bcc",
+      "n": 361,
+      "median_dice": 0.5263642754975878,
+      "median_centroid_error": 0.04681991505915351,
+      "fallback_rate": 0.0221606648199446
+    },
+    {
+      "class_7": "bkl",
+      "n": 772,
+      "median_dice": 0.643932990368149,
+      "median_centroid_error": 0.03201375305931551,
+      "fallback_rate": 0.012953367875647668
+    },
+    {
+      "class_7": "df",
+      "n": 71,
+      "median_dice": 0.7436409480584972,
+      "median_centroid_error": 0.025711483750999336,
+      "fallback_rate": 0.0
+    },
+    {
+      "class_7": "mel",
+      "n": 773,
+      "median_dice": 0.7244080309714594,
+      "median_centroid_error": 0.02184926107607863,
+      "fallback_rate": 0.03363518758085381
+    },
+    {
+      "class_7": "nv",
+      "n": 4683,
+      "median_dice": 0.812447493699244,
+      "median_centroid_error": 0.011144561945986106,
+      "fallback_rate": 0.044202434336963484
+    },
+    {
+      "class_7": "vasc",
+      "n": 99,
+      "median_dice": 0.7624434389140271,
+      "median_centroid_error": 0.015755415514396454,
+      "fallback_rate": 0.23232323232323232
+    }
+  ],
+  "by_age_band": {
+    "40-59": 0.8079251724891723,
+    "60+": 0.6983979709187783,
+    "<40": 0.8132069703454601,
+    "unknown": 0.7855810492357415
+  },
+  "verdict": "PASS",
+  "consequence": "geometry / DRE-3 / DRE-4 use the DRE-2 chromophore frame",
+  "basis_fold": 0,
+  "basis_sha_inputs": 1003270,
+  "partial_run": false
+}

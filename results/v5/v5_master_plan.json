@@ -1,0 +1,313 @@
+{
+  "title": "V5 Master Research Plan — Biology-Grounded Under-40 Rescue and Macro-F1 Improvement",
+  "version": "1.0.0",
+  "created_at": "2026-09-18T19:55:00+05:30",
+  "target_venue": "IEEE Transactions on Medical Imaging (TMI) / Medical Image Analysis (MedIA)",
+  "executive_summary": "V5 shifts the research paradigm from post-hoc demographic rules (proven in V4 S64-S67 to redistribute referrals without generating ranking capability) to visual and morphological representation learning. Grounded in the biology of dermatoscopic structures (atypical pigment networks, pseudopods, negative network, shiny white lines), V5 couples high-resolution dual-stream extraction (384px), Group-DRO, and morphological multi-task supervision to break the under-40 melanoma ranking ceiling without test-set snooping.",
+  "integrity_rules": {
+    "zero_leakage": "Lesion-grouped splitting enforced by assert_no_leakage; zero patient/lesion overlap between train, val, and test splits.",
+    "oof_parameter_fitting": "All calibrators, threshold multipliers, and loss weights fitted strictly on out-of-fold cross-validation predictions.",
+    "val_only_selection": "Model selection and early stopping decided on validation metrics; held-out test split evaluated exactly once post-freeze.",
+    "fresh_cohort_discipline": "Reserved cohort (read 8 times across V4) is retired from confirmatory claims; S75 fresh external cohort evaluated once post-freeze."
+  },
+  "evidence_table": [
+    {
+      "hypothesis": "High input resolution preserves micro-architectural pigment structures and lifts discrimination",
+      "experiment": "S52 / S53r (R1 rung)",
+      "result": "Mean Delta +0.0297 Macro-F1 across 3 seeds (+0.0097 to +0.0466)",
+      "status": "LEVER (Grounded Positive)",
+      "evidence_file": "results/v4/s53r/s53r_report.json",
+      "v5_action": "RETAIN & STANDARDIZE: Adopt 384px resolution for all V5 backbones"
+    },
+    {
+      "hypothesis": "Arithmetic soft-voting ensemble provides statistically certifiable gain over best single model",
+      "experiment": "S1–S9 ensembling ladder (A7)",
+      "result": "Macro-F1 0.7718 vs 0.7459 ConvNeXt-Tiny (McNemar Holm p = 2.0e-4)",
+      "status": "LEVER (Grounded Positive)",
+      "evidence_file": "results/session9/mcnemar_delong.json",
+      "v5_action": "RETAIN: Primary aggregation mechanism across all heterogeneous models"
+    },
+    {
+      "hypothesis": "24-view dihedral test-time augmentation (TTA) reduces rotational and scale variance",
+      "experiment": "S2 / S9 TTA pass (A7+TTA)",
+      "result": "Macro-F1 0.7859 (+0.0141), missed serious cases cut from 69 to 62",
+      "status": "LEVER (Grounded Positive)",
+      "evidence_file": "results/session9/mcnemar_delong.json",
+      "v5_action": "RETAIN: Mandatory inference protocol for all validated checkpoints"
+    },
+    {
+      "hypothesis": "Groupwise multi-calibration eliminates age-bracket directional confidence distortions",
+      "experiment": "S55 group-conditional Dirichlet",
+      "result": "Signed gap spread drops 0.068 -> 0.008; <40 ECE drops 0.0276 -> 0.0095",
+      "status": "LEVER (Grounded Positive)",
+      "evidence_file": "research/multical/results_oof/gap_summary.json",
+      "v5_action": "RETAIN: Deployed calibration map for all probability outputs"
+    },
+    {
+      "hypothesis": "Equalized bipartite conformal prediction restores young malignant coverage",
+      "experiment": "S9 conformal ladder (RAPS alpha=0.05)",
+      "result": "<40 malignant coverage restored from 23.8% (marginal) to 95.2%; FRR = 0.0138",
+      "status": "LEVER (Grounded Positive)",
+      "evidence_file": "results/session9/conformal_test.csv",
+      "v5_action": "RETAIN: Mandatory safety net layer for all emitted prediction sets"
+    },
+    {
+      "hypothesis": "Logistic modality classifier prevents out-of-scope smartphone image collapse",
+      "experiment": "S69 admissibility gate",
+      "result": "100% PAD rejection, AUROC 0.9994, escalating-minus-benign gap +0.0000",
+      "status": "LEVER (Grounded Positive)",
+      "evidence_file": "results/v4/s69/s69_report.json",
+      "v5_action": "RETAIN: Penultimate deployment tripwire before image reaches DL models"
+    },
+    {
+      "hypothesis": "Tabular patient metadata fusion (age, sex, site) improves representation ranking",
+      "experiment": "S33 (V1 fusion), S53r (R7 rung), S67 (arm C)",
+      "result": "S33: Macro-F1 0.7411 (p=0.79 vs CNN); S53r R7: Delta +0.0058 (NULL); S67: Delta pAUC +0.007",
+      "status": "FAIL / NULL",
+      "evidence_file": "results/v4/s67/probes.json",
+      "v5_action": "DO NOT REPEAT as standalone primary solution"
+    },
+    {
+      "hypothesis": "Specialist head on frozen features repairs under-40 melanoma ranking",
+      "experiment": "S40 (escalation head N2), S42 (MLP/GBM), S67 (arm A)",
+      "result": "S40: Delta pAUC -0.0670; S42: all negative; S67: under-40 pAUC 0.6886 vs control 0.7279",
+      "status": "FAIL / FALSIFIED",
+      "evidence_file": "results/v4/s67/probes.json",
+      "v5_action": "DO NOT REPEAT: Any specialized branch must be end-to-end trainable"
+    },
+    {
+      "hypothesis": "Dermatological foundation backbones (PanDerm, DINOv2) provide superior young ranking",
+      "experiment": "S51 backbone probe",
+      "result": "PanDerm ViT-B/16 Delta pAUC -0.0363; DINOv2 ViT-B/14 Delta pAUC -0.0725",
+      "status": "FAIL / FALSIFIED",
+      "evidence_file": "results/v4/backbone_probe_deltas.csv",
+      "v5_action": "DO NOT REPEAT as frozen feature extractors"
+    },
+    {
+      "hypothesis": "Post-hoc age rules (lambda, continuous kernel A3) solve the blind spot",
+      "experiment": "S57b, S65, S66",
+      "result": "S57b A3 doubles referral (0.145 -> 0.278); S65 at equal workload yields Delta +0.004",
+      "status": "REJECT-cost / CEILING",
+      "evidence_file": "results/v4/s65/s65_report.json",
+      "v5_action": "DO NOT REPEAT: Acknowledge that decision layers cannot fix ranking limits"
+    },
+    {
+      "hypothesis": "Adversarial removal of age entanglement improves under-40 ranking",
+      "experiment": "V3 Phase D (S45, H6)",
+      "result": "Entanglement removed (residual -0.0452), but under-40 AUC collapsed 0.8249 -> 0.7201",
+      "status": "FALSIFIED",
+      "evidence_file": "results/v3/final_verdict.json",
+      "v5_action": "DO NOT REPEAT: Age signal is load-bearing diagnostic context"
+    },
+    {
+      "hypothesis": "Shades-of-Grey colour constancy normalizes archive illumination differences",
+      "experiment": "S49, S53 R2",
+      "result": "Initial S49/S53 invalid due to sqrt(3) scaling bug. Fixed in S53r: Delta -0.0045 (NULL)",
+      "status": "INVALID / NULL",
+      "evidence_file": "results/v4/audit/colour_check.json",
+      "v5_action": "STANDARDIZE: Evaluate corrected formulation across Grey World and Max-RGB"
+    },
+    {
+      "hypothesis": "Exponential Moving Average (EMA) and Cosine Annealing improve convergence",
+      "experiment": "S53 R6",
+      "result": "Incomplete: Truncated at epoch 19/60 by early stopping patience=8",
+      "status": "INCOMPLETE / UNTESTED",
+      "evidence_file": "results/v4/s53r/s53r_report.json",
+      "v5_action": "RE-RUN: Evaluate with early stopping disabled on full 40-epoch schedule"
+    }
+  ],
+  "biological_morphology_catalog": {
+    "melanoma": {
+      "code": "mel",
+      "biological_hallmarks": "Atypical pigment network (thickened, branched lines ending abruptly), irregular dots/globules irregularly clustered at periphery, pseudopods / radial streaming indicating horizontal growth phase, blue-white veil (orthokeratosis over dense melanin clusters), shiny white crystalline lines (stromal collagen alteration under polarized light), regression structures (fibrosis with peppering), polymorphous / dotted atypical vascular structures.",
+      "young_melanoma_morphology": "Frequently presents as superficial spreading melanoma (SSM) or amelanotic/hypomelanotic variants with high nevus association. Lacks large blue-white veils or ulceration; characterized by subtle focal network disruptions, delicate pseudopods, negative pigment network, and faint erythematous backgrounds easily downsampled away."
+    },
+    "melanocytic_nevus": {
+      "code": "nv",
+      "biological_hallmarks": "Symmetric, uniform architectural organization. Regular pigment network with lines thinning toward the perimeter, central cobblestone or uniform globules, homogenous light-to-dark brown pigmentation, distinct absence of polymorphous vessels or atypical branching lines."
+    },
+    "basal_cell_carcinoma": {
+      "code": "bcc",
+      "biological_hallmarks": "Non-melanocytic malignant basaloid proliferations. Absence of melanin pigment network. Hallmark structures: sharp arborizing (tree-like) telangiectasias, multiple blue-gray ovoid nests, spoke-wheel areas, leaf-like peripheral structures, shiny white-red structureless background with focal ulceration."
+    },
+    "actinic_keratosis": {
+      "code": "akiec",
+      "biological_hallmarks": "Keratinocyte dysplasia. Erythematous background pseudo-network with white halos around follicular openings ('strawberry pattern'), distinct four-dot white rosette structures under polarized dermoscopy, prominent superficial white/yellow hyperkeratotic scaling."
+    },
+    "benign_keratosis": {
+      "code": "bkl",
+      "biological_hallmarks": "Epidermal proliferations. Seborrheic keratosis: milia-like cysts ('starry sky'), comedo-like openings, cerebriform fissure-and-ridge pattern, sharply demarcated moth-eaten borders, hairpin vessels with white halos. Lichenoid keratosis: coarse granular gray-blue peppering across the entire lesion."
+    },
+    "dermatofibroma": {
+      "code": "df",
+      "biological_hallmarks": "Benign fibrohistiocytic proliferation. Pathognomonic central white patch (fibrous scar-like core) surrounded by a delicate, regular, fading peripheral pigment network; negative pigment network occasionally present. Clinically dimples on lateral pinch."
+    },
+    "vascular_lesions": {
+      "code": "vasc",
+      "biological_hallmarks": "Ectatic blood vessels and hemangiomas. Distinct red, purple, or blue-black lacunae (lagunes) separated by pale fibrous septa. Total absence of melanocytic pigment networks."
+    }
+  },
+  "v5_experiment_suite": {
+    "foundation": [
+      {
+        "id": "V5-A1",
+        "name": "384px Input Resolution Foundation",
+        "description": "Establish 384x384 resolution across all training runs; lock 24-view TTA, soft-voting, Dirichlet calibration, and leak-free lesion-grouped splits.",
+        "primary_endpoint": "Validation Macro-F1 >= 0.770",
+        "target": "Baseline reproduction"
+      },
+      {
+        "id": "V5-A2",
+        "name": "Dual-Stream Global (384px) + Lesion-Centered Local Crop (384px)",
+        "description": "Extract full global frame alongside automated lesion-centered 1:1 resolution crop; fuse via late cross-attention.",
+        "primary_endpoint": "Under-40 MEL-vs-NV pAUC improvement >= +0.03",
+        "target": "Preserve micro-reticular features"
+      },
+      {
+        "id": "V5-A3",
+        "name": "Group-DRO & Subgroup Supervised Contrastive Loss",
+        "description": "Optimize worst-case group risk across G = {age_band x escalation} to prevent majority cohorts from suppressing young melanoma gradients.",
+        "primary_endpoint": "Under-40 melanoma ranking pAUC >= 0.760",
+        "target": "Break demographic base-rate bias"
+      },
+      {
+        "id": "V5-A4",
+        "name": "384px Modern Heterogeneous Backbones",
+        "description": "Fine-tune ConvNeXt-V2 (with Global Response Normalization), SwinV2-384, and EfficientNetV2-M at 384px with cosine schedule.",
+        "primary_endpoint": "Ensemble diversity Yule Q < 0.70 & individual val Macro-F1 >= 0.740",
+        "target": "Complementary inductive biases"
+      },
+      {
+        "id": "V5-A5",
+        "name": "S75 Fresh External Cohort Sourcing & Lock",
+        "description": "Source and deduplicate pristine external dataset with patient age; lock for single post-freeze confirmatory read.",
+        "primary_endpoint": "Single confirmatory execution on fresh cohort",
+        "target": "Overcome reserved cohort reuse"
+      }
+    ],
+    "biology_grounded": [
+      {
+        "id": "V5-B1",
+        "name": "Morphology Feature Audit across Age Strata",
+        "description": "Extract quantitative dermatological morphology descriptors (asymmetry, border compactness, color entropy, network density) across HAM and ISIC-2019.",
+        "primary_endpoint": "Statistical significance (p < 0.01) of young vs old melanoma morphology differences",
+        "target": "Quantify visual deficit"
+      },
+      {
+        "id": "V5-B2",
+        "name": "Auxiliary Multi-Task Morphology Heads",
+        "description": "Supervise shared visual trunk with auxiliary heads predicting presence of atypical network, pseudopods, and blue-white veil.",
+        "primary_endpoint": "Under-40 MEL/NV pAUC gain >= +0.03",
+        "target": "Force morphological feature learning"
+      },
+      {
+        "id": "V5-B3",
+        "name": "Local Morphology Patch Mining",
+        "description": "Biologically guided patch extraction targeting peripheral growth borders, eccentric hyperpigmentation, and vascular zones.",
+        "primary_endpoint": "Under-40 melanoma sensitivity at 85% specificity",
+        "target": "Capture focal atypical structures"
+      },
+      {
+        "id": "V5-B4",
+        "name": "Segmentation-Guided Multi-Region ROI Pipeline",
+        "description": "Automated U-Net++ segmentation generating core interior, boundary transition ring, and outer context crops.",
+        "primary_endpoint": "Macro-F1 and under-40 pAUC vs full-frame control",
+        "target": "Eliminate surrounding skin shortcuts"
+      },
+      {
+        "id": "V5-B5",
+        "name": "Boundary-Ring Network",
+        "description": "Tri-stream representation f = f_interior + f_boundary + f_context targeting border irregularity and radial streaming.",
+        "primary_endpoint": "Under-40 MEL-vs-NV pAUC gain >= +0.025",
+        "target": "ABCDE 'B' border focus"
+      },
+      {
+        "id": "V5-B6",
+        "name": "Trainable Mel vs. Nevus Fine-Grained Representation Branch",
+        "description": "End-to-end trainable visual sub-network with dedicated intermediate feature layers for the Mel-vs-Nevus decision boundary.",
+        "primary_endpoint": "Melanoma recall gain >= +0.05 at fixed 85% specificity",
+        "target": "Fine-grained boundary resolution"
+      },
+      {
+        "id": "V5-B7",
+        "name": "Biologically Constrained Hard-Negative Metric Learning",
+        "description": "Supervised contrastive / triplet loss forcing margin between melanoma and dysplastic nevi, dermatofibromas, and pigmented BCC.",
+        "primary_endpoint": "Under-40 melanoma AUC >= 0.910",
+        "target": "Latent metric structuring"
+      },
+      {
+        "id": "V5-B8",
+        "name": "Frequency / High-Pass Wavelet (DWT) Texture Branch",
+        "description": "Concatenate 2D Discrete Wavelet Transform sub-bands into parallel convolutional stem to feed high-frequency pigment reticulation directly.",
+        "primary_endpoint": "Under-40 MEL/NV pAUC gain >= +0.02",
+        "target": "Preserve high-frequency reticulations"
+      },
+      {
+        "id": "V5-B9",
+        "name": "Radial / Polar Centroid-Normalized Representation",
+        "description": "Transform segmented lesion to polar coordinates I(r, theta) to linearize peripheral growth pseudopods and radial streaming.",
+        "primary_endpoint": "Under-40 melanoma pAUC",
+        "target": "Exploratory rotational symmetry"
+      },
+      {
+        "id": "V5-B10",
+        "name": "Morphology-Gated Multi-Expert Ensemble",
+        "description": "Mixture-of-experts routing image to specialized branches based on visual morphology encoder (reticular vs globular vs structureless) without direct age feeding.",
+        "primary_endpoint": "Ensemble Macro-F1 >= 0.810 and under-40 pAUC >= 0.770",
+        "target": "Central architectural novelty"
+      }
+    ],
+    "corrections": [
+      {
+        "id": "V5-C1",
+        "name": "Corrected von Kries Colour Constancy",
+        "description": "Re-evaluate corrected gain = ||e|| / (sqrt(3) * e_c) across Grey World, Max-RGB, and Shades-of-Grey under 384px resolution.",
+        "primary_endpoint": "Macro-F1 delta >= +0.010",
+        "target": "Rigorous re-evaluation"
+      },
+      {
+        "id": "V5-C2",
+        "name": "Un-Truncated EMA & Cosine Schedule",
+        "description": "Full 40-epoch cosine schedule with early stopping disabled to properly evaluate Exponential Moving Average weight smoothing.",
+        "primary_endpoint": "Validation Macro-F1 delta >= +0.010",
+        "target": "Unbiased schedule evaluation"
+      }
+    ]
+  },
+  "decision_gates": {
+    "gate1_representation": {
+      "metric": "Under-40 MEL-vs-NV pAUC@0.20",
+      "threshold": "+0.030 improvement over 384px control with 95% bootstrap CI excluding zero",
+      "action_on_fail": "Halt architecture development; do not promote model to ensemble"
+    },
+    "gate2_global_quality": {
+      "metric": "Validation Macro-F1",
+      "threshold": "Macro-F1 >= Control - 0.010 (no unacceptable general accuracy sacrifice)",
+      "action_on_fail": "Reject model"
+    },
+    "gate3_complementarity": {
+      "metric": "Yule's Q-Statistic & Pairwise Disagreement Rate",
+      "threshold": "Yule Q < 0.70 against existing ensemble members; Disagreement D > 0.08",
+      "action_on_fail": "Do not add redundant model to ensemble"
+    },
+    "gate4_stability": {
+      "metric": "Multi-Seed / 5-Fold Cross-Validation Standard Deviation",
+      "threshold": "Seed / fold SD <= 0.020",
+      "action_on_fail": "Flag as high-variance artifact; re-evaluate"
+    },
+    "gate5_external_transport": {
+      "metric": "Under-40 escalation sensitivity on S75 fresh external cohort",
+      "threshold": "Sensitivity >= 0.80 at matched referral workload; MCID >= 0.05",
+      "action_on_fail": "Record external transport boundary"
+    }
+  },
+  "compute_and_hardware_profile": {
+    "gpu": "NVIDIA RTX 5050 Laptop GPU (8.55 GB VRAM, sm_120)",
+    "constraints": {
+      "batch_size_384px": "16 with gradient accumulation 2 (effective batch 32)",
+      "peak_vram_384px": "3.38 GB (giving ~5.17 GB headroom)",
+      "num_workers": "2 (mandatory to prevent Windows paging error 1455)",
+      "mixed_precision": "torch.cuda.amp.autocast(dtype=torch.float16)"
+    }
+  }
+}

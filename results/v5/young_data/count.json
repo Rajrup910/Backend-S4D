@@ -1,0 +1,56 @@
+{
+  "query": "age_approx:[0 TO 35] AND diagnosis_confirm_type:\"histopathology\" AND image_type:\"dermoscopic\"",
+  "api": "https://api.isic-archive.com/api/v2/images/search/",
+  "pool_total": 5790,
+  "excluded_in_v4_corpus": 2562,
+  "excluded_collections": {
+    "MILK10k": 358,
+    "MILK10k Benchmark": 0,
+    "HIBA 2019-2022": 61,
+    "HIBA Skin Lesions (Hospital Italiano)": 62,
+    "HIBA Skin Lesions": 62,
+    "PAD-UFES-20": 0
+  },
+  "excluded_unmapped_diagnosis": {
+    "None | None": 254,
+    "Benign soft tissue proliferations - Fibro-histiocytic | Fibroepithelial polyp": 72,
+    "Benign soft tissue proliferations - Fibro-histiocytic | Scar": 30,
+    "Indeterminate melanocytic proliferations | Atypical intraepithelial melanocytic proliferation": 18,
+    "Indeterminate melanocytic proliferations | Atypical melanocytic neoplasm": 16,
+    "Flat melanotic pigmentations - not melanocytic nevus | Lentigo NOS": 9,
+    "Collision - Only benign proliferations | None": 4,
+    "Flat melanotic pigmentations - not melanocytic nevus | Ink-spot lentigo": 3,
+    "Inflammatory or infectious diseases | Verruca": 2,
+    "Indeterminate melanocytic proliferations | Atypical Spitz tumor": 2,
+    "Hemorrhagic lesions | Hemorrhage": 2,
+    "Flat melanotic pigmentations - not melanocytic nevus | Mucosal melanotic macule": 1,
+    "Benign adnexal epithelial proliferations - Sebaceous | Sebaceous adenoma": 1
+  },
+  "excluded_lesion_seen_in_corpus_or_blocked": {
+    "lesions": 20,
+    "images": 41
+  },
+  "candidates_without_lesion_id": 747,
+  "candidates": 2353,
+  "by_class": {
+    "nv": 1739,
+    "mel": 457,
+    "bkl": 56,
+    "bcc": 54,
+    "akiec": 24,
+    "vasc": 21,
+    "df": 2
+  },
+  "escalating": 535,
+  "unique_lesion_ids": 979,
+  "licenses": {
+    "CC-0": 1103,
+    "CC-BY-NC": 785,
+    "CC-BY": 465
+  },
+  "download_bytes": 1372653717,
+  "images_downloaded": 0,
+  "test_read": false,
+  "reserved_read": false,
+  "note": "Metadata only. Perceptual-duplicate removal happens after the approved download."
+}

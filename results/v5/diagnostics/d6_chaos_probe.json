@@ -1,0 +1,208 @@
+{
+  "check": "d6_chaos_probe.json",
+  "context": {
+    "adoption": {
+      "amendment_index": 1,
+      "hashed_files": {
+        "docs/V5_RUNSHEET.md": "012ED3545AA1A49AB84E8E13C03CC20D0B665E90FFB7EB6C2DC6EB18DB5AC691",
+        "docs/v5_design/V5_PLAN_AMENDMENT_02.md": "073CF8A2277EF0B8826B8C98BA8109B8424BF233771A72B9CBDB7F149665BBE5",
+        "docs/v5_design/V5_DERM_REASONING_ENGINE.md": "57DFE48B438BE41C38BF98F4C5CEC9B939CA11F56FD57E04C0DB9477955DDFAE",
+        "research/v5/arms.py": "1371E588C1A9142BE99B167BA47E8653536781650BD4D7959B87410A12D02FAC",
+        "research/v5/screen_gate.py": "38403EBF21D165D35B58B890D49D1FBC5CB299DB4AFCE1619E8B75517C47FEA9",
+        "research/v5/confirmation.py": "63A9B6CC7DE758CDE1BAE9EACAC1419C2723B3710B8B9791A7E54C4A16B60AF7",
+        "research/v5/trunks.py": "7B7ABCCEC6DE3018F0EB3CFFCB323F9A770BDB5ECBC45950EC1D271710ADCBF4",
+        "results/v5/diagnostics/d5_acquisition.csv": "5555111EBFA0DD03DF07EBA8888F45F1071B5F641B5FE78299B8EB43C17DEE27"
+      },
+      "adopted_timestamp": "2026-09-30T07:04:58+05:30"
+    },
+    "headroom_gb_at_start": 10.02,
+    "threads": 4,
+    "started": "2026-09-30T19:49:30+0530"
+  },
+  "git": {
+    "head": "27b5ba9a82de9a7b0ff7a9fd264794c889454d1f",
+    "dirty_files": 41
+  },
+  "finished": "2026-09-30T19:50:25+0530",
+  "reads": "development rows only (manifest split == train); no test, reserved or external labels",
+  "implementation_declarations": {
+    "APERTURE_SRGB_MAX": 0.0784313725490196,
+    "RING_FRACTION": 0.1,
+    "REF_MEL_RGB": [
+      0.3,
+      0.6,
+      1.0
+    ],
+    "REF_HB_RGB": [
+      0.1,
+      1.0,
+      0.6
+    ],
+    "OTSU_BINS": 256,
+    "LESION_PIXEL_THRESHOLD": 0.5,
+    "MIN_OTSU_T": 0.001,
+    "ring_definition": "Chebyshev frame: |x-cx|/(W/2) > 0.9 or |y-cy|/(H/2) > 0.9",
+    "aperture_definition": "max(R,G,B) < 20/255 in sRGB; excluded like glare",
+    "component_naming": "ICA mixing vectors in the plane orthogonal to (1,1,1) are assigned melanin/haemoglobin (and sign-fixed) by maximum total cosine to the projected reference spectra; the references never enter unmixing",
+    "GABOR_GAMMA": 0.5,
+    "COVERAGE_PERCENTILE": 75.0,
+    "THIN_SIGMAS": [
+      1.0
+    ],
+    "DENSITY_SCALE": 1000.0,
+    "BORDER_SAMPLES": 5,
+    "blobness_definition": "Rb * (1 - exp(-S^2/2c^2)) where both Hessian eigenvalues < 0",
+    "network_regularity": "1 - CV of the dominant Gabor wavelength over network pixels",
+    "periphery_minus_centre": "mean c_mel on network pixels at rho in [0.6r,1.2r] minus at rho < 0.6r",
+    "polymorphism_classes": "thin-tubular (sigma 1), thick-tubular (sigma 2,4), blob",
+    "q2_direction": "every Q2/Q5 young-differential feature is tested one-sided, higher in <40 mel than in <40 histo-nv, except where the runsheet states the opposite (network regularity, Clark-Evans R: higher in nv)"
+  },
+  "pass_rule": ">= 1 feature (primary, expert mask) with lesion-grouped AUC 95% CI lower bound > 0.5; direction declared: higher in <40 mel",
+  "cohort": {
+    "n_mel_images": 51,
+    "n_nv_images": 640,
+    "n_mel_lesions": 28,
+    "n_nv_lesions": 352
+  },
+  "features": [
+    "colour_count",
+    "colour_asym_max",
+    "colour_asym_min",
+    "chrom_asym_max",
+    "chrom_asym_min",
+    "segmental_index"
+  ],
+  "results": {
+    "primary_expert_mask": {
+      "colour_count": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.5006740196078432,
+        "ci_lo": 0.3994570737233781,
+        "ci_hi": 0.607553957702955,
+        "n_boot_valid": 2000
+      },
+      "colour_asym_max": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.6339460784313725,
+        "ci_lo": 0.5155365418841354,
+        "ci_hi": 0.7376111325158812,
+        "n_boot_valid": 2000
+      },
+      "colour_asym_min": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.639920343137255,
+        "ci_lo": 0.532658041383965,
+        "ci_hi": 0.7396291707985767,
+        "n_boot_valid": 2000
+      },
+      "chrom_asym_max": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.562438725490196,
+        "ci_lo": 0.43528288134833304,
+        "ci_hi": 0.6831706246212966,
+        "n_boot_valid": 2000
+      },
+      "chrom_asym_min": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.5698835784313725,
+        "ci_lo": 0.44222734355446236,
+        "ci_hi": 0.6942617163078623,
+        "n_boot_valid": 2000
+      },
+      "segmental_index": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.529748774509804,
+        "ci_lo": 0.4126821633546573,
+        "ci_hi": 0.6493639970526435,
+        "n_boot_valid": 2000
+      }
+    },
+    "secondary_chromophore_mask": {
+      "colour_count": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.429718137254902,
+        "ci_lo": 0.32338817608119896,
+        "ci_hi": 0.5418005070832423,
+        "n_boot_valid": 2000
+      },
+      "colour_asym_max": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.5944852941176471,
+        "ci_lo": 0.491194325848619,
+        "ci_hi": 0.6848721110387167,
+        "n_boot_valid": 2000
+      },
+      "colour_asym_min": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.575827205882353,
+        "ci_lo": 0.4776168177615495,
+        "ci_hi": 0.6717849387009975,
+        "n_boot_valid": 2000
+      },
+      "chrom_asym_max": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.5477634803921568,
+        "ci_lo": 0.4287071771822052,
+        "ci_hi": 0.661958762859441,
+        "n_boot_valid": 2000
+      },
+      "chrom_asym_min": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.550796568627451,
+        "ci_lo": 0.43717649662123964,
+        "ci_hi": 0.6621977572338849,
+        "n_boot_valid": 2000
+      },
+      "segmental_index": {
+        "n_pos_images": 51,
+        "n_neg_images": 640,
+        "n_pos_lesions": 28,
+        "n_neg_lesions": 352,
+        "auc": 0.5260416666666666,
+        "ci_lo": 0.40973426745004476,
+        "ci_hi": 0.6428088326209431,
+        "n_boot_valid": 2000
+      }
+    }
+  },
+  "passing_features": [
+    "colour_asym_max",
+    "colour_asym_min"
+  ],
+  "verdict": "PASS",
+  "consequence": "geometry runs",
+  "n_boot": 2000
+}

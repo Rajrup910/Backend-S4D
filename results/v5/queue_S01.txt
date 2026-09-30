@@ -1,0 +1,7 @@
+# E0 -- S01 (docs/V5_RUNSHEET.md 11.3). Same runs as the manual commands, resumable.
+# 384 px x seeds 42/43/44 (R1), then 224 px x seeds 43/44 (R0). Seed 42 at 224 px is the banked S72 fold-0 run.
+v4 --rungs R1 --corpus pooled --fold 0 --seed 42 --batch-size 16 --grad-accum 2 --run-tag v5s01
+v4 --rungs R1 --corpus pooled --fold 0 --seed 43 --batch-size 16 --grad-accum 2 --run-tag v5s01
+v4 --rungs R1 --corpus pooled --fold 0 --seed 44 --batch-size 16 --grad-accum 2 --run-tag v5s01
+v4 --rungs R0 --corpus pooled --fold 0 --seed 43 --batch-size 32 --run-tag v5s01
+v4 --rungs R0 --corpus pooled --fold 0 --seed 44 --batch-size 32 --run-tag v5s01

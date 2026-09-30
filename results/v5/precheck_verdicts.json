@@ -1,0 +1,30 @@
+{
+  "written": "2026-09-30T20:40+05:30",
+  "rule_source": "docs/V5_RUNSHEET.md section 4 (pass rules) and section 8.3 (a failed pre-check means the arm is not run; the failure is reported as a finding)",
+  "test_read": false,
+  "reserved_read": false,
+  "checks": {
+    "M1-QC": {"verdict": "PASS (owner visual review, 30 Sep)", "source": "results/v5/diagnostics/m1_chromophore_qc.json + .png",
+              "evidence": "hb_share bcc 0.881, df 0.904; aid_vasc_bcc_top3 true, top2 false (df ranks above bcc)",
+              "arms": {"look": "go"}},
+    "Q1": {"verdict": "PASS", "source": "results/v5/diagnostics/q1_geometry_qc.json",
+           "evidence": "median Dice 0.781 (>= 0.75) on 6,981 HAM images", "arms": {"geometry": "chromophore frame (no D4 fallback)"}},
+    "Q2/D6": {"verdict": "PASS", "source": "results/v5/diagnostics/d6_chaos_probe.json",
+              "evidence": "passing features colour_asym_max, colour_asym_min", "arms": {"geometry": "go"}},
+    "Q4": {"verdict": "FAIL", "source": "results/v5/diagnostics/m5_overlap.json",
+           "evidence": "416 development-train rows overlap Task 2 (< 1,000); pixel agreement 50/50 same size",
+           "arms": {"m5": "not run (finding)"}},
+    "Q5": {"verdict": "FAIL", "source": "results/v5/diagnostics/q5_dsp_probe.json",
+           "evidence": "1 of 5 signatures (needs 3); 0 young-differential tokens (needs 2)",
+           "arms": {"structure": "not run (finding); DSP concepts absent from DRE-7"}},
+    "B1": {"verdict": "descriptive", "source": "results/v5/diagnostics/b1_hard_core.json"},
+    "D2": {"verdict": "descriptive", "source": "results/v5/diagnostics/d2_context_probe.json"},
+    "D4": {"verdict": "DEFERRED to V6 (owner decision 30 Sep)", "reason": "no script and no pre-registered specification; gates nothing in V5"},
+    "S75": {"verdict": "counts written", "source": "results/v5/s75_milk10k_eligibility.json",
+            "evidence": "5,220 eligible lesions (20 excluded by perceptual hash), 5,113 in scope, 71 under-40 escalating"},
+    "YD": {"verdict": "pending", "evidence": "download paused at 382 of 2,353 images; rows due Thu 1 Oct 20:00 or youngdata moves to V6"},
+    "zoom benchmark": {"verdict": "pending", "evidence": "GPU timing needed before Q4 (runsheet 8.3: > 2x -> zoom after Q5)"}
+  },
+  "arm_status_for_Q4": {"look": "go", "geometry": "go", "structure": "no (Q5)", "m5": "no (Q4)",
+                        "zoom": "needs benchmark", "youngdata": "needs YD rows"}
+}

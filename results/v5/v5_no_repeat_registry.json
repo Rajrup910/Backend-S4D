@@ -1,0 +1,242 @@
+{
+  "title": "V5 No-Repeat Registry — Proof of Methodological Divergence from V1–V4",
+  "version": "2.0.0",
+  "frozen_at": "2026-09-18T21:00:00+05:30",
+  "authoritative_rule": "No GPU compute may be allocated to an experiment whose mechanism was already ruled out by a closed V1-V4 gate. Every V5 experiment must prove non-identity with prior falsifications.",
+  "permanently_barred_mechanisms": [
+    "Frozen specialist head (S40/S42/S67 falsified)",
+    "Tabular patient metadata fusion (S33/S53r R7/S67 null)",
+    "Adversarial age-invariance (V3 Phase D/S45 falsified)",
+    "Frozen PanDerm probe (S51 falsified)",
+    "Frozen DINOv2 probe (S51 falsified)",
+    "Global prevalence prior correction (S58 null)",
+    "Post-hoc age penalty lambda(age) (S57b/S65/S66 ceiling)",
+    "Per-band decision threshold offsets (S56/S65 ceiling)",
+    "Mahalanobis smartphone admissibility (S69 failed)",
+    "Redundant ridge stacking (S9/S59 non-generalizing)",
+    "Buggy colour constancy (S50/S53 invalid; S53r null)",
+    "Repeated reserved-cohort evaluation (8 prior reads, exhausted for confirmatory claims)"
+  ],
+  "registry": [
+    {
+      "v5_experiment_id": "V5-A1",
+      "run_id": "V5-S01-384-CONTROL",
+      "name": "384px Input Resolution Foundation",
+      "previous_experiment": "S52 / S53r (R1 rung on recipe ladder)",
+      "previous_verdict": "LEVER (mean Delta +0.0297 Macro-F1 across 3 seeds; seed range +0.0097 to +0.0466)",
+      "previous_evidence_file": "results/v4/s53r/s53r_report.json",
+      "status": "RETAINED & PROMOTED (CORE)",
+      "why_not_a_repeat_of_failed_idea": "R1 was the only positive lever on the 7-rung recipe ladder in S53r. It is adopted as the baseline canvas for all V5 backbones, evaluated paired against the matched 224px control."
+    },
+    {
+      "v5_experiment_id": "V5-A2",
+      "run_id": "V5-S02-DUALSTREAM",
+      "name": "Dual-Stream Global (384px) + Lesion-Centered Local Crop (384px)",
+      "previous_experiment": "S50 spatial shortcut audit & S52 R1 full-image resize",
+      "previous_verdict": "S50 showed exterior vs interior decodability gap Delta +0.0297 (below 0.05 MCID); S52 only evaluated global resizing which downsampled delicate micro-reticulations",
+      "previous_evidence_file": "results/v4/s50/spatial_audit.json",
+      "status": "NEW BIOLOGICAL MECHANISM (CORE)",
+      "why_not_a_repeat_of_failed_idea": "Never tested in V1-V4. Prior work either resized the entire dermoscopy frame or audited mask margins. Dual-stream preserves 1:1 scale alongside macro-asymmetry, strictly evaluated against a capacity-matched single-stream control."
+    },
+    {
+      "v5_experiment_id": "V5-A3",
+      "run_id": "V5-S13-GROUPDRO",
+      "name": "Group-DRO Subgroup-Aware Minimax Learning",
+      "previous_experiment": "S67 arm B (hard-case reweighting) and S53r R4 (class-balanced sampler)",
+      "previous_verdict": "FAIL / NULL. S67 reweighting gave Delta under-40 pAUC -0.000 [-0.013, +0.012]; S53r R4 gave Delta Macro-F1 +0.0134 (NULL)",
+      "previous_evidence_file": "results/v4/s67/probes.json",
+      "status": "MATERIAL DIVERGENCE IN LOSS FORMULATION (CORE)",
+      "why_not_a_repeat_of_failed_idea": "S67 applied class-level reweighting (mel vs nv), allowing 3,000 older lesions to dominate gradients. Group-DRO optimizes the worst-case group risk over G = {age_band x escalation} to prevent subgroup neglect without adversarial destruction."
+    },
+    {
+      "v5_experiment_id": "V5-A4",
+      "run_id": "V5-S14, V5-S15, V5-S16",
+      "name": "Modern 384px Backbones (ConvNeXt-V2, EfficientNetV2-M, SwinV2-Tiny-384)",
+      "previous_experiment": "S1 (CNN baseline), S33 (SwinV2-224), S51 (PanDerm ViT-B/16, DINOv2 frozen probes)",
+      "previous_verdict": "S1 established CNN ceiling; S33 SwinV2 at 224px without warm-up reached 0.7273; S51 frozen foundation probes failed (PanDerm Delta pAUC -0.0363, DINOv2 -0.0725)",
+      "previous_evidence_file": "results/v4/backbone_probe_deltas.csv",
+      "status": "COMPUTATIONALLY VALIDATED ARCHITECTURE UPGRADE (CORE)",
+      "why_not_a_repeat_of_failed_idea": "S51 only evaluated frozen backbones with linear heads. S33 evaluated SwinV2 at 224px without modern cosine warm-up. ConvNeXt-V2 adds GRN to prevent dominant nevus channels from suppressing rare features; SwinV2-Tiny-384 provides hierarchical self-attention at native 384px."
+    },
+    {
+      "v5_experiment_id": "V5-A5",
+      "run_id": "V5-S20-EXTERNAL",
+      "name": "S75 Fresh External Evaluation Cohort Sourcing",
+      "previous_experiment": "S70 fresh cohort audit & S59 reserved evaluation",
+      "previous_verdict": "S70 confirmed 0 unread cohorts on disk; reserved cohort (104 under-40 escalating lesions) read 8 times across V4 and exhausted for confirmatory claims",
+      "previous_evidence_file": "results/v4/s70/s70_decisions.json",
+      "status": "CONFIRMATORY REQUIREMENT (CORE)",
+      "why_not_a_repeat_of_failed_idea": "Directly implements S70 Owner Decision D1. Eliminates the reserved cohort exhaustion problem by sourcing a completely pristine external dataset for a single post-freeze confirmatory read."
+    },
+    {
+      "v5_experiment_id": "V5-B1",
+      "run_id": "V5-S00b-MORPH-AUDIT",
+      "name": "Morphology Feature Audit across Age Strata",
+      "previous_experiment": "S64 ceiling audit & S50 locus diagnostic",
+      "previous_verdict": "S64 proved under-40 AUC(d) capped at 0.8778 vs 0.9479 in 40-59, but only examined scalar decision score d, not visual dermatoscopic structures",
+      "previous_evidence_file": "results/v4/s64/ceiling.json",
+      "status": "DESCRIPTIVE HYPOTHESIS GENERATION (CPU)",
+      "why_not_a_repeat_of_failed_idea": "First comprehensive quantitative dermatological morphology extraction across age strata in this repo. Analyzes pigment density, network irregularity, border compactness, and color entropy."
+    },
+    {
+      "v5_experiment_id": "V5-B2",
+      "run_id": "V5-S03-ESCALATION",
+      "name": "Trainable Multi-Task Escalation Head",
+      "previous_experiment": "S40 (escalation head N2), S42 (MLP/GBM heads), S67 (specialist head)",
+      "previous_verdict": "All failed: S40 Delta pAUC -0.0670; S42 all Delta heads negative; S67 specialist head pAUC 0.6886 vs 0.7279 control",
+      "previous_evidence_file": "results/v4/s67/probes.json",
+      "status": "TRAINABLE END-TO-END MULTI-TASK (CORE)",
+      "why_not_a_repeat_of_failed_idea": "Prior sessions tested classification heads on FROZEN representations (inheriting the base visual bottleneck). V5-B2 backpropagates auxiliary escalation gradients into the visual trunk during training."
+    },
+    {
+      "v5_experiment_id": "V5-B3",
+      "run_id": "V5-S04-HIERARCHICAL",
+      "name": "Hierarchical Coarse-to-Fine Diagnostic Tree",
+      "previous_experiment": "S33 flat 7-class head & S58 multi-task routing",
+      "previous_verdict": "Flat classification treats all 21 cross-class error pairs equally, masking critical melanoma-vs-nevus boundary confusion",
+      "previous_evidence_file": "research/experiments.csv",
+      "status": "TAXONOMIC LOSS RE-STRUCTURING (CORE)",
+      "why_not_a_repeat_of_failed_idea": "Imposes a coarse clinical escalation gate (malignant vs benign) before fine-grained 7-class assignment, aligning model penalty with dermatological urgency."
+    },
+    {
+      "v5_experiment_id": "V5-B4",
+      "run_id": "V5-S05-LOCALPATCH",
+      "name": "Native-Resolution Micro-Patch Attention",
+      "previous_experiment": "S50 spatial patch audit & S52 full resize",
+      "previous_verdict": "S50 evaluated macro-quadrants; S52 evaluated global 384px resizing without local zooming",
+      "previous_evidence_file": "results/v4/s50/spatial_audit.json",
+      "status": "MULTI-SCALE VISUAL REFINEMENT (CORE)",
+      "why_not_a_repeat_of_failed_idea": "Crops 96-160px patches directly from native high-resolution image prior to downsampling, preserving fine sub-millimeter reticulations with lightweight cross-attention."
+    },
+    {
+      "v5_experiment_id": "V5-B5",
+      "run_id": "V5-S06-CONTEXT",
+      "name": "Soft Interior / Boundary / Context Decomposition",
+      "previous_experiment": "S50 exterior decodability audit & R3 hard masking",
+      "previous_verdict": "R3 hard masking removed 100% of context, harming sensitivity due to loss of perilesional contrast; S50 only measured shortcut decodability",
+      "previous_evidence_file": "results/v4/s50/spatial_audit.json",
+      "status": "CONTINUOUS CONTEXT MODULATION (CORE)",
+      "why_not_a_repeat_of_failed_idea": "Evaluates continuous soft context modulation alpha in [0, 1] with validated HAM masks rather than binary destructive masking."
+    },
+    {
+      "v5_experiment_id": "V5-B6",
+      "run_id": "V5-S09b-MELNV-BRANCH",
+      "name": "Trainable End-to-End MEL-vs-NV Dedicated Branch",
+      "previous_experiment": "S67 arm A (frozen specialist head)",
+      "previous_verdict": "FALSIFIED in S67: under-40 pAUC dropped to 0.6886 on frozen embeddings",
+      "previous_evidence_file": "results/v4/s67/probes.json",
+      "status": "TRAINABLE JOINT BRANCH (GATED)",
+      "why_not_a_repeat_of_failed_idea": "Jointly trains a dedicated binary melanoma-vs-nevus branch end-to-end with the visual trunk on development hard negatives, not on frozen features."
+    },
+    {
+      "v5_experiment_id": "V5-B7",
+      "run_id": "V5-S08-SUPCON",
+      "name": "Supervised Contrastive Representation Learning",
+      "previous_experiment": "S53r R5 (Metric learning / CosFace proxy)",
+      "previous_verdict": "NULL in S53r: Delta Macro-F1 +0.0076",
+      "previous_evidence_file": "results/v4/s53r/s53r_report.json",
+      "status": "CONTRASTIVE LATENT SEPARATION (CORE)",
+      "why_not_a_repeat_of_failed_idea": "R5 tested margin-loss classification proxies (CosFace). SupCon directly contrasts multiview augmentations within diagnostic class while pushing hard negative mimics (young MEL vs young NV) apart in latent space."
+    },
+    {
+      "v5_experiment_id": "V5-B8",
+      "run_id": "V5-S10-DWT",
+      "name": "Haar Discrete Wavelet Transform (DWT) High-Frequency Branch",
+      "previous_experiment": "None in V1-V4",
+      "previous_verdict": "Untested in prior phases",
+      "previous_evidence_file": "None",
+      "status": "FREQUENCY-DOMAIN FEATURE EXTRACTION (CORE)",
+      "why_not_a_repeat_of_failed_idea": "Explicitly separates high-frequency horizontal, vertical, and diagonal sub-bands (LH, HL, HH) to capture fine pigment network reticulations and vascular structures, evaluated against a capacity-matched control."
+    },
+    {
+      "v5_experiment_id": "V5-B9",
+      "run_id": "V5-S06b-RADIAL-POLAR",
+      "name": "Radial/Polar Coordinate Representation",
+      "previous_experiment": "None in V1-V4",
+      "previous_verdict": "Untested in prior phases",
+      "previous_evidence_file": "None",
+      "status": "GEOMETRIC RE-PARAMETRIZATION (EXPLORATORY)",
+      "why_not_a_repeat_of_failed_idea": "Dermatoscopic structures (pseudopods, radial streaming) naturally radiate outward from the centroid. Polar coordinate mapping converts rotational boundary patterns into translational invariants."
+    },
+    {
+      "v5_experiment_id": "V5-B10",
+      "run_id": "V5-S17b-MORPH-GATE",
+      "name": "Morphology-Gated Multi-Expert Ensemble Routing",
+      "previous_experiment": "S58 (H2 domain router) and S66 (per-centre lambda)",
+      "previous_verdict": "S58 domain router failed to beat soft voting; S66 per-centre rules produced REJECT-cost",
+      "previous_evidence_file": "results/v4/s58/s58_report.json",
+      "status": "VISUAL MORPHOLOGY ROUTER (CONDITIONAL)",
+      "why_not_a_repeat_of_failed_idea": "S58 routed on dataset archive; S66 routed on clinical hospital center. V5-B10 routes dynamically based on visual morphology predictions without demographic inputs."
+    },
+    {
+      "v5_experiment_id": "V5-B11",
+      "run_id": "V5-S12-GEM",
+      "name": "Adaptive Generalized Mean (GeM) Feature Pooling",
+      "previous_experiment": "Standard GAP in all backbones",
+      "previous_verdict": "GAP averages out sparse, isolated focal structures (e.g. solitary pseudopod)",
+      "previous_evidence_file": "research/experiments.csv",
+      "status": "LOW-COST POOLING ABLATION (CORE)",
+      "why_not_a_repeat_of_failed_idea": "Tests whether learnable Generalized Mean pooling (p=3) prevents spatial dilution of highly localized dermoscopic hallmarks compared to standard GAP."
+    },
+    {
+      "v5_experiment_id": "V5-B12",
+      "run_id": "V5-S09-MELNV-RANK",
+      "name": "Pairwise Melanoma-vs-Nevus Margin Ranking Loss",
+      "previous_experiment": "Standard cross-entropy and class-reweighted loss",
+      "previous_verdict": "S67 class reweighting failed Delta under-40 pAUC -0.000; cross-entropy lacks explicit ranking margins",
+      "previous_evidence_file": "results/v4/s67/probes.json",
+      "status": "AUXILIARY RANKING OBJECTIVE (CORE)",
+      "why_not_a_repeat_of_failed_idea": "Directly optimizes relative ordering between young melanoma and benign nevi within mini-batches, enforcing a strict score separation margin on development pairs."
+    },
+    {
+      "v5_experiment_id": "V5-X1",
+      "run_id": "V5-X01-MIXUP-CUTMIX",
+      "name": "384px Mixup / CutMix Sensitivity Analysis",
+      "previous_experiment": "S50 / S53",
+      "previous_verdict": "Null at 224px resolution",
+      "previous_evidence_file": "results/v4/s53r/s53r_report.json",
+      "status": "EXPLORATORY / LOW PRIORITY",
+      "why_not_a_repeat_of_failed_idea": "Tests whether the modern 384px representation alters the earlier null result with colour-safe alpha <= 0.2. Not part of core compute."
+    },
+    {
+      "v5_experiment_id": "V5-X2",
+      "run_id": "V5-X02-SWA",
+      "name": "Optional SWA Schedule Ablation",
+      "previous_experiment": "S53 R6 (EMA + Cosine)",
+      "previous_verdict": "Incomplete due to early stopping at epoch 19/60",
+      "previous_evidence_file": "results/v4/s53r/s53r_report.json",
+      "status": "DEFERRED / EXPLORATORY",
+      "why_not_a_repeat_of_failed_idea": "Executed only if final checkpoints demonstrate terminal validation loss instability."
+    },
+    {
+      "v5_experiment_id": "V5-X3",
+      "run_id": "V5-X03-FOCAL-LOSS",
+      "name": "Exploratory Imbalance-Loss Sensitivity (Focal Loss)",
+      "previous_experiment": "LDAM, ASL, class reweighting",
+      "previous_verdict": "Loss adjustments hit ranking ceilings",
+      "previous_evidence_file": "results/v4/s53r/s53r_report.json",
+      "status": "DEFERRED / LOW PRIORITY",
+      "why_not_a_repeat_of_failed_idea": "Tested only as low-cost development probe; does not consume 5-fold compute."
+    },
+    {
+      "v5_experiment_id": "V5-X4",
+      "run_id": "V5-X04-BALANCED-SOFTMAX",
+      "name": "Balanced Softmax Logit Adjustment Probe",
+      "previous_experiment": "S58 prior correction",
+      "previous_verdict": "S58 global prior adjustment was null",
+      "previous_evidence_file": "results/v4/s58/s58_report.json",
+      "status": "DEFERRED — NOT CORE V5",
+      "why_not_a_repeat_of_failed_idea": "Documented to prevent scope creep; not part of active GPU execution."
+    },
+    {
+      "v5_experiment_id": "V5-X5",
+      "run_id": "V5-X05-FOUNDATION-DISTILL",
+      "name": "Foundation Model Feature Distillation Probe",
+      "previous_experiment": "S51 frozen PanDerm / DINOv2 probes",
+      "previous_verdict": "FALSIFIED as frozen feature extractors",
+      "previous_evidence_file": "results/v4/backbone_probe_deltas.csv",
+      "status": "DEFERRED — NOT CORE V5",
+      "why_not_a_repeat_of_failed_idea": "Tests knowledge transfer as a teacher to high-res student; deferred to avoid diverting core visual representation resources."
+    }
+  ]
+}
