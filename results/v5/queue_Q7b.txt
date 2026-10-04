@@ -1,0 +1,7 @@
+# Q7b -- declared deviation D1 (results/v5/protocol_deviations.json): m4 as a SECONDARY confirmation arm,
+# folds 1-4 x s42, 224 px, in22k, --save-best, tag v5conf. Runs AFTER Q7; never changes the lock or the primary read.
+# ~40 min/run, extrapolated from m4's measured fold-0 runs (37.8 / 38.2 / 43.4 min) -> ~2.7 h.
+--arm m4 --fold 1 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm m4 --fold 2 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm m4 --fold 3 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm m4 --fold 4 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf

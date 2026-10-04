@@ -1,0 +1,65 @@
+{
+  "run_id": "R1_kfold_f0_s42",
+  "session": "v4_s72",
+  "rungs": [
+    "R1"
+  ],
+  "corpus": "pooled",
+  "seed": 42,
+  "arch": "convnext_tiny",
+  "model_kind": "image",
+  "recipe": {
+    "image_size": 384,
+    "epochs": 30,
+    "colour_constancy": false,
+    "randaugment": false,
+    "mixup_cutmix": false,
+    "balanced_sampler": false,
+    "ema": false,
+    "metadata_branch": false
+  },
+  "batch_size": 16,
+  "grad_accum": 2,
+  "effective_batch": 32,
+  "num_workers": 2,
+  "run_tag": null,
+  "early_stopping_patience": null,
+  "rerun_plan_sha256": null,
+  "epochs_run": 1,
+  "best_val_macro_f1": 0.13075060532687652,
+  "best_epoch": 1,
+  "final_val_macro_f1": 0.13075060532687652,
+  "final_val_balanced_accuracy": 0.48214285714285715,
+  "final_val_escalation_sensitivity": 0.0,
+  "train_images": 64,
+  "val_images": 32,
+  "train_time_seconds": 44.6,
+  "device": "cuda",
+  "plan_sha256": "eff9d79f36f351ffcad05f005aa9a7dccbd1c12a44e4c0ddda8914145039bf5e",
+  "smoke": true,
+  "test_read": false,
+  "vram_peak_gb": 3.271187456,
+  "vram_total_gb": 8.546484224,
+  "vram_headroom_gb": 5.275296768,
+  "checkpoints": {
+    "best": "results\\v4\\recipe_runs\\smoke\\convnext_tiny-v4_R1_kfold_f0_s42_best.pt",
+    "last": "results\\v4\\recipe_runs\\smoke\\convnext_tiny-v4_R1_kfold_f0_s42_last.pt"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "train_loss": 1.8201199173927307,
+      "train_accuracy": 0.34375,
+      "val_macro_f1": 0.13075060532687652,
+      "val_balanced_accuracy": 0.48214285714285715,
+      "val_accuracy": 0.84375,
+      "val_escalation_sensitivity": 0.0,
+      "val_missed_serious": 4,
+      "learning_rate": 0.0,
+      "seconds": 43.961740493774414
+    }
+  ],
+  "fold": 0,
+  "oof_predictions": "results\\v4\\kfold\\predictions\\smoke\\fold0.csv"
+}

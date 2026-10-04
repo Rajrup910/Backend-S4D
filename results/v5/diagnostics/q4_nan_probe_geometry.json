@@ -1,0 +1,48 @@
+{
+ "arm": "geometry",
+ "passes": 2,
+ "images_seen": 24470,
+ "batches": 766,
+ "batches_with_nonfinite": 558,
+ "per_field_rows": {
+  "tokens_raw (cleaned by nan_to_num)": 933
+ },
+ "per_field_unique_images": {
+  "tokens_raw (cleaned by nan_to_num)": 794
+ },
+ "examples": {
+  "tokens_raw (cleaned by nan_to_num)": [
+   "ISIC_0000139_downsampled",
+   "ISIC_0000271",
+   "ISIC_0000287",
+   "ISIC_0010862",
+   "ISIC_0012170_downsampled",
+   "ISIC_0012487_downsampled",
+   "ISIC_0012516_downsampled",
+   "ISIC_0012737_downsampled",
+   "ISIC_0012941_downsampled",
+   "ISIC_0012945_downsampled",
+   "ISIC_0013000_downsampled",
+   "ISIC_0013053_downsampled",
+   "ISIC_0013127_downsampled",
+   "ISIC_0014729_downsampled",
+   "ISIC_0016037_downsampled",
+   "ISIC_0024322",
+   "ISIC_0024332",
+   "ISIC_0024341",
+   "ISIC_0024382",
+   "ISIC_0024407"
+  ]
+ },
+ "archive_of_bad": {
+  "tokens_raw (cleaned by nan_to_num)": {
+   "ham": 482,
+   "bcn20000": 297,
+   "mskcc": 15
+  }
+ },
+ "front_backstop_hits": 3,
+ "tokens_over_50sd_by_column": {},
+ "tokens_over_50sd_examples": {},
+ "test_read": false
+}

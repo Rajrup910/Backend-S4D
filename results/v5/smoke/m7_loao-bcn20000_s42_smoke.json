@@ -1,0 +1,78 @@
+{
+  "run_id": "m7_loao-bcn20000_s42_smoke",
+  "arm": "m7",
+  "modules": [
+    "m7"
+  ],
+  "session": "v5_smoke",
+  "split": "loao-bcn20000",
+  "seed": 42,
+  "fold": null,
+  "loao_holdout": "bcn20000",
+  "image_size": 224,
+  "epochs": 30,
+  "epochs_run": 1,
+  "trunk": "in1k",
+  "extra_train": null,
+  "extra_train_rows": 0,
+  "batch_size": 16,
+  "grad_accum": 1,
+  "effective_batch": 16,
+  "num_workers": 2,
+  "patience": null,
+  "run_tag": "smoke",
+  "primary_checkpoint": "last",
+  "declared_score": "escalation_mass",
+  "registry_sha256": "e85842c9c2a9fc9ff7e98a94a4e6a992d0c12387aa6a47b03554b87a2cfcf18e",
+  "final_val_macro_f1": 0.09523809523809523,
+  "final_val_balanced_accuracy": 0.22222222222222224,
+  "final_val_escalation_sensitivity": 0.15,
+  "best_val_macro_f1": null,
+  "best_epoch": null,
+  "train_images": 64,
+  "val_images": 32,
+  "train_time_seconds": 17.3,
+  "device": "cpu",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "checkpoints": {
+    "last": "results\\v5\\smoke\\convnext_tiny-v5_m7_loao-bcn20000_s42_smoke_last.pt"
+  },
+  "predictions": {
+    "last": "results\\v5\\smoke\\preds\\m7_loao-bcn20000_s42_smoke.csv"
+  },
+  "patch_maps": null,
+  "loader_view_size": 224,
+  "m5_labelled_train_rows": null,
+  "m7_chromophore_scaling": "skipped: results\\v5\\chromophore\\loao-bcn20000.json missing",
+  "swad": {
+    "window": [
+      1,
+      1
+    ],
+    "n_averaged": 1,
+    "val_macro_f1": 0.09523809523809523,
+    "checkpoint": "results\\v5\\smoke\\convnext_tiny-v5_m7_loao-bcn20000_s42_smoke_swad.pt",
+    "predictions": "results\\v5\\smoke\\preds\\m7_loao-bcn20000_s42_smoke_swad.csv"
+  },
+  "logic_sign_check": null,
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "train_loss": 1.9115409851074219,
+      "train_accuracy": 0.375,
+      "loss_parts": {
+        "ce": 1.9115409851074219
+      },
+      "val_macro_f1": 0.09523809523809523,
+      "val_balanced_accuracy": 0.22222222222222224,
+      "val_accuracy": 0.3125,
+      "val_escalation_sensitivity": 0.15,
+      "val_missed_serious": 17,
+      "learning_rate": 0.0,
+      "seconds": 17.25152826309204
+    }
+  ]
+}

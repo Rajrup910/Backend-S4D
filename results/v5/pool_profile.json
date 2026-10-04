@@ -1,0 +1,196 @@
+{
+ "source": "research/v5/pool_profile.py",
+ "dev_rows": 15294,
+ "cells": [
+  {
+   "archive": "bcn20000",
+   "age_band": "40-59",
+   "images": 2255,
+   "lesions": 639,
+   "esc_images": 992,
+   "esc_lesions": 248,
+   "mel_lesions": 91,
+   "esc_prevalence": 0.4399
+  },
+  {
+   "archive": "bcn20000",
+   "age_band": "60+",
+   "images": 3421,
+   "lesions": 964,
+   "esc_images": 2557,
+   "esc_lesions": 709,
+   "mel_lesions": 155,
+   "esc_prevalence": 0.7474
+  },
+  {
+   "archive": "bcn20000",
+   "age_band": "<40",
+   "images": 981,
+   "lesions": 299,
+   "esc_images": 117,
+   "esc_lesions": 35,
+   "mel_lesions": 18,
+   "esc_prevalence": 0.1193
+  },
+  {
+   "archive": "bcn20000",
+   "age_band": "unknown",
+   "images": 47,
+   "lesions": 17,
+   "esc_images": 8,
+   "esc_lesions": 6,
+   "mel_lesions": 1,
+   "esc_prevalence": 0.1702
+  },
+  {
+   "archive": "ham",
+   "age_band": "40-59",
+   "images": 3114,
+   "lesions": 2523,
+   "esc_images": 399,
+   "esc_lesions": 225,
+   "mel_lesions": 145,
+   "esc_prevalence": 0.1281
+  },
+  {
+   "archive": "ham",
+   "age_band": "60+",
+   "images": 2512,
+   "lesions": 1765,
+   "esc_images": 893,
+   "esc_lesions": 559,
+   "mel_lesions": 257,
+   "esc_prevalence": 0.3555
+  },
+  {
+   "archive": "ham",
+   "age_band": "<40",
+   "images": 1319,
+   "lesions": 907,
+   "esc_images": 64,
+   "esc_lesions": 34,
+   "mel_lesions": 28,
+   "esc_prevalence": 0.0485
+  },
+  {
+   "archive": "ham",
+   "age_band": "unknown",
+   "images": 36,
+   "lesions": 34,
+   "esc_images": 0,
+   "esc_lesions": 0,
+   "mel_lesions": 0,
+   "esc_prevalence": 0.0
+  },
+  {
+   "archive": "isic_young_extra",
+   "age_band": "<40",
+   "images": 2078,
+   "lesions": 1539,
+   "esc_images": 510,
+   "esc_lesions": 291,
+   "mel_lesions": 236,
+   "esc_prevalence": 0.2454
+  },
+  {
+   "archive": "mskcc",
+   "age_band": "40-59",
+   "images": 456,
+   "lesions": 452,
+   "esc_images": 72,
+   "esc_lesions": 70,
+   "mel_lesions": 70,
+   "esc_prevalence": 0.1579
+  },
+  {
+   "archive": "mskcc",
+   "age_band": "60+",
+   "images": 564,
+   "lesions": 555,
+   "esc_images": 174,
+   "esc_lesions": 167,
+   "mel_lesions": 167,
+   "esc_prevalence": 0.3085
+  },
+  {
+   "archive": "mskcc",
+   "age_band": "<40",
+   "images": 421,
+   "lesions": 420,
+   "esc_images": 12,
+   "esc_lesions": 12,
+   "mel_lesions": 12,
+   "esc_prevalence": 0.0285
+  },
+  {
+   "archive": "mskcc",
+   "age_band": "unknown",
+   "images": 168,
+   "lesions": 168,
+   "esc_images": 39,
+   "esc_lesions": 39,
+   "mel_lesions": 39,
+   "esc_prevalence": 0.2321
+  }
+ ],
+ "u40_escalating_lesions_dev_by_archive": {
+  "ham": 34,
+  "bcn20000": 35,
+  "mskcc": 12
+ },
+ "u40_escalating_lesions_dev_total": 81,
+ "age60_escalating_lesions_dev_total": 1435,
+ "young_extra": {
+  "images": 2078,
+  "lesions": 1539,
+  "esc_lesions": 291,
+  "by_class": {
+   "nv": 1496,
+   "mel": 433,
+   "bcc": 54,
+   "bkl": 49,
+   "akiec": 23,
+   "vasc": 21,
+   "df": 2
+  }
+ },
+ "young_archive_pool": {
+  "query": "age_approx:[0 TO 35] AND diagnosis_confirm_type:\"histopathology\" AND image_type:\"dermoscopic\"",
+  "pool_total": 5790,
+  "excluded_in_v4_corpus": 2562,
+  "candidates": 2353,
+  "candidates_without_lesion_id": 747
+ },
+ "loao_control_in22k_s42": [
+  {
+   "held_out": "ham",
+   "n": 6979,
+   "classes_present": 7,
+   "macro_f1_present": 0.5472220510782959,
+   "balanced_accuracy": 0.5193105822858946,
+   "pauc_all": 0.7461288249733777,
+   "pauc_u40": 0.7082157481186366,
+   "n_esc_u40_images": 64
+  },
+  {
+   "held_out": "bcn20000",
+   "n": 6704,
+   "classes_present": 7,
+   "macro_f1_present": 0.39216573887778905,
+   "balanced_accuracy": 0.3911685417963593,
+   "pauc_all": 0.7032412822120535,
+   "pauc_u40": 0.6879011906018079,
+   "n_esc_u40_images": 117
+  },
+  {
+   "held_out": "mskcc",
+   "n": 1608,
+   "classes_present": 3,
+   "macro_f1_present": 0.6331589406686707,
+   "balanced_accuracy": 0.5767154187487817,
+   "pauc_all": 0.6625083543909763,
+   "pauc_u40": 0.6684448395939838,
+   "n_esc_u40_images": 11
+  }
+ ]
+}

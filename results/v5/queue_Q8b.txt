@@ -1,0 +1,14 @@
+# Q8b -- seed-44 confirmation, folds 1-4: LOCKED composite (tag v5conf) interleaved with the V4-recipe in1k control
+# (tag v5ctl), so every finished fold is a complete paired comparison. Auto-started by hand (owner).
+# Control s43/s44 fold 1-4 runs were never banked (only s42 was), so both sides train here.
+# Composite ~74.2 min/run, control ~53.8 min/run (measured, Q8a means) -> 4 x 74.2 + 4 x 53.8 = ~8.5 h.
+# The control's best-epoch predictions are not the primary: score its _last.pt with
+# research.v5.infer_last afterwards (in the owner command).
+--arm composite --extra-train results/v5/young_data/extra_train.csv --fold 1 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+v4 --rungs R0 --corpus pooled --fold 1 --seed 44 --batch-size 32 --grad-accum 1 --run-tag v5ctl
+--arm composite --extra-train results/v5/young_data/extra_train.csv --fold 2 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+v4 --rungs R0 --corpus pooled --fold 2 --seed 44 --batch-size 32 --grad-accum 1 --run-tag v5ctl
+--arm composite --extra-train results/v5/young_data/extra_train.csv --fold 3 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+v4 --rungs R0 --corpus pooled --fold 3 --seed 44 --batch-size 32 --grad-accum 1 --run-tag v5ctl
+--arm composite --extra-train results/v5/young_data/extra_train.csv --fold 4 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+v4 --rungs R0 --corpus pooled --fold 4 --seed 44 --batch-size 32 --grad-accum 1 --run-tag v5ctl

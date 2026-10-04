@@ -1,0 +1,91 @@
+{
+  "endpoint": "melanoma vs histopathology-confirmed nevus, image-level pAUC@FPR<=0.20 (McClish) on declared_score",
+  "pair_sd_definition": "root mean square of the 15 pairwise seed differences (as research/v5/screen_gate.null_model)",
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "per_seed": {
+    "42": {
+      "file": "R0_kfold_f0_s42_last.csv",
+      "pauc_mel_vs_histo_nv": 0.7216557721345905,
+      "n_mel": 505,
+      "n_histo_nv": 671
+    },
+    "43": {
+      "file": "R0_kfold_f0_s43_v5s01_last.csv",
+      "pauc_mel_vs_histo_nv": 0.7183554421015872,
+      "n_mel": 505,
+      "n_histo_nv": 671
+    },
+    "44": {
+      "file": "R0_kfold_f0_s44_v5s01_last.csv",
+      "pauc_mel_vs_histo_nv": 0.7171897517620615,
+      "n_mel": 505,
+      "n_histo_nv": 671
+    },
+    "45": {
+      "file": "R0_kfold_f0_s45_v5s01_last.csv",
+      "pauc_mel_vs_histo_nv": 0.6925085951218073,
+      "n_mel": 505,
+      "n_histo_nv": 671
+    },
+    "46": {
+      "file": "R0_kfold_f0_s46_v5s01_last.csv",
+      "pauc_mel_vs_histo_nv": 0.7194178434236866,
+      "n_mel": 505,
+      "n_histo_nv": 671
+    },
+    "47": {
+      "file": "R0_kfold_f0_s47_v5s01_last.csv",
+      "pauc_mel_vs_histo_nv": 0.717168438155291,
+      "n_mel": 505,
+      "n_histo_nv": 671
+    }
+  },
+  "n_pairs": 15,
+  "pair_sd": 0.015338178095763636,
+  "z80": 0.8416212335729143,
+  "k": 3,
+  "threshold_T_mech": 0.007452977888008233,
+  "reference_bank": {
+    "fold0": {
+      "reference_images": 2708,
+      "reference_groups": 1279,
+      "token_cache_gb_fp16": 0.408,
+      "uint8_224_cache_gb": 0.408
+    },
+    "fold1": {
+      "reference_images": 2733,
+      "reference_groups": 1273,
+      "token_cache_gb_fp16": 0.411,
+      "uint8_224_cache_gb": 0.411
+    },
+    "fold2": {
+      "reference_images": 2692,
+      "reference_groups": 1256,
+      "token_cache_gb_fp16": 0.405,
+      "uint8_224_cache_gb": 0.405
+    },
+    "fold3": {
+      "reference_images": 2650,
+      "reference_groups": 1257,
+      "token_cache_gb_fp16": 0.399,
+      "uint8_224_cache_gb": 0.399
+    },
+    "fold4": {
+      "reference_images": 2733,
+      "reference_groups": 1291,
+      "token_cache_gb_fp16": 0.411,
+      "uint8_224_cache_gb": 0.411
+    }
+  },
+  "note": "in1k control seeds, as the V5 noise floor; used as a proxy for the IN-22k capacity-matched CG-DM control (declared)",
+  "test_read": false,
+  "reserved_read": false,
+  "written": "2026-10-01T05:27:46+0530"
+}

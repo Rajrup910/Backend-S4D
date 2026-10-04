@@ -1,0 +1,78 @@
+{
+  "per_seed": [
+    {
+      "seed": 42,
+      "logit_argmax_agreement": 1.0,
+      "top2": [
+        19
+      ],
+      "top2_coverage_u40_mel": 1.0,
+      "top_prototype_60plus_mel": 19,
+      "u40_esc_sensitivity_before": 0.5714285714285714,
+      "after_deleting_top2": 0.5428571428571428,
+      "n_u40_mel": 21,
+      "n_u40_esc": 35,
+      "holds": {
+        "a_top2_cover_ge_50pct": true,
+        "b_60plus_top_not_in_top2": false,
+        "c_deletion_lowers_u40_sensitivity": true
+      },
+      "all_hold": false
+    },
+    {
+      "seed": 43,
+      "logit_argmax_agreement": 1.0,
+      "top2": [
+        12,
+        17
+      ],
+      "top2_coverage_u40_mel": 1.0,
+      "top_prototype_60plus_mel": 12,
+      "u40_esc_sensitivity_before": 0.5714285714285714,
+      "after_deleting_top2": 0.5714285714285714,
+      "n_u40_mel": 21,
+      "n_u40_esc": 35,
+      "holds": {
+        "a_top2_cover_ge_50pct": true,
+        "b_60plus_top_not_in_top2": false,
+        "c_deletion_lowers_u40_sensitivity": false
+      },
+      "all_hold": false
+    },
+    {
+      "seed": 44,
+      "logit_argmax_agreement": 1.0,
+      "top2": [
+        14,
+        15
+      ],
+      "top2_coverage_u40_mel": 0.8095238095238095,
+      "top_prototype_60plus_mel": 14,
+      "u40_esc_sensitivity_before": 0.6571428571428571,
+      "after_deleting_top2": 0.6285714285714286,
+      "n_u40_mel": 21,
+      "n_u40_esc": 35,
+      "holds": {
+        "a_top2_cover_ge_50pct": true,
+        "b_60plus_top_not_in_top2": false,
+        "c_deletion_lowers_u40_sensitivity": true
+      },
+      "all_hold": false
+    }
+  ],
+  "seeds_holding": 0,
+  "pass": false,
+  "verdict": "FAIL",
+  "arm": "memory",
+  "comparator": "control",
+  "trunk": "in22k",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "definitions_declared": "2026-09-30, before any Q3 run (module docstring)",
+  "gate_pass_before_falsifier": true,
+  "screen_pass": false,
+  "test_read": false
+}

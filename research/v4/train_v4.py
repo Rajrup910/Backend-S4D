@@ -661,7 +661,12 @@ def write_fold_predictions(args: argparse.Namespace, run_id: str, val_frame: pd.
     if args.smoke:
         directory = directory / "smoke"
     directory.mkdir(parents=True, exist_ok=True)
-    destination = directory / f"fold{args.fold}.csv"
+    # A tagged run (V5's `v5s01` / `v5ctl`) must not overwrite the banked S72 predictions, which
+    # `s71_kfold --assemble` reads by the untagged name. Untagged runs are unchanged. A tagged
+    # run is named by its full run id, because one tag spans several rungs and seeds (S01 runs
+    # R1 and R0 at seed 43 under the same tag).
+    name = run_id if getattr(args, "run_tag", "") else f"fold{args.fold}"
+    destination = directory / f"{name}.csv"
     frame.to_csv(destination, index=False)
     print(f"wrote {destination.relative_to(REPO_ROOT)}  {len(frame):,} held-out rows")
     return str(destination.relative_to(REPO_ROOT))

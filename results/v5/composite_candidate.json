@@ -1,0 +1,7 @@
+{
+ "status": "candidate",
+ "modules": ["twostep", "m4", "youngdata"],
+ "extra_train": "results/v5/young_data/extra_train.csv",
+ "basis": "V5 runsheet section 6 composite rule, read 3 Oct: twostep PASS (gate+falsifier, Q3); m4 PASS and beats its parent twostep (Q3); youngdata PASS (gate, within-band falsifier on the mean, Q4). Excluded: memory, clues, gem (Q3 FAIL); look (v5fix gate FAIL); geometry (v5fix gate PASS, rotation falsifier FAIL: 0.0049 -> 0.0037 all-age, 0.0074 -> 0.0055 histo); zoom (falsifier clause 2 FAIL, random location beats evidence); m7 (LOAO FAIL); structure, m5 (pre-check NO). logic (DRE-7) excluded: without front/geometry/clue/m5 tokens it has no concept inputs, so composite == composite_nologic and Q6 runs composite only.",
+ "sources": ["results/v5/screens/gate_twostep_in22k_vs_control.json", "results/v5/screens/falsifier_twostep_in22k.json", "results/v5/screens/gate_m4_in22k_vs_twostep.json", "results/v5/screens/falsifier_m4_in22k.json", "results/v5/screens/gate_youngdata_in22k_vs_control.json", "results/v5/screens/gate_geometry_in22k_vs_control_v5fix.json", "results/v5/screens/falsifier_geometry_in22k_v5fix.json", "results/v5/screens/q5_read.json"]
+}

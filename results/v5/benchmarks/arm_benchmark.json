@@ -1,0 +1,57 @@
+{
+  "device": "cuda",
+  "trunk": "in22k",
+  "image_size": 224,
+  "batch_size": 32,
+  "num_workers": 2,
+  "warmup": 8,
+  "steps": 40,
+  "reference": "clues",
+  "reference_minutes": 38.07,
+  "zoom_verdict": null,
+  "test_read": false,
+  "rows": [
+    {
+      "arm": "clues",
+      "split": "f0",
+      "train_rows": 12235,
+      "val_rows": 3059,
+      "ms_per_finetune_step": 239.8,
+      "val_pass_s": 24.5,
+      "val_cache_build_s": 23.3,
+      "epoch_s": 116.1,
+      "peak_vram_gb_finetune": 2.42,
+      "step_ratio_vs_clues": 1.0,
+      "epoch_ratio_vs_clues": 1.0,
+      "projected_run_min": 38.1
+    },
+    {
+      "arm": "control",
+      "split": "f0",
+      "train_rows": 12235,
+      "val_rows": 3059,
+      "ms_per_finetune_step": 234.0,
+      "val_pass_s": 8.1,
+      "val_cache_build_s": 23.0,
+      "epoch_s": 97.5,
+      "peak_vram_gb_finetune": 2.41,
+      "step_ratio_vs_clues": 0.98,
+      "epoch_ratio_vs_clues": 0.84,
+      "projected_run_min": 32.0
+    },
+    {
+      "arm": "m7",
+      "split": "loao-mskcc",
+      "train_rows": 13683,
+      "val_rows": 1608,
+      "ms_per_finetune_step": 330.6,
+      "val_pass_s": 9.9,
+      "val_cache_build_s": 11.4,
+      "epoch_s": 151.1,
+      "peak_vram_gb_finetune": 2.41,
+      "step_ratio_vs_clues": 1.38,
+      "epoch_ratio_vs_clues": 1.3,
+      "projected_run_min": 49.5
+    }
+  ]
+}

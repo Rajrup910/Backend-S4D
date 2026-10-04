@@ -1,0 +1,91 @@
+{
+  "run_id": "composite_f0_s42_in22k",
+  "arm": "composite",
+  "modules": [
+    "twostep",
+    "m4",
+    "youngdata"
+  ],
+  "session": "v5_run",
+  "split": "f0",
+  "seed": 42,
+  "fold": 0,
+  "loao_holdout": null,
+  "image_size": 224,
+  "epochs": 30,
+  "epochs_run": 1,
+  "trunk": "in22k",
+  "extra_train": "results/v5/young_data/extra_train.csv",
+  "extra_train_rows": 2078,
+  "batch_size": 32,
+  "grad_accum": 1,
+  "effective_batch": 32,
+  "num_workers": 2,
+  "patience": null,
+  "run_tag": null,
+  "primary_checkpoint": "last",
+  "declared_score": "escalation_mass",
+  "registry_sha256": "e85842c9c2a9fc9ff7e98a94a4e6a992d0c12387aa6a47b03554b87a2cfcf18e",
+  "final_val_macro_f1": 0.04835164835164835,
+  "final_val_balanced_accuracy": 0.10576923076923077,
+  "final_val_escalation_sensitivity": 0.5,
+  "best_val_macro_f1": null,
+  "best_epoch": null,
+  "train_images": 128,
+  "val_images": 64,
+  "train_time_seconds": 28.9,
+  "device": "cuda",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "vram_peak_gb": 2.200925696,
+  "vram_total_gb": 8.546484224,
+  "checkpoints": {
+    "last": "results\\v5\\smoke\\convnext_tiny-v5_composite_f0_s42_in22k_last.pt"
+  },
+  "predictions": {
+    "last": "results\\v5\\smoke\\preds\\composite_f0_s42_in22k.csv"
+  },
+  "patch_maps": null,
+  "memory_readout": null,
+  "loader_view_size": 224,
+  "val_images_cached": true,
+  "m5_labelled_train_rows": null,
+  "m7_chromophore_scaling": null,
+  "swad": null,
+  "zoom_mode": null,
+  "composite_spec": {
+    "file": "results\\v5\\composite_candidate.json",
+    "sha256": "f9fb034422c5e6bc31ded60b53333f40a18c7ff5c60a60823dda3b37a666d00c",
+    "status": "candidate",
+    "modules": [
+      "twostep",
+      "m4",
+      "youngdata"
+    ]
+  },
+  "logic_sign_check": null,
+  "front_token_backstop_hits": null,
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "train_loss": 3.1481178998947144,
+      "train_accuracy": 0.203125,
+      "loss_parts": {
+        "ce": 1.9353196620941162,
+        "bce_mel": 0.9210625290870667,
+        "bce_esc": 0.7183517515659332,
+        "rank": 0.7861819863319397,
+        "rank_pairs": 38.5
+      },
+      "val_macro_f1": 0.04835164835164835,
+      "val_balanced_accuracy": 0.10576923076923077,
+      "val_accuracy": 0.171875,
+      "val_escalation_sensitivity": 0.5,
+      "val_missed_serious": 6,
+      "learning_rate": 0.0,
+      "seconds": 28.839275598526
+    }
+  ]
+}

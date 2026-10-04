@@ -1,0 +1,23 @@
+{
+ "run_id": "look_f0_s43_in22k_v5scr",
+ "device": "cuda",
+ "amp": true,
+ "mode": "train (no grad)",
+ "batches": 382,
+ "batches_with_nonfinite_ce": 1,
+ "rows_by_first_nonfinite_stage": {
+  "logits": 1
+ },
+ "examples": {
+  "logits": [
+   "ISIC_0027554"
+  ]
+ },
+ "archive_of_bad": {
+  "logits": {
+   "ham": 1
+  }
+ },
+ "max_abs_finite_logit": 7.609375,
+ "test_read": false
+}

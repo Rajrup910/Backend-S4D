@@ -1,0 +1,7 @@
+# Q6 -- stacking check (V5 runsheet section 8): composite candidate x s42/43/44, fold 0, 224 px, in22k, tag v5stack.
+# Candidate: results/v5/composite_candidate.json = twostep + m4 + youngdata (logic excluded: no concept inputs without
+# geometry, so composite == composite_nologic and only composite runs). Comparator: control (in22k, v5scr).
+# ~59 min/run, extrapolated from youngdata's measured 58.5-58.7 min (same 14,313 training rows; heads cost ~0) -> ~3 h.
+--arm composite --composite-spec results/v5/composite_candidate.json --extra-train results/v5/young_data/extra_train.csv --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5stack
+--arm composite --composite-spec results/v5/composite_candidate.json --extra-train results/v5/young_data/extra_train.csv --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5stack
+--arm composite --composite-spec results/v5/composite_candidate.json --extra-train results/v5/young_data/extra_train.csv --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5stack

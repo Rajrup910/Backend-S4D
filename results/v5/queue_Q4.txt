@@ -1,0 +1,19 @@
+# Q4 -- pre-check-gated arms (docs/V5_RUNSHEET.md section 8), fold 0, 224 px, trunk in22k, tag v5scr.
+# Verdicts: results/v5/precheck_verdicts.json -> look go, geometry go, structure NO (Q5), m5 NO (Q4).
+# youngdata rows: results/v5/young_data/extra_train.csv (2,078 rows, written 1 Oct 18:26, before the 20:00 rule).
+# zoom: E8 arm benchmark 1.59x per step / 1.53x per epoch vs clues (<= 2x) -> stays in Q4 (runsheet 8.3).
+# Projected min/run (results/v5/benchmarks/arm_benchmark.json ratio x clues' measured 38.07): look 35.4,
+# geometry 35.8, zoom 58.2, youngdata 62.1 (full-size young images: 1.68x per step) -> ~9.6 h for 12 runs.
+# Comparators (registry): look/geometry/youngdata vs control (in22k, Q2), zoom vs clues (Q3).
+--arm look --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm look --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm look --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm geometry --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm geometry --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm geometry --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm zoom --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm zoom --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm zoom --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr
+--arm youngdata --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --extra-train results/v5/young_data/extra_train.csv --no-save-best --run-tag v5scr
+--arm youngdata --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --extra-train results/v5/young_data/extra_train.csv --no-save-best --run-tag v5scr
+--arm youngdata --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --extra-train results/v5/young_data/extra_train.csv --no-save-best --run-tag v5scr

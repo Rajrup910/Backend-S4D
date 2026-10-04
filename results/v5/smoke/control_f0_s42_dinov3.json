@@ -1,0 +1,64 @@
+{
+  "run_id": "control_f0_s42_dinov3",
+  "arm": "control",
+  "modules": [],
+  "session": "v5_run",
+  "split": "f0",
+  "seed": 42,
+  "fold": 0,
+  "loao_holdout": null,
+  "image_size": 224,
+  "epochs": 30,
+  "epochs_run": 1,
+  "trunk": "dinov3",
+  "extra_train": null,
+  "extra_train_rows": 0,
+  "batch_size": 32,
+  "grad_accum": 1,
+  "effective_batch": 32,
+  "num_workers": 2,
+  "patience": null,
+  "run_tag": null,
+  "primary_checkpoint": "last",
+  "declared_score": "escalation_mass",
+  "registry_sha256": "e85842c9c2a9fc9ff7e98a94a4e6a992d0c12387aa6a47b03554b87a2cfcf18e",
+  "final_val_macro_f1": 0.015584415584415584,
+  "final_val_balanced_accuracy": 0.028846153846153848,
+  "final_val_escalation_sensitivity": 0.5,
+  "best_val_macro_f1": null,
+  "best_epoch": null,
+  "train_images": 128,
+  "val_images": 64,
+  "train_time_seconds": 36.4,
+  "device": "cuda",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "vram_peak_gb": 2.200910336,
+  "vram_total_gb": 8.546484224,
+  "checkpoints": {
+    "last": "results\\v5\\smoke\\convnext_tiny-v5_control_f0_s42_dinov3_last.pt"
+  },
+  "predictions": {
+    "last": "results\\v5\\smoke\\preds\\control_f0_s42_dinov3.csv"
+  },
+  "patch_maps": null,
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "train_loss": 2.6679641008377075,
+      "train_accuracy": 0.015625,
+      "loss_parts": {
+        "ce": 2.6679641008377075
+      },
+      "val_macro_f1": 0.015584415584415584,
+      "val_balanced_accuracy": 0.028846153846153848,
+      "val_accuracy": 0.046875,
+      "val_escalation_sensitivity": 0.5,
+      "val_missed_serious": 6,
+      "learning_rate": 0.0,
+      "seconds": 36.35027623176575
+    }
+  ]
+}

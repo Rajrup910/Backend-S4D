@@ -1,0 +1,345 @@
+{
+  "fold": null,
+  "loao_holdout": "bcn20000",
+  "n_images": 8590,
+  "limit": null,
+  "seed": 20260930,
+  "basis": {
+    "v_mel": [
+      -0.633015899239855,
+      -0.13011062755993888,
+      0.7631265267997939
+    ],
+    "v_hb": [
+      -0.8104706074123039,
+      0.49098520685798286,
+      0.31948540055432106
+    ],
+    "fold": null,
+    "n_pixels": 1005030,
+    "t_mel": 0.3124575614929199,
+    "channel_mean": [
+      0.07763130602205812,
+      0.5379620406017346,
+      0.02919853806457074
+    ],
+    "channel_std": [
+      0.3158218926303934,
+      0.39496577495878155,
+      0.13250654480113636
+    ],
+    "naming_cosines": {
+      "mel_vs_ref": 0.9969795956667763,
+      "hb_vs_ref": 0.9434301541029382,
+      "mel_vs_hb": 0.6929661710598924
+    }
+  },
+  "palette": {
+    "centers": [
+      [
+        0.6018757019265101,
+        1.3818512952417947,
+        1.4411298492506754
+      ],
+      [
+        0.84304918810693,
+        1.9382126003639448,
+        2.1050060325702926
+      ],
+      [
+        1.0368365857568582,
+        2.5052257379776,
+        2.716354753599594
+      ],
+      [
+        1.3607265619958524,
+        3.1852031746559,
+        3.3185593842909187
+      ],
+      [
+        1.8596120143495556,
+        3.9444391186722108,
+        4.048856256462175
+      ],
+      [
+        2.9877475092704318,
+        4.859264678737752,
+        4.756361409810832
+      ]
+    ],
+    "fold": null
+  },
+  "dsp_thresholds": {
+    "tubularity_p75": 0.08523467183113098,
+    "blobness_p75": 0.015076774172484875,
+    "network_p75": 0.8046279549598694,
+    "network_p25": 0.33956730365753174,
+    "depth_p25": -2.3636845519064975e-12,
+    "mel_median": 0.3123347759246826
+  },
+  "abruptness_p75": 0.02502354606986046,
+  "abruptness_undefined_values": 6064,
+  "ica_pixels": 1005030,
+  "declarations": {
+    "APERTURE_SRGB_MAX": 0.0784313725490196,
+    "RING_FRACTION": 0.1,
+    "REF_MEL_RGB": [
+      0.3,
+      0.6,
+      1.0
+    ],
+    "REF_HB_RGB": [
+      0.1,
+      1.0,
+      0.6
+    ],
+    "OTSU_BINS": 256,
+    "LESION_PIXEL_THRESHOLD": 0.5,
+    "MIN_OTSU_T": 0.001,
+    "GEOMETRY_MIN_VALID": 0.03,
+    "GEOMETRY_MIN_RADIUS_PX": 2.0,
+    "ring_definition": "Chebyshev frame: |x-cx|/(W/2) > 0.9 or |y-cy|/(H/2) > 0.9",
+    "aperture_definition": "max(R,G,B) < 20/255 in sRGB; excluded like glare",
+    "component_naming": "ICA mixing vectors in the plane orthogonal to (1,1,1) are assigned melanin/haemoglobin (and sign-fixed) by maximum total cosine to the projected reference spectra; the references never enter unmixing",
+    "GABOR_GAMMA": 0.5,
+    "ABRUPT_MIN_MEDIAN_FRAC": 0.1,
+    "COVERAGE_PERCENTILE": 75.0,
+    "THIN_SIGMAS": [
+      1.0
+    ],
+    "DENSITY_SCALE": 1000.0,
+    "BORDER_SAMPLES": 5,
+    "blobness_definition": "Rb * (1 - exp(-S^2/2c^2)) where both Hessian eigenvalues < 0",
+    "network_regularity": "1 - CV of the dominant Gabor wavelength over network pixels",
+    "periphery_minus_centre": "mean c_mel on network pixels at rho in [0.6r,1.2r] minus at rho < 0.6r",
+    "polymorphism_classes": "thin-tubular (sigma 1), thick-tubular (sigma 2,4), blob",
+    "q2_direction": "every Q2/Q5 young-differential feature is tested one-sided, higher in <40 mel than in <40 histo-nv, except where the runsheet states the opposite (network regularity, Clark-Evans R: higher in nv)",
+    "PER_IMAGE_CAP": 4096,
+    "PRECHECK_SHORT_SIDE": 224
+  },
+  "token_stats": {
+    "palette_area_0": {
+      "mean": 0.16473446384398457,
+      "std": 0.2640770128971535,
+      "n_finite": 8590
+    },
+    "palette_area_1": {
+      "mean": 0.25342869780842603,
+      "std": 0.203510003541131,
+      "n_finite": 8590
+    },
+    "palette_area_2": {
+      "mean": 0.239997459077597,
+      "std": 0.1602061014274152,
+      "n_finite": 8590
+    },
+    "palette_area_3": {
+      "mean": 0.1831359828371866,
+      "std": 0.15616513251007297,
+      "n_finite": 8590
+    },
+    "palette_area_4": {
+      "mean": 0.11350310119263689,
+      "std": 0.14841336992931145,
+      "n_finite": 8590
+    },
+    "palette_area_5": {
+      "mean": 0.045200301769854984,
+      "std": 0.11204428867304204,
+      "n_finite": 8590
+    },
+    "palette_count": {
+      "mean": 3.4865136708730313,
+      "std": 0.9690136255785264,
+      "n_finite": 8590
+    },
+    "palette_ecc_0": {
+      "mean": 0.3178459649287585,
+      "std": 0.3028462321233853,
+      "n_finite": 8590
+    },
+    "palette_ecc_1": {
+      "mean": 0.17415453306178652,
+      "std": 0.1840956226099362,
+      "n_finite": 8590
+    },
+    "palette_ecc_2": {
+      "mean": 0.1642145339974741,
+      "std": 0.21164698109417385,
+      "n_finite": 8590
+    },
+    "palette_ecc_3": {
+      "mean": 0.26256854996213647,
+      "std": 0.4193768052150339,
+      "n_finite": 8590
+    },
+    "palette_ecc_4": {
+      "mean": 0.5190365922568911,
+      "std": 0.7013895399769838,
+      "n_finite": 8590
+    },
+    "palette_ecc_5": {
+      "mean": 1.0800166487559686,
+      "std": 0.9968990240145229,
+      "n_finite": 8590
+    },
+    "vessel_coverage": {
+      "mean": 0.361699640423245,
+      "std": 0.1652464455040571,
+      "n_finite": 8590
+    },
+    "tubular_blob_ratio": {
+      "mean": 3.229624520629055,
+      "std": 0.9118881175081647,
+      "n_finite": 8590
+    },
+    "calibre_entropy": {
+      "mean": 0.824594609963906,
+      "std": 0.20210767248591927,
+      "n_finite": 8590
+    },
+    "vessel_polymorphism": {
+      "mean": 0.800785966845483,
+      "std": 0.13788497445486325,
+      "n_finite": 8590
+    },
+    "network_coverage": {
+      "mean": 0.2746340717983923,
+      "std": 0.30355196322083056,
+      "n_finite": 8590
+    },
+    "network_regularity": {
+      "mean": 0.9474173481454453,
+      "std": 0.05518427971082075,
+      "n_finite": 7921
+    },
+    "network_orientation_coherence": {
+      "mean": 0.48160141610120283,
+      "std": 0.28829604401472114,
+      "n_finite": 7943
+    },
+    "network_periphery_minus_centre": {
+      "mean": 0.05015715969557615,
+      "std": 0.22918546087730404,
+      "n_finite": 6730
+    },
+    "dot_density": {
+      "mean": 3.704050848491672,
+      "std": 1.3881607431842233,
+      "n_finite": 8590
+    },
+    "dot_clark_evans": {
+      "mean": 1.3478829962439294,
+      "std": 0.6259311477885396,
+      "n_finite": 8488
+    },
+    "dot_fraction_peripheral": {
+      "mean": 0.4184310376512301,
+      "std": 0.21386867574355758,
+      "n_finite": 8562
+    },
+    "dot_sectors_occupied": {
+      "mean": 0.7566720023282887,
+      "std": 0.24015002274518363,
+      "n_finite": 8590
+    },
+    "dot_size_cv": {
+      "mean": 0.30155631904749236,
+      "std": 0.0738436722762105,
+      "n_finite": 8488
+    },
+    "dot_mean_depth": {
+      "mean": 0.1739911424055944,
+      "std": 0.3164934607841963,
+      "n_finite": 8562
+    },
+    "veil_fraction": {
+      "mean": 0.03827448771832264,
+      "std": 0.10417156633187381,
+      "n_finite": 8590
+    },
+    "veil_eccentricity": {
+      "mean": 0.49502802108527927,
+      "std": 0.4985102005160865,
+      "n_finite": 4088
+    },
+    "colour_asym_min": {
+      "mean": 0.48910870987362864,
+      "std": 0.15900480110060955,
+      "n_finite": 8590
+    },
+    "colour_asym_max": {
+      "mean": 0.5582686485136528,
+      "std": 0.17624113517387463,
+      "n_finite": 8590
+    },
+    "chrom_asym_min": {
+      "mean": 0.24185030253493467,
+      "std": 0.12539097435737476,
+      "n_finite": 8590
+    },
+    "chrom_asym_max": {
+      "mean": 0.2988120052811708,
+      "std": 0.1706745979367037,
+      "n_finite": 8590
+    },
+    "abrupt_fraction": {
+      "mean": 0.2662822149282762,
+      "std": 0.27051992910557027,
+      "n_finite": 8226
+    },
+    "abrupt_angular_variance": {
+      "mean": 0.0014467138866837616,
+      "std": 0.006653813181540593,
+      "n_finite": 8226
+    },
+    "geometry_fallback": {
+      "mean": 0.028172293364377182,
+      "std": 0.16546484596725872,
+      "n_finite": 8590
+    }
+  },
+  "dsp_map_stats": {
+    "tubularity": {
+      "mean": 0.021961575737411226,
+      "std": 0.05673383968978407
+    },
+    "blobness": {
+      "mean": 0.00625397562666315,
+      "std": 0.026390332685680713
+    },
+    "network": {
+      "mean": 0.36831768297574546,
+      "std": 0.3547535480875398
+    },
+    "dots": {
+      "mean": 0.010587809256452264,
+      "std": 0.0410868854006073
+    },
+    "veil": {
+      "mean": 0.02758827228504906,
+      "std": 0.16378998601066871
+    }
+  },
+  "token_image_size": 224,
+  "context": {
+    "adoption": {
+      "amendment_index": 1,
+      "hashed_files": {
+        "docs/V5_RUNSHEET.md": "012ED3545AA1A49AB84E8E13C03CC20D0B665E90FFB7EB6C2DC6EB18DB5AC691",
+        "docs/v5_design/V5_PLAN_AMENDMENT_02.md": "073CF8A2277EF0B8826B8C98BA8109B8424BF233771A72B9CBDB7F149665BBE5",
+        "docs/v5_design/V5_DERM_REASONING_ENGINE.md": "57DFE48B438BE41C38BF98F4C5CEC9B939CA11F56FD57E04C0DB9477955DDFAE",
+        "research/v5/arms.py": "1371E588C1A9142BE99B167BA47E8653536781650BD4D7959B87410A12D02FAC",
+        "research/v5/screen_gate.py": "38403EBF21D165D35B58B890D49D1FBC5CB299DB4AFCE1619E8B75517C47FEA9",
+        "research/v5/confirmation.py": "63A9B6CC7DE758CDE1BAE9EACAC1419C2723B3710B8B9791A7E54C4A16B60AF7",
+        "research/v5/trunks.py": "7B7ABCCEC6DE3018F0EB3CFFCB323F9A770BDB5ECBC45950EC1D271710ADCBF4",
+        "results/v5/diagnostics/d5_acquisition.csv": "5555111EBFA0DD03DF07EBA8888F45F1071B5F641B5FE78299B8EB43C17DEE27"
+      },
+      "adopted_timestamp": "2026-09-30T07:04:58+05:30"
+    },
+    "headroom_gb_at_start": 5.16,
+    "threads": 8,
+    "started": "2026-10-02T18:14:30+0530"
+  },
+  "minutes": 11.5
+}

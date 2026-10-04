@@ -1,0 +1,75 @@
+{
+  "run_id": "m7_loao-mskcc_s42_in22k",
+  "arm": "m7",
+  "modules": [
+    "m7"
+  ],
+  "session": "v5_run",
+  "split": "loao-mskcc",
+  "seed": 42,
+  "fold": null,
+  "loao_holdout": "mskcc",
+  "image_size": 224,
+  "epochs": 30,
+  "epochs_run": 1,
+  "trunk": "in22k",
+  "extra_train": null,
+  "extra_train_rows": 0,
+  "batch_size": 32,
+  "grad_accum": 1,
+  "effective_batch": 32,
+  "num_workers": 2,
+  "patience": null,
+  "run_tag": null,
+  "primary_checkpoint": "last",
+  "declared_score": "escalation_mass",
+  "registry_sha256": "e85842c9c2a9fc9ff7e98a94a4e6a992d0c12387aa6a47b03554b87a2cfcf18e",
+  "final_val_macro_f1": 0.0,
+  "final_val_balanced_accuracy": 0.0,
+  "final_val_escalation_sensitivity": 1.0,
+  "best_val_macro_f1": null,
+  "best_epoch": null,
+  "train_images": 128,
+  "val_images": 64,
+  "train_time_seconds": 27.7,
+  "device": "cuda",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "vram_peak_gb": 2.200910336,
+  "vram_total_gb": 8.546484224,
+  "checkpoints": {
+    "last": "results\\v5\\smoke\\convnext_tiny-v5_m7_loao-mskcc_s42_in22k_last.pt"
+  },
+  "predictions": {
+    "last": "results\\v5\\smoke\\preds\\m7_loao-mskcc_s42_in22k.csv"
+  },
+  "patch_maps": null,
+  "memory_readout": null,
+  "loader_view_size": 224,
+  "val_images_cached": true,
+  "m5_labelled_train_rows": null,
+  "m7_chromophore_scaling": "on: results\\v5\\chromophore\\loao-mskcc.json",
+  "swad": null,
+  "zoom_mode": null,
+  "logic_sign_check": null,
+  "front_token_backstop_hits": null,
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "train_loss": 2.2080283164978027,
+      "train_accuracy": 0.171875,
+      "loss_parts": {
+        "ce": 2.2080283164978027
+      },
+      "val_macro_f1": 0.0,
+      "val_balanced_accuracy": 0.0,
+      "val_accuracy": 0.0,
+      "val_escalation_sensitivity": 1.0,
+      "val_missed_serious": 0,
+      "learning_rate": 0.0,
+      "seconds": 27.575878381729126
+    }
+  ]
+}

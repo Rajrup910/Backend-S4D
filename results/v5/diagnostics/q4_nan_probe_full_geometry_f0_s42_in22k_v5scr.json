@@ -1,0 +1,13 @@
+{
+ "run_id": "geometry_f0_s42_in22k_v5scr",
+ "device": "cuda",
+ "amp": true,
+ "mode": "train (no grad)",
+ "batches": 382,
+ "batches_with_nonfinite_ce": 0,
+ "rows_by_first_nonfinite_stage": {},
+ "examples": {},
+ "archive_of_bad": {},
+ "max_abs_finite_logit": 9.4296875,
+ "test_read": false
+}

@@ -1,0 +1,15 @@
+{
+ "arm": "look",
+ "passes": 2,
+ "images_seen": 24470,
+ "batches": 766,
+ "batches_with_nonfinite": 0,
+ "per_field_rows": {},
+ "per_field_unique_images": {},
+ "examples": {},
+ "archive_of_bad": {},
+ "front_backstop_hits": 0,
+ "tokens_over_50sd_by_column": {},
+ "tokens_over_50sd_examples": {},
+ "test_read": false
+}

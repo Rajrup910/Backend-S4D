@@ -1,0 +1,49 @@
+{
+ "purpose": "Register of departures from the frozen V5 plan (docs/V5_RUNSHEET.md, hash in results/v5/v5_plan_freeze.json). Every entry is reported in the manuscript's protocol-deviation statement (TRIPOD+AI / CONSORT-AI practice; IEEE publication ethics: no selective reporting). An entry is valid only if declared BEFORE the data it concerns are read.",
+ "deviations": [
+  {
+   "id": "D1",
+   "declared": "2026-10-03T19:00+05:30",
+   "declared_before": "any fold 1-4 V5 prediction exists (Q7 not started; results/v5/preds has no f1-f4 files)",
+   "what": "Add m4 (in22k, 224 px) folds 1-4 x s42 as a SECONDARY confirmation arm (queue_Q7b.txt, tag v5conf).",
+   "why": "Q6 stacking check found the locked composite sub-additive on fold 0 (composite vs m4: -0.0119 all-age pAUC, -0.0191 histo; +0.0114 <40 pAUC; results/v5/screens/gate_composite_in22k_vs_m4.json). The plan's risk table (V5_PLAN_AMENDMENT_02 'gains don't add up') put Q6 there to act on this, but specified no action. Fold 0 is the selection fold and m4 passed its own gate by +0.004 vs a 0.0035 bar, so its fold-0 lead is selection-inflated; only held-out folds can test the young-data trade-off.",
+   "unchanged": "Lock (results/v5/composite_lock.json, sha256 a34bd78c4e3098d906bf8cabbc49d0e863f33f20d7fc905f5a34b0081f456059), primary contrast (composite vs banked in1k R0 control, folds 1-4, Gates A/B/D), comparator, resolution, seeds, gate thresholds.",
+   "secondary_contrasts": [
+    "m4 vs in1k control (Gates A/B/D computed, reported as secondary)",
+    "composite vs m4 (estimate + lesion-grouped hierarchical interval; no gate)"
+   ],
+   "binding_constraints": [
+    "No secondary result can change the lock, the primary verdict, or the V5 system definition after it is read.",
+    "All three contrasts are reported whatever their direction.",
+    "Multiplicity: the primary is the sole member of its family; the two secondaries form one family, Holm-adjusted, labelled secondary."
+   ]
+  },
+  {
+   "id": "G1",
+   "declared": "2026-10-03T19:00+05:30",
+   "kind": "gap fix, not a design change",
+   "what": "Score the banked in1k control checkpoints R0_kfold_f{1..4}_s42_last.pt with research.v5.infer_last (last epoch, same self-check) before Q7.",
+   "why": "The runsheet's Q1 scored only fold-0 control runs; the confirmation comparator for folds 1-4 had run JSONs but no per-image last-epoch predictions (results/v4/kfold/predictions holds best-epoch fold CSVs only). Reading the comparator at its best epoch would bias every paired delta (infer_last docstring: S72 fold 0 best 0.6508 vs last 0.6394)."
+  },
+  {
+   "id": "D2",
+   "declared": "2026-10-04T16:20+05:30",
+   "declared_before": "any fold-0 OOF assembly, Dirichlet refit, S56 refit or S84 read",
+   "what": "Fold 0 of the V5 15-model OOF reuses the Q6 runs composite_f0_s{42,43,44}_in22k_v5stack instead of retraining fold 0 under composite_lock.json.",
+   "why": "Q6 trained exactly the locked module set {twostep, m4, youngdata} with the same extra_train file, trunk, resolution, recipe and seeds; only the spec file status ('candidate' vs 'locked') and --no-save-best differ. _last is the primary checkpoint, so --save-best is immaterial. Saves ~3.7 GPU-h.",
+   "unchanged": "Modules, data, recipe, seeds, last-epoch primary; fold 0 stays the flagged selection fold (it was used to choose the composite).",
+   "binding_constraints": [
+    "Fold 0 rows are reported as the selection fold wherever the 15-model OOF is used.",
+    "Confirmatory claims stay on folds 1-4."
+   ]
+  },
+  {
+   "id": "D3",
+   "declared": "2026-10-04T16:20+05:30",
+   "kind": "schedule (runsheet 8.2 cut line)",
+   "what": "S84 MILK10k single read and the S56-on-V5 refit are deferred to the post-Review-2 V5 addendum (runsheet 8.2 'if time allows' / 'after Review 2').",
+   "why": "Owner decision after the E14 read; time goes to the fairness audit and Review-2 deliverables. MILK10k stays unread (no receipt), so V6 allocation is unchanged.",
+   "unchanged": "S84 spec (runsheet 9), its receipt guard and single-read rule."
+  }
+ ]
+}

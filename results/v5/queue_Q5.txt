@@ -1,0 +1,25 @@
+# Q5 -- everything the composite lock needs (docs/V5_RUNSHEET.md section 8, revised 2 Oct; CHANGELOG 2 Oct evening).
+# Fold 0 / LOAO, 224 px, trunk in22k. Order: measured runs first; LOAO last (time unmeasured); m7 last of all.
+# 1) geometry, look RE-SCREEN after the front NaN fix (tag v5fix). The Q4 look/geometry runs trained with NaN-skipped
+#    steps and are void as screens whatever these show (declared before any v5fix run). Needs refitted fold0.json (done 17:25).
+#    Measured: look 41.8-41.9, geometry 42.5-42.9 min/run (results/v5/logs/queue_Q4.log) -> ~4.2 h.
+# 2) zoom 8r falsifier control (--zoom-mode random, tag v5scr8r), 3 seeds, moved before the lock (runsheet had 1 seed,
+#    descriptive, in Q9; 1 seed cannot resolve +0.0085 against the in22k pair SD 0.0153). Measured zoom 73.2-81.0 min -> ~3.7-4.1 h.
+# 3) LOAO control, then m7, 3 hold-outs each, SWAD 10-30 (runsheet Q5). Extrapolated ~3.5-6.2 h; m7 needs the
+#    loao-*.json basis files and a passed m7 smoke.
+# Total ~11.4-14.5 h.
+--arm geometry --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5fix
+--arm geometry --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5fix
+--arm geometry --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5fix
+--arm look --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5fix
+--arm look --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5fix
+--arm look --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5fix
+--arm zoom --zoom-mode random --fold 0 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr8r
+--arm zoom --zoom-mode random --fold 0 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr8r
+--arm zoom --zoom-mode random --fold 0 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v5scr8r
+--arm control --loao-holdout ham --seed 42 --image-size 224 --batch-size 32 --trunk in22k --swad-window 10 30 --no-save-best --run-tag v5scr
+--arm control --loao-holdout bcn20000 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --swad-window 10 30 --no-save-best --run-tag v5scr
+--arm control --loao-holdout mskcc --seed 42 --image-size 224 --batch-size 32 --trunk in22k --swad-window 10 30 --no-save-best --run-tag v5scr
+--arm m7 --loao-holdout ham --seed 42 --image-size 224 --batch-size 32 --trunk in22k --swad-window 10 30 --no-save-best --run-tag v5scr
+--arm m7 --loao-holdout bcn20000 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --swad-window 10 30 --no-save-best --run-tag v5scr
+--arm m7 --loao-holdout mskcc --seed 42 --image-size 224 --batch-size 32 --trunk in22k --swad-window 10 30 --no-save-best --run-tag v5scr

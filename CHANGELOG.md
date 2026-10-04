@@ -7559,3 +7559,1344 @@ read, predating the receipt mechanism.
 - **S60 & S61 (Service & Monitoring)**: `research/v4/s60_inference.py` implements the full 6-model soft-vote torch path + feature extraction (selftest 4/4 passed); `research/v4/s61_drift.py` computes all 4 drift hooks against `results/v4/s61/drift_baseline.json` (selftest 4/4 passed).
 - **V4 Closure Status**: All in-domain engineering and training tasks of Phase Y (S68–S72) and service updates (S60–S61) are complete and banked. Confirmatory reserved evaluation (S73) is paused until a fresh external under-40 cohort is sourced (S75), adhering to Hard Rule 2.
 
+
+### V5 plan review — Amendment 01 proposed, no runs (2026-09-23)
+
+**Review only.** No GPU run, no test/reserved/external read; receipts unchanged (test 2, reserved 8).
+`docs/V5_MASTER_RESEARCH_PLAN_REVISED.md` is **not edited** (freeze hash `B7542DAB…` in
+`results/v5/v5_plan_freeze.json` still valid). Findings are in `docs/V5_PLAN_AMENDMENT_01.md`
+(status PROPOSED; owner accepts/rejects per item, then hashes it into the freeze file before S01).
+- Critical: gates quote HAM-only under-40 counts (64 img / ~34 lesions) while V5 scores the pooled
+  S71 partition — **193 img / 81 lesions** overall, **16 lesions on fold 0** (computed from
+  `results/v4/kfold/oof_predictions.csv`). Gate A at screening is therefore unpowered.
+- Critical: runsheet absolute gates (0.7650–0.8050) come from HAM val/test; pooled folds score
+  0.6508–0.6974 (§Phase Y execution). Stage 7 re-adds conformal/groupwise layers S59/S65 rejected
+  and omits S56. Gate F's null (≤0.50) is already beaten by V1+S56 (0.763, §S59) and drops the S70
+  D2 contract. BCN20000/MSKCC listed as external are 8,313 of the 15,294 training rows.
+- Other: seed SD 0.0230 (S53r) > MCID 0.015; S01 lacks 224 px seeds 43/44; 92.6 min/seed should be
+  64–75 min (S70 benchmark / banked R1+R4); HAM masks cover 45.6% of dev rows vs the ≥90% gate;
+  HAM native 600×450 limits the B4 premise.
+- Exact-binomial power vs the incumbent 0.763 at true 0.855: 0.399 (n=50), 0.608 (n=81),
+  0.864 (n=150) — computed with scipy, recorded in the amendment §A9.
+- Additions B1–B11: under-40 error anatomy, case-mix-standardised endpoint, S01 noise floor,
+  archive-stratified reporting, S56 on V5 OOF, reader study, ISIC-2018 Task 2 attributes,
+  data-allocation rule, arm pruning, lesion-size interaction, governance.
+
+### V5 Amendment 01 adopted + biology-first idea set + D0 diagnostics (2026-09-23)
+
+No GPU run; no test/reserved/external read (test lock armed in D0). Receipts unchanged (test 2, reserved 8).
+- **Amendment 01 ADOPTED** (owner: all items A1–A13, B1–B11 accepted; A11 and B6 remain owner
+  choices at execution). `docs/V5_PLAN_AMENDMENT_01.md` sha256 **`219634DB…`** recorded as
+  `amendments[0]` in `results/v5/v5_plan_freeze.json`; all 9 previously frozen hashes re-verified
+  unchanged. Added `post_freeze_notes`: the 2026-09-18 "0 issues" audit counts pre-date the
+  amendment; the freeze file's environment string (Py 3.11 / torch 2.5.1) disagrees with the
+  recorded environment (Py 3.12 / torch 2.11+cu128); compute tiers are pre-amendment.
+- **D0 diagnostics** — `research/v5/d0_brainstorm_diagnostics.py` →
+  `results/v5/diagnostics/d0_brainstorm.json`, ledger session `v5_d0` (2 descriptive rows). On S72
+  OOF, McClish pAUC@0.20, lesion-grouped bootstrap (2,000):
+  - Multi-view lesion pooling adds nothing: <40 pAUC image 0.7386, lesion-mean 0.7353, lesion-max
+    0.7361; max−mean CI [−0.006, +0.008] (3,014 multi-image lesions; 51 of 81 <40 escalating).
+  - HAM verification: every escalating OOF image is `histo`; 2,592 `follow_up` images are all `nv`.
+    <40−60+ pAUC gap −0.018 [−0.104, +0.061] on all HAM rows → +0.006 [−0.081, +0.094] on
+    histo-confirmed rows; histo-only pAUC 0.751 / 0.744 / 0.745 across bands.
+  - Within-archive <40 / 40–59 / 60+ pAUC: HAM 0.795/0.847/0.813, BCN 0.696/0.734/0.643,
+    MSKCC 0.507/0.701/0.764 (MSKCC <40 = 12 lesions). 47 of 81 <40 escalating lesions are BCN/MSKCC.
+- **`docs/V5_IDEAS_BIOLOGY_FIRST.md`** — candidate ideas N1–N13 plus diagnostics D1–D4,
+  **not pre-registered** (adoption requires Amendment 02 hashed before any run). Headline
+  candidates: N1 leave-one-archive-out dev endpoint, N2 melanin/haemoglobin chromophore channels,
+  N3 asymmetric noisy-OR MIL head, N4 verification-aware hard negatives, N5 targeted under-40 data
+  expansion; link hypothesis H-link (cross-site gains should lift under-40 via BCN/MSKCC).
+  Multi-view fusion dropped on today's measurement.
+
+### V5 E0 pre-flight — S01 cleared for overnight launch, no V5 run yet (2026-09-30, 03:15 IST)
+
+**Pre-flight only.** No training run, no test/reserved/external read; receipts unchanged (test 2,
+reserved 8). E1 (hash of runsheet + Amendment 02 + DRE) is **not** done: `results/v5/v5_plan_freeze.json`
+still holds only `amendments[0]`, so tonight is S01 only (it is registered under the master plan +
+Amendment 01 and does not need E1). Control seeds 45/46 stay after E1 (runsheet §11.4 rule 1).
+- **The 00:44 `queue_S01.log` entry was a `-DryRun`, not a failed launch** (only the dry-run path
+  writes the "C2 now" line). No `v5s01` run has ever started.
+- **Smokes passed** (unfrozen fine-tune stage, 2 workers): R1 384 px batch 16 × accum 2 — 45 s,
+  VRAM peak **3.27 GB** of 8.55; R0 224 px batch 32 — 39 s, VRAM peak **2.20 GB**. Source: the
+  smoke output; artefacts in `results/v4/recipe_runs/smoke/` are disposable.
+- **Queue dry-run** (`scripts/run_v5_queue.ps1 -Queue S01 -DryRun`): 5 runs, 0 complete; C2 at
+  03:15 = commit headroom 6.6 GB, C: 26 GB free, GPU 54 °C.
+- **Checked:** tagged runs cannot overwrite the banked S72 fold-0 files — the run ID, checkpoint and
+  fold-prediction names all carry `_v5s01`, and `s71_kfold --assemble` globs only `fold*.csv`.
+  The v5 unit tests pass (54).
+- **Known label quirk (not changed):** `train_v4` writes ledger session `v4_s72` for any `--fold`
+  run, including tagged ones, so S01 rows in `research/experiments.csv` read `v4_s72` with
+  `run_tag=v5s01`. Filter on `run_tag`. No code groups by `v4_s72`.
+- **Projected time: 4.6–5.2 h**, from measured anchors: 3 × 64–75 min (384 px, S70 benchmark/banked
+  R1+R4) + 2 × 41–42 min (224 px, S72 `results/v4/kfold/run.log`, folds 42/41/42/42/42 min —
+  the runsheet's "41.0" is fold 1; fold 0 was 42.0).
+- **V5 GPU inventory (runsheet §8), same anchors:** about 56–68 h in total; about 9 h less if S01
+  picks 224 px. Zoom, DSP/M7, LOAO and TTA are unmeasured, so those rows are extrapolations.
+- **Scope advice recorded (no edit):** keep V5's light computer-vision arms in V5; the heavy ones
+  are already in V6 §A4/B2. Calibration is a post-hoc, last-stage fit, and the pAUC screen gate
+  does not change under any monotone calibration. Optional pre-hash addition: report per-arm ECE
+  and signed gap (overall and by age band) after the Dirichlet map, as a descriptive secondary.
+
+### V5 pre-hash audit for the best case — code, gates, numbers (2026-09-30)
+
+**No training run; no test/reserved/external label read** (receipts test 2, reserved 8). Owner
+decisions: pull V6 levers into V5; keep S01 unchanged; keep expectations low; check gates and
+numbers against the record. The runsheet, A02 and the DRE are still **unhashed**, so every change
+is pre-registration. Findings are AU17–AU35 in `docs/v5_design/V5_PLAN_AUDIT.md` §1b; the
+runsheet carries the rules (§2, §4–§9, §11).
+- **Errors found in the existing plan:**
+  - **AU27 (critical):** M4's `confirmed_benign` and the pAUC_histo draft counted every BCN/MSKCC
+    benign image as confirmed. D5 (`research/v5/d5_acquisition.py` → `results/v5/diagnostics/
+    d5_acquisition.json`, ISIC API metadata only) shows histopathology among benign: HAM
+    3,386/8,061, BCN 3,713/5,579, MSKCC 338/2,351 (1,899 missing); 4,370/25,331 images have no
+    confirm type; polarisation is essentially absent. Fixed in `research/v5/confirmation.py`;
+    fold-0 pAUC_histo is **0.7412**, not 0.7629 (S72 OOF).
+  - **AU18/AU32:** the screen compared a 2-seed mean with a single-seed null (≈ √2 too wide), and
+    the −0.010 Macro-F1 floor sits inside seed noise (SD 0.023, S53r). Illustration at that SD:
+    a real +0.030 passed ≈ 15% → now ≈ 78%; a null arm now passes 20–36% (filter, AU12).
+  - **AU29–AU31:** S01's t-interval can never exclude 0 with 3 pairs (the hierarchical bootstrap
+    decides); Gate D demanded Macro-F1 *improvement* (now ranking endpoint only); Gate A
+    expectation stated — <40 pAUC on folds 1–4 is 0.725 with lesion-bootstrap SD **0.033**
+    (S72 OOF, 1,000 resamples; computed today).
+  - **AU28:** the revised queue writes ≈ 16–18 GB against 26 GB free; C2 needs ≥ 10 GB → owner
+    frees space before Q7. **AU35:** `m5`, `zoom`, `logic`, `m7` are not implemented in `train_v5`.
+  - **V6:** MaxViT justified by its HAM **test** score (0.7525) though it trailed on val (0.7176 vs
+    0.7482); DINO prior is negative (S51 frozen DINOv2 −0.0725 [−0.118, −0.029]); N11 is a
+    near-repeat of the S58 prior-correction null; ISIC-2020 fallback must exclude V5 youngdata
+    patients. All corrected in `docs/V6_RUNSHEET.md`.
+- **Counts re-verified** from `results/v4/kfold/oof_predictions.csv`: 419 all-age escalating
+  lesions on fold 0; <40 escalating lesions per fold 16/12/17/17/19 (65 in folds 1–4, 81 total).
+- **Added (code, 67 v5 tests pass, CPU only):**
+  - `research/v5/trunks.py` + `train_v5 --trunk {in1k,in22k,dinov3}`: timm ConvNeXt-T weights
+    remapped into the torchvision trunk (strict both ways; `tests/test_v5_trunks.py` matches
+    timm's forward within 1e-4). Weights not downloaded yet (≈ 110 MB each, huggingface.co/timm).
+  - `research/v5/screen_gate.py`: k-seed null from control seeds 42–47, 80th percentile, all-age
+    pAUC or pAUC_histo, noise-aware retention, band-mean pAUC, raw ECE/signed gap per band.
+  - `research/v5/young_data.py` + `train_v5 --extra-train` + `youngdata` arm (train-only rows;
+    image/group overlap refused). Count (`results/v5/young_data/count.json`): pool 5,790;
+    **2,353 candidates, 535 escalating (457 mel)**, 1.37 GB, after removing 2,562 corpus images,
+    MILK10k 358, HIBA 185 and **20 lesions / 41 images** seen in those under another image id.
+    Download not done (owner approval). Falsifier: band-stratified pAUC must rise (AU33 — else
+    it is a learned age prior, the barred λ(age) mechanism).
+  - `arms.py`: 3 screen seeds, null seeds 42–47, rescue set, trunk candidates; registry sha
+    changes and is hashed at E1.
+- **Schedule:** one continuous queue Q0–Q11 (runsheet §8), ≈ 80–95 GPU h + ≤ 9 h rescue, from the
+  41–42 / 64–75 min anchors; new-trunk, zoom, DSP, LOAO and TTA costs unmeasured until smokes.
+- **Status at 06:00:** S01 has **not** been launched (queue log shows only the 03:15 dry-run).
+
+### V5 trunks and young data — approved downloads, C: survey (2026-09-30)
+
+**No training run; no test/reserved/external label read.** Owner approved the young-data download
+and the timm weights, and asked for IN-22k in the plan.
+- **Plan:** IN-22k (`convnext_tiny.fb_in22k_ft_in1k`; `_384` at 384 px) is the primary trunk
+  candidate, DINOv3 the secondary (runsheet §6.0, Q2, audit AU36; V6 §A3/§A5).
+- **Weights downloaded** to the HF cache (three tags, ≈ 110 MB each; the 384 px IN-22k variant is
+  a third file beyond the two approved, needed for 384 px runs). Remap check on the **real**
+  weights: max abs difference vs timm's forward pass = **0.0** for both trunks.
+- **Young-data download** (`python -m research.v5.young_data --download`, log
+  `results/v5/young_data/download.log`): duplicates against the 27,629 hashed corpus images are
+  removed after download; the result and its sha256 are written to `count.json` and
+  `extra_train.csv`.
+- **C: survey (read-only, no file deleted or moved):** 26.5 GB free at 06:50. Verified redundant:
+  `data/external/ISIC_2019_Training_Input.zip` (25,331 jpgs, every size identical to the extracted
+  set) and `data/_downloads/imgs_part_{1,2,3}.zip` (2,298 entries, all present and identical in
+  `data/pad_ufes_20`).
+- **Disk freed (owner-approved, 06:50):** moved (not deleted) ≈ 52.5 GB to `D:\Archive` —
+  Downloads clutter (Ubuntu ISO, three video files, `archive*.zip`, `zr7vgbcyr2-1[.zip]`,
+  `Workshop.7z`, Android Studio and MySQL installers) plus the two verified-redundant zips
+  (`ISIC_2019_Training_Input.zip` as `Capstone_review1_…`, `data/_downloads` as
+  `Capstone_review1_…`). C: free **26.5 → 77.0 GB**. Only download scripts reference the two zips
+  (`scripts/external/download_images.py`, `scripts/download_pad_ufes.py`); training reads the
+  extracted images (25,331 jpgs present).
+
+### E1 — V5 runsheet, Amendment 02 and DRE adopted and hashed; gates frozen (2026-09-30)
+
+**No training run; no test/reserved/external label read** (receipts test 2, reserved 8). Owner
+accepted **every item** (`results/v5/e1_decisions.json`), resolved Amendment 01's open choices
+(`results/v5/e1_open_choices.json`: A11 — no learned segmenter in V5, DRE-2 chromophore geometry
+checked by Q1 with the D4 fallback, segmenter to V6-1; B6 — reader study to V6, pending ethics).
+- **Pre-freeze checks:**
+  - CPU parity `train_v5 --arm control` vs `train_v4 R0`: 8 steps, max |Δloss| **0.0** (tolerance
+    1e-3) — today's `--trunk` / `--extra-train` changes leave the control identical.
+  - 67 v5 unit tests pass; the arm registry sha is `e85842c9…`.
+  - Stale lines fixed before hashing: status headers (all three files → ADOPTED), "same night" →
+    "same queue block", composite lock after Q6 (target Fri 2), noise floor seeds 42–47 and its
+    output path, last-epoch scoring step (`infer_last`) added to Q1, disk projection (AU28), the
+    break-nothing list, and A02's M4 / pAUC_histo definition updated with the D5 counts (AU27).
+  - Queue runner: run ids now include `--trunk` (else trunk runs would never register complete).
+- **`research/v5/adopt_e1.py`** extended: 20 audit items AU17–AU36 added to the decision list;
+  the gate **code and data** are hashed with the documents (`arms.py`, `screen_gate.py`,
+  `confirmation.py`, `trunks.py`, `results/v5/diagnostics/d5_acquisition.csv`), with the arm
+  registry sha and the open-choice resolutions.
+- **`amendments[1]` appended** to `results/v5/v5_plan_freeze.json`; **18 hashes re-verified, 0
+  failures** (10 prior + 3 documents + 5 gate files). Runsheet `012ED354…`, Amendment 02
+  `073CF8A2…`, DRE `57DFE48B…`. Any change from here is an Amendment 03.
+- **Young-data download** restarted twice: a dropped connection (IncompleteRead) and a stale
+  archive `size` field (75,273 served vs 72,123 recorded). Now checked against Content-Length and
+  a JPEG decode, written via `.part` files; resumes where it stopped.
+- **Night-1 queue** `results/v5/queue_night1.txt`: Q0 S01 (5 runs) → Q1 control s45/46/47 → Q2
+  trunk screen (IN-22k then DINOv3, 3 seeds each) = 14 runs, ≈ 11–11.5 h (S01 and Q1 measured
+  anchors; Q2 unmeasured until the trunk smokes). Dry-run ids all match. C2 at 07:05: headroom
+  3.8 GB (needs 6), C: 78.7 GB free.
+
+### V5 night 1 progress; Task-2 and MILK10k downloads; zoom / m5 / logic / m7 written (2026-09-30)
+
+**No test/reserved/external-label read** (receipts test 2, reserved 8). All work was file writing
+and two small downloads while `queue_night1` ran; no GPU use, no edit to any file the queue imports.
+- **Queue (12:52):** 5 of 14 runs done, none failed. `train_v4` fold 0, from
+  `results/v4/kfold/runs/*_v5s01.json`: R1 384 px s42/43/44 — 67.2 / 67.1 / 67.1 min, VRAM 3.49 GB,
+  last-epoch Macro-F1 0.6339 / 0.6326 / 0.6458; R0 224 px s43/44/45 — 40.9 / 41.1 / 43.6 min,
+  VRAM 2.41 GB, last-epoch Macro-F1 0.6218 / 0.6409 (s45 running result pending). Informal (not the
+  pre-registered read): 384 px mean 0.6374 vs 224 px 0.6313 over seeds 43/44 plus banked S72 0.6394.
+  s45 took 2.6 min longer than the others, while my file scans and process checks ran alongside.
+- **Commit headroom** fell to 0.7 GB during training (18 GB python incl. 4 workers) but the
+  auto-managed pagefile grew (limit 30.4 → 40.6 GB, C: 78 GB free); no 1455.
+- **Downloads (owner-approved 12:45):** ISIC-2018 Task-2 ground truth →
+  `data/external/isic2018_task2/` (34,598,745 B, sha256 `f5edd76b…`); MILK10k zip + 4 metadata csv →
+  `data/external/milk10k/` (361,486,216 B, sha256 `47cfe087…`; the labels file is present but no
+  label is opened until S75 counts / the S84 single read).
+- **New files (not imported by the queue; tests written, NOT yet run):** `research/v5/m5.py`
+  (M5Head, BCE + soft Dice, `Task2Masks`, paired transforms, Q4 overlap report),
+  `research/v5/logic.py` (DRE-7 rules, α = 0, sign check), `research/v5/zoom.py` (DRE-8 window,
+  noisy-OR, evidence / lesion / random modes), `research/v5/m7.py` (acquisition randomisation in
+  OD space, SWAD averager), `tests/test_v5_late_modules.py`. Wiring into `train_v5` / `modules.py`
+  and the smokes wait for the queue to end (~18:15). Not hashed: these implement arms already
+  frozen by name and parameter card (runsheet §7).
+
+### V5 night-1 queue complete — S01, noise-floor controls, trunk screen (2026-09-30, 19:06)
+
+**No test/reserved/external-label read** (receipts test 2, reserved 8). `results/v5/queue_night1.txt`
+finished 07:16 → 19:06: **14/14 runs, 0 failed** (`results/v5/logs/queue_night1.log`). The formal
+reads (last-epoch rescoring via `infer_last`, S01 two-hurdle, noise floor, trunk gate) are **not yet
+run**; the numbers below are training-log last-epoch val Macro-F1 on fold 0, descriptive only.
+- **S01** (`results/v4/kfold/runs/*_v5s01.json`): R1 384 px s42/43/44 = 0.6339 / 0.6326 / 0.6458
+  (67.1–67.2 min, VRAM 3.49 GB); R0 224 px s43/44 = 0.6218 / 0.6409 (banked S72 s42 last = 0.6394).
+- **Noise-floor controls** R0 224 px s45/46/47 = 0.6118 / 0.6266 / 0.6364 (43.5 / 49.4 / 49.2 min).
+- **Trunk screen** (`results/v5/runs/control_f0_s*_{in22k,dinov3}_v5scr.json`):
+  - IN-22k s42/43/44 = **0.6438 / 0.6701 / 0.6708** (mean 0.662; in1k s42–44 mean 0.634);
+  - DINOv3 s42/43/44 = **0.4447 / 0.4040 / 0.3828**. In every seed it collapses when the trunk
+    unfreezes (epoch 4: train loss rises, Macro-F1 0.098, escalation sensitivity 0.000) and only
+    partly recovers. The frozen V4 recipe (single LR 1e-4, no layer-wise decay or warm-up) does not
+    suit self-supervised-only weights, whose features are ≈ 5× larger in scale (mean |f| 1.43 vs
+    0.26, measured 30 Sep). Report as "failed under the V4 recipe"; V6 A3 pre-declares LLRD 0.8 +
+    warm-up. Owner decision: no DINOv3 rerun in V5.
+- **Slowness:** 224 px runs took 43.5–49.9 min instead of 41 because RAM was near full (paging
+  ≈ 13,800 pages/s; the training main process held 7.9 GB private with 2.6 GB resident). After
+  background apps were closed, IN-22k s44 took 40.3 min. The validation loader's persistent workers
+  (≈ 5 GB) are the planned memory fix for later queues (no effect on results).
+- Frozen-plan hashes re-verified at 18:29 (`adopt_e1 --verify`: 11 in-repo entries, 0 failures).
+
+### V5 reads after night 1: S01 → 224 px, trunk → IN-22k, pre-checks, late modules wired, Q3 written (2026-09-30, 19:10–20:45)
+
+**No test/reserved read** (receipts test 2, reserved 8). MILK10k diagnoses were read once for the
+pre-registered S75 counts only (runsheet §9); no MILK10k prediction was made.
+- **Last-epoch scoring** (owner ran `infer_last`, 20:11–20:14): R0 s43–47 and R1 s42–44 →
+  `results/v5/preds/*_v5s01_last.csv`, all 8 self-checks passed (a file is written only if it passes).
+- **S01 read** (new `research/v5/s01_read.py`, transcribing master-plan V5-A1 + A01 A5 + AU29) →
+  `results/v5/s01_decision.json`: paired Δ Macro-F1 (384 − 224) −0.0054 / +0.0108 / +0.0049, mean
+  **+0.0034**, hierarchical 95% CI **[−0.0163, +0.0245]** (2,000 resamples), t-interval (descriptive)
+  [−0.0169, +0.0237]. Hurdles: CI > 0 ✗, mean ≥ +0.015 ✗, consistency ✓, per-class safety ✓ →
+  **FAIL → 224 px** for the composite and confirmation (runsheet §8.3); the 384 px rescue cannot fire.
+- **Noise floor** (`screen_gate --null-only`, control seeds 42–47) → `results/v5/screens/noise_floor.json`:
+  pair SD all-age pAUC 0.0071, pAUC_histo 0.0134, Macro-F1 0.0161, <40 pAUC 0.0191.
+- **Trunk gate** → `results/v5/screens/gate_control_{in22k,dinov3}_vs_control.json`:
+  - IN-22k **PASS** on both endpoints: Δ all-age pAUC +0.0072 (bar 0.0035), Δ pAUC_histo +0.0130
+    (bar 0.0065), Δ Macro-F1 +0.0275. Not uniform: seed 42 is negative on both pAUC endpoints
+    (−0.0074 / −0.0078); **<40 pAUC Δ −0.0155 (descriptive), negative in 2 of 3 seeds**; ECE +0.0115.
+  - DINOv3 FAIL: Δ all-age pAUC −0.0944, Δ Macro-F1 −0.2235.
+  - **Trunk = IN-22k** for every arm, the composite and its confirmation (runsheet §6.0).
+- **Gate I/O fix without touching the hash:** `screen_gate.main()` crashes in `json.dumps` on numpy
+  `bool_` before writing a verdict (the owner's run printed the IN-22k line but wrote no gate file).
+  `screen_gate.py` is hashed, so it is **not** edited; new `research/v5/screen_gate_run.py` calls the
+  frozen `null_model()` / `gate()` unchanged and serialises numpy scalars. Noise floor rewritten
+  byte-identical; `adopt_e1 --verify` 0 failures after every step. Use `screen_gate_run` for all
+  later screen reads.
+- **IN-22k F3 scale (owner option a: measure first):** mean |F3| 11.1 vs 0.194 for in1k (max 2,676 vs
+  70.5, random input); clues smoke escalation BCE 43.3 vs 1.67. A 120-step CPU head-stage trace on
+  real fold-0 rows (scratch diagnostic, not a result): IN-22k BCE 33.3 → 1.89 (step 20) → 0.72 (50)
+  → 0.50 (119); in1k 1.45 → 0.62 (50) → 0.53 (119). It recovers within ≈ 50 of the ≈ 380 steps
+  in the first head epoch → **run as frozen; no Amendment 03.**
+- **Late modules wired** (AU35): `m5`, `logic`, `zoom`, `m7` + `--swad-window` in `train_v5` /
+  `modules.py`. Implementation choices [impl]:
+  - zoom: the loader yields the 448 px augmented view, and the 224 px view is derived from it
+    (`zoom.global_view`), so the clue argmax and the crop share one pixel grid. The docstring's
+    separate un-augmented 448 copy would have mis-placed the window after crop/flip/rotate.
+  - zoom on a composite with the chromophore front passes the front's channels to the crop too.
+  - logic: concept → token grouping in `modules.LOGIC_CONCEPT_SOURCES`; CLUE = noisy-OR logit of
+    the clue map; m5 concepts = spatial max of each attribute logit. **Open point:** the concept
+    maps are free linear maps, so the DRE-7 sign check is only weakly identifiable (a map can
+    learn an inverted concept).
+  - m7: the transform reseeds per DataLoader worker (it would otherwise replay one stream in every
+    worker); the basis comes from `results/v5/chromophore/<split>.json`, else that one step is
+    skipped and recorded.
+  - m5: `M5TrainDataset` (paired transform, masks refit to the image grid or treated as unlabelled).
+  - Memory fix: validation DataLoader `persistent_workers=False` (memory only).
+  - **Bug fixed:** `SwadAverager` aliased the live float32 CPU parameters on its first update
+    (`.float().cpu()` returns the same tensor) → `.clone()`; caught by the existing unit test.
+  - Checks: 90 v5 tests (new `tests/test_v5_wiring.py`), 0 failures, 1 expected skip; CPU parity
+    max |Δloss| 0.0; CPU smokes (IN-22k) pass for twostep, clues, gem, m4, memory, m5, zoom, and
+    LOAO m7/control with SWAD. GPU smokes and the zoom benchmark are still to run.
+- **LOAO (owner option a):** group `__singleton__ISIC_0010852` (MSKCC <40 mel + 2 HAM 40–59 nv —
+  most likely a perceptual-hash false merge) straddled archives and blocked every hold-out. Its 3 images
+  are dropped from LOAO runs only (`train_v5.LOAO_DROPPED_GROUPS`); any other straddling group
+  still stops the run. Every hold-out now has 15,291 rows; fold 0 is unchanged (12,235 / 3,059).
+- **Pre-checks** → `results/v5/precheck_verdicts.json`:
+  - `fit_fold_artefacts --fold 0`: 15.8 min (measured) → `results/v5/chromophore/fold0.json`.
+  - **M1-QC PASS** (owner visual review): hb share bcc 0.881, df 0.904; top-3 true, top-2 false.
+    First run crashed (`KeyError 'class_7'`, the pandas ≥ 2.2 `groupby.apply` bug) — fixed in
+    `m1_qc.py` by re-selecting columns; same sample.
+  - **Q1 PASS**: median Dice 0.781 (`q1_geometry_qc.json`).
+  - **Q2/D6 PASS**: colour_asym_max / min (`d6_chaos_probe.json`).
+  - **Q4 FAIL**: 416 train overlaps < 1,000; pixel agreement 50/50 (`m5_overlap.json`) → **m5 not run**.
+  - **Q5 FAIL**: 1 of 5 signatures, 0 young tokens (`q5_dsp_probe.json`) → **structure not run**.
+  - **B1**: the control misses 33 <40 escalating lesions at the FPR-20 edge (32 mel, 1 bcc), 51 of
+    55 images called nv, 19 of 33 in the highest melanin tercile (`b1_hard_core.json`). D2 descriptive.
+  - **D4 deferred to V6** (owner; no script or pre-registered spec, gates nothing in V5).
+  - **S75** (new `research/v5/s75_milk10k.py`) → `results/v5/s75_milk10k_eligibility.json`: 5,240
+    dermoscopic lesions, 20 excluded (S49 both-hash radius 3; 0 by id), 5,220 eligible, 5,113 in scope,
+    107 out of scope (incl. 9 "collision, ≥ 1 malignant"), **71 under-40 escalating**.
+- **Q3 written** (`results/v5/queue_Q3.txt`): twostep, clues, gem, m4, memory × s42/43/44, fold 0,
+  224 px, IN-22k, `--no-save-best`, tag `v5scr`; dry-run 15/15 ids OK, C2 met (9.7 GB, 78.1 GB).
+  Hours unmeasured for the heads (≈ 10.3–12.5 h from the 40.3–49.9 min IN-22k control anchors).
+
+### Q3 launch interrupted; V6 plan revised to carry the six V1 architectures (2026-09-30, 21:00–22:10)
+
+- **GPU smokes** (owner, 20:56–20:59, `results/v5/smoke/*_in22k_smoke.json`): twostep, clues, gem, m4,
+  memory all pass on CUDA, VRAM peak 2.20–2.41 GB at batch 32 / 224 px.
+- **Q3 launched** 20:59:49 (detached PowerShell window) and **stopped at 21:01:50**: the first run
+  (`twostep_f0_s42_in22k_v5scr`, head stage) ended in a `KeyboardInterrupt` (Ctrl+C or the console
+  window closed), and the runner's `finally` logged "0 runs completed, failed: none"
+  (`results/v5/logs/queue_Q3.log`, `twostep_f0_s42_in22k_v5scr.20260930-205954.err.log`). No code
+  error; no run JSON written; nothing to clean up. GPU idle from 21:02 until relaunch.
+- **V6 revision (owner request; pre-freeze, not an amendment — `docs/V6_RUNSHEET.md` is an unhashed
+  draft and is not in `results/v5/v5_plan_freeze.json`):** the six V1 architectures enter V6.
+  - New §A3b: the "V5 features" every architecture carries (recipe, S01 resolution 224 px, the V5
+    composite lock's heads, Dirichlet on cross-fitted OOF + S56 refit), torchvision IN-1k weights
+    (ConvNeXt-T keeps V5's IN-22k trunk), and a declared 1×1 conv → 384 + LayerNorm2d adapter at
+    each architecture's stride-16 stage for the F3-reading heads. The normalisation is motivated by
+    today's IN-22k F3-scale measurement. Stage/channel table marked "to verify in V6-0" by a unit test.
+  - New phases: **V6-2b** portability (5 other architectures × arch control vs arch + V5 heads, fold 0,
+    seeds 42/43, Holm across 5) and **V6-3b** six-architecture OOF (folds 0–4 × seed 42; the ConvNeXt-T
+    member reuses V5 runs). **V6-10** now pre-declares E-primary = uniform soft vote of the six vs the
+    V5 15-model system on folds 1–4 OOF (secondaries: OOF-fitted weights, gated, + finalists; diversity
+    report; Dirichlet + S56 per ensemble; then distillation).
+  - §A6 leakage: the frozen HAM-only V1 six cannot be scored out of fold on pooled rows (HAM images
+    are in every pooled fold) — V1 reference on the confirmation cohort only. Uniform soft vote is
+    primary (Phase-5 rung-6 lesson). Multiplicity families declared at V6-0.
+  - §A5 gained 5 decision rows; §B3 benchmarks for the five architectures; §B4 calendar slots.
+  - Core-path GPU ≈ 50–70 h → **≈ 81–101 h at the ConvNeXt-T anchor**, more in practice (five
+    architectures unmeasured); a 3-fold fallback for V6-3b is declared in advance.
+- `adopt_e1 --verify` after the revision: 0 failures (the V5 freeze is untouched).
+
+### Pre-Q3 audit: gate trap closed, falsifiers declared before any Q3 result (2026-09-30, 22:15–23:00)
+
+**No training; no test/reserved read.** Q3 is to be launched by the owner tonight (hidden window).
+- **Trap found in the frozen gate's file lookup** (`screen_gate.find_pred`, hashed, not edited): an
+  in1k lookup falls back to `<arm>_f0_s<seed>_*.csv`, so a Q3 read without `--arm-trunk in22k`
+  would have paired the IN-22k arm with the **in1k** control and credited the trunk effect
+  (+0.0072 pAUC, +0.0275 Macro-F1) to every arm. Reproduced on copies in a temp dir. Fix in the
+  unhashed wrapper `research/v5/screen_gate_run.py`: `--arm-trunk` is now required, and
+  `check_inputs` refuses any resolved file whose run_id trunk, fold, epoch or seed is wrong, or
+  whose side mixes run tags (except the pre-registered in1k control: banked S72 s42 + v5s01).
+  Simulated Q3 reads: identical arm → Δ 0 → FAIL; clues → twostep resolved correctly; the trunk
+  gate reproduces; the trap is refused.
+- **Gate strictness checked against runsheet §6 (no rule changed):** statistic = seed-paired mean
+  Δ; bar = z80 × pair SD / √3 → all-age pAUC 0.0035, pAUC_histo 0.0065 (either endpoint);
+  retention fails only below min(−0.010, −1.645 × 0.0161 / √3) = −0.0153. The code matches the plan;
+  the gate is a lenient 80th-percentile compute filter, as designed.
+- **Falsifiers made operational before any Q3 result** (new `research/v5/falsifiers.py`; definitions
+  in its docstring, dated): twostep = fewer melanocytic ↔ non-melanocytic crossings than control;
+  clues = rescued escalating HAM rows (above the clues FPR-20 threshold, below twostep's) show
+  higher mask-referenced evidence eccentricity than rows both catch (≥ 5 rescued, else
+  "insufficient"); m4 = mean Δ pAUC_histo > 0 vs twostep; memory = in ≥ 2 of 3 seeds, the top-2
+  mel prototypes cover ≥ 50% of <40 mel rows [declared threshold], the 60+ mel top prototype is not
+  among them, and deleting them lowers <40 escalation sensitivity; gem = none. An unevaluable
+  falsifier leaves the screen **undetermined** for the owner, never a silent fail.
+- **`memory` readout added to `train_v5`** so its falsifier is CPU-only tomorrow:
+  `results/v5/patchmaps/<run_id>_memory.npz` (per-prototype cosines, pooled feature z, prototypes;
+  fp16). Recomputing the DRE-6 logits from the cosines reproduces the run's argmax 100% (smoke).
+- Checks: 96 v5 tests (new `tests/test_v5_falsifiers.py`), 0 failures, 1 expected skip; CPU parity
+  0.0; memory smoke OK; `adopt_e1 --verify` 0 failures; registry sha `e85842c9…` unchanged.
+
+### Paging fix and validation speed-up before Q3 — no result change (2026-09-30, 23:00–23:40)
+
+- **Night-1 paging, measured** (run JSON `history[].seconds`): fine-tune epochs 78–80 s on clean runs
+  (IN-22k s44, R0 s43/44; 40.3–41.1 min) vs 96–98 s under RAM pressure (IN-22k s42/43, R0 s46/47;
+  47.9–49.7 min) — ≈ 20 s per epoch, ≈ 9 min per run.
+- **Validation loader, measured** (fold-0 held-out, data only, scratch benchmark): 0 workers 22.6–25.7 s
+  per pass; 2 non-persistent (the 30 Sep memory fix) 21.4–21.7 s; 2 persistent (night 1, ≈ 5 GB of
+  worker commit) 12.4 s after the first pass; 3 non-persistent 21.8 s. The earlier memory fix had
+  traded paging for ≈ 9 s per epoch of Windows worker spawns.
+- **Fix: `train_v5.CachedEvalDataset`** — the deterministic eval Resize + CenterCrop run once per run
+  (20 s) into a uint8 array (0.46 GB at 224 px); each epoch does only ToTensor + Normalize in the main
+  process with **no validation workers**. Cached pass **1.0 s**. Items are **bitwise identical** to
+  `V4Dataset(build_eval_transform)` on all 3,059 fold-0 rows (images, labels, extras), checked on a
+  sample at construction and by a new unit test. Views > 256 px (zoom's 448) keep non-persistent
+  workers. Commit: no validation workers at all.
+- **Not changed, deliberately:** training loader stays at `--num-workers 2` (runsheet §2 fixed rule;
+  every comparator and the noise floor used it; 3 workers would be ≈ 21% faster at 224 px per the
+  hardware notes but changes the augmentation stream relative to the comparators); evaluation
+  precision and batch size unchanged (either could change predictions).
+- Expected Q3 epoch time: lower than the clean 78–80 s by up to ≈ 11 s (how much depends on how much
+  of the old 12.4 s validation load overlapped the fp32 validation forward) — **unmeasured until
+  tonight's first run**; the queue log prints each run's minutes.
+- Checks: 97 v5 tests, 0 failures, 1 expected skip; CPU parity 0.0; CPU smokes twostep / memory via
+  the cached path; `adopt_e1 --verify` 0 failures.
+- **Trajectory check (23:50):** 2 epochs (head + fine-tune, twostep, IN-22k, CPU, deterministic,
+  96 train / 64 val rows) with an evaluation after each epoch, once with the old validation loader
+  (V4Dataset, 2 non-persistent workers) and once with `CachedEvalDataset` (0 workers): **final
+  weights bitwise identical in every tensor, predictions bitwise identical** — the loader switch
+  does not touch the training RNG stream (scratch diagnostic, not a result).
+
+### External research brief written (2026-10-01)
+- New `docs/EXTERNAL_RESEARCH_PROMPT.md`: a self-contained brief for other AI assistants (ChatGPT,
+  Antigravity) on the walls that have not moved — under-40 ranking, cross-domain collapse, the S70
+  contract, noise-sized effects, the histology shortcut, band-flipping calibration, the Q4/Q5
+  pre-check failures and underpowered external confirmation. It includes the hard rules, the barred
+  mechanisms, what was already tried (with results), the hardware limits, a repository map and
+  seven questions. Every number is quoted from an existing `results/` or `docs/` file, and all 13
+  cited paths were checked to exist and not be gitignored. No new result.
+- **Pushed to GitHub (owner request, 2026-10-01):** commit `743103d` on `Rajrup910/Backend-S4D` main —
+  the 10 V5/V6 plan documents (`docs/V5_RUNSHEET.md`, `docs/V6_RUNSHEET.md`, `docs/v5_design/`,
+  `docs/v5_record/`) and the V5 results to date (`results/v5/` except `smoke/`; the 16
+  `*_v5s01` prediction/run files under `results/v4/kfold/`). Not pushed: the external research
+  brief, V5 code, tests, `research/experiments.csv`, this CHANGELOG, smoke artefacts, checkpoints,
+  `data/`. No AI attribution in the commit. `adopt_e1 --verify` 0 failures after the commit.
+
+### V6 finalised (not frozen): CG-DM headline + R1 + R2 (2026-10-01)
+- `docs/V6_RUNSHEET.md` §A0 (new): Counterexample-Guided Differential Morphology — histology-
+  confirmed nevus counterexamples (S72 fold-f retrieval encoder, K = 3, same-`group_id` excluded in
+  training and evaluation), Sinkhorn OT (ε 0.05, 50 it.), top-10% differential, z = [f, d];
+  L_D pairwise logistic mel vs histo-nv (λ 0.10), L_OT in Stage B (λ 0.05); declared score =
+  escalation_mass; Stage 0 = budget gate (CI > 0 and ≥ +0.010 on mel vs histo-nv; <40 direction);
+  Stage A/B = the V5 screen gate unchanged vs a capacity-matched control; counterfactual token
+  replacement evaluation-only; confirmation folds 1–4 × 3 seeds; ablation ladder control → memory
+  → RML → A → B. Trunk/recipe inherited from V5's composite lock (nothing hard-coded).
+  **R1** signature-anchored counterexamples (patient's other lesions first, biopsied population
+  fallback; unlabelled; patient-held-out; evaluated on ISIC-2020, not HIBA); **R2** pseudo-benign
+  twin (nevus-only generator, conditional, fold-0 feasibility gate). Demoted: six-architecture
+  programme, N10, plain RML, broad ensembling. Freeze rule §A0.14 (after V5).
+- Provenance numbers: `results/v6/mechanism_noise_floor.json` (new `research/v6/mechanism_noise_floor.py`,
+  CPU): mel vs histo-nv pAUC 0.692–0.722 over control seeds 42–47 (fold 0: 505 mel / 671 histo nv),
+  pair SD 0.0153 (V5 RMS definition), T_mech 0.0075; reference bank 2,650–2,733 per fold, 0.41 GB fp16.
+  `results/v5/young_data/candidates.csv`: patient_id on 1,208 images / 537 patients (243 escalating).
+- **Disclosure:** one extra counts-only read of MILK10k (melanoma diagnosis_3 by age band, no model,
+  no prediction): <40 = 22 invasive / 7 in situ / 4 metastasis; it ruled out "young misses are
+  ambiguous in-situ lesions" as the explanation. Not in S75's pre-registered list.
+- Literature checked (all real): DeepEMD, ProtoPNet, ROAR, CARE-MD, TopoCon-MP, Melan-Dx,
+  arXiv 2509.08338, DermFM-Zero (CC BY-NC, data unlisted), PanDerm (pretraining excludes
+  ISIC/HAM/BCN/HIBA), DMT-Quadruplet, ugly-duckling transformer, Soenksen 2021, ISIC-2024 solutions.
+- **V6 review fixes (same day, before any V6 result):** R1 → "patient lesion signature" (unlabelled,
+  may contain a suspicious lesion), fixed top-3 patient lesions when ≥ 3 exist (else the
+  population-only model scores the query), no patient-availability indicator, R1 capacity-matched
+  control, N13 config locked at V6-0, optional patient-context mode; counter-evidence added
+  (SIIM-ISIC 2020 analysis, JEADV 2024: patient-context images did not improve AI or readers).
+  R2 → generator trained on histopathology-confirmed nevi only; defined operation (t* = 0.40,
+  DDIM 20 steps, fixed seed, untuned); twin is a separate d_twin channel (K = 3 unchanged); gate =
+  identity preservation + melanoma-directed score reduction + incremental information; 128 px is
+  feasibility only; removed from the headline novelty claim. Counterfactual Δ signs fixed
+  (Δ = s(original) − s(edited)). DINOv3 contradiction resolved (V6 DINOv3-LLRD is a new experiment).
+  §A3b resolution now inherited from V5. **Correction:** R2's "≈ 13k nevi per fold" was wrong —
+  measured 6,425–6,433 nevi per fold, of which 2,650–2,733 are histopathology-confirmed.
+
+### V6 §A0 — partial-explanation CG-DM written (2026-10-01, owner "go"; finalised, not frozen)
+- After three external review rounds and two self-audits (all claims re-checked against sources):
+  CG-DM's primary operator is **one-sided partial OT with a fixed unexplained-mass sink** against
+  histopathology-confirmed nevus counterexamples; balanced OT is the m = 1.0 ablation. m = 0.8 is a
+  declared engineering value (not a nevus fraction); grid {0.5…1.0} is diagnostic only. Ranking
+  statistic D_part = [c(1.0) − c(0.8)]/0.2 (c(m) itself is never a score); phenotype κ = late −
+  early slope; residual differential d_res = Σ r_i (f_i − g̃_i^bal)/Σ r_i. Token masses from the
+  V6-1 out-of-fold segmenter (now mandatory for CG-DM; DRE-2 fallback, Dice 0.781 < the 0.85 rule).
+  Stage 0: gate on Δ_part,0; M1 enrichment (missed = B1 threshold 0.0458; τ from other folds' OOF
+  nevi); M2 neutral spatial statistic; M3 = partial vs balanced with a two-part success criterion
+  (Stage 0 CI > 0 and trained partial > trained balanced at folds 1–4); 1,000-pair exact audit.
+  R1 two-sided partial OT = contamination-tolerant variant. Stage B's L_OT uses c(1.0).
+  Budget now ≈ 51 runs ≈ 35 GPU-h at the 41-min anchor (balanced arm trained and confirmed).
+- NAM is motivation only: Pampena et al. JAAD 2017 (29.1%, I² = 99%, ≈ 4.9 y younger); DPC 2022
+  (n = 2,806: 55.1 vs 62.0 y); Spadafora et al. Exp Dermatol 2026 (nevus visible in 45.6%);
+  Bellinato et al. Eur J Dermatol 2023 (dermoscopy unreliable for NAM). Prior art cited, not claimed:
+  Chapel NeurIPS 2020, Phatak ICLR 2023 (two-sided classical — motivation only), Balaji NeurIPS
+  2020, semi-relaxed Sinkhorn, MADPOT ICIAP 2025, SuperGlue CVPR 2020 (related, not the same).
+- Self-audit corrections recorded: Spadafora's "misclassification" is histological (NAM read as
+  de novo), not AI; ~13% of melanomas (29% × 45.6%, cross-study, rough) show a visible mixture.
+- **Final V6 review round (same day; finalised, NOT frozen — owner instruction):** §A5 R2 row now says
+  "separate synthetic evidence channel, K = 3 unchanged" (was a stale "4th reference"); κ renamed the
+  **late-slope phenotype** everywhere and stated not to establish a mixture; M1 threshold τ_f now
+  recomputes the other folds' κ with fold-f rows removed from their reference banks (residual
+  dependence — other folds' models trained on fold f — declared, as for B1's threshold; the
+  in-sample fold-f-internal alternative rejected); explicit Δ_mech definition against T_mech;
+  R2 d_twin defined via q_i = 1 − cos(f_i, f_i^twin); R2 generator cross-fitted 2-way by group_id
+  so training nevi never get twins from a generator that saw them; wording "one partial (m = 0.8)
+  + one balanced (m = 1.0) solve". No plan hash exists (`results/v6/` holds only the noise floor).
+
+### Q3 complete — screen reads: twostep and m4 pass, memory fails its falsifier; young-data download unfinished (2026-10-01, 17:30 IST)
+- **Q3 finished 15/15, no failures** (`results/v5/logs/queue_Q3.log`, 07:13–17:18): twostep, clues,
+  gem, m4, memory × seeds 42/43/44, fold 0, 224 px, IN-22k trunk, 30 epochs each, 37.8–46.9 min per
+  run (memory 46–47 min, the rest ≈ 38). Run JSONs `results/v5/runs/*_f0_s4{2,3,4}_in22k_v5scr.json`.
+- **Frozen gate** (`python -m research.v5.screen_gate_run --arm <a> --arm-trunk in22k`; noise floor
+  re-derived byte-identical) → `results/v5/screens/gate_<a>_in22k_vs_<comparator>.json`:
+  twostep vs control **PASS** (ΔpAUC_all +0.0155, bar 0.0035; Δhisto +0.0213, bar 0.0065; ΔMacro-F1
+  −0.0093, retention bar −0.0153; positive on both endpoints in all three seeds); clues vs twostep
+  FAIL (−0.0014 / +0.0045); gem vs clues FAIL (−0.0012 / −0.0022); m4 vs twostep PASS (+0.0040 /
+  +0.0132; seed 42 negative on pAUC_all, carried by s44); memory vs control PASS on histo only
+  (+0.0030 all below bar / +0.0085 histo; carried by s42, s43 negative). Descriptive only:
+  twostep ΔpAUC_u40 +0.0276, positive in all three seeds.
+- **Falsifiers** (declared 30 Sep, before any Q3 run; `python -m research.v5.falsifiers`) →
+  `results/v5/screens/falsifier_<a>_in22k.json`: twostep **PASS** (mel/nv cross-confusions −9.0
+  mean; s44 +2), m4 **PASS**, memory **FAIL** (0/3 seeds hold: the 60+ melanomas' top prototype is
+  inside the <40 TOP2 in every seed, so no age-specific prototype). **Screen passes: twostep, m4.**
+- **Young-data download not complete**: no process running, no `extra_train.csv`, `count.json`
+  still metadata-only; 897 images in `data/external/isic_young_v5/` (newest 07:08, the 07:09 kill),
+  all present files are candidates up to row 1,169 of 2,353; kept by class nv 723, mel 108, bcc 26,
+  akiec 14, bkl 13, vasc 11, df 2. Resume with `python scripts/young_data_progress.py`.
+
+### Q3 verified independently; escalation-mass re-score shows twostep's gain is the escalation head (2026-10-01, 17:45 IST)
+- New `research/v5/q3_verify.py` (read-only, test lock armed) → `results/v5/screens/q3_verify_rescore.json`.
+  **Integrity: 0 problems over 18 runs** (15 Q3 + 3 in22k controls): every run JSON non-smoke,
+  30/30 epochs, 30 history rows, no NaN, train loss fell in every run, test/reserved never read,
+  no extra rows, registry hash = frozen `arm_registry_sha256`, last checkpoint on disk; every CSV
+  3,059 rows with identical ids/labels across runs, probabilities sum to 1, `pred_index` = argmax,
+  `escalation_mass` = p_mel+p_bcc+p_akiec, `declared_score` = the registered score, Macro-F1
+  recomputed = run JSON. Fold-0 val set = frozen S71 fold-0 assignment (3,059 = 3,059), 0 groups
+  shared with training rows, 0 test/reserved rows. Final stderr logs clean.
+- **Gate reproduced exactly** with sklearn's pAUC (max |Δ| 0.0 over 5 arms × 4 endpoints).
+- **Re-score on escalation mass (both sides):** twostep vs control ΔpAUC_all +0.0155 → **+0.0025**
+  (per seed +0.0189/−0.0066/−0.0047), Δhisto +0.0213 → **−0.0014** — below both bars. Within each
+  twostep run its `s_esc` head beats its own escalation mass (pAUC_all +0.009/+0.018/+0.012, histo
+  +0.018/+0.033/+0.017). So twostep's pass is a **readout gain from the dedicated escalation head**,
+  not a better 7-class model; whether the melanocytic head contributes is untested (no esc-head-only
+  arm). Under-40 survives in part on mass (+0.0190; +0.028/+0.030/−0.000), descriptive only, 35
+  escalating <40 rows. m4 histo on mass +0.0080 (still > bar 0.0065, s42 negative); clues on mass
+  negative in all three seeds (pAUC_all −0.0093).
+- **Noise floor sensitivity (not a gate change):** the in22k control seeds vary more than the in1k
+  seeds the frozen bars use — pair SD pAUC_all 0.0153 vs 0.0071, histo 0.0199 vs 0.0134 (3 pairs
+  only). At in22k noise the bars would be 0.0074 / 0.0097: twostep still passes (+0.0155 / +0.0213),
+  m4 passes on histo only (+0.0132), memory's histo pass (+0.0085) would not.
+
+### Full-history review (V1 → V5) + V6 revision: in-domain ensemble restored, TTA carried (2026-10-01, evening)
+No code, no run, no test/reserved read. Owner asked whether each version carried the last one's
+gains and whether anything useful was left behind; an external summary was checked claim by claim.
+- **Macro-F1 across versions is not comparable on one scale.** V1's 0.8047 (rung A7) is the HAM-only
+  test set; on the multi-archive reserved cohort the same V1 stack scores **0.4108** (BCN 0.4057,
+  MSKCC 0.2557) and the in-domain V4 control **+0.1798 [+0.1297, +0.2254]** above it (S54 Gate A,
+  confounded by corpus, `results/v4/s54/`). V5's fold-0 Macro-F1 (~0.61–0.69) is on the pooled
+  ISIC-2019 corpus (12,235 train / 3,059 val, three archives), not HAM.
+- **Carried, contrary to the summary:** V5's system (runsheet §9, Q9/S84) already has the 15-model
+  seeds × folds ensemble, 24-view TTA, Dirichlet on cross-fitted OOF and the S56 refit. The deployed
+  V4 stack is **S56@0.20 alone** (`results/v4/s59_plan.json`); the conformal layer lost −0.0692 at
+  matched workload and is an output field only. The S69 modality-classifier gate was **adopted**
+  (Mahalanobis is the barred variant).
+- **Genuinely left behind:** (1) a multi-architecture ensemble trained **in domain** — never tested
+  (S64: "it is S67 stage 0"; S67 stage 0 not run), restored to V6 on 30 Sep and demoted on 1 Oct on
+  S64's under-40 AUC +0.0037, an endpoint the ensemble was never a lever for; (2) TTA was absent from
+  every V6 phase.
+- **`docs/V6_RUNSHEET.md` revised (owner request, pre-freeze, no V6 result):** V6-3b + V6-10
+  E-primary restored as a parallel G2/G3 branch (plain in-domain members; V6-2b portability stays
+  demoted); ConvNeXt-T member = banked S72 `convnext_tiny-v4_R0_kfold_f{0-4}_s42` (on disk), so
+  25 runs ≈ 17 h at the 41-min anchor (extrapolated; five architectures unmeasured until §B3);
+  bound by session 6's 8-member wash (0.7981 vs 0.7986) and Caruana-over-8 overfit → six members,
+  uniform primary; calibrate after combining; under-40 descriptive. New §A5 rows (V6-2b not run;
+  V5 Q9 TTA), E-primary key secondary = paired Macro-F1 Δ, calendar slots, six sources in §A8
+  (Gessert 2020, Ha 2020, Gontijo-Lopes ICLR 2022, Ko NeurIPS 2023, Schweighofer ICML 2025,
+  Wu & Gales 2021). Intentionally not restored: metadata fusion, λ(age), per-band offsets, ridge
+  stacking, Mahalanobis gate (all in `results/v5/v5_no_repeat_registry.json`).
+
+### V6 second pass: co-primary ensemble gate + V2–V4 carry-forward (§A9) (2026-10-01, evening)
+No code, no run, no test/reserved read; `docs/V6_RUNSHEET.md` only (unfrozen draft, owner request,
+no V6 result exists).
+- **Owner decision: E-primary is co-primary** — V6-10 passes only if paired all-age pAUC is above the
+  V5 noise floor **and** paired Macro-F1 Δ > 0 (lesion-grouped CI lower bound > 0). Intersection-union
+  test: no correction between the two, power = the weaker endpoint (stated in §A4, V6-10, §A6).
+- **V2–V4 reviewed session by session (S28–S75).** Carried into V6 as §A9.1 C1–C8:
+  C1 bipartite RAPS conformal + per-group FRR — V2 F3, under-40 FRR 6/29 → 1/29, Holm p 0.044
+  (`results/v2/conformal_subgroup_safety.csv`), V2's strongest confirmatory positive, absent from V6;
+  C2 label-free referral-budget lock on the confirmation cohort — S56 budgets did not transport
+  (0/15 floors, 20% → ≈ 39%, `results/v4/s56/s56_report.json`), S68 NULL;
+  C3 per-band (S55) Dirichlet as a calibration arm (`research/multical/results_oof/gap_summary.json`);
+  C4 eval-transform parity test (S58 bicubic defect, 0.748 → 0.727 HAM val);
+  C5 S61 drift hooks on the V6 baseline; C6 the S48 endpoint read as declared (lesion unit);
+  C7 TTA; C8 the ensemble. Not carried, with reasons: V2 Track B / F4 rescue / H3 transport, V3
+  pooling-as-gain / adversarial age removal / frozen heads, S58 pooled head and router, λ(age) and
+  per-band policies, 384 px default, metadata fusion.
+- **§A9.2: 13 standing issues mapped to V6 phases**, each with a success criterion and an honest
+  expectation: the under-40 ranking ceiling (Gate A not expected; V4's largest move 0.011), the S59
+  contract, budget transport (met by construction under C2), cross-domain Macro-F1, calibration
+  sign-flip, conformal protection (deployed sets 0.854/0.825/0.779 by band vs 0.95,
+  `results/v4/s59/s59_report.json`), Fitzpatrick V/VI (**not solvable by V6 alone** — no planned
+  source is known to carry V/VI dermoscopy labels; V6-0 checks HIBA/MILK10k/ISIC-2020 metadata),
+  smartphone scope, under-40 data, single-architecture evidence, deployment, exhausted cohorts,
+  the S48 endpoint. HIBA's paper/EDA list no Fitzpatrick field, so it is a V6-0 check, not assumed.
+- All 12 cited result files verified on disk; one citation corrected before writing (the S58
+  transform figures are in this file's S58 entry, not `s58_report.json`).
+
+### V6 full audit before freeze — 4 defects fixed, Q3 lessons integrated, budget consolidated (2026-10-01, late evening)
+Owner request: audit V6 end to end against V1–V5, do not freeze. No test/reserved read; one new
+CPU script on fold-0 development predictions.
+- **Defect 1 — Stage 0 scored a head that does not exist.** §A0.8 set S_0 = `s_esc` from the S72
+  fold models, which are plain R0 controls (no escalation head). Now S_0 = e, the S72 escalation
+  mass (the score M1's 0.0458 threshold is defined on); same fix in R1's gate (§A0.12).
+- **Defect 2 — screen bars from the wrong trunk.** New `research/v6/noise_floor_trunk_check.py` →
+  `results/v6/noise_floor_in22k_check.json`: on the three IN-22k Q3 control seeds the pair SD is
+  **2.15×** in1k on all-age pAUC (0.0153 vs 0.0071), 1.48× on pAUC_histo (0.0199 vs 0.0134), 1.35× on
+  Macro-F1 (0.0218 vs 0.0161), but **1.02×** on the mechanism endpoint (0.0157 vs 0.0153; the in1k
+  seed-42 value reproduced exactly first). So `T_mech`'s in1k proxy holds and the gate bars do not.
+  §A0.9 rule: V6-0 trains IN-22k control seeds 45/46/47 at fold 0 (≈ 1.9–2.5 h, measured anchor) and
+  every V6 screen on that trunk uses bars recomputed by the frozen `null_model` formula over 15 pairs.
+  Provisional 3-pair bars 0.0074 / 0.0097 / −0.0207 (orientation only).
+- **Defect 3 — readout vs representation.** §A0.6: when the inherited lock carries `twostep`, every
+  CG-DM contrast is reported on both `escalation_mass` and `s_esc`; only a gain on escalation mass may
+  be called a representation gain (Q3: s_esc beat the same model's mass by +0.009–0.018).
+- **Defect 4 — stale totals.** One consolidated core budget in §B1: **≈ 88–121 GPU-h** from the
+  measured IN-22k anchor 38–50 min/run (`results/v5/logs/queue_Q3.log`), every other row labelled an
+  extrapolation, with OT overhead, R1/R2, the five V1 architectures and TTA unmeasured.
+- **Integrated:** a provisional Q3 status block under §A5 (twostep/m4 pass; memory, clues, gem fail →
+  the "memory passes" and "clues beats gem" rows do not fire); measured IN-22k anchors in §B0;
+  `arm_benchmark.py` pattern for arm-level timing (§B0); C2 clarified as one common scalar shift of
+  the S56 thresholds (not per-band offsets, registry); V6-3b partition lock (S71 rows only, so the
+  banked S72 member is like-for-like); §A4 G3 row says plain members by default.
+- *(Same night, after an external review of the audit)* V6 §B4: V6-3b runs **fold-major** (fold 0
+  of all five architectures first) for an early, descriptive-only fold-0 diversity read. Rejected
+  from that review: per-architecture run times (unmeasured guesses; §B3 benchmarks decide), "510
+  escalating lesions" (510 escalating *images*), and "permanently curing" budget overrun (C2 meets
+  the budget on the cohort it is set on, nothing more).
+
+### E8: GPU smokes, arm benchmark, Q4 written (2026-10-01, 19:30–19:50)
+- **GPU smokes pass** (`results/v5/smoke/{look,geometry,zoom,youngdata}_f0_s42_in22k_smoke.json`,
+  19:32–19:34): fine-tune peak VRAM look 2.24, geometry 2.26, zoom 4.21, youngdata 2.20 GB; the
+  youngdata smoke exercised the 2,078 extra rows.
+- **Arm benchmark** (new `research/v5/arm_benchmark.py`: real loader/model/loss, unfrozen, 40 timed
+  steps + one full validation pass, scaled to clues' measured 38.07 min) →
+  `results/v5/benchmarks/arm_benchmark.json`. Per fine-tune step vs clues (198.1 ms): look 1.01×,
+  geometry 1.01×, **zoom 1.59×** (epoch 1.53×; 4.44 GB), **youngdata 1.68×** (full-size young
+  images, decode-bound). Projected min/run: look 35.4, geometry 35.8, zoom 58.2, youngdata 62.1.
+  Why a new tool: the runsheet names `scripts/gpu_benchmark.py`, which times a bare backbone on
+  random tensors and cannot see zoom's second trunk pass and 448 px loader.
+- **Zoom benchmark verdict ≤ 2× → zoom stays in Q4** (runsheet §8.3).
+- **`results/v5/queue_Q4.txt`**: look, geometry, zoom, youngdata × s42/43/44 (12 runs, ≈ 9.6 h
+  projected); dry run 12/12 ids, C2 met (11.8 GB headroom, 75.2 GB free). Young rows pre-flighted
+  against fold 0 with `train_v5.load_extra_train`: 2,078 rows, 0 shared groups, 0 missing images.
+- **Deferred to the morning (C5: heavy CPU only while the GPU is idle):** LOAO chromophore fits
+  (`fit_fold_artefacts --loao-holdout {ham,bcn20000,mskcc}`; `loao-*.json` missing, m7 would skip its
+  chromophore step), then the m7 benchmark + GPU smoke — all before Q5.
+
+### Q4 runs slower than projected: the benchmark's clues reference was inflated (2026-10-02, 03:50 IST)
+- **Observed** (`results/v5/logs/queue_Q4.log`): look 41.8–41.9 min/run, geometry 42.5–42.9, zoom
+  73.2–73.6, against projections of 35.4 / 35.8 / 58.2 (`results/v5/benchmarks/arm_benchmark.json`).
+  That is +18%, +20% and +26%. The queue will finish around 07:30–07:50, not the ~05:25 implied by 9.6 h.
+- **Cause: the denominator, not the arms.** The benchmark's *absolute* epoch times were close for every
+  arm except the reference: mean real fine-tune epoch (from each `*_f0_s42_*.out.log`) look 83.2 s vs
+  benchmark 90.0, geometry 84.0 vs 90.2, zoom 146.4 vs 147.6. But **clues** was benchmarked at
+  96.3 s/epoch while it really runs at **74.4 s**, so it was +29% too slow. Every ratio was divided by that
+  inflated reference and then multiplied by clues' true 38.07 min, so every projection came out ~20% too low.
+  The true per-epoch ratios vs clues are look 1.12×, geometry 1.13×, **zoom 1.97×**, not 0.93/0.94/1.53.
+  Clues was the first arm the benchmark timed, so a cold file cache or cudnn autotune is the likely
+  reason. That is inferred, not measured.
+- **Zoom verdict holds, but only just:** at 1.97× it is still ≤ 2× (runsheet §8.3), not the comfortable
+  1.53× recorded in E8.
+- **Zoom s44 slowed mid-run:** fine-tune epochs went from ~146 s to ~180 s from epoch 18 (~03:10). The
+  two loader workers were each pegged at one full core and GPU utilisation fell to 12–47%, so zoom's
+  448 px loader is data-bound at `--num-workers 2`. Any dip in single-core CPU speed shows up directly in
+  the epoch time. The trigger was not identified: on AC power, Performance plan, no GPU throttle flags,
+  and `scripts/v5_progress.py` (started 03:03) used only 0.05 CPU-s per 5 s. Cost: ~6 min on one run.
+- **Fix for future benchmarks:** time arms against a reference that ran in the same warm process,
+  or quote absolute epoch seconds rather than ratios to an earlier queue's run time.
+
+### Q4 read: zoom and youngdata pass, look marginal, geometry unreadable (NaN training) (2026-10-02, ~13:10 IST)
+No test/reserved read. Fold 0, seeds 42/43/44, in22k, tag v5scr. Q4 finished 06:47, 12/12, none failed
+(`results/v5/logs/queue_Q4.log`).
+- **Timing correction to the 03:50 entry:** youngdata ran **58.5–58.7 min/run**, not the 72–78 min I
+  extrapolated there; the original 62.1 projection was closer. The inflated-reference explanation holds for
+  look/geometry/zoom only. Zoom s44 finished in 81.0 min (its mid-run slowdown cost ~8 min, not ~6).
+- **Frozen gate** (`research/v5/screen_gate_run.py`, unchanged `screen_gate.py`) →
+  `results/v5/screens/gate_{look,geometry,youngdata}_in22k_vs_control.json`, `gate_zoom_in22k_vs_clues.json`.
+  Bars 0.0035 (pAUC_all) / 0.0065 (pAUC_histo); retention bar −0.0153.
+  | arm (vs) | ΔpAUC_all [s42, s43, s44] | ΔpAUC_histo | ΔMacro-F1 | frozen gate |
+  |---|---|---|---|---|
+  | look (control) | +0.0044 [+0.0103, −0.0003, +0.0032] | +0.0044 | +0.0005 | pass (all-age only) |
+  | geometry (control) | +0.0164 [+0.0297, +0.0043, +0.0152] | +0.0296 | **−0.0323** [−0.0269, −0.0032, −0.0667] | fail (retention) |
+  | youngdata (control) | +0.0073 [+0.0251, −0.0053, +0.0021] | +0.0075 | +0.0023 | pass |
+  | zoom (clues) | +0.0085 [+0.0080, +0.0082, +0.0091] | +0.0065 | −0.0007 | pass |
+- **New `research/v5/q4_verify.py`** (read-only, test lock armed) → `results/v5/screens/q4_verify.json`.
+  Gate deltas reproduced exactly with sklearn pAUC (max |Δ| 0.0, 4 arms × 5 endpoints). CSVs: 18/18 clean
+  (3,059 rows, identical ids/labels, declared scores incl. zoom's noisy-OR reproduced, Macro-F1 = JSON).
+  Fold-0 val = frozen S71 assignment, 0 shared groups. Registry hash = frozen (`e85842c9…`).
+  **Young rows:** 2,078, all <40, 510 escalating; 0 image / 0 group overlap with the manifest; 1,436 carry
+  a lesion id and 0 of those match any manifest lesion (val, test or reserved). The other 642 have no
+  lesion id, so only image-level and dedupe protection applies to them.
+- **Integrity problem: look and geometry trained with NaN batches.** Epochs with a NaN epoch-mean CE:
+  geometry s42 18/30, s43 9/30, s44 14/30; look s42 1, s43 5, s44 4. **No other V5 screen arm has any**
+  (control, twostep, clues, gem, m4, memory, zoom, youngdata). Under AMP the GradScaler skips each NaN
+  step and halves its scale, so these runs did not train as specified. Geometry s44's training loss
+  *rises* 0.72 → 1.15 over epochs 16–21 and ends at 0.816 vs ~0.63 for every other arm. Final weights are
+  finite in all six checkpoints. Only look and geometry use `ChromophoreFront`.
+  New `research/v5/q4_nan_probe.py` → `results/v5/diagnostics/q4_nan_probe_geometry.json`: the front
+  (fp32, CPU) on one augmented pass of all 12,235 fold-0 training images, plus the trained GeometryHead on
+  a stand-in F3, gives **0 non-finite values** (channels, geometry fields, radius > 0, head tokens).
+  So the NaN arises on the GPU path, in the trunk/head under fp16 autocast, or both, and is not yet
+  located. The `--full` mode replays the trained model's AMP training forward with per-stage hooks; it is
+  for the owner to run on the GPU.
+- **Readings:**
+  - **Geometry's verdict is not readable**, in either direction. Its retention failure and its pAUC gains
+    (the largest in Q4, incl. BCN+MSKCC +0.0449, all seeds positive) both come from runs that trained with
+    many skipped steps.
+  - **Look** passes only on all-age pAUC, carried by s42; it is below the in22k-noise bar (0.0074) and has
+    NaN epochs too.
+  - **Youngdata** passes on the frozen bars and its within-band falsifier holds on the mean (band-mean
+    +0.0111, <40 +0.0225) but fails in s44 (−0.0036 / −0.0201). Most of the gain is s42. At in22k noise
+    both endpoints sit at or below the bar (0.0073 vs 0.0074; 0.0075 vs 0.0097).
+  - **Zoom** is the most consistent: pAUC_all +0.008–0.009 in all three seeds, and not a readout artefact.
+    Its global `s_esc` alone beats clues' by +0.0059, the noisy-OR adds +0.0025, and on escalation mass
+    both sides it is +0.0092 [+0.0005, +0.0213, +0.0058]. Falsifier clause 1 holds (BCN+MSKCC +0.0147,
+    all seeds positive, vs HAM −0.0032); clause 2 needs `zoom_random` (8r) and is unread. Descriptive:
+    <40 pAUC on mass is −0.0116 in all three seeds (35 escalating <40 rows).
+- **Not decided here (composite lock, E10/E12):** whether zoom enters given that its parent clues failed
+  vs twostep in Q3; whether geometry and look are re-screened after a NaN fix (an unhashed-code fix, but a
+  second screen of the same arm).
+
+### Q4 NaN root causes: two different finite-but-huge front tokens overflow fp16 (2026-10-02, afternoon)
+No test/reserved read; no code fixed (owner decision). Probes: `research/v5/q4_nan_probe.py` (now also checks that
+tokens survive the fp16 cast, |z| < 65,504, not only that they are finite).
+- **GPU replays** (owner-run, AMP, train mode, last checkpoints): geometry s42 0/382 NaN-CE batches
+  (`q4_nan_probe_full_geometry_f0_s42_in22k_v5scr.json`); look s43 1/382, first non-finite stage = logits with
+  the classifier input still finite, image `ISIC_0027554` (`q4_nan_probe_full_look_f0_s43_in22k_v5scr.json`).
+  Single passes are underpowered: the events are rare per pass (below), so a clean pass is chance, not
+  "the final weights suppress it".
+- **look → `palette_ecc_*`, radius 0 from one-valid-pixel crops.** `ISIC_0027554`: 4 of 256 augmented draws give
+  standardised `palette_ecc_1` ≈ 8 × 10⁸. In all 4 the crop has **one valid pixel** (the rest aperture/glare),
+  so Otsu t = that pixel, s = 0.5 at that pixel only, coverage = 0.5/1 lies inside [0.03, 0.95] and the fallback
+  does not fire, the mask is a point, radius = 0, and `ecc = dist / radius.clamp_min(1e-6)` ≈ 1.5 × 10⁸.
+  Finite, so `nan_to_num` keeps it; the fp16 cast in the classifier makes it inf → NaN CE.
+- **geometry → `abrupt_angular_variance`, lesion median melanin ≈ 0.** 4 passes × 12,235 augmented images: 5
+  batches carry a front token beyond fp16, all this token (21 rows > 50 SD) — rate ≈ 1.25/pass, consistent with
+  NaN in ~half of geometry's training epochs. In the 5 flagged images radius is normal (87–120 px) and the valid
+  region large; the lesion median `c_mel` is 0 / 6e-08 / −1.4e-04, and `dsp.border_abruptness` divides by
+  `|median|.clamp_min(1e-6)` → variance up to 7.3 × 10⁷. Geometry's front on the look-degenerate draws stays
+  bounded (max |z| 6.8): **two different mechanisms**, not one amplified.
+- **Fold-0 artefacts are contaminated:** `results/v5/chromophore/fold0.json` has `abrupt_angular_variance`
+  mean 5.0, **SD 333** (fitted on the eval view, so blow-ups occur there too). Every ordinary image standardises
+  to ≈ 0: the token was dead except when it overflowed. Ruled out: CUDA `eigh` on degenerate covariances
+  (finite on CPU and CUDA), GeometryHead tokens (bounded; `radial` max 12.1 / 19.8 with s42 / s44 weights),
+  the fp32 front's own NaN (0/12,235).
+- **External (Antigravity) review checked.** Correct: the Q3 table (matches `gate_*` and `falsifier_*` files;
+  omits the Q3 caveat that twostep's gain is mostly its escalation head, +0.0025 on mass), the Q4 numbers, the
+  look overflow chain. Wrong: "s = 0.5 everywhere" (one pixel); geometry as the same radius bug amplified
+  through GeometryHead (radius is normal; the cause is the melanin normaliser); "final checkpoint suppresses
+  it" (fixed-code event, chance per pass). Its fixes are rejected as proposed: radius ≥ 1 / ecc ≤ 10 patches
+  one site and does not touch geometry's path; a ±20 token clamp turns each blow-up into a silent saturated
+  input and leaves the SD-333 statistics dead; clamping GeometryHead at ±20 has no evidence behind it and
+  would clip real `radial` values (19.8 seen).
+- **Proposed root-cause fix (not applied):** (1) `geometry_from_mask` falls back when the valid region is
+  too small, not only on coverage; (2) `border_abruptness` normalises by a physical melanin floor from the
+  fold artefacts, or returns NaN when the lesion median is below it, so the front's convention maps it to the
+  fold mean; (3) a logged backstop for any standardised token beyond a fixed bound. Then refit fold-0
+  artefacts (15.8 min, measured) before any re-screen of look/geometry.
+- **Steps 3–5 are unaffected:** m7 reads only the ICA `basis` from the LOAO artefact files
+  (`train_v5.m7_basis`), and m7 has no front. The LOAO files' token statistics will carry the same
+  contamination and need a refit only if a front arm is ever run LOAO.
+
+### NaN fix applied to the front (look / geometry); fold-0 artefacts to be refitted (2026-10-02, ~17:05 IST)
+Owner-approved. Step 3 (LOAO fits) had written nothing (`results/v5/chromophore/` held only `fold0.json`), so
+nothing needed clearing. No hashed file touched (`arms.py`, `screen_gate.py`, `confirmation.py`, `trunks.py`
+unchanged; registry hash unchanged).
+- **`chromophore.geometry_from_mask`:** also falls back (image centre, image axes, r = half the short side)
+  when valid pixels < `GEOMETRY_MIN_VALID` = 0.03 of the frame (same value as `GEOMETRY_MIN_COVER`) or the
+  radius < `GEOMETRY_MIN_RADIUS_PX` = 2. Removes look's one-valid-pixel → radius-0 → eccentricity ~1e8 path.
+- **`dsp.border_abruptness(…, t_mel=)`:** rows with |lesion median c_mel| < `ABRUPT_MIN_MEDIAN_FRAC` (0.1) ×
+  t_mel are NaN (ratio undefined; 0.1·t_mel is the depth gate's existing melanin scale; fold-0 floor 0.029).
+  The front maps NaN tokens to the fold mean (existing convention); `is_abrupt` is now NaN for those rows
+  instead of a fake 0. `fit_fold_artefacts` uses the same rule, `nanpercentile` for `abruptness_p75`, and
+  records `abruptness_undefined_values`.
+- **Backstop:** any standardised token with |z| > `TOKEN_Z_MAX` = 50 is set to the fold mean and counted;
+  `train_v5` writes `front_token_backstop_hits` to every run JSON (None for arms without a front).
+- All `[impl]` values are added to the `implementation_declarations()` records.
+- **Verified** (CPU, fp32 front, 256 augmented draws each, old fold-0 statistics): look `ISIC_0027554` max |z|
+  8.1 × 10⁸ → **17.6**; the five geometry images ≤ **6.8**; 0 backstop hits. Undefined-abruptness draws per
+  image range from 38 to 244 of 256 (low-pigment lesions); the dataset-wide rate comes from the refit.
+- **Old artefacts kept:** `results/v5/chromophore/pre_nanfix/fold0.json` (sha256 `32da91f7…`), the file every
+  Q4 look/geometry run used. Loaders read `<stem>.json` by exact name, so the backup is never picked up.
+- **Consequences:** the Q4 look/geometry results stand as recorded, from the pre-fix code; a re-screen is a
+  second screen of the same arms (owner decision). The CPU pre-checks (Q1, Q2/D6, Q5, B1) call the same
+  geometry and are not re-run; only degenerate masks would change.
+- **Fold-0 refit done** (owner, 22.3 min measured, not the 15.8 anchor): `abrupt_angular_variance` mean/SD
+  5.05 / 333 → **0.0013 / 0.0057**; undefined (→ fold mean) on 550 / 12,235 eval-view images; `abruptness_p75`
+  0.0260 → 0.0245. ICA vectors identical; t_mel 0.28931 → 0.28921, DSP thresholds in the 4th decimal, palette
+  centres ≤ 0.028 OD, because pass 2 samples lesion pixels through the (now fixed) geometry. Probe, 2
+  augmented passes each (24,470 images): look 0 non-finite, 0 backstop hits; geometry 0 fp16-unsafe tokens,
+  933 intended undefined-abruptness rows (3.8%), **3 backstop hits (0.01%) not yet attributed** (residual
+  blow-up vs a real tail clipped at |z| 50). This needs settling before any geometry re-screen, not before the
+  LOAO fits or m7.
+- **Backstop attributed and corrected (18:00).** My first attribution script deadlocked: 4 Windows spawn
+  workers, no `__main__` guard (found by the owner's external check). It is not evidence of anything and was
+  wrongly reported as merely "stopped". Re-run guarded (2 workers, 24,470 augmented geometry draws, exit 0):
+  1 hit, `ISIC_0032612` `abrupt_angular_variance` raw **0.558** → z 98. That is a real heavy tail (old blow-ups
+  were 10⁷–10⁸); the token's |z| p99.9 is 16.4, max 98, 16 values > 20; every other geometry token ≤ 6.8.
+  Zeroing it would have erased a genuine extreme, so `front.py` now **saturates** at ±`TOKEN_Z_MAX` (50) and
+  still counts each hit. Verified: 98 → 50, −120 → −50, ordinary values unchanged. The look/geometry probe
+  JSONs (`results/v5/diagnostics/q4_nan_probe_{look,geometry}.json`, 24,470 images each) are the
+  verification of record.
+
+### Q5 planned: look/geometry re-screen, zoom 8r × 3 before the lock, LOAO (2026-10-02, ~18:10 IST)
+Declared **before any Q5 run exists**. `results/v5/queue_Q5.txt`, 15 runs, dry run clean (unique ids, 0 complete).
+- **Q4 look/geometry runs are void as screens**, whatever the re-screen shows: they trained with NaN-skipped
+  steps (pre-fix front). The re-screen (`--run-tag v5fix`, refitted `fold0.json`) replaces them; look's Q4
+  "pass" is not carried. Their falsifier definitions (haemoglobin shuffle / depth ablation; per-sector rotation
+  of c(φ)) will be written down **before** the v5fix gate files are read. Note for that definition: the rim,
+  segmental-index, radial and abruptness-variance summaries are invariant to a sector rotation, so a
+  rotation falsifier must act on the axis-dependent parts (reflection axes, asymmetry) or it cannot fail.
+- **Zoom vs twostep** (existing fold-0 predictions, no new run): declared-score pAUC_all **+0.0071**
+  [+0.0055, +0.0079, +0.0078], pAUC_histo +0.0110; **on escalation mass both sides −0.0001** [−0.0102, +0.0091,
+  +0.0007]; <40 −0.0241 declared / −0.0260 mass (descriptive, 35 escalating rows); Macro-F1 −0.0055. Vs m4:
+  +0.0030 declared, −0.0005 mass. So zoom's edge over the base it would join is a readout gain, not a better
+  representation, at a measured 73–81 min vs ~42 min per run (~1.75–1.95×, not the runsheet's 1.34×).
+- **New `train_v5 --zoom-mode {evidence,random}`** (default evidence; unhashed file; `zoom_mode` recorded in the
+  run JSON). 8r = the same arm and crop size at a random centre (`zoom.ZoomNet`, mode "random").
+- **8r moved before the lock and to 3 seeds** (runsheet: 1 seed, descriptive, Q9). Reason: one seed cannot
+  resolve zoom's +0.0085 against the in22k pair SD 0.0153 (`q4_verify.json`). **Zoom falsifier clause 2,
+  operational:** PASS if the mean over s42/43/44 of [declared pAUC_all(zoom, v5scr) − declared
+  pAUC_all(zoom random, v5scr8r)] > 0; also reported on BCN20000+MSKCC rows and on escalation mass, not gating.
+- **External (Antigravity) recommendation checked and partly rejected:** "skip the re-screen" would keep a pass
+  from void runs; "8r × 1 seed" is uninformative at this noise level. Its factual errors: look's gain is +0.0044,
+  not +0.0073 (that is youngdata); fold-0 was already refitted; blow-up sizes 8 × 10⁸ / 7 × 10⁷, not
+  1.5 × 10¹⁰ / > 7 × 10⁴; zoom costs ~1.8× measured, not 1.34×. Correct: `train_v5` hard-coded the zoom mode.
+- **Read-time tooling still needed:** `screen_gate_run` reads one `--tag` for both sides, so the v5fix arms (vs
+  control v5scr) and 8r (vs zoom v5scr) need a comparator-tag option in that unhashed wrapper.
+
+### External research brief revised for V6 (2026-10-02, evening)
+`docs/EXTERNAL_RESEARCH_PROMPT.md` (owner request, for an external assistant): replaces the 1 Oct version,
+which predated every V5 screen read. Adds §2a (the Q3/Q4 table from `gate_*`, `falsifier_*`,
+`q3_verify_rescore.json`, `q4_verify.json`, and the readout-vs-representation re-scores incl. zoom vs twostep
++0.0071 declared / −0.0001 mass), §2b (the 2 Oct fp16 / standardisation / benchmark defects), §3 (V6 as it
+stands, the four 1 Oct audit corrections, and four 2 Oct corrections still to be applied to
+`docs/V6_RUNSHEET.md` before its freeze: zoom row must require a mass gain; fp16-castable bounded tokens;
+per-seed youngdata reading; zoom cost ~1.8×), Wall 4's in22k noise (2.15× / 1.48× / 1.35×, mechanism 1.02×),
+measured per-arm run times, citation rules (DOI/arXiv id, [read] vs [recalled]), and 15 questions in seven
+groups. `docs/V6_RUNSHEET.md` itself is not edited (unfrozen; owner asks before V6 edits).
+
+### External review (Gemini) of V6 checked: CG-DM kept; head-to-head with its alternative proposed for Stage 0 (2026-10-02, night)
+No code, no run, no test/reserved read. Owner request: do not drop CG-DM unless the alternative wins.
+- **Gemini's citations exist** (checked): PROTOCOL, ICML 2025 (arXiv 2506.12408; POT for imbalanced multi-view
+  clustering); Tree-Sliced Entropy Partial Transport, NeurIPS 2025; arXiv 2510.13684 (diffusion-bridge healthy
+  counterfactuals); Mijares et al., Cancers 2026 (doi 10.3390/cancers18152524; RAG MLLM, cSCC/nevus histology
+  grading). **Misdescribed:** Tree-Sliced EPT proposes an O(n log n) solver and benchmarks Sinkhorn at 10⁵
+  points; it does not show fragility at CG-DM's 196 × 196 token scale.
+- **Its central diagnosis is contradicted by our data:** every intervention that added resolution or detail
+  left under-40 flat or worse — 384 px **−0.0192** (`results/v5/s01_decision.json`, descriptive), zoom vs clues
+  −0.0033 and vs twostep −0.024 (`q4_verify.json`). Native resolution (sampled): HAM 600 × 450, MSKCC ≈ 1024 × 680,
+  BCN 1024 × 1024; the 33 young misses are HAM 14 / MSKCC 11 / BCN 8 (`b1_hard_core.json`), so a 768 px wavelet
+  input adds no pixels for 14 of 33 (HAM is upsampled).
+- **Valid points, to adopt:** (1) CG-DM's spec (§A0.5: ε 0.05, 50 iterations) names no precision: exp(−C/ε)
+  reaches e⁻⁴⁰ ≈ 4 × 10⁻¹⁸, which is 0 in fp16 → the solve must be **log-domain, fp32, autocast disabled**, and
+  D must pass the 2 Oct fp16-castability check. (2) A run with NaN epochs or front backstop hits is invalid as
+  a screen (V5 lesson, now measurable via `front_token_backstop_hits`). (3) HIBA's primary should be the
+  mechanism endpoint (under-40 underpowered). (4) Age-adversarial invariance **was** tried (V3 S45, falsified;
+  registry) — my pre-check said otherwise and was wrong.
+- **Rejected:** "drop CG-DM" (rests on the contradicted diagnosis and on a fixable precision issue); "ensembling
+  proven readout-only" (it is the only overall significant gain; its under-40 effect is null); "384 px computes
+  empty background" (no evidence); re-registering S70 "on the reserved cohort" (exhausted — Hard Rule 2); a
+  CPU Phase 0 on WSD features (none exist without training a WSD trunk); 11 GPU-h for 15 WSD runs (384-compute
+  runs measured 64–75 min → ~16–19 h). "IN-22k learns age as a proxy" is an untested hypothesis (age is never an
+  input); a cheap probe could test it.
+- **WSD-CCL is not independent of CG-DM:** WSD is already V6-5(a); the loss is hard-negative contrastive against
+  the same K = 3 retrieved biopsied nevi (premise shared with Stage 0); "pull towards matched malignant
+  references" resembles SupCon/CosFace (null, S53r) and m4/memory (Q3). Missing prior art for **both**:
+  PatchCore (Roth et al., CVPR 2022, arXiv 2106.08265 [recalled]) — nearest-neighbour distance of test patches to a
+  memory bank of normal patches; CG-DM's partial-explanation residual is a learned, mass-constrained relative.
+- **Proposed (owner to approve; V6 runsheet not edited):** a pre-declared Stage 0 head-to-head on the same cached
+  F3 tokens and the same K = 3 references — S_0 = e; S_part (CG-DM); S_bal; **S_nn = logistic([e, D_nn])**, D_nn =
+  top-10% median of each query token's minimum cosine distance to the reference tokens (the training-free core of
+  Gemini's patch-level contrast, PatchCore-style). Key contrast Δ(S_part − S_nn) on the mechanism endpoint,
+  lesion bootstrap. Plus a descriptive resolution read on fold 0 (24 × 24 tokens from the 384 px S01 R1 models vs
+  14 × 14) stratified HAM vs BCN/MSKCC. Decision: CG-DM is dropped only if S_nn ≥ S_part; a WSD × {OT, contrastive}
+  factorial waits for V6-5(a) firing, else V7.
+
+### Gemini's three new mechanisms checked: SBDR → Stage 0 rung; IECA and MC-HNM rejected (2026-10-02, night)
+No code, no run, no test/reserved read (two CPU reads of fold-0 predictions). `docs/V6_RUNSHEET.md` not edited.
+- **Archive confound on the mechanism endpoint (new, applies to every Stage 0 statistic incl. CG-DM).** Fold-0
+  mel / histo-nv rows: BCN 280/290, HAM 172/351, MSKCC 53/30 (mel share 0.49 / 0.33 / 0.64); **archive alone
+  scores pAUC@0.2 0.539**; e within archive 0.673 / 0.762 / 0.663 vs pooled 0.721. A score that detects
+  atypical acquisition could clear the +0.010 Stage 0 bar without morphology. Under-40 mechanism rows on fold 0:
+  21 mel vs 237 histo-nv (direction-only, as declared).
+- **SBDR (sparse benign dictionary reconstruction) — keep as a Stage 0 comparison rung, not a headline.** Not
+  novel: sparse-coding anomaly detection from normal-only dictionaries (Zhao, Fei-Fei & Xing, CVPR 2011; Lu, Shi
+  & Jia, ICCV 2013 [recalled]); deep-feature sparse coding for medical anomaly detection (arXiv 2201.11506); dense
+  PCA-residual counterpart SubspaceAD (CVPR 2026, arXiv 2602.23013); dermoscopy sparse coding as features
+  (Codella et al., MLMI 2015 [recalled]). Its value is scientific: a **population** benign residual vs CG-DM's
+  **instance-retrieved, mass-constrained** residual — exactly the axis Stage 0 should separate. Corrections to the
+  proposal: "Sparse PCA" gives sparse loadings with dense codes (a subspace residual), not sparse reconstruction;
+  sparse codes need OMP/lasso (iterative, not "simple linear projections"); its fp16 safety comes from L2-normalised
+  tokens (residual ≤ 1), and Stage 0 runs in fp32 anyway; its falsifier (D alone vs e on under-40 only) is
+  underpowered and not incremental — use the Stage 0 gate (logistic([e, D]) on the mechanism endpoint). Leakage
+  rule: one dictionary per outer fold, fitted on that fold model's tokens of training-fold histo-nv rows only.
+- **IECA (interior–exterior cross-attention) — reject for V6.** Misreads S50: exterior escalation AUC 0.8709 is
+  *not* above the interior's 0.8744 (Δ −0.0035, null); what S50 found is that exterior encodes **age** more
+  (+0.0297 [+0.0174, +0.0424]; selectivity +0.0332). Attending to peri-lesional skin therefore risks a learned
+  age proxy (the barred mechanism family). Its proposed CPU test (probe on a dot product of mean vectors, HAM-only
+  S50 cache of 6,965 rows) has no age-selectivity control and cannot detect that failure. "Softmax removes fp16
+  risk" bounds the weights, not the QK logits. The inverse lever (peri-lesional masking, R3) was demoted at S50.
+- **MC-HNM (morphology-conditioned hard-negative mining) — reject as an arm.** "51 missed young melanomas" is 33
+  lesions (32 mel) whose 51 images were called nv (`b1_hard_core.json`). Clusters defined from OOF misses would
+  leak the evaluated fold's outcomes into training sampling unless restricted to training-fold rows. Near-repeat of
+  S67 hard-case reweighting (−0.000 under 40) and of V6's planned pAUC-DRO ("hardest benign mimics") and subclass
+  Group-DRO. Its falsifier (embedding distance vs failure rate) is near-tautological and cannot fail. Kept only as
+  a rule for pAUC-DRO: hard negatives are defined from training-fold rows only.
+- **Proposed Stage 0 amendment (awaiting owner approval)**, combining the earlier four fixes: statistics S_0 = e,
+  S_bal, **S_part (primary)**, S_nn (nearest patch over the same K = 3 references), S_dict (population sparse benign
+  dictionary, 256 atoms, 5 non-zeros, declared not tuned); identical token masses, identical lesion-support token
+  set for every "top-10%", identical same-group exclusion. Gate on the carried statistic: existing budget gate
+  **plus archive-stratified Δ ≥ 0**. Selection: Holm over Δ(S_part − S_nn) and Δ(S_part − S_dict); CG-DM carried
+  if it beats both; a challenger replaces it only if the CI upper bound of Δ(S_part − challenger) < +0.005, with the
+  simpler statistic preferred (nn < dict < part); inconclusive → CG-DM stays primary, challengers become ablation
+  rungs. A run with NaN epochs is void (rerun), not a FAIL; backstop hits are judged against a declared rate.
+- **Applied to `docs/V6_RUNSHEET.md` (owner approval, 21:50; V6 still unfrozen; pre-edit copy kept in the session
+  scratchpad):** §A0.1 prior art (PatchCore, sparse-coding residuals, arXiv 2201.11506, SubspaceAD); §A0.5 Sinkhorn
+  in log domain, fp32, autocast off, and one mass-weighted top-10% operator T / top10 for every statistic; §A0.8
+  challengers D_nn and D_dict built identically to D_part, gate on each incl. archive-stratified Δ ≥ 0, selection
+  (equivalence margin +0.005 first, Holm, simpler wins; CG-DM carried if it beats both; inconclusive → CG-DM),
+  routing to the carried statistic and never to V6-5(a)/resolution, rejected proposals recorded; §A0.9 run validity
+  (non-finite epoch or > 10 backstop hits per 10,000 image passes → void and rerun, never PASS/FAIL); §A2 HIBA
+  primary = mechanism endpoint, under-40 and S70 descriptive; §A4 pAUC-DRO hard negatives from training-fold rows
+  only; §A5 youngdata row needs ≥ 2 of 3 seeds, zoom row needs a mass gain, Q4 provisional status added; §B0
+  fp16-castable, tail-checked engineered statistics; §A5 Stage 0 row routes the carried statistic.
+- **Gemini's concurrence (21:46) checked — no runsheet change.** Its restatement carries six errors that must not
+  reach the paper: S42's lesion-vs-context probe (0.8714 / 0.8608) quoted as S50's escalation AUCs (0.8744 / 0.8709);
+  "certified age shortcut" (S50 verdict CO_LOCATED, demoted on magnitude, +0.0297 < MCID 0.05); "V3 S45 proved age
+  degrades under-40 ranking" (S45 tested adversarial age *removal*, falsified — a different claim); the selection
+  rule paraphrased as "cannot beat by more than 0.005" (the rule needs the CI upper bound < 0.005; inconclusive keeps
+  CG-DM); "5-fold seed-42 confirmation" (folds 1–4; fold 0 is never pooled); V5's NaNs called fp16 underflow (they
+  were overflow; underflow is the Sinkhorn risk pre-empted in §A0.5). Also: Stage 0 is not CPU-only — it needs one
+  GPU feature pass, after V6-1's segmenter.
+
+### NR-FP checked against the literature and our data: gate FAIL; Stage 0 baseline bias found and fixed (2026-10-02, ~22:00)
+No training; CPU probe on fold-0 development rows; no test/reserved read. Queue Q5 still not launched (owner's call).
+- **The pasted "queue started" output was not from this machine** (prompt `C:\Scan4Diseases`, which does not exist;
+  strings absent from `scripts/run_v5_queue.ps1`; no process; `queue_Q5.log` last written 18:06).
+- **Literature.** Gemini's citation exists (Deivasigamani et al., Computers 2026, doi 10.3390/computers15010054) but
+  is healthy skin vs melanoma (1,497/1,500 and 1,495/1,500 correct) — not melanoma vs biopsied nevus, nothing on young
+  patients. NR-FP's real prior art: Xu et al., "Learning in the Frequency Domain", CVPR 2020 (arXiv 2002.12416; DCT
+  reshaping instead of spatial downsampling) — the V6-5(a) family. Risk literature: Wang et al., CVPR 2020 (arXiv
+  1905.13545; CNNs exploit imperceptible high-frequency components); dermoscopy shortcuts (Bissoto et al. 2019,
+  arXiv 1904.08818; Nauta et al., Diagnostics 2022, doi 10.3390/diagnostics12010040). Resolution in dermoscopy:
+  Mahbod et al. (arXiv 2006.14715): 128 px and above "good", larger "slightly" better. Its premise repeats the S45
+  error again ("age is load-bearing") and aims to keep the age proxy.
+- **New `research/v6/nrfp_probe.py` → `results/v6/nrfp_probe.json`** (declared in the docstring before running;
+  136–145 s). Native-luminance FFT over the eval-crop region (crop side median HAM 394 / MSKCC 672 / BCN 896 px), bands
+  in cycles per crop width: ≤ 112 (kept at 224 px), 112–192 (kept at 384 px), > 192 (lost at 384); 5 features (two band
+  ratios; log variance, skewness, kurtosis of the > 112 band-pass image). Fold-0 mechanism rows 505 mel / 671
+  histo-nv; e = mean escalation mass of in22k control s42–44. Results: **archive decodability macro AUC 0.960** (e
+  alone 0.566); Δ over the fair baseline **−0.0043 [−0.0247, +0.0153]**; archive-stratified −0.0014 (BCN +0.0053, HAM
+  −0.0096, MSKCC −0.0105); band 112–192 +0.0024 [−0.0090, +0.0144]; band > 192 −0.0054 [−0.0264, +0.0125]; archive
+  one-hot −0.0074; under-40 +0.0380 [−0.0107, +0.0923] (21 mel / 237 nv; archive one-hot +0.0136) — direction only.
+  **Gate FAIL. NR-FP not adopted.**
+- **Measurement artefact found by this probe — and present in V6 Stage 0:** e passed alone through the out-of-fold
+  logistic combiner costs **−0.0152 [−0.0276, −0.0047]** pooled pAUC (per-fold refits shift calibration between
+  folds). The first run compared against raw e (Δ −0.0195), which overstated the harm; the probe now gates on the
+  combiner-only baseline and reports both. V6 §A0.8 compared every logistic([e, D]) with raw e — a ≈ 0.015 handicap
+  against the +0.010 bar for every statistic, CG-DM included. **Corrected in `docs/V6_RUNSHEET.md`:** S_0 =
+  logistic([e]) in the same inner folds; raw-e Deltas reported, never gated. NR-FP added to "considered, not adopted".
+
+### Three more external proposals (topology, hypergraph, concept anchoring) checked before the V6 freeze (2026-10-02, ~22:10)
+No training; CPU probe on fold-0 development rows; no test/reserved/MILK10k-label read.
+- **Papers verified:** topology preprint exists (medRxiv doi 10.1101/2025.11.25.25340992; multiparameter cubical
+  persistence fused with ViTs; "consistent gains") — body behind a bot check, so Gemini's "+10.68 DDI / +15.97 PH2" and
+  the split method are **unverified**; hypergraph paper (Sci Rep 2026, PMC13096346) fetched: HAM10000, stratified
+  70/10/20 + 5-fold, no lesion grouping or duplicate handling, accuracy 93.2% only, hyperedges between *samples*;
+  K-MaT exists (arXiv 2603.06340, Zeng & Albarqouni) — VLM prompt transfer across modalities. MONET (Kim et al., Nat Med
+  2024, doi 10.1038/s41591-024-02887-x) scores concepts by image–text-prompt similarity, so "anchor to MONET, not text"
+  is self-contradictory.
+- **New `research/v6/topology_probe.py` → `results/v6/topology_probe.json`** (declared before running; β₀/β₁ code
+  unit-tested on ring (1,1), two discs (2,0), two rings (2,2), bar (1,0); 62.5 s). Archive decodability **0.816**; Δ over
+  the fair baseline **−0.0266 [−0.0513, −0.0005]**; archive-stratified −0.0288 (BCN −0.0368, HAM −0.0123, MSKCC
+  −0.0402); luminance-only −0.0215, gradient-only −0.0200; under-40 +0.0011 [−0.0273, +0.0305] (21 mel). Gate FAIL.
+- **Decisions (written into `docs/V6_RUNSHEET.md`):** topology deprioritised in the conditional order; hypergraph
+  routing not adopted (optional descriptive check on the Stage 0 F3 cache); concept anchoring = V6-8 unchanged, its
+  MILK10k-label probe barred until S84. Premise errors repeated again: "age is load-bearing" (S45), "S51 proved text
+  embeddings lose" (S51 tested frozen image foundation models).
+
+### Full V6 audit before freeze (not frozen): 29 corrections applied (2026-10-02, ~22:20)
+Owner request: audit everything, do not freeze. Whole runsheet read (1,028 lines after edits); every quoted number in
+§A0, §A9 and §B traced to its file; literature checked where it could change a decision. Pre-audit copy kept in the
+session scratchpad. No run, no test/reserved/MILK10k-label read.
+- **Numbers verified against their files (Hard Rule 4):** mechanism control 0.692–0.722 and T_mech 0.00745
+  (`results/v6/mechanism_noise_floor.json`); in22k/in1k noise ratios 2.15 / 1.48 / 1.35 / 1.02 and bars 0.0074 / 0.0097 /
+  −0.0207 (`noise_floor_in22k_check.json`); S59 <40 sensitivity 0.763, coverage 0.854 / 0.825 / 0.779
+  (`results/v4/s59/s59_report.json`); S69 AUROC 0.9994; C1 FRR 6/29 → 1/29, −0.1724 [−0.321, −0.036], Holm p 0.044
+  (`results/v2/conformal_subgroup_safety.csv`); S68 +0.0426 NULL; young candidates 1,208 images / 537 patients / 243
+  escalating; IN-22k control anchors 40.5–49.9 min (`queue_Q3.log`).
+- **Misreport corrected (§A9 C3, §A9.2 #5):** per-band Dirichlet shrinks the across-band signed-gap spread 0.0679 →
+  **0.0084**; the 0.0150 → 0.0206 pair is the ECE gap, mislabelled "spread", and "spread may not shrink" contradicted
+  `research/multical/results_oof/gap_summary.json`.
+- **Citation corrected (§A0.12):** Kurtansky et al., JEADV 2025 (doi 10.1111/jdv.20479) reports median reader specificity
+  86.7% → 85.7% (sensitivity 60.0% unchanged); the quoted 85.6% → 82.1% is not in the abstract. Added the authors'
+  caveat (seven contextual images, no total-body image) and Wen et al., JEADV 2026 (doi 10.1111/jdv.70061).
+- **Statistical fix:** the Stage 0 selection rule said "Holm-adjusted bounds" — Holm has no simultaneous-interval form;
+  now Bonferroni two-sided 97.5% intervals over the two contrasts. The combiner pooling bias is now cited (Forman &
+  Scholz, SIGKDD Explor. 2010, doi 10.1145/1882471.1882479), with the mean of per-inner-fold Δs reported as a sensitivity.
+- **Internal contradictions resolved:** ConvNeXt-T ensemble member = banked S72 IN-1k (§A3b said IN-22k, contradicting
+  V6-3b and its 25-run count); "V5 features" list scoped to V6-2b; carried statistic propagated to Stage A, confirmation
+  and the ablation ladder (M3 only if D_part is carried); N5 gate "always" → the §A5 youngdata row; §A5 S01 row's "WSD
+  becomes more important" withdrawn; WSD and dual-stream relabelled G2 with an escalation-mass gate (§A4, §B2); V6-12
+  comparator no longer DINOv3; §A1 G1 row and §A7 slide updated to the CG-DM headline; bank range 2,650–2,733.
+- **Budget:** the CG-DM per-run anchor is the V5 lock arm's measured time — with `zoom` in the lock, 51 runs ≈ 62–69
+  GPU-h (core ≈ 118–147 h), plus void-rule reruns. Freeze checklist gains items 10–12 (fair baseline, archive rule,
+  Bonferroni selection and per-fold sensitivity unit-tested; D_dict benchmark; backstop counters on every engineered
+  statistic). Benchmarks report absolute seconds per epoch (E8/Q4 lesson). Multiplicity families declared for the
+  CG-DM primaries and the Stage 0 contrasts. N9 wording tied to the archive-prevalence finding.
+- **Checked, no change:** N11 (Saerens prior) is scoped to LOAO Macro-F1, outside barred item 6's rationale
+  ("do not fix subgroup rank inversion"); the 0.711–0.750 under-40 range combines two correctly sourced sets; no
+  published partial/unbalanced-OT dermoscopy work found, so the conditional novelty sentence stands pending V6-0.
+
+### Q5 read, step 1 — look / geometry falsifiers declared BEFORE any v5fix gate file exists (2026-10-03, ~13:50)
+No gate, falsifier or v5fix prediction CSV has been read when this is written (`results/v5/screens/` holds no
+v5fix file). Runsheet §6 sentences, made operational; fold 0, seeds 42/43/44, last epoch, the v5fix checkpoints,
+the fold-0 refitted artefacts, eval transform; comparator = the in22k control (v5scr). Read only for an arm whose
+gate passes. "Gain" = the endpoint(s) on which that arm passed the gate.
+- **look — clause A (gating): haemoglobin shuffle removes the gain.** At inference, each image's standardised c_hb
+  stem channel is replaced by that of another fold-0 val image **from the same archive** (fixed derangement, seed 0);
+  all else unchanged. PASS if mean_s[pAUC(look_shuffled) − pAUC(control)] ≤ 0.5 × mean_s[pAUC(look) − pAUC(control)].
+  **Clause B (descriptive): depth ablation hits blue-grey lesions.** c_depth channel set to 0 (the fold mean); report
+  the pAUC drop in the top tercile of lesion-mean c_depth (DRE-2 mask) vs the other two terciles.
+- **geometry — per-sector rotation of the lesion frame removes the gain (gating).** At inference, every geometry
+  computation (reflection axes for colour / chromophore asymmetry, GeometryHead reflections and polar sectors,
+  border-abruptness sectors) uses θ + φ_img, φ_img ~ U[45°, 135°] per image (seed 0). Rotation-invariant summaries
+  (rim, segmental index, radial, abruptness variance) cannot change by construction, so the test acts on the
+  axis-dependent parts. PASS if mean_s[pAUC(geometry_rotated) − pAUC(control)] ≤ 0.5 × the unrotated mean gain.
+- **Zoom clause 2** (declared 2 Oct ~18:10): mean_s[declared pAUC_all(zoom v5scr) − declared pAUC_all(zoom 8r)] > 0.
+- **LOAO metric (declared now, after seeing run 12's Macro-F1 while checking the run's integrity):** per hold-out,
+  Macro-F1 over the classes present in that hold-out (MSKCC has 3 of 7; the 7-class mean is exactly 3/7 of it);
+  m7 vs control paired per hold-out, mean over the three hold-outs. Already seen while checking: m7 is below control
+  under both definitions, so the choice cannot change the m7 verdict.
+
+### Q5 read: zoom falsified, look fails, m7 fails, geometry passes its gate pending its falsifier (2026-10-03, ~13:50)
+Q5 finished 12:45, 15/15 runs, none failed (`results/v5/logs/queue_Q5.log`). **Integrity:** 0 NaN epochs in all 15
+(Q4 geometry had 9–18 per run); geometry backstop 20 / 20 / 37 hits per run ≈ 0.6–1.0 per 10,000 image passes (void
+threshold 10), look 0 — the 2 Oct front fix held. Gate files: `results/v5/screens/gate_{look,geometry}_in22k_vs_control_v5fix.json`
+(new `--out-suffix` in the unhashed `screen_gate_run.py`, so the void Q4 gate files are untouched — hashes verified);
+detail in new `research/v5/q5_read.py` → `results/v5/screens/q5_read.json`.
+- **look (v5fix): gate FAIL** — ΔpAUC_all −0.0018 [−0.0006, −0.0060, +0.0014], histo −0.0053, Macro-F1 −0.0094. Its Q4
+  "pass" came from the NaN-damaged runs.
+- **geometry (v5fix): frozen gate PASS** — all-age +0.0049 [+0.0187, +0.0011, −0.0050] (bar 0.0035), histo +0.0074
+  (bar 0.0065), Macro-F1 −0.0134 (retention bar −0.0153). Below the in22k-noise bars (0.0074 / 0.0097). Gain is BCN-driven
+  (BCN +0.0253, HAM −0.0074, MSKCC −0.0145); **mechanism endpoint −0.0103**; under-40 +0.0046 (descriptive).
+  Falsifier (lens-frame rotation) declared 13:50; new `research/v5/q5_geometry_falsifier.py` (CPU code check: unrotated
+  replay matches stored predictions to ≤ 7.5e-4, rotation moves scores by up to 0.04) — **owner runs it on the GPU**.
+- **zoom: falsifier clause 2 FAILS** — zoom − zoom-random on its declared score −0.0066 [−0.0049, −0.0031, −0.0118], on
+  escalation mass −0.0159 [−0.0251, −0.0055, −0.0171]; random-location zoom beats clues by +0.0151 (all seeds). The DRE-8
+  gain is a generic second view, not evidence-driven location. **zoom is excluded from the composite.**
+- **m7 (LOAO): FAIL** — present-class Macro-F1, m7 − control: HAM −0.071, BCN −0.001, MSKCC −0.028 (mean −0.033);
+  escalation pAUC 0.750 / 0.695 / 0.621 vs control 0.746 / 0.703 / 0.663.
+- **Composite candidate under the frozen rule (§6):** twostep (PASS) + m4 (PASS, beats its parent) + youngdata (PASS,
+  within-band on the mean) + geometry **iff its falsifier passes**. DRE-7 (logic) takes concepts only from front /
+  geometry / clue / m5 tokens, so without geometry the logic arm has no inputs and the composite vs composite_nologic
+  contrast is void. **Gap found:** `train_v5.run` refuses composite arms unconditionally — no code reads
+  `results/v5/composite_lock.json` yet; Q6 cannot run until it does.
+- **Composite path implemented (`research/v5/train_v5.py`, unhashed; registry hash unchanged `e85842c9…`).** New
+  `--composite-spec` (default `results/v5/composite_lock.json`; Q6 passes `results/v5/composite_candidate.json`):
+  `composite_spec()` builds the arm from {"status": candidate|locked, "modules": [...], "extra_train": ...}, drops
+  `logic` for `composite_nologic`, refuses a malformed file or a youngdata / `--extra-train` mismatch, and records file,
+  sha256, status and modules in the run JSON (`composite_spec`). CPU construction test (8 real training images, one
+  forward + `compute_loss`): {twostep, m4, geometry, logic, youngdata} → 4 logic concepts, finite loss 3.881;
+  composite_nologic 2.766; {twostep, m4, youngdata} → no logic inputs, composite ≡ composite_nologic (finite). The test
+  also caught and fixed a path bug (spec files outside the repo).
+
+### Geometry falsifier FAILS; composite candidate = twostep + m4 + youngdata; Q6 written (2026-10-03, ~14:00)
+- Owner ran `research.v5.q5_geometry_falsifier --device cuda` → `results/v5/screens/falsifier_geometry_in22k_v5fix.json`.
+  Pipeline check: unrotated replay vs stored predictions max |diff| 1.9e-05 / 2.3e-05 / 2.8e-05. Rotation of the lesion
+  frame (θ + U[45°, 135°]) keeps most of the gain: all-age +0.0049 → **+0.0037** [+0.0180, +0.0002, −0.0072], histo
+  +0.0074 → **+0.0055** [+0.0272, −0.0024, −0.0083]; the declared rule needed ≤ half → **FAIL**. The gain does not depend
+  on the lesion-axis geometry the module claims to measure. **geometry excluded**; with it DRE-7 (no concept inputs).
+- **`results/v5/composite_candidate.json`** (status candidate): modules twostep, m4, youngdata; basis and sources listed
+  in the file. composite ≡ composite_nologic, so **`results/v5/queue_Q6.txt`** = composite × s42/43/44, fold 0, tag
+  v5stack, `--composite-spec results/v5/composite_candidate.json` (dry run clean, 3 ids). ~59 min/run (extrapolated
+  from youngdata's measured 58.6 min on the same 14,313 rows).
+- Net V5 screen outcome: of 10 dermatology-inspired arms, two passed gate and falsifier (twostep, m4) — both
+  escalation-head readouts — plus the young-data lever. Every image-feature module (look, geometry, structure, m5,
+  zoom, clues, memory, m7) failed or was falsified.
+
+### Q6 stacking check read: composite passes vs control but is sub-additive — m4 alone ranks better (2026-10-03, ~18:50)
+- Q6 finished clean (`results/v5/logs/queue_Q6.log`): 3/3 runs, 0 failed, no NaN/traceback in any `.err.log`, 30/30
+  epochs each. **Measured 71.3 / 71.6 / 71.6 min per run** vs the 59 min extrapolated from youngdata — the composite
+  heads cost ~+22%, not ~0. Re-quote every composite run at **71.5 min (measured, 224 px, fold 0, ~14.3k rows)**.
+- Read with the frozen gate, unchanged (`research.v5.screen_gate_run --arm composite --arm-trunk in22k --tag v5stack
+  --comparator {control,m4,twostep,youngdata} --comparator-trunk in22k`; read rule is the §6 gate, declared before
+  the hash). Outputs `results/v5/screens/gate_composite_in22k_vs_{control,m4,twostep,youngdata}.json`.
+  | composite vs | Δ pAUC all (bar) | Δ pAUC histo (bar) | Δ Macro-F1 (retention bar) | Δ <40 pAUC (descr.) | gate |
+  |---|---|---|---|---|---|
+  | control | **+0.0076** (0.0035) | **+0.0155** (0.0065) | −0.0105 (−0.0153) | +0.0302 | PASS |
+  | m4 | −0.0119 | −0.0191 | +0.0042 | +0.0114 | FAIL |
+  | twostep | −0.0079 | −0.0058 | −0.0012 | +0.0026 | FAIL |
+  | youngdata | +0.0003 | +0.0080 | −0.0127 | +0.0077 | PASS (histo only) |
+- **vs control is fragile and seed-42-driven:** per seed all-age +0.0244 / −0.0048 / +0.0033, histo +0.0400 / +0.0013 /
+  +0.0052, Macro-F1 +0.0155 / −0.0123 / −0.0347 (composite F1 0.6593 / 0.6579 / 0.6361). Gate D direction rule on
+  all-age still holds (mean > 0, 2/3 seeds > 0, worst −0.0048 > −0.010). s44 F1 −0.035 is the largest single-seed
+  retention loss in V5 so far; the mean stays inside the bar.
+- **Sub-additivity (the thing Q6 exists to catch):** m4 vs control = twostep vs control + m4 vs twostep =
+  +0.0195 all / +0.0345 histo; youngdata vs control +0.0073 / +0.0075. An additive composite would sit near
+  +0.027 / +0.042; it reaches +0.0076 / +0.0155. Adding the young-data rows to m4 **removes ~60% of m4's all-age
+  ranking gain** (composite vs m4 −0.0119, negative in s43 and s44 by −0.018), while the under-40 pAUC is the best of
+  any V5 arm (+0.030 vs control, descriptive, s44 −0.019). The composite trades all-age ranking for under-40 ranking.
+- The frozen composite rule (§6) has no "composite must beat its best component" clause and the runsheet forbids
+  re-planning after results, so by the letter the lock is {twostep, m4, youngdata}. **Lock decision pending owner.**
+- **Composite LOCKED (owner decision, ~19:00): frozen rule, {twostep, m4, youngdata}**, m4-only deviation declined.
+  `results/v5/composite_lock.json` sha256 **`a34bd78c4e3098d906bf8cabbc49d0e863f33f20d7fc905f5a34b0081f456059`**
+  (trunk in22k, 224 px, declared score and basis in the file). Written before any Q7 run (break-nothing item 3).
+- **`results/v5/queue_Q7.txt`**: locked composite × folds 1–4, s42, 224 px, `--save-best`, tag `v5conf`, default
+  `--composite-spec` (the lock). Comparator = banked in1k `results/v4/kfold/runs/R0_kfold_f{1..4}_s42.json` (§6.0:
+  control fold runs stay in1k). Dry run clean (4 ids, 0 complete; C2 headroom 9.1 GB, C: 69 GB). Pre-flight: the
+  extra-train clash check is against the whole development partition, so fold 0's pass carries to folds 1–4; the
+  composite's modules need no chromophore artefacts (`front.needs_front` false), so missing fold1–4 artefact files
+  do not block it. ~4.8 h (71.5 min/run, extrapolated from Q6's measured fold-0 runs).
+
+### Declared deviation D1 (m4 secondary arm) + gap fix G1 (control fold 1–4 scoring), before any fold 1–4 data (2026-10-03, ~19:00)
+- **Register:** `results/v5/protocol_deviations.json` — every departure from the frozen V5 plan, with time, what was
+  and was not yet seen, reason, and what stays unchanged. Valid only if declared before the data it concerns are read;
+  all entries go into the manuscript's protocol-deviation statement (TRIPOD+AI / CONSORT-AI practice, IEEE
+  publication ethics: no selective reporting). Q7 had not started at declaration (dry-run log only; no f1–f4 preds).
+- **D1 — m4 as a secondary confirmation arm** (owner approved). Reason: Q6 sub-additivity (composite vs m4 −0.0119 /
+  −0.0191, under-40 +0.0114) can only be tested on held-out folds; m4's fold-0 lead is selection-inflated (passed its
+  own gate by +0.004 vs bar 0.0035). **Unchanged:** lock (sha `a34bd78c…`), primary contrast composite vs in1k control
+  with Gates A/B/D, comparator, seeds, thresholds. **Secondary family (Holm, labelled secondary):** m4 vs control (gates
+  computed), composite vs m4 (estimate + hierarchical interval, no gate). No secondary result may change the lock, the
+  primary verdict or the V5 system definition; all three contrasts are reported whatever their direction.
+  `results/v5/queue_Q7b.txt` = m4 folds 1–4 × s42, 224 px, in22k, `--save-best`, tag `v5conf`; dry run clean
+  (4 ids). ~2.7 h, extrapolated from m4's measured fold-0 runs (37.8 / 38.2 / 43.4 min).
+- **G1 — gap found: the confirmation comparator had no last-epoch predictions.** `R0_kfold_f{1..4}_s42` have run JSONs
+  and `_last.pt` checkpoints but no per-image last-epoch CSVs (`results/v4/kfold/predictions/fold{k}.csv` is the best
+  epoch); Q1 scored fold 0 only. Mixing best-epoch control with last-epoch V5 would bias every paired delta. Fix: run
+  `research.v5.infer_last` on the four `_last.pt` before Q7 (self-check vs run-JSON history, else nothing written);
+  ~22 s per checkpoint, measured from the 30 Sep fold-0 scoring timestamps.
+- Considered and **not** added: youngdata-alone folds 1–4 (composite − m4 already isolates young data's marginal
+  effect given m4); in22k control folds 1–4 (already planned as Q11, "if time allows" — not a deviation).
+- Still to write (CPU, Sunday morning, before reading): the confirmation read script → `confirm_s42.json`.
+
+### Same-footing table, published-benchmark anchor, pool profile, V6 §A10 (2026-10-03, ~19:30; owner request)
+- **Correction to a figure quoted in conversation:** the deployed V1 system (6-CNN + TTA + Dirichlet, rung A7) scored
+  Macro-F1 **0.805** on HAM test, not 0.772 (0.772 is the plain soft-vote, A5) — `results/ablation_table.csv`.
+- **`research/v5/same_footing.py` → `results/v5/same_footing.{csv,md}`.** Three panels by evaluation rows, stored
+  artefacts only (no image scored; no test / reserved file opened; testguard armed): A HAM test (ablation table +
+  S4 band row), B reserved BCN+MSKCC (S54 marginals as stored — BA / escalation sensitivity were never computed there
+  and stay blank), C pooled fold 0 (last-epoch preds, `compute_metrics`, frozen `screen_gate.pauc`; seed soft-votes
+  descriptive, selection fold). Headlines: V1 0.805 HAM → **0.411** reserved; V4 pooled single 0.603 [0.588, 0.611]
+  reserved; fold 0 single BA 0.637–0.651, 3-seed vote BA 0.644–0.672, Macro-F1 0.658–0.682; 3-seed voting adds
+  +0.008 to +0.025 Macro-F1 for every arm. Under-40 escalation sensitivity on fold 0 rests on 35 images.
+- **Published anchor (web, 3 Oct):** Gessert et al. (ISIC 2019 winner, arXiv 1910.03910) — lesion-grouped 5-fold CV
+  on the ISIC 2019 training set, 8 classes, +2,334 external images, best checkpoints: single models 65.3–68.8 BA
+  (EN-B0 224 px 65.8 ± 1.7), ensemble average **71.7 ± 1.7**, optimal subset 72.5, + metadata 74.2; official test
+  63.6. Leaderboard top five 63.6–56.9. Combalia et al. (Lancet DH 2022, abstract via search, full text 403): 82.0 →
+  58.8 BA HAM-sourced vs new BCN images. Our single models sit at the winner's single-model level; the gap is the
+  ensemble. Not like-for-like until 8-class BA is reported (ours is the 7-class collapse).
+- **`research/v5/pool_profile.py` → `results/v5/pool_profile.json`** (development rows + young extra; LOAO from stored
+  V5 control preds): 81 under-40 escalating lesions in development (BCN 35 / HAM 34 / MSKCC 12) vs 1,435 at 60+;
+  escalating prevalence <40 2.9–11.9% vs 60+ 31–75%; young extra adds 291 escalating lesions (3.6×); ISIC young
+  histopathology pool nearly tapped (2,078 of 2,353 candidates used; 747 lack lesion IDs); LOAO BA with BCN held out
+  0.391 (HAM 0.519, MSKCC 0.577 on 3 classes).
+- **`docs/V6_RUNSHEET.md` §A10 added (revision 3 Oct, pre-freeze, before any V6 result):** headline-benchmark target
+  candidate (8-class BA ≥ 0.717 on lesion-grouped CV, images only, plus the under-40 fix), pool-design levers, the
+  accumulation table (only components with a measured gain), and the questions the post-Review-2 brainstorm must
+  settle — including whether CG-DM stays the headline. No other V6 section changed; nothing frozen.
+
+### V6 §A11 — ensemble candidate roster, technique stack, OOF-only selection protocol (2026-10-03, ~19:35; owner request)
+- **Research (web, 3 Oct; sources in §A11 and the session reply):** ISIC 2019 / SIIM-ISIC 2020 / ISIC 2024 winners
+  (diverse multi-resolution EfficientNet ensembles; Ha et al.'s fine-grained 9-diagnosis target; EVA-02 + EdgeNeXt +
+  GBDT with synthetic malignant lesions +0.012/+0.014 pAUC); dermatology foundation models — PanDerm (ViT-B/L,
+  CC-BY-NC), DermFM-Zero / PanDerm-2 (Feb 2026), DermLIP (Derm1M), MedSigLIP-448, MONET, Derm Foundation; a frozen-
+  embedding benchmark on DERM12345 (arXiv 2601.12382: MedSigLIP 69.8 / Derm Foundation 69.5 / MONET 69.3 / DINOv2-G 68.0
+  / PanDerm-L 36.7 weighted F1, protocol-sensitive); Heinlein et al. 2024 (prospective; ISIC-trained ensemble BA 0.890
+  in patients < 35); Ktena et al. 2024 (synthetic data improves under-represented groups) with the memorisation caveat;
+  MILK10k Benchmark is an open blind leaderboard (11-class, label space ≠ ours).
+- **Leakage rule recorded:** public weights trained *with labels* on ISIC 2019/2020 are excluded as members (they saw
+  our reserved / HAM-test labels); SSL dermatology FMs need a pretraining-corpus audit before any external number.
+- **`docs/V6_RUNSHEET.md` §A11** (pre-freeze revision, brainstorm input, not decided): roster in three tiers across
+  pretraining families (params / licences read from timm 1.0.28 on CPU), technique table with evidence and repo
+  priors (loss swaps have a negative prior: LDAM-DRW 0.7256, ASL 0.7305 < CE 0.7459 on HAM), and a pre-declared
+  selection protocol: benchmark → fold-0 screen (single BA or marginal soft-vote contribution) → folds 1–4 →
+  bagged forward selection on the 15,294-row OOF under Macro-F1 / pAUC / under-40 constraints, uniform wins ties →
+  8-class BA headline vs Gessert 71.7. The orphan "(A11a)" label in §A4 was disambiguated (no section of that name).
+- **`scripts/gpu_benchmark.py`:** `--timm` (any timm architecture, built without weights), `--grad-checkpointing`,
+  `--device cpu` (code-path smoke only), and `--json-out` now actually writes (it was parsed but never used — the
+  S70 Hard-Rule-4 gap it was added for was still open). CPU-smoked on ConvNeXt-T (repo path), EVA-02-S, ConvNeXt-V2,
+  SwinV2 @256, DINOv2-S, DINOv3 ViT-B, EfficientNetV2-S, Hiera-S.
+- **`scripts/run_v6_benchmarks.ps1`:** 15 Tier 1–2 configurations → `results/v6/benchmarks/<tag>_<size>.json`;
+  refuses while a train/infer process or the V5 queue holds the GPU; resumable; OOM → one retry with gradient
+  checkpointing. Not run yet (GPU reserved for Q7 → Q7b).
+
+### V6 §A12 — the ADAE angle, verified and adopted leak-free (2026-10-03, ~20:00; owner request, external proposal)
+- **Source:** an external research pass pasted by the owner proposed rebuilding V6 around ADAE (SIIM-ISIC 2020 winner,
+  Ha et al. arXiv 2010.05351) after Heinlein et al. 2024 (Commun Med, PMC11387610). Checked claim by claim:
+  - **Verified:** 18 CNNs × 5 folds (16 EfficientNet B3–B7, SE-ResNeXt-101, ResNeSt-101; 4 use metadata); trained on
+    ISIC 2020 + 2019 (+2018), 58,457 lesions / 5,106 melanomas; sizes 384–896 (solution repo); under 35: BA 0.890,
+    AUROC 0.974 — on **177 lesions / 14 melanomas**, sensitivity 14/14 (exact CI [0.768, 1.000]), specificity 0.779;
+    test inputs were **six real photos per lesion** (R-TTA); weights public (MIT repo).
+  - **Wrong or unsupported in the proposal:** "≤ 25% referral defensible / ≤ 15% referral" — ADAE's own under-35 point
+    is ≈ 28% referral (14 TP + ≈ 36 FP of 177); image-only vs metadata ablation (0.971 vs 0.974) not in the main text,
+    unverified; IN-22k control under-40 pAUC is 0.775 not 0.782; "V5 escalation heads −0.067" is V4 H1/S40; every GPU
+    time and VRAM figure was unmeasured. Verified: unfrozen DINOv3 Macro-F1 0.445 / 0.404 / 0.383.
+- **Public ADAE weights excluded:** trained with labels on ISIC 2019 = our whole corpus (all folds, reserved, HAM test),
+  so a "zero-shot fold-0 probe" would be in-sample and distillation would carry held-out labels (§A11.1 rule).
+- **Adopted (`docs/V6_RUNSHEET.md` §A12, pre-freeze, priority brainstorm candidate):** in-domain ADAE-recipe teacher —
+  pooled data + ISIC-2020 rows (binary auxiliary head for its unlabelled-diagnosis benigns, to verify at V6-0),
+  EfficientNet B3/B4/B5 (ns_jft), SE-ResNeXt-101, ResNeSt-101 at 384–456 px with the §A11 roster, image-only, digital
+  TTA — distilled into one student. **Distillation leakage trap found and closed:** OOF teacher targets for training
+  rows come from models that trained on the student's held-out fold; rule = the fold-k student is distilled only from
+  fold-k teachers (online consistent views; nested teachers only if VRAM forces it). Gates on the five-fold OOF
+  (81 under-40 escalating lesions), under-40 as declared readout; S70 unchanged. Whether A12 replaces CG-DM is left
+  to the post-Review-2 brainstorm.
+- `scripts/run_v6_benchmarks.ps1` now 22 configurations (adds ConvNeXt-T @384 and the ADAE family @384/456); EfficientNet-B5,
+  SE-ResNeXt-101, ResNeSt-101 CPU-smoked through `gpu_benchmark.py --timm`.
+
+### Progress counters (2026-10-03, ~19:55; owner request)
+- **`scripts/progress.ps1`** (read-only): chain view — control scoring → Q7 → Q7b by default (`-Queues` / `-Minutes`
+  comma lists, `-NoScoring`, `-Watch <s>`). Reads `queue_<Q>.log` (header, `---` starts, `DONE in`, `FAILED again`)
+  and the live tqdm fragment in the current run's `.err.log` (stdout is block-buffered to file, so the `.out.log` epoch
+  lines are not live). Run ETA = run start (from the log-file stamp) + elapsed / fraction of batches done; remaining
+  runs use the queue's measured mean `DONE` duration, falling back to the declared estimate (Q7 71.5, Q7b 39.8 min) and
+  labelled "est". Tested on the finished Q6 log and on a simulated half-done run (projected end = start + 2 × elapsed);
+  two PowerShell pitfalls fixed in testing (typed `[string]` params re-stringifying arrays; `[Math]::Max(0, x)` picking
+  the int overload and flooring the bars).
+- **`scripts/run_v6_benchmarks.ps1`**: `[k/22]` counter, elapsed minutes and an ETA from the measured mean per
+  configuration so far.
+
+### Q8a seed-43 confirmation + automatic 04:30 launcher (2026-10-03, ~23:30; owner request)
+- **Gap found:** control (in1k R0, V4 recipe) fold 1–4 runs exist for **seed 42 only**; seeds 43/44 were never banked
+  (`results/v4/kfold/runs/` has no `_f[1-4]_s4[34]`). Q8 therefore trains both sides.
+- **`results/v5/queue_Q8a.txt`:** locked composite (tag `v5conf`, default lock spec) interleaved with the control
+  (`v4 --rungs R0 --corpus pooled --fold k --seed 43 --batch-size 32 --grad-accum 1 --run-tag v5ctl`, the S01 control
+  command), folds 1–4 × s43, so each fold completes a paired comparison. ~7.5 h = 4 × 72.3 (composite, measured Q7
+  folds 1–2) + 4 × 40.7 (control, measured: banked R0 f1 s42 40.7 min, f0 s43 40.9 min). Control predictions from
+  `train_v4` are best-epoch → scored at last epoch by `infer_last` (the launcher does this after the queue).
+- **`scripts/run_q8a_when_ready.ps1`** (start once; waits, then runs Q8a): gates evaluated by the script itself —
+  not before 04:30; all 8 Q7/Q7b run JSONs `smoke=false`, `epochs_run=30`, final Macro-F1 finite and > 0.30; no
+  train/infer process, queue mutex free; no `results/v5/PAUSE`; C: ≥ 10 GB. Unmet after 04:30 → logs why, polls
+  60 s, gives up 09:00 without starting. Holds the machine awake (`SetThreadExecutionState`). Log
+  `results/v5/logs/q8a_launcher.log`. Tested: `-DryRun` prints the gates; run-JSON checks pass on the finished Q6
+  runs; a PowerShell case-insensitive variable collision (`$StartAt` vs `$startAt`) found and fixed in testing.
+- **Advisory Claude check (cron 03:47, session-only, fires only while this app is open and idle):** reads progress,
+  run JSONs, logs and predictions → `results/v5/overnight_check_0447.md`; creates `results/v5/PAUSE` only on a clear
+  failure. It cannot start or stop training.
+
+### Overnight chain + Q8a complete (2026-10-04)
+- **Q7** (locked composite, s42, f1–4) 4/4, 71.0–71.7 min/run; **Q7b** (m4 secondary D1, s42, f1–4) 4/4, 45.1–45.8 min/run
+  (vs 39.8 estimated, +15%); control s42 f1–4 scored at last epoch. Advisory 03:47 check: all clear, no PAUSE
+  (`results/v5/overnight_check_0447.md`). The 04:30 launcher was stopped at 03:56 at owner request; Q8a started by hand 03:57.
+- **Q8a** (s43, f1–4; composite `v5conf` + in1k control `v5ctl`, interleaved) 8/8, no failures, finished 12:30:12; control
+  `_last` checkpoints scored by `infer_last` (4/4 `R0_kfold_f{1..4}_s43_v5ctl_last.csv`, self-check passed). 0 nan /
+  Traceback / Error lines in the 8 err logs. Run times: composite 73.1 / 73.8 / 78.9 / 71.0 min; **control 50.8 / 65.6 /
+  49.6 / 49.3 min — 22–61% over the 40.7-min S72 anchor** (machine in use during the day is the likely cause; not
+  investigated). Re-quote seed 44 from these Q8a figures, not the anchors.
+- Per-run end-of-training val Macro-F1 (descriptive only, not the confirmation read): composite s42 0.685 / 0.674 /
+  0.678 / 0.659, s43 0.667 / 0.671 / 0.689 / 0.679; m4 s42 0.675 / 0.698 / 0.662 / 0.685; control s43 0.664 / 0.662 /
+  0.655 / 0.664. Sources: the run JSONs in `results/v5/runs/` and `results/v4/kfold/runs/`.
+
+### E14 confirmation read — operational choices DECLARED BEFORE THE READ (2026-10-04, ~15:30)
+Nothing below has been computed on folds 1–4 yet. Declared now so no choice can follow the data.
+- **Rows / pairing:** pooled held-out folds 1–4 (12,235 rows) per seed; composite (`*_in22k_v5conf.csv`, last epoch)
+  vs in1k control (s42 `R0_kfold_f{k}_s42_last.csv`; s43/s44 `R0_kfold_f{k}_s{seed}_v5ctl_last.csv`), aligned by
+  `image_id`, identical rows and labels asserted. Score = each arm's registry `declared_score` (composite: escalation
+  mass; control: escalation mass; m4: its head score).
+- **Uncertainty:** the S01 hierarchical bootstrap (`research/v5/s01_read.py`): draw seed pairs with replacement, then
+  `effective_lesion_id` clusters with replacement within each drawn pair, both arms sharing the draw; 2,000 resamples,
+  percentile 95% CI, RNG seed 20261004. With one seed this reduces to the lesion bootstrap.
+- **Gate A** (runsheet §6): Δ under-40 escalation pAUC@0.20 point ≥ +0.050 **and** CI lower bound > 0.
+- **Gate B:** Δ Macro-F1 (7-class) point ≥ −0.010; CI reported.
+- **Gate C** (master §18; not redefined in the runsheet): per band (40–59, 60+), escalation sensitivity at a **fixed
+  referral specificity of 0.80** — each arm's threshold is the 0.80 quantile of its own scores on non-escalating rows
+  (all ages, pooled folds 1–4; FPR 0.20 = the pAUC cap); Δ sensitivity ≥ −0.030 in both bands.
+- **Gate D:** per-seed Δ all-age escalation pAUC: mean > 0, ≥ 2 of 3 seeds > 0, no seed < −0.010. Evaluable only with
+  3 seeds; with fewer it is reported as "provisional (k/3 seeds)", never as a pass.
+- **Descriptive (no gate):** Δ pAUC_histo; Δ balanced accuracy; Δ escalation sensitivity (argmax); **B2** — within-<40
+  MEL-vs-NV AUC on the declared score, and a class-standardised <40 escalation pAUC (each <40 row weighted by
+  pooled-class-share / <40-class-share, pooled = all ages, folds 1–4); **B4** — <40 pAUC per archive (BCN, HAM, MSKCC
+  where both classes exist) and an archive-fixed-effects pooled Δ (per-archive Δ weighted by that archive's <40
+  escalating lesion count).
+- **Secondary family (D1, Holm across 2, seed 42 only):** m4 vs control and composite vs m4 on Δ all-age pAUC, two-sided
+  bootstrap p = 2·min(P(Δ ≤ 0), P(Δ ≥ 0)); Gates A/B/C computed for m4 vs control and labelled secondary. m4 is also
+  read on escalation mass (descriptive, the V5 readout-artefact rule).
+- **Outputs:** `results/v5/confirm_s42.json` (seed 42 only — the Review-2 minimum); `results/v5/confirm_s42_s43.json`
+  (two seeds, Gate D provisional); the three-seed file after Q8b. Script: `research/v5/confirm_read.py`; ledger rows
+  in `research/experiments.csv` (session `v5_confirm`).
+
+### E14 confirmation read — seed 42 (Review-2 minimum) and seeds 42+43 (2026-10-04, ~16:00)
+- **Script:** `research/v5/confirm_read.py` (choices declared above before any fold 1–4 read). Cross-checks pass:
+  weighted Macro-F1 / BA = `compute_metrics`; weighted pAUC = the frozen McClish pAUC. A 3-resample smoke run was
+  deleted with its ledger row. Outputs `results/v5/confirm_s42.json`, `results/v5/confirm_s42_s43.json`; ledger
+  session `v5_confirm`. 12,235 rows; 158 under-40 escalating images / **65 lesions** (BCN 28, HAM 27, MSKCC 10).
+- **Primary, composite − in1k control, seeds 42 + 43 (hierarchical CI; seed 42 alone in brackets where it differs):**
+  | Endpoint | Δ | 95% CI | per seed |
+  |---|---|---|---|
+  | all-age escalation pAUC (Gate D) | −0.0007 | [−0.0082, +0.0067] | −0.0002 / −0.0012 |
+  | **under-40 pAUC (Gate A)** | **+0.0361** | **[+0.0072, +0.0665]** | +0.0398 / +0.0323 (s42 CI [−0.0044, +0.0867]) |
+  | pAUC_histo | +0.0033 | [−0.0094, +0.0158] | +0.0008 / +0.0058 |
+  | Macro-F1 (Gate B) | +0.0129 | [−0.0014, +0.0271] | +0.0088 / +0.0169 |
+  | balanced accuracy | +0.0063 | [−0.0077, +0.0191] | |
+  | escalation sensitivity (argmax) | +0.0168 | [+0.0046, +0.0275] | |
+  | sens @ spec 0.80, 40–59 / 60+ (Gate C) | +0.0038 / −0.0029 | [−0.018, +0.022] / [−0.014, +0.008] | |
+  | B2 MEL-vs-NV AUC <40 | +0.0413 | [−0.0009, +0.0900] | |
+  | B2 class-standardised <40 pAUC | +0.0252 | [−0.0018, +0.0528] | |
+  | B4 <40 pAUC BCN / HAM / MSKCC | +0.034 / +0.010 / **+0.250** | MSKCC [+0.127, +0.378] | control MSKCC <40 pAUC 0.509 |
+  | B4 archive-fixed-effects pooled | +0.0573 | [+0.0229, +0.0909] | |
+- **Gates:** A **FAIL** (point +0.036 < MCID +0.050, though its CI now excludes 0); B **PASS**; C **PASS**; D provisional
+  (2/3) but **arithmetically settled as FAIL**: both available seeds are ≤ 0, so "≥ 2 of 3 seeds > 0" cannot be met
+  whatever seed 44 shows. Stated, not hidden.
+- **Reading:** the locked composite does **not** improve all-age escalation ranking on held-out folds (Δ ≈ 0, both
+  seeds). It retains — slightly raises — Macro-F1 and lifts **under-40** ranking by ≈ +0.036, consistent across seeds,
+  short of the pre-declared MCID. That under-40 gain is partly case mix (class-standardised +0.025) and uneven by
+  archive: it is largest where the control is weakest (MSKCC, 10 lesions, control near chance), smaller in BCN, ≈ 0 in
+  HAM — under B4 this is an archive-heterogeneous finding, not yet a morphology finding.
+- **Secondary D1 (seed 42, Holm across 2):** m4 − control all-age pAUC **+0.0152** [+0.0052, +0.0254], Holm p 0.004;
+  composite − m4 **−0.0154** [−0.0252, −0.0061], Holm p 0.002 — the Q6 sub-additivity **replicates on held-out
+  folds**. But m4's all-age gain exists **only on its own head score**: read on escalation mass it is −0.0042
+  [−0.0140, +0.0061] (under-40 +0.0242 [−0.009, +0.059]). Under the V5 readout-artefact rule a head-only gain is not
+  a representation gain; it is reported as a readout result. Per D1, none of this changes the lock or the primary.
+
+### Decisions D2/D3 and the V5 fairness audit (2026-10-04, ~16:40; owner request)
+- **D2** (declared before any fold-0 OOF assembly): fold 0 of the V5 15-model OOF reuses Q6's `composite_f0_s{42,43,44}_in22k_v5stack`
+  (identical locked modules / data / recipe; only spec-file status and `--no-save-best` differ; `_last` is primary);
+  fold 0 stays the flagged selection fold. **D3:** S84 MILK10k read and S56-on-V5 refit deferred to the post-Review-2
+  addendum (§8.2 cut line); MILK10k remains unread. Both in `results/v5/protocol_deviations.json`.
+- **`results/v5/fairness_audit.md`** (every number sourced): screens were lenient (80th-percentile bar, null pass 20–36%);
+  failing arms failed on point estimates ≤ 0; falsifiers were fair mechanism tests (geometry kept 75% of its gain under
+  rotation, zoom lost to random crops 3/3, memory prototypes not young-specific) but their consequence — exclusion
+  from the composite — is strict for engineering goals; Gate A is a clinical bar (P ≈ 0.18 of reaching +0.050 if the
+  true effect is +0.036). Real handicaps against the modules: no tuning (fixed cards) vs a tuned control; new modules
+  at the trunk's 1e-4 after 3 head epochs, `look`'s zero-initialised stem channels frozen in the head stage; 224 px
+  (S01) with the 384 rescue unable to fire; NaN-fixed re-screens changed look/geometry. One factor favoured the
+  composite: IN-22k trunk vs the in1k comparator (fold 0: trunk alone +0.0072 all-age, +0.0275 Macro-F1, −0.0155
+  under-40) — descriptively, modules + young data cancelled the trunk's all-age gain and added under-40 ranking; Q11
+  would test it. Why little worked: misses are nevus-like, heavily pigmented young melanomas (51/55 called nv; B1),
+  the structure premise failed at 224 px (Q5: 0 young tokens), and the pretrained trunk already encodes the
+  hand-built cues. Verdict: a fair, lenient test; no for all-age ranking, a small real sub-clinical yes for under-40,
+  carried by data.
+
+### Review-2 figures and tables (2026-10-04, ~17:10)
+- **`research/v5/review2_figures.py`** → `results/v5/figures/fig_confirmation_forest`, `fig_u40_by_archive`, `fig_screens`
+  (PNG 200 dpi + SVG; one series hue, neutral inks, dashed = pre-declared gate thresholds; rendered and inspected, a
+  label/title collision fixed) and **`results/v5/review2_tables.md`** (screens incl. the three never-run arms, the
+  confirmation table with gates, absolute per-seed values). Built only from result files; default input is the
+  newest `confirm_s42*.json`, so re-running after the three-seed read regenerates everything. Absolute folds 1–4
+  values (seeds 42 / 43): control Macro-F1 0.666 / 0.660, composite 0.675 / 0.677; under-40 pAUC control 0.730 /
+  0.743, composite 0.769 / 0.776 (`results/v5/confirm_s42_s43.json`).
+
+### Resolution investigation + V6 §A13 (2026-10-04, ~17:40; owner request)
+- **`results/v5/resolution_investigation.md`.** Pipeline ruled out: development images are full resolution on disk (HAM
+  600×450, BCN 1024×1024, MSKCC ~1024×680; 40 per archive opened); R1 changes only `image_size`; eval field of view and
+  train augmentation identical. Finding: **resolution helps HAM-type images** — V4 S53r 384 px +0.0297 Macro-F1, per
+  seed +0.0328 / +0.0097 / +0.0466 (`results/v4/s53r/s53r_report.json`); V5 S01 HAM rows +0.008 / +0.006 / +0.030 —
+  but **not BCN rows** (−0.007 / +0.021 / −0.004; BA −0.018 / +0.035 / −0.014), which are 45% of fold 0, so the pooled
+  Δ is +0.004. S01 could not resolve it: one fold, 3 seeds, seed-pair SD 0.016, last-epoch noise ≈ 0.006/epoch (runs
+  peaked at epochs 12–25, ended 0.01–0.015 below best), 224-pretrained weights at 384. The V5 modules were therefore
+  never tested at a resolution where fine structure survives.
+- **`docs/V6_RUNSHEET.md` §A13 (pre-freeze revision, brainstorm input):** A13.0 FixRes re-scoring of existing
+  checkpoints (free); A13.1 resolution study with 384-pretrained IN-22k weights, 5-fold OOF, 3 seeds, 8-class BA +
+  escalation pAUC, pre-declared per-archive readout and EMA (≈ 26 h from measured 224 / 384 anchors; the 224 arm doubles
+  as Q11); A13.2 archive-aware detail (BCN hypotheses tested on existing predictions first); A13.3 fair module re-test
+  (separate LR groups, no frozen zero-init stem, equal tuning budget, falsifier split mechanism vs engineering).
+
+### V6 §A13.0 FixRes re-scoring script (2026-10-04, ~18:05; owner request)
+- **`research/v6/fixres_rescore.py`** (inference only, development folds 1–4, test lock armed): re-scores the existing
+  `_last` checkpoints — locked composite (`convnext_tiny-v5_composite_f{k}_s{seed}_in22k_v5conf_last.pt`, built via
+  `composite_spec` + `build_arm`) and in1k control (`convnext_tiny-v4_R0_kfold_f{k}_s{seed}[_v5ctl]_last.pt`, via
+  `build_arm_model`) — at test sizes 224 / 256 / 288 / 320 with the project eval transform. The 224 pass must reproduce
+  the stored last-epoch escalation mass within 1e-3 on GPU (CPU runs fp32 vs the stored AMP files: 2.1e-3 observed in
+  the code check, so the check is enforced on CUDA only) or the checkpoint is skipped. Refuses while a train/infer
+  process holds the GPU. Output `results/v6/fixres/fixres_rescore.json` (per run and pooled folds 1–4 per arm × seed
+  × size: Macro-F1, BA, all-age and under-40 pAUC). CPU code check (1 batch, fold 1, seed 42, 224 + 288) ran both
+  arms end to end; nothing written. Not yet run on GPU (Q8b holds it).

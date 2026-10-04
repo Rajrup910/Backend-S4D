@@ -45,10 +45,28 @@ def synthetic_loader(size: int, batch: int, steps: int):
         yield torch.randn(batch, 3, size, size), torch.randint(0, 7, (batch,))
 
 
-def benchmark(arch: str, size: int, batch: int, classes: int, device: torch.device) -> dict:
-    from ml.training.common import build_model
+def build(arch: str, size: int, classes: int, use_timm: bool, grad_ckpt: bool) -> nn.Module:
+    """The repo's own `build_model`, or any timm architecture (V6 candidate roster, §A11).
+    Weights are irrelevant to step time, so timm models are built without downloading them."""
+    if not use_timm:
+        from ml.training.common import build_model
 
-    model = build_model(arch, num_classes=classes).to(device)
+        return build_model(arch, num_classes=classes)
+    import timm
+
+    name = arch.split(".")[0]
+    try:  # ViT-family models fix their position grid at build time
+        model = timm.create_model(name, pretrained=False, num_classes=classes, img_size=size)
+    except TypeError:
+        model = timm.create_model(name, pretrained=False, num_classes=classes)
+    if grad_ckpt:
+        model.set_grad_checkpointing(True)
+    return model
+
+
+def benchmark(arch: str, size: int, batch: int, classes: int, device: torch.device,
+              use_timm: bool = False, grad_ckpt: bool = False) -> dict:
+    model = build(arch, size, classes, use_timm, grad_ckpt).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
     criterion = nn.CrossEntropyLoss()
     scaler = torch.amp.GradScaler(device.type) if device.type == "cuda" else None
@@ -114,9 +132,15 @@ def main(argv: list[str] | None = None) -> int:
                         help="write the measured rows to this path. S70's benchmark table was "
                              "hand-copied into the CHANGELOG, which Hard Rule 4 forbids; pass this "
                              "and cite the file instead.")
+    parser.add_argument("--timm", action="store_true",
+                        help="--arch is a timm model name (tag optional), e.g. eva02_small_patch14_224")
+    parser.add_argument("--grad-checkpointing", action="store_true",
+                        help="timm only: trade compute for activation memory (large ViTs)")
+    parser.add_argument("--device", choices=("auto", "cpu"), default="auto",
+                        help="cpu = smoke-test the code path only (timings meaningless)")
     args = parser.parse_args(argv)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if args.device == "auto" and torch.cuda.is_available() else "cpu")
     print(f"device {device}"
           + (f"  {torch.cuda.get_device_name(0)}  "
              f"{torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB"
@@ -129,14 +153,33 @@ def main(argv: list[str] | None = None) -> int:
         f"{f'w={w}':>12}" for w in args.workers)
     print(header)
     print("-" * len(header))
+    records = []
     for size in args.sizes:
-        result = benchmark(args.arch, size, args.batch, args.classes, device)
+        result = benchmark(args.arch, size, args.batch, args.classes, device,
+                           use_timm=args.timm, grad_ckpt=args.grad_checkpointing)
         row = f"{size:>6} {result['ms']:>10.0f} {result['vram_gb']:>9.2f}"
+        record = {"arch": args.arch, "timm": args.timm, "grad_checkpointing": args.grad_checkpointing,
+                  "size": size, "batch": args.batch, "ms_per_batch": result["ms"],
+                  "vram_peak_gb": result["vram_gb"], "projected_minutes": {}}
         for workers in args.workers:
             minutes = project(result["ms"], args.cpu_ms_per_image, args.batch, workers,
                               args.images, args.epochs)
+            record["projected_minutes"][f"workers_{workers}"] = minutes
             row += f"{minutes / 60:>10.2f} h" if minutes >= 90 else f"{minutes:>10.0f} m"
         print(row)
+        records.append(record)
+
+    if args.json_out:
+        import json
+
+        out = Path(args.json_out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        meta = {"device": torch.cuda.get_device_name(0) if device.type == "cuda" else "cpu",
+                "torch": torch.__version__, "images": args.images, "epochs": args.epochs,
+                "cpu_ms_per_image": args.cpu_ms_per_image,
+                "note": "full fine-tune step (all parameters trainable), synthetic batches, AMP"}
+        out.write_text(json.dumps({"meta": meta, "rows": records}, indent=1), encoding="utf-8")
+        print(f"wrote {out}")
 
     print("\nQuote these as measured. Do not scale them to another architecture -- re-run instead.")
     return 0

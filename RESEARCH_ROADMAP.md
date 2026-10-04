@@ -289,6 +289,8 @@ timestamp,session,method,split,macro_f1,accuracy,balanced_accuracy,weighted_f1,m
 | 6 | Post-manuscript falsification programme (V2 · V3) | ✅ Complete — 5 of 6 hypotheses falsified |
 | 6b | Phase V4: Multi-Archive Representation, Safety Cascades & Ranking Limit (S48–S67) | ✅ Complete — 76/76 audit passed; contract evaluated on reserved; under-40 ceiling proved |
 | 7 | Phase Y: Post-Contract Programme & External Generalization (S68–S75) | 🟡 S68–S72 Complete & Banked (K-fold trained, OOF assembled, recalibrated, gated); S73 gated on S75 external cohort |
+| 8 | Phase V5: Biology-Grounded Representation & Confirmatory Validation (S76–S85) | 🟡 Pre-registered & Frozen — Ready for Execution (Master Plan & Runsheet Reconciled) |
+
 
 ---
 
@@ -339,4 +341,24 @@ Following S59's contract failure, four open engineering decisions govern Phase Y
 1. **External Evaluation Cohort**: S73 confirmatory read awaits S75 external cohort sourcing; reserved read 9 remains descriptive-only.
 2. **S67 Stage 0 Read**: Descriptive reserved read of the V4 pooled ensemble remains available at owner's discretion.
 3. **Overleaf Monograph Compilation**: Final compilation of `paper/v4/manuscript_v4.tex` in Overleaf once S73–S74 close.
+
+---
+
+## 7. Phase V5: Biology-Grounded Representation & Confirmatory Validation (Sessions S76–S85)
+
+Following the V4 closure audit, V5 attacks the representation-level ranking bottleneck on the single RTX 5050 Laptop GPU through 10 pre-registered execution sessions:
+
+| Session | Scope | Tier & Compute | Status / Deliverable |
+|:--|:--|:--|:--|
+| **S76** | V5 Pre-flight data integrity audit & descriptive age-stratified morphology (V5-B1) | CPU (~18 min) | 🟡 **Ready** — Assert 0 patient/lesion leakage across folds, valid mask coverage $\ge 90\%$, test receipt $\le 2$, reserved receipt $\le 8$ (`results/v5/s00_integrity_report.json`, `s00b_morphology_audit.json`). |
+| **S77** | 384px ConvNeXt-Tiny control confirmation vs matched 224px control on Fold 0 (V5-A1) | GPU (~4.6 h) | 🟡 **Ready** — 3 seeds (42, 43, 44); Two-Hurdle Rule: 95% CI lower bound $> 0.000$ AND mean paired gain $\ge +0.015$ MCID (`results/v5/s01_control_384_report.json`). Initial screening fold; 5-fold OOF reserved for finalists. |
+| **S78** | High-value visual representation screening (Dual-stream, Escalation, Tree, Micro-patches) | GPU (~5.8 h) | 🟡 **Ready** — Seed 42 screening vs capacity controls. Gate A ($\Delta pAUC \ge +0.050$) & Gate B ($\Delta \text{Macro} \ge -0.010$). Reports `s02` through `s05`. |
+| **S79** | Biological representation & morphology refinements (Context, SupCon, MEL-NV rank, Wavelets, GeM) | GPU (~5.6 h – 8.5 h) | 🟡 **Ready** — Applied to surviving S78 representation. Evaluates latent cluster separation, pairwise ranking, and Haar wavelets (`s06` through `s12`). |
+| **S80** | Subgroup-robust representation optimization (Group-DRO on best representation, V5-A3) | GPU (~4.6 h) | 🟡 **Ready** — 3 seeds (42, 43, 44); Minimax optimization over $G = \{\text{age\_band} \times \text{escalation}\}$; worst-group risk $\ge 10\%$ gain (`s13_group_dro_report.json`). |
+| **S81** | Modern high-res heterogeneous backbones (ConvNeXt-V2, EfficientNetV2-M, SwinV2-Tiny-384, V5-A4) | GPU (~16.1 h) | 🟡 **Ready** — 3 seeds each across 2 overnight blocks; Gate B (Macro-F1 $\ge 0.765-0.770$) & Gate D ($s_{\text{seed}} \le 0.015$); 5-fold cross-fitting for finalists (`s14`–`s16`). |
+| **S82** | Common OOF matrix assembly ($N=15,294$) & error-diverse compact ensembling | CPU / GPU (~1.2 h) | 🟡 **Ready** — Generate `results/v5/v5_oof_common_matrix.csv`; Gate E ($Q < 0.70$, Macro-F1 $\ge 0.7950$, $\Delta pAUC \ge +0.070$); optional morphology routing (`s17`, `s17b`). |
+| **S83** | Safety stack integration (24-view TTA, Dirichlet multi-calibration, Conformal net, Modality guard) | GPU (~4.1 h) | 🟡 **Ready** — Macro-F1 $\ge 0.8050$; signed cal gap $\le 0.015$; 100% non-dermoscopy rejection; $\ge 95\%$ young malignant coverage (`s18`, `s19`, `v5_safety_pipeline.pt`). |
+| **S84** | Locked confirmatory external cohort evaluation on pristine S75 dataset (V5-A5) | GPU (~65 min) | 🟡 **Gated on S75** — Single read; Fixed-Sequence Hierarchical Test: Step 1 Macro-F1 $\ge 0.7500 \to$ Step 2 Under-40 sensitivity $\ge 0.700$ vs $H_0 \le 0.500$ ($N \ge 40$ lesions, exact binomial $p < 0.05$). |
+| **S85** | Secondary & deferred exploratory queue (Mixup, SWA, Focal loss, Balanced softmax, Distillation) | GPU (~6.5 h) | 🟡 **Deferred** — Non-core, conditional ablations (`x01` through `x05`). Executed only on explicit development trigger. |
+
 

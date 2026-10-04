@@ -49,8 +49,23 @@
     "CC-BY": 465
   },
   "download_bytes": 1372653717,
-  "images_downloaded": 0,
+  "images_downloaded": 2353,
   "test_read": false,
   "reserved_read": false,
-  "note": "Metadata only. Perceptual-duplicate removal happens after the approved download."
+  "note": "Metadata only. Perceptual-duplicate removal happens after the approved download.",
+  "dropped": {
+    "duplicate_of_corpus": 275,
+    "unreadable": 0
+  },
+  "kept": 2078,
+  "kept_by_class": {
+    "nv": 1496,
+    "mel": 433,
+    "bcc": 54,
+    "bkl": 49,
+    "akiec": 23,
+    "vasc": 21,
+    "df": 2
+  },
+  "extra_train_sha256": "e6e0a84aecb47881fdc16ec46f0649532cac24a6b008a33a97986c77071631ce"
 }

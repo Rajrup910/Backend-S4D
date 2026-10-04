@@ -1,0 +1,8 @@
+# Q7 -- seed-42 confirmation (V5 runsheet section 8, Review-2 minimum): LOCKED composite x folds 1-4, s42, 224 px,
+# in22k, --save-best, tag v5conf. Lock: results/v5/composite_lock.json (sha256 in CHANGELOG).
+# Comparator: banked in1k control results/v4/kfold/runs/R0_kfold_f{1..4}_s42.json (runsheet 6.0: control stays in1k).
+# ~71.5 min/run, extrapolated from Q6's measured fold-0 composite runs (71.3-71.6 min) -> ~4.8 h.
+--arm composite --extra-train results/v5/young_data/extra_train.csv --fold 1 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm composite --extra-train results/v5/young_data/extra_train.csv --fold 2 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm composite --extra-train results/v5/young_data/extra_train.csv --fold 3 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm composite --extra-train results/v5/young_data/extra_train.csv --fold 4 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf

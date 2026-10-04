@@ -1,0 +1,73 @@
+{
+  "run_id": "twostep_f0_s42_in22k_smoke",
+  "arm": "twostep",
+  "modules": [
+    "twostep"
+  ],
+  "session": "v5_smoke",
+  "split": "f0",
+  "seed": 42,
+  "fold": 0,
+  "loao_holdout": null,
+  "image_size": 224,
+  "epochs": 30,
+  "epochs_run": 1,
+  "trunk": "in22k",
+  "extra_train": null,
+  "extra_train_rows": 0,
+  "batch_size": 16,
+  "grad_accum": 1,
+  "effective_batch": 16,
+  "num_workers": 2,
+  "patience": null,
+  "run_tag": "smoke",
+  "primary_checkpoint": "last",
+  "declared_score": "s_esc",
+  "registry_sha256": "e85842c9c2a9fc9ff7e98a94a4e6a992d0c12387aa6a47b03554b87a2cfcf18e",
+  "final_val_macro_f1": 0.13333333333333333,
+  "final_val_balanced_accuracy": 0.5,
+  "final_val_escalation_sensitivity": 0.0,
+  "best_val_macro_f1": null,
+  "best_epoch": null,
+  "train_images": 64,
+  "val_images": 32,
+  "train_time_seconds": 13.0,
+  "device": "cpu",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "checkpoints": {
+    "last": "results\\v5\\smoke\\convnext_tiny-v5_twostep_f0_s42_in22k_smoke_last.pt"
+  },
+  "predictions": {
+    "last": "results\\v5\\smoke\\preds\\twostep_f0_s42_in22k_smoke.csv"
+  },
+  "patch_maps": null,
+  "memory_readout": null,
+  "loader_view_size": 224,
+  "val_images_cached": true,
+  "m5_labelled_train_rows": null,
+  "m7_chromophore_scaling": null,
+  "swad": null,
+  "logic_sign_check": null,
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "train_loss": 2.132287383079529,
+      "train_accuracy": 0.46875,
+      "loss_parts": {
+        "ce": 1.5258020162582397,
+        "bce_mel": 0.6530039310455322,
+        "bce_esc": 0.559966653585434
+      },
+      "val_macro_f1": 0.13333333333333333,
+      "val_balanced_accuracy": 0.5,
+      "val_accuracy": 0.875,
+      "val_escalation_sensitivity": 0.0,
+      "val_missed_serious": 4,
+      "learning_rate": 0.0,
+      "seconds": 12.974337339401245
+    }
+  ]
+}

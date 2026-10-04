@@ -1,0 +1,41 @@
+{
+  "files": [
+    "control_f0_s42_in22k_v5scr.csv",
+    "control_f0_s43_in22k_v5scr.csv",
+    "control_f0_s44_in22k_v5scr.csv"
+  ],
+  "endpoints": {
+    "pauc_all": {
+      "in1k_pair_sd_15_pairs": 0.007117403552107647,
+      "in22k_pair_sd_3_pairs": 0.015277249533890837,
+      "in22k_over_in1k": 2.14646386453201,
+      "in22k_bar_k3": 0.007423372075534877
+    },
+    "pauc_histo": {
+      "in1k_pair_sd_15_pairs": 0.013428382904960366,
+      "in22k_pair_sd_3_pairs": 0.019909967043957786,
+      "in22k_over_in1k": 1.4826779355988695,
+      "in22k_bar_k3": 0.009674456979383657
+    },
+    "macro_f1": {
+      "in1k_pair_sd_15_pairs": 0.0161255125675283,
+      "in22k_pair_sd_3_pairs": 0.02180565728699543,
+      "in22k_over_in1k": 1.352245839980625,
+      "in22k_bar_k3": 0.010595592291261067
+    },
+    "mechanism": {
+      "in1k_pair_sd_15_pairs": 0.015338178095763636,
+      "in22k_pair_sd_3_pairs": 0.015708269791677058,
+      "in22k_over_in1k": 1.0241287911512542,
+      "in22k_bar_k3": 0.007632809234922899,
+      "in22k_per_seed": {
+        "42": 0.720858971143016,
+        "43": 0.7416151451210695,
+        "44": 0.7380934814792954
+      }
+    }
+  },
+  "note": "3 IN-22k seeds = 3 pairs: rough; V6-0 adds seeds 45-47",
+  "test_read": false,
+  "reserved_read": false
+}

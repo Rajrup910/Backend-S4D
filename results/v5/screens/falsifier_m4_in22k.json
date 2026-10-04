@@ -1,0 +1,18 @@
+{
+  "mean_delta_pauc_histo": 0.013241046990462321,
+  "seeds_positive": 3,
+  "pass": true,
+  "verdict": "PASS",
+  "arm": "m4",
+  "comparator": "twostep",
+  "trunk": "in22k",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "definitions_declared": "2026-09-30, before any Q3 run (module docstring)",
+  "gate_pass_before_falsifier": true,
+  "screen_pass": true,
+  "test_read": false
+}

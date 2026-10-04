@@ -1,0 +1,80 @@
+{
+  "run_id": "zoom_f0_s42_in22k",
+  "arm": "zoom",
+  "modules": [
+    "twostep",
+    "clues",
+    "zoom"
+  ],
+  "session": "v5_run",
+  "split": "f0",
+  "seed": 42,
+  "fold": 0,
+  "loao_holdout": null,
+  "image_size": 224,
+  "epochs": 30,
+  "epochs_run": 1,
+  "trunk": "in22k",
+  "extra_train": null,
+  "extra_train_rows": 0,
+  "batch_size": 32,
+  "grad_accum": 1,
+  "effective_batch": 32,
+  "num_workers": 2,
+  "patience": null,
+  "run_tag": null,
+  "primary_checkpoint": "last",
+  "declared_score": "s_esc_noisy_or",
+  "registry_sha256": "e85842c9c2a9fc9ff7e98a94a4e6a992d0c12387aa6a47b03554b87a2cfcf18e",
+  "final_val_macro_f1": 0.04081632653061224,
+  "final_val_balanced_accuracy": 0.08653846153846154,
+  "final_val_escalation_sensitivity": 0.5833333333333334,
+  "best_val_macro_f1": null,
+  "best_epoch": null,
+  "train_images": 128,
+  "val_images": 64,
+  "train_time_seconds": 40.9,
+  "device": "cuda",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "vram_peak_gb": 4.214272,
+  "vram_total_gb": 8.546484224,
+  "checkpoints": {
+    "last": "results\\v5\\smoke\\convnext_tiny-v5_zoom_f0_s42_in22k_last.pt"
+  },
+  "predictions": {
+    "last": "results\\v5\\smoke\\preds\\zoom_f0_s42_in22k.csv"
+  },
+  "patch_maps": "results\\v5\\smoke\\patchmaps\\zoom_f0_s42_in22k.npz",
+  "memory_readout": null,
+  "loader_view_size": 448,
+  "val_images_cached": false,
+  "m5_labelled_train_rows": null,
+  "m7_chromophore_scaling": null,
+  "swad": null,
+  "zoom_mode": "random",
+  "logic_sign_check": null,
+  "front_token_backstop_hits": null,
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "train_loss": 19.87324333190918,
+      "train_accuracy": 0.125,
+      "loss_parts": {
+        "ce": 2.094359040260315,
+        "bce_mel": 0.9901119768619537,
+        "bce_esc": 33.865572929382324,
+        "bce_esc_zoom": 0.35104161500930786
+      },
+      "val_macro_f1": 0.04081632653061224,
+      "val_balanced_accuracy": 0.08653846153846154,
+      "val_accuracy": 0.140625,
+      "val_escalation_sensitivity": 0.5833333333333334,
+      "val_missed_serious": 5,
+      "learning_rate": 0.0,
+      "seconds": 40.765459060668945
+    }
+  ]
+}

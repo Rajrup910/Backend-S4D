@@ -1,0 +1,52 @@
+{
+ "rule": "PASS if mean_s[pAUC(rot) - pAUC(control)] <= 0.5 * mean_s[pAUC(geo) - pAUC(control)] on each endpoint geometry passed on (escalation mass)",
+ "pipeline_check": {
+  "42": {
+   "max_abs_diff_unrotated_vs_stored": 1.900545501709594e-05,
+   "n": 3059,
+   "max_abs_change_rotated": 0.048515379428863525
+  },
+  "43": {
+   "max_abs_diff_unrotated_vs_stored": 2.300935554505612e-05,
+   "n": 3059,
+   "max_abs_change_rotated": 0.07750403881072998
+  },
+  "44": {
+   "max_abs_diff_unrotated_vs_stored": 2.819059585568162e-05,
+   "n": 3059,
+   "max_abs_change_rotated": 0.0634375810623169
+  }
+ },
+ "test_read": false,
+ "pauc_all": {
+  "gain_unrotated": 0.004915136260591331,
+  "gain_rotated": 0.0036509331816551396,
+  "per_seed_unrotated": [
+   0.018654884441958286,
+   0.0011059872692639194,
+   -0.005015462929448211
+  ],
+  "per_seed_rotated": [
+   0.017990900349371897,
+   0.00015930395141705578,
+   -0.007197404755823533
+  ],
+  "pass": false
+ },
+ "pauc_histo": {
+  "gain_unrotated": 0.00741050857251746,
+  "gain_rotated": 0.005494514417865637,
+  "per_seed_unrotated": [
+   0.02796674777644137,
+   -0.001327662145307107,
+   -0.004407559913581882
+  ],
+  "per_seed_rotated": [
+   0.027168062422973538,
+   -0.0023821356185131926,
+   -0.008302383550863435
+  ],
+  "pass": false
+ },
+ "falsifier_pass": false
+}

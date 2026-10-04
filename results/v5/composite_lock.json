@@ -1,0 +1,11 @@
+{
+ "status": "locked",
+ "modules": ["twostep", "m4", "youngdata"],
+ "extra_train": "results/v5/young_data/extra_train.csv",
+ "trunk": "in22k",
+ "resolution": 224,
+ "declared_score": "all-age escalation pAUC@0.20 (Gate D direction rule); Gate A on <40 pAUC; Gate B Macro-F1 retention >= -0.010; comparator banked in1k R0 control folds 1-4 (runsheet 6.0 / 8.1)",
+ "basis": "Frozen composite rule (runsheet 6), applied to the Q3-Q5 reads unchanged: twostep PASS, m4 PASS and beats parent, youngdata PASS; every other arm failed or was falsified; logic void (no concept inputs). Q6 stacking check (3 Oct): composite vs in22k control PASS (+0.0076 all / +0.0155 histo, F1 -0.0105 within bar) but sub-additive (composite vs m4 -0.0119 all / -0.0191 histo). Rule has no beat-best-component clause; owner chose the frozen rule over an m4-only deviation (3 Oct ~19:00). Sub-additivity reported as a finding.",
+ "locked_at": "2026-10-03T19:00+05:30",
+ "sources": ["results/v5/composite_candidate.json", "results/v5/screens/gate_composite_in22k_vs_control.json", "results/v5/screens/gate_composite_in22k_vs_m4.json", "results/v5/screens/gate_composite_in22k_vs_twostep.json", "results/v5/screens/gate_composite_in22k_vs_youngdata.json"]
+}
