@@ -9101,8 +9101,9 @@ No training, no test read, no reserved read; `results/test_pass_receipt.json` un
   `results/v5/v5_plan_freeze.json` stay byte-identical, and generated records under `results/` were not hand-edited.
 - **Layout:** `RESEARCH_ROADMAP.md` moved to `docs/`; `docs/README.md` rewritten as a chronological index (V1 → V6, with
   dates); `.gitignore` reorganised (local tooling patterns moved to the untracked `.git/info/exclude`; presentation
-  files and a local `archive/` kept out of git). Locally, the two infographics moved to `presentations/` and the
-  infographic backups, old runbooks and scratch files to `archive/` (both git-ignored); caches deleted.
+  files and a local `archive/` kept out of git). Locally, the infographic backups, old runbooks and scratch files
+  moved to `archive/` (git-ignored; the infographics stay at the root because their figure links are root-relative);
+  caches deleted.
 - **README rewritten** for the public repository: overview, V1 → V6 programme, the V1 ladder
   (`results/ablation_table.csv`), the under-40 table (`results/age_band_prior.csv`,
   `research/selective/results/session4_report.md`: 3/21, 55/70, 154/199; rescued 2/18, 5/15, 17/45), the V5
