@@ -9116,3 +9116,20 @@ No training, no test read, no reserved read; `results/test_pass_receipt.json` un
   under "TTA", the transformer test under "Calibration"); titles and badges now match their content.
 - **Verified after the changes:** `research.ablation.audit_manuscript` 366/366; `research.v4.audit_v4 --check` 76/76;
   `research.v5.adopt_e1 --verify` 0 failures; `pytest tests` 115 passed, 1 skipped; edited modules compile.
+
+### Commit history cleaned; Review-2 railway detail panel (2026-10-06, late night; owner request)
+No training, no test read; `results/test_pass_receipt.json` unchanged at 2.
+- **History:** co-author trailer lines removed from every commit message on all branches (`git filter-branch --msg-filter`),
+  then `main` force-pushed with a lease on the previous tip (`d05693b`). File contents are unchanged: the tip tree hash
+  is identical before and after (`fa6eb64b`). A full local bundle of the old history is kept in the git-ignored `archive/`.
+  Anyone with an older clone must re-clone or `git reset --hard origin/main`.
+- **Railway detail panel** (`review2_infographic.html`, local): hovering a card (or clicking the focused card / pressing
+  Enter, which pins it) opens a translucent glass panel with the card's date, a fuller account, what was learned and
+  its `results/` source, plus a "Jump to it in the page" button that opens the matching tab, scrolls to the block
+  (charts and reveals play on arrival) and highlights it; a "Back to railway #NN" pill returns to that card. Dates come
+  from this file's dated entries (Phase 0: August, from `ml/results/RESULTS_SUMMARY.md`); every number in the panel is
+  one already on the page or in the cited file. Phone: the panel becomes a bottom sheet. `switchTab` gained an
+  `anchor` option (scroll target is computed after the panel is shown, so the Scene still waits for the scroll).
+- **Verified (headless Chrome):** all 49 jump targets resolve; hover, pin, Enter / Esc, jump, back and the pill reset on
+  an ordinary tab switch all work; 0 elements left unplayed in view after a jump; full 20-tab audit clean at
+  1366×900 and 390×844 (only the Tailwind CDN notice).
