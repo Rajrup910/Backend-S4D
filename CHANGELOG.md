@@ -9133,3 +9133,19 @@ No training, no test read; `results/test_pass_receipt.json` unchanged at 2.
 - **Verified (headless Chrome):** all 49 jump targets resolve; hover, pin, Enter / Esc, jump, back and the pill reset on
   an ordinary tab switch all work; 0 elements left unplayed in view after a jump; full 20-tab audit clean at
   1366×900 and 390×844 (only the Tailwind CDN notice).
+
+### Review-2 infographic: frosted-glass detail panel, V6 in light glass, headline on page 1 only (2026-10-07; owner request)
+No data, no numbers changed; `review2_infographic.html` stays local (git-ignored).
+- **Railway detail panel** is now genuinely translucent (about 25–50% white with a 22 px blur and soft sky / violet /
+  emerald light), and its tags, source box, jump button, close button and the "Back to railway" pill use the same
+  frosted style instead of solid blue. The floating V6 button hides while the panel is open so they never overlap.
+- **Headline banner and the university strip above the tab bar** show on page 1 (Team & Panel) only; every other page
+  starts at the tab bar, and returning to page 1 fades them back in. Deep links (`#tab-…`) start without them; print
+  keeps them.
+- **V6 restyled from black to light glass:** an aurora-tinted page (sky, violet, mint) with frosted cards, every dark
+  text, surface, border, chip and diagram colour remapped to its light equivalent (CSS only, scoped to `.v6-lite`);
+  the V6 tab button, floating button, railway chip, the four V6 railway cards and the Journey V6 card follow the same
+  look; the V6 page footer uses the standard light buttons.
+- **Verified (headless Chrome):** 20/20 tabs clean at 1366×900 and 390×844 (only the Tailwind CDN notice); all 49 panel
+  jump targets resolve; hover, pin, Enter / Esc, jump, back and phone bottom-sheet unchanged; banner state correct on
+  tab switch, return and deep link. The build scripts are idempotent (a second run leaves the file byte-identical).
