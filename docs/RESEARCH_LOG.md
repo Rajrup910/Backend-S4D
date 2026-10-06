@@ -1,9 +1,9 @@
 # Research Session Log (S9 – V4 final audit)
 
-Moved out of `CLAUDE.md` on 2026-09-17 to bring it under Claude Code's 40k-character limit.
-This is the verbatim session-by-session narrative — nothing summarized, nothing reworded.
-`CLAUDE.md` keeps the file map, the frozen Age-rule λ values, the Statistics (S7) tooling
-description, the Known Findings section, and one pointer line back to this file.
+Split out of the project notes on 2026-09-17 to keep them short. This is the verbatim
+session-by-session narrative — nothing summarized, nothing reworded. The project notes keep the
+file map, the frozen Age-rule λ values, the Statistics (S7) tooling description and the Known
+Findings section.
 
 ---
 
@@ -403,8 +403,8 @@ description, the Known Findings section, and one pointer line back to this file.
   - ⚠️ **Error 1455 chain**: full disk → auto-managed pagefile can't grow → commit limit pinned →
     dataloader shared-memory fails. `train_v4` now refuses below 5 GB free (2 GB mid-run).
     `run_morning.ps1` has a named mutex (one copy only) and skips Block 2 arms already banked.
-  - ⚠️ Scheduled tasks fired late (07:45 → 09:03) and the agent ignored its cutoff; both tasks are
-    deleted. Gate time-critical rules in scripts, not prompts.
+  - ⚠️ Scheduled tasks fired late (07:45 → 09:03) and the run ignored its cutoff; both tasks are
+    deleted. Gate time-critical rules in scripts, not in written instructions.
   - **Next**: Block 2 finishes ~17:00–17:40 → Block 3 (seeds 43/44, both arms, paired) → S54
     (reserved-cohort inference; Gate A confounded, **Gate B decides**; top up the 146 `scc`
     images for the V1 comparator; evaluate `_last.pt` for multi-stage rungs).

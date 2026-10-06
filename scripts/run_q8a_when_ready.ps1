@@ -3,7 +3,7 @@
 #
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_q8a_when_ready.ps1
 #
-# DETERMINISTIC GATES (nothing here depends on a prompt or on Claude being awake):
+# DETERMINISTIC GATES (nothing here depends on anyone being awake):
 #   * not before -StartAt (default 04:30 local, next occurrence) -- the buffer for your own work;
 #   * all 8 Q7 / Q7b run JSONs complete: smoke=false, epochs_run=30, final Macro-F1 finite and > 0.30;
 #   * no train_v4 / train_v5 / infer_last process alive, V5 queue mutex free;

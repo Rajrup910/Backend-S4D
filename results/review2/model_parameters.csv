@@ -1,0 +1,7 @@
+arch,params
+resnet50,23522375
+densenet121,6961031
+efficientnet_b0,4016515
+efficientnet_b3,10706991
+convnext_tiny,27825511
+convnext_small,49460071

@@ -70,7 +70,7 @@ Two consequences:
 | HAM-only V1 stack on BCN/MSKCC reserved | 0.411 | `results/v4/s54/s54_marginals.csv` |
 | Pooled V4 224 px control on reserved (3 seeds, `_last`) | 0.588–0.611 | same |
 | Pooled control, in-distribution fold val | 0.651–0.697 | CHANGELOG §Phase Y |
-| HAM-only models on PAD smartphone (zero-shot) | 0.124–0.188 | CLAUDE.md, S8b |
+| HAM-only models on PAD smartphone (zero-shot) | 0.124–0.188 | `results/xdomain/`, S8b |
 | HAM→PAD warm-started ConvNeXt-Tiny (5-class) | 0.760 | `ml/results/PAD_MACRO_F1_PUSH.md` |
 | Under-40 pAUC on reserved, every arm incl. V1 | 0.720–0.750 | `s54_marginals.csv` |
 

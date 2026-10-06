@@ -8,21 +8,21 @@ were already extracted, so no additional test read was consumed.
 
 ---
 
-## 0. Two corrections to `CLAUDE.md` before anything else
+## 0. Two corrections to the project notes before anything else
 
-`CLAUDE.md` is stale on two points, and both change the ladder:
+The project notes are stale on two points, and both change the ladder:
 
-1. **MaxViT-Tiny was trained and evaluated.** `CLAUDE.md` says the smoke test
+1. **MaxViT-Tiny was trained and evaluated.** The project notes say the smoke test
    failed and it was never trained. In fact `research/session3_logs/15_train_maxvit_tiny_retry.log`
    and `16_eval_maxvit_tiny_retry.log` exist, `ml/checkpoints/maxvit_tiny_best.pt`
    is a real 122 MB checkpoint, and `ml/results/maxvit_tiny/metrics.json` reports
    **test Macro-F1 0.7525** — the best single model in the project, ahead of
    ConvNeXt-Tiny's 0.7459.
-2. **Gated fusion has a test read.** `CLAUDE.md` says "val Macro-F1 0.7643" only.
+2. **Gated fusion has a test read.** The project notes say "val Macro-F1 0.7643" only.
    `ml/results/gated_fusion_convnext_tiny/metrics.json` reports **test Macro-F1
    0.7411**, logged 2026-09-03 (`14_eval_fusion.log`).
 
-Both were completed in session 3 after the `CLAUDE.md` phase notes were written.
+Both were completed in session 3 after the project phase notes were written.
 
 ---
 
@@ -171,7 +171,7 @@ The signature is visible and consistent: requested abstention 5/10/15/20% yields
 **Options, in order of cost:**
 1. **Disclose** — report the nominal-vs-realized coverage table above as evidence the effect is bounded at ~1 pp. Zero cost, and it is honest. *Recommended for this paper.*
 2. **Grouped val halving** — one half fits everything (Dirichlet, thresholds, conformal), the other selects methods. Cheap, no retraining, and it subsumes the L1 fix. Costs statistical power on `df`/`vasc`, which are already thin.
-3. **Train-split OOF via K-fold retraining** — the correct fix, roughly 5× the training budget. Also the only thing that solves the `df`/`vasc` conformal problem in `CLAUDE.md`. Out of scope unless the schedule allows.
+3. **Train-split OOF via K-fold retraining** — the correct fix, roughly 5× the training budget. Also the only thing that solves the `df`/`vasc` conformal problem in the project notes. Out of scope unless the schedule allows.
 
 ### Finding L3 — 41 logged test reads *(disclose)*
 

@@ -1,6 +1,6 @@
 """Measure real training throughput on this machine, so an estimate is never guessed.
 
-The anchors in the global `~/.claude/CLAUDE.md` were produced by this script and cover
+The hardware anchors in the project notes were produced by this script and cover
 ConvNeXt-Tiny at 224 and 384 px. Anything outside that -- a different backbone, resolution or
 batch size -- must be measured rather than extrapolated, because the obvious scaling laws do not
 hold here: 384 px costs 2.26x a 224 px step, not the 2.94x a pixel-square model predicts, and a

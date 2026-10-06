@@ -190,7 +190,7 @@ htmlcov/
 *.nbconvert.ipynb
 
 # ==============================================================================
-# 5. OS, IDE & LOCAL ASSISTANT ARTIFACTS
+# 5. OS & IDE ARTIFACTS
 # ==============================================================================
 .DS_Store
 .DS_Store?
@@ -209,20 +209,6 @@ $RECYCLE.BIN/
 *.swo
 *~
 
-# Local assistant & agent directories and prompt/context runbooks
-CLAUDE.md
-DATASET_REFINING.md
-.claude/
-.cursor/
-.gemini/
-.agents/
-.relay/
-AGENTS.md
-GEMINI.md
-*copilot*
-*chatgpt*
-prompt_*.md
-
 # Environment files & secrets
 .env*.local
 *.key
@@ -236,30 +222,22 @@ scratch/
 scratchpad/
 scratch_*.json
 
-# Personal reference and viva deliverables (kept local only)
+# Presentation deliverables and local archive (kept local only)
 output/
-review1_infographic*.html
+presentations/
+archive/
+review*_infographic*.html
 *viva*
-scripts/build_*.py
-scripts/check_*.py
-scripts/check_*.js
-scripts/inspect_*.py
-scripts/debug_layout.py
-scripts/test_*.py
-scripts/test_*.js
-scripts/verify_counts.py
 temp_*.js
-tmp_script.js
 
 
 
 # ==============================================================================
 # SESSION NARRATIVE / HANDOFF DOCUMENTS
 # ==============================================================================
-# CHANGELOG.md is the single narrative record. Per-session checkpoints, reports,
-# runbooks and handoff write-ups are working documents, not research artifacts.
+# CHANGELOG.md is the single narrative record. Per-session checkpoints, reports
+# and handoff write-ups are working documents, not research artifacts.
 # Every number they quote lives in results/**/*.csv|json (Hard Rule 4).
-*_SESSION_RUNBOOK.md
 results/**/*_CHECKPOINT.md
 results/**/*_REPORT.md
 results/**/*_HANDOFF.md

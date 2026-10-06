@@ -1,0 +1,16 @@
+# Q11 -- trunk-only control (runsheet 8 Q11, AU26): IN-22k ConvNeXt-T, NO modules, folds 1-4 x s42/43/44, 224 px.
+# Paired against the locked composite (same trunk) it isolates the module + young-data effect; against the in1k
+# control it isolates the trunk effect (descriptive decomposition). Doubles as the V6 A13.1 224 arm.
+# ~46 min/run, measured mean of the IN-22k control fold-0 runs (49.9 / 48.1 / 40.5 min) -> 12 runs ~9.3 h.
+--arm control --fold 1 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 2 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 3 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 4 --seed 42 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 1 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 2 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 3 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 4 --seed 43 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 1 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 2 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 3 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf
+--arm control --fold 4 --seed 44 --image-size 224 --batch-size 32 --trunk in22k --save-best --run-tag v5conf

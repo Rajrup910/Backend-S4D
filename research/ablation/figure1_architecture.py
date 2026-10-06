@@ -68,7 +68,7 @@ def build_figure() -> None:
         _arrow(ax, (2.3, 7.05), (bb_x0, y + bb_h / 2))
 
     # --- Metadata / fusion side path (fed only into the fusion comparison, not the
-    #     deployed ensemble -- see CLAUDE.md: ARCHS is a fixed 6-CNN tuple) -------------
+    #     deployed ensemble -- research/ensembling/data.py: ARCHS is a fixed 6-CNN tuple) -------------
     fusion_x = bb_x0
     fusion_y = 0.4
     _box(ax, (fusion_x, fusion_y), bb_w, bb_h, "Gated fusion\n(ConvNeXt-T + meta)",

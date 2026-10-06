@@ -1,0 +1,8 @@
+{
+  "n_serious": 290,
+  "flagged_a6_only": 16,
+  "flagged_a7_only": 0,
+  "chi2_continuity_corrected": 14.0625,
+  "p_chi2": 0.00017683457040160785,
+  "p_exact_binomial": 3.0517578125e-05
+}

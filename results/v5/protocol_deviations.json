@@ -44,6 +44,15 @@
    "what": "S84 MILK10k single read and the S56-on-V5 refit are deferred to the post-Review-2 V5 addendum (runsheet 8.2 'if time allows' / 'after Review 2').",
    "why": "Owner decision after the E14 read; time goes to the fairness audit and Review-2 deliverables. MILK10k stays unread (no receipt), so V6 allocation is unchanged.",
    "unchanged": "S84 spec (runsheet 9), its receipt guard and single-read rule."
+  },
+  {
+   "id": "D4",
+   "declared": "2026-10-05T04:05+05:30",
+   "kind": "scope extension (runsheet 8 Q11 'folds 1-4 x s42')",
+   "what": "Q11 (IN-22k trunk-only control, no modules, 224 px, tag v5conf) is queued for seeds 42, 43 and 44 on folds 1-4 (12 runs, results/v5/queue_Q11.txt) instead of seed 42 only (4 runs). Declared before any seed-43 run starts; the seed-42 runs began 2026-10-05 02:48.",
+   "why": "The three-seed confirmation (results/v5/confirm_s42_s43_s44.json) is paired seed by seed; a one-seed trunk contrast could not be set against it. The 224 px arm also doubles as V6 A13.1.",
+   "read_rule": "Descriptive, no gate. Two paired contrasts through research/v5/confirm_read.py machinery (same hierarchical seed x lesion bootstrap, 2,000 resamples, RNG seed 20261004): locked composite minus Q11 control (module + young-data effect on the same trunk) and Q11 control minus in1k control (trunk effect). Endpoints: all-age and under-40 escalation pAUC@0.20, Macro-F1. Read once, after all 12 runs finish; no Q11 prediction file is opened before then.",
+   "unchanged": "Lock (results/v5/composite_lock.json), the confirmation read, Gates A-D, the recipe, 30 epochs, --num-workers 2, no test, reserved or external read."
   }
  ]
 }

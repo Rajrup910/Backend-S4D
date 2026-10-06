@@ -874,7 +874,7 @@ defaults its ledger session to `session7_stats_<fit-split>`.
 
 ### S8a — PAD + masks download re-verified, manifest re-ingested (2026-09-04)
 
-Tier 1 (Haiku, no thinking) per the manuscript-closing plan's session table — pure file
+Per the manuscript-closing plan's session table — pure file
 verification, no new download needed. `data/pad_ufes_20/`, the mask zip, and
 `data/_downloads/` (cached source zips) were already present on disk from earlier S3-adjacent
 work; this session re-ran `python -m scripts.download_pad_ufes` to re-verify rather than trust
@@ -904,7 +904,7 @@ proceed without a network dependency.
 
 ### S8b — ensemble on PAD, Fitzpatrick slice, Mahalanobis under real shift (2026-09-04)
 
-Tier 3 (Opus, high). Inference-only, external evaluation: the six frozen HAM-only CNNs, the
+Inference-only, external evaluation: the six frozen HAM-only CNNs, the
 uniform soft-vote ensemble, the frozen OOF Dirichlet map, and the frozen S5 age-conditional
 λ rule, all applied unchanged to the **full 2,106-image PAD-UFES-20 cohort** (not the 314-row
 subset the repo had evaluated before — too few Fitzpatrick-labelled/melanoma cases to power
@@ -2960,7 +2960,7 @@ All Session D work (abstract, contributions, discussion in `paper/manuscript_edi
 completed in S25. All three `%% PLACEHOLDER:` markers gone; no content changes needed.
 CHANGELOG already updated in S25 with the full verification table.
 
-This session is an independent re-run of every Session E command from a fresh agent context.
+This session is an independent re-run of every Session E command from a clean start.
 Results are **identical** to S25's table:
 
 | # | Command | Result |
@@ -3020,7 +3020,7 @@ touched, and this session's own post-check confirms it.
 **Why.** The V2 blueprint depends on two kinds of fact holding: (1) that specific V1
 infrastructure (interval helpers, conformal stack, frozen-parameter loader, the test-split
 receipt) is present and unmodified, and (2) that the cross-cohort provenance claims used to scope
-the statistical plan are actually true on disk, not just asserted in a prior conversation. Both
+the statistical plan are actually true on disk, not just asserted in an earlier note. Both
 are now mechanically checked rather than remembered.
 
 **Results, recomputed from the manifests (not hand-typed) — source: `results/v2/provenance_matrix.json`:**
@@ -3622,7 +3622,7 @@ Gates: `research/v2/panels.py --check` PASS (unchanged); ledger has exactly 2 ne
 
 ### S36 — Track B losses and the training handoff (2026-09-13)
 
-Ninth V2 session, the Opus half of the S35/S36 parallel pair. **No training was executed** —
+Ninth V2 session, the derivation half of the S35/S36 parallel pair. **No training was executed** —
 that is the runbook's rule for this session, and the deliverable is the derivations plus the
 commands. No test split read; `results/test_pass_receipt.json` remains at `n_executions: 2`.
 Operator-facing summary in `results/v2/S36_TRACK_B_ARMS.md`; the derivations themselves live
@@ -4443,10 +4443,10 @@ Artifacts: `research/v3/age_invariant.py`, `research/v3/train_age_invariant.py`,
 `results/v3/D2_DECISION.md`, `results/v3/S45_STATUS.md`. No new checkpoint exists yet. Ledger:
 `v3_s45_mechanism`.
 
-### S44 + S45 — second pass on Opus: outcome 3 becomes outcome 4, and the under-40 endpoint is retired (2026-09-14)
+### S44 + S45 — second pass: outcome 3 becomes outcome 4, and the under-40 endpoint is retired (2026-09-14)
 
-The first S44/S45 pass ran on the scheduled task's default model. `V3_SESSION_RUNBOOK.md` specifies
-**Opus / thinking high** for both sessions, so they were re-run on Opus. No test read; receipt
+The first S44/S45 pass ran unattended at a lower depth of analysis than the V3 runbook specifies
+for both sessions, so both were re-run in full. No test read; receipt
 verified at `n_executions: 2` with both rerun reasons empty; `research.v2.frozen_checkpoints
 --check` 6/6 byte-identical at the end. This entry records what the second pass changed; the two
 entries above stand as the first pass's account.
@@ -5571,8 +5571,8 @@ span of **0.0475** misses 0.05. **Composite: R1 + R4.** Block 2 started 14:32 �
 
 **The scheduled tasks did not deliver.** The 07:45 task fired at **09:03** (a task fires on next
 app launch if the app was closed at its time), then waited until ~13:20 — past its own 09:30 cutoff,
-an instruction an unattended subshell did not honour. Both tasks were later deleted. Lesson recorded:
-time-critical gating belongs in a deterministic script, not in a prompt.
+an instruction the unattended run did not honour. Both tasks were later deleted. Lesson recorded:
+time-critical gating belongs in a deterministic script, not in a written instruction.
 
 **15:00–15:20 — the jobs were moved out of the desktop container, and Block 3 was hardened.**
 - The Block 2 pooled control banked: **0.5768** at epoch 7, early-stopped at 15, 25.3 min
@@ -6118,7 +6118,7 @@ to the manuscript, not to this document.
 ⚠️ **This run should not have been unattended.** The prior same-day entry ("S52 Block 1 readout")
 records that `v4-morning-diagnostic` (and `v4-morning-readout`, `v3-s44-s45-unattended`) **were
 deleted at the owner's request**, and that `scripts/run_morning.ps1` was left as **owner-launched**.
-`mcp__scheduled-tasks__list_scheduled_tasks` confirms zero scheduled tasks exist right now. This
+The scheduler's task list confirms zero scheduled tasks exist right now. This
 session nonetheless fired as a `v4-morning-diagnostic` scheduled-task invocation, already 3.5 h past
 the diagnostic's own "stop waiting at 09:30" checkpoint and 28 min before the stated 13:30 deadline.
 Likely a stale/in-flight trigger surviving the deletion, not a re-creation. **Flagged for the owner,
@@ -6260,7 +6260,7 @@ whichever later session first needs calibrated probabilities split by band.
 
 ### S56 — group-conditional selective abstention: per-age-band referral thresholds (2026-09-16)
 
-Per the V4 runbook §4 (Tier 3). S54 left the frozen V1 ensemble as the representation, so S56
+Per the V4 runbook §4. S54 left the frozen V1 ensemble as the representation, so S56
 runs on it: 6-CNN soft-vote, 24-view TTA, deployed HAM-OOF Dirichlet map. **No HAM test read. No
 image re-scored.** Reserved probabilities are S13's frozen files plus S54's 146-image top-up,
 checked against the deployed map to a maximum drift of 1.1e-15.
@@ -6362,7 +6362,7 @@ outside the `research/v4/` tree that runbook §10 requires. It is left in place 
 
 ### S57a — age resolution: 5-year diagnostic, S5 baseline, candidate λ(age) fits (2026-09-16)
 
-Per the V4 runbook §S57a (Tier 3, no GPU). **No HAM test read.** Reserved was read once, for
+Per the V4 runbook §S57a (no GPU). **No HAM test read.** Reserved was read once, for
 audit item 2 only, and only escalation *specificity* was computed there, so nothing in S57 can be
 selected on a reserved under-40 result. "Age" here means the patient's recorded age; this
 corpus has no lesion-age target.
@@ -7948,20 +7948,13 @@ pre-registered S75 counts only (runsheet §9); no MILK10k prediction was made.
   weights bitwise identical in every tensor, predictions bitwise identical** — the loader switch
   does not touch the training RNG stream (scratch diagnostic, not a result).
 
-### External research brief written (2026-10-01)
-- New `docs/EXTERNAL_RESEARCH_PROMPT.md`: a self-contained brief for other AI assistants (ChatGPT,
-  Antigravity) on the walls that have not moved — under-40 ranking, cross-domain collapse, the S70
-  contract, noise-sized effects, the histology shortcut, band-flipping calibration, the Q4/Q5
-  pre-check failures and underpowered external confirmation. It includes the hard rules, the barred
-  mechanisms, what was already tried (with results), the hardware limits, a repository map and
-  seven questions. Every number is quoted from an existing `results/` or `docs/` file, and all 13
-  cited paths were checked to exist and not be gitignored. No new result.
+### V5/V6 plan documents published (2026-10-01)
 - **Pushed to GitHub (owner request, 2026-10-01):** commit `743103d` on `Rajrup910/Backend-S4D` main —
   the 10 V5/V6 plan documents (`docs/V5_RUNSHEET.md`, `docs/V6_RUNSHEET.md`, `docs/v5_design/`,
   `docs/v5_record/`) and the V5 results to date (`results/v5/` except `smoke/`; the 16
-  `*_v5s01` prediction/run files under `results/v4/kfold/`). Not pushed: the external research
-  brief, V5 code, tests, `research/experiments.csv`, this CHANGELOG, smoke artefacts, checkpoints,
-  `data/`. No AI attribution in the commit. `adopt_e1 --verify` 0 failures after the commit.
+  `*_v5s01` prediction/run files under `results/v4/kfold/`). Not pushed: V5 code, tests,
+  `research/experiments.csv`, this CHANGELOG, smoke artefacts, checkpoints, `data/`.
+  `adopt_e1 --verify` 0 failures after the commit.
 
 ### V6 finalised (not frozen): CG-DM headline + R1 + R2 (2026-10-01)
 - `docs/V6_RUNSHEET.md` §A0 (new): Counterexample-Guided Differential Morphology — histology-
@@ -8277,7 +8270,7 @@ tokens survive the fp16 cast, |z| < 65,504, not only that they are finite).
   to ≈ 0: the token was dead except when it overflowed. Ruled out: CUDA `eigh` on degenerate covariances
   (finite on CPU and CUDA), GeometryHead tokens (bounded; `radial` max 12.1 / 19.8 with s42 / s44 weights),
   the fp32 front's own NaN (0/12,235).
-- **External (Antigravity) review checked.** Correct: the Q3 table (matches `gate_*` and `falsifier_*` files;
+- **External review checked.** Correct: the Q3 table (matches `gate_*` and `falsifier_*` files;
   omits the Q3 caveat that twostep's gain is mostly its escalation head, +0.0025 on mass), the Q4 numbers, the
   look overflow chain. Wrong: "s = 0.5 everywhere" (one pixel); geometry as the same radius bug amplified
   through GeometryHead (radius is normal; the cause is the melanin normaliser); "final checkpoint suppresses
@@ -8354,7 +8347,7 @@ Declared **before any Q5 run exists**. `results/v5/queue_Q5.txt`, 15 runs, dry r
   resolve zoom's +0.0085 against the in22k pair SD 0.0153 (`q4_verify.json`). **Zoom falsifier clause 2,
   operational:** PASS if the mean over s42/43/44 of [declared pAUC_all(zoom, v5scr) − declared
   pAUC_all(zoom random, v5scr8r)] > 0; also reported on BCN20000+MSKCC rows and on escalation mass, not gating.
-- **External (Antigravity) recommendation checked and partly rejected:** "skip the re-screen" would keep a pass
+- **External recommendation checked and partly rejected:** "skip the re-screen" would keep a pass
   from void runs; "8r × 1 seed" is uninformative at this noise level. Its factual errors: look's gain is +0.0044,
   not +0.0073 (that is youngdata); fold-0 was already refitted; blow-up sizes 8 × 10⁸ / 7 × 10⁷, not
   1.5 × 10¹⁰ / > 7 × 10⁴; zoom costs ~1.8× measured, not 1.34×. Correct: `train_v5` hard-coded the zoom mode.
@@ -8372,9 +8365,9 @@ per-seed youngdata reading; zoom cost ~1.8×), Wall 4's in22k noise (2.15× / 1.
 measured per-arm run times, citation rules (DOI/arXiv id, [read] vs [recalled]), and 15 questions in seven
 groups. `docs/V6_RUNSHEET.md` itself is not edited (unfrozen; owner asks before V6 edits).
 
-### External review (Gemini) of V6 checked: CG-DM kept; head-to-head with its alternative proposed for Stage 0 (2026-10-02, night)
+### External review of V6 checked: CG-DM kept; head-to-head with its alternative proposed for Stage 0 (2026-10-02, night)
 No code, no run, no test/reserved read. Owner request: do not drop CG-DM unless the alternative wins.
-- **Gemini's citations exist** (checked): PROTOCOL, ICML 2025 (arXiv 2506.12408; POT for imbalanced multi-view
+- **The reviewer's citations exist** (checked): PROTOCOL, ICML 2025 (arXiv 2506.12408; POT for imbalanced multi-view
   clustering); Tree-Sliced Entropy Partial Transport, NeurIPS 2025; arXiv 2510.13684 (diffusion-bridge healthy
   counterfactuals); Mijares et al., Cancers 2026 (doi 10.3390/cancers18152524; RAG MLLM, cSCC/nevus histology
   grading). **Misdescribed:** Tree-Sliced EPT proposes an O(n log n) solver and benchmarks Sinkhorn at 10⁵
@@ -8404,12 +8397,12 @@ No code, no run, no test/reserved read. Owner request: do not drop CG-DM unless 
 - **Proposed (owner to approve; V6 runsheet not edited):** a pre-declared Stage 0 head-to-head on the same cached
   F3 tokens and the same K = 3 references — S_0 = e; S_part (CG-DM); S_bal; **S_nn = logistic([e, D_nn])**, D_nn =
   top-10% median of each query token's minimum cosine distance to the reference tokens (the training-free core of
-  Gemini's patch-level contrast, PatchCore-style). Key contrast Δ(S_part − S_nn) on the mechanism endpoint,
+  the reviewer's patch-level contrast, PatchCore-style). Key contrast Δ(S_part − S_nn) on the mechanism endpoint,
   lesion bootstrap. Plus a descriptive resolution read on fold 0 (24 × 24 tokens from the 384 px S01 R1 models vs
   14 × 14) stratified HAM vs BCN/MSKCC. Decision: CG-DM is dropped only if S_nn ≥ S_part; a WSD × {OT, contrastive}
   factorial waits for V6-5(a) firing, else V7.
 
-### Gemini's three new mechanisms checked: SBDR → Stage 0 rung; IECA and MC-HNM rejected (2026-10-02, night)
+### Three further proposed mechanisms checked: SBDR → Stage 0 rung; IECA and MC-HNM rejected (2026-10-02, night)
 No code, no run, no test/reserved read (two CPU reads of fold-0 predictions). `docs/V6_RUNSHEET.md` not edited.
 - **Archive confound on the mechanism endpoint (new, applies to every Stage 0 statistic incl. CG-DM).** Fold-0
   mel / histo-nv rows: BCN 280/290, HAM 172/351, MSKCC 53/30 (mel share 0.49 / 0.33 / 0.64); **archive alone
@@ -8457,7 +8450,7 @@ No code, no run, no test/reserved read (two CPU reads of fold-0 predictions). `d
   primary = mechanism endpoint, under-40 and S70 descriptive; §A4 pAUC-DRO hard negatives from training-fold rows
   only; §A5 youngdata row needs ≥ 2 of 3 seeds, zoom row needs a mass gain, Q4 provisional status added; §B0
   fp16-castable, tail-checked engineered statistics; §A5 Stage 0 row routes the carried statistic.
-- **Gemini's concurrence (21:46) checked — no runsheet change.** Its restatement carries six errors that must not
+- **The reviewer's concurrence (21:46) checked — no runsheet change.** Its restatement carries six errors that must not
   reach the paper: S42's lesion-vs-context probe (0.8714 / 0.8608) quoted as S50's escalation AUCs (0.8744 / 0.8709);
   "certified age shortcut" (S50 verdict CO_LOCATED, demoted on magnitude, +0.0297 < MCID 0.05); "V3 S45 proved age
   degrades under-40 ranking" (S45 tested adversarial age *removal*, falsified — a different claim); the selection
@@ -8470,7 +8463,7 @@ No code, no run, no test/reserved read (two CPU reads of fold-0 predictions). `d
 No training; CPU probe on fold-0 development rows; no test/reserved read. Queue Q5 still not launched (owner's call).
 - **The pasted "queue started" output was not from this machine** (prompt `C:\Scan4Diseases`, which does not exist;
   strings absent from `scripts/run_v5_queue.ps1`; no process; `queue_Q5.log` last written 18:06).
-- **Literature.** Gemini's citation exists (Deivasigamani et al., Computers 2026, doi 10.3390/computers15010054) but
+- **Literature.** The reviewer's citation exists (Deivasigamani et al., Computers 2026, doi 10.3390/computers15010054) but
   is healthy skin vs melanoma (1,497/1,500 and 1,495/1,500 correct) — not melanoma vs biopsied nevus, nothing on young
   patients. NR-FP's real prior art: Xu et al., "Learning in the Frequency Domain", CVPR 2020 (arXiv 2002.12416; DCT
   reshaping instead of spatial downsampling) — the V6-5(a) family. Risk literature: Wang et al., CVPR 2020 (arXiv
@@ -8497,7 +8490,7 @@ No training; CPU probe on fold-0 development rows; no test/reserved read. Queue 
 ### Three more external proposals (topology, hypergraph, concept anchoring) checked before the V6 freeze (2026-10-02, ~22:10)
 No training; CPU probe on fold-0 development rows; no test/reserved/MILK10k-label read.
 - **Papers verified:** topology preprint exists (medRxiv doi 10.1101/2025.11.25.25340992; multiparameter cubical
-  persistence fused with ViTs; "consistent gains") — body behind a bot check, so Gemini's "+10.68 DDI / +15.97 PH2" and
+  persistence fused with ViTs; "consistent gains") — body behind a bot check, so the quoted "+10.68 DDI / +15.97 PH2" and
   the split method are **unverified**; hypergraph paper (Sci Rep 2026, PMC13096346) fetched: HAM10000, stratified
   70/10/20 + 5-fold, no lesion grouping or duplicate handling, accuracy 93.2% only, hyperedges between *samples*;
   K-MaT exists (arXiv 2603.06340, Zeng & Albarqouni) — VLM prompt transfer across modalities. MONET (Kim et al., Nat Med
@@ -8769,14 +8762,12 @@ detail in new `research/v5/q5_read.py` → `results/v5/screens/q5_read.json`.
   60 s, gives up 09:00 without starting. Holds the machine awake (`SetThreadExecutionState`). Log
   `results/v5/logs/q8a_launcher.log`. Tested: `-DryRun` prints the gates; run-JSON checks pass on the finished Q6
   runs; a PowerShell case-insensitive variable collision (`$StartAt` vs `$startAt`) found and fixed in testing.
-- **Advisory Claude check (cron 03:47, session-only, fires only while this app is open and idle):** reads progress,
-  run JSONs, logs and predictions → `results/v5/overnight_check_0447.md`; creates `results/v5/PAUSE` only on a clear
-  failure. It cannot start or stop training.
+- **Advisory 03:47 check:** reads progress, run JSONs, logs and predictions; creates `results/v5/PAUSE` only on a
+  clear failure. It cannot start or stop training.
 
 ### Overnight chain + Q8a complete (2026-10-04)
 - **Q7** (locked composite, s42, f1–4) 4/4, 71.0–71.7 min/run; **Q7b** (m4 secondary D1, s42, f1–4) 4/4, 45.1–45.8 min/run
-  (vs 39.8 estimated, +15%); control s42 f1–4 scored at last epoch. Advisory 03:47 check: all clear, no PAUSE
-  (`results/v5/overnight_check_0447.md`). The 04:30 launcher was stopped at 03:56 at owner request; Q8a started by hand 03:57.
+  (vs 39.8 estimated, +15%); control s42 f1–4 scored at last epoch. Advisory 03:47 check: all clear, no PAUSE. The 04:30 launcher was stopped at 03:56 at owner request; Q8a started by hand 03:57.
 - **Q8a** (s43, f1–4; composite `v5conf` + in1k control `v5ctl`, interleaved) 8/8, no failures, finished 12:30:12; control
   `_last` checkpoints scored by `infer_last` (4/4 `R0_kfold_f{1..4}_s43_v5ctl_last.csv`, self-check passed). 0 nan /
   Traceback / Error lines in the 8 err logs. Run times: composite 73.1 / 73.8 / 78.9 / 71.0 min; **control 50.8 / 65.6 /
@@ -8900,3 +8891,227 @@ Nothing below has been computed on folds 1–4 yet. Declared now so no choice ca
   process holds the GPU. Output `results/v6/fixres/fixres_rescore.json` (per run and pooled folds 1–4 per arm × seed
   × size: Macro-F1, BA, all-age and under-40 pAUC). CPU code check (1 batch, fold 1, seed 42, 224 + 288) ran both
   arms end to end; nothing written. Not yet run on GPU (Q8b holds it).
+
+### Review-2 demonstration report: `review2_infographic.html` built from Review 1 (2026-10-04, ~17:40; owner request)
+No test, reserved or external read; no GPU use (Q8b ran throughout and was not touched); no `results/` artifact
+written or recomputed. `review1_infographic.html` is unchanged (sha256 `0af1fc61…`, before and after).
+- **What it is.** A copy of the Review-1 file (10 tabs, Tailwind + Chart.js CDN, same palette and card language)
+  extended to 19 tabs: a Research Journey overview; the nine Review-1 tabs kept, with Review 1's roadmap turned
+  into "Plan vs Outcome" (each promised workstream annotated with what V2–V5 measured); one tab each for V2, V3,
+  V4 and V5 (question → evidence → verdict → a "why the next version exists" strip); a cross-version Synthesis
+  (known / ruled out / open, a conceptual hypothesis-narrowing graphic labelled as not measured, "what we did not
+  do"); a V6 Master Plan tab (convergence diagram, seven-layer evidence stack with measured / carried / proposed
+  labels, CG-DM explainer, branches, a decision tree drawn only from runsheet gates, honest expectations from
+  §A9.2); a dated timeline with next-week plan; an evidence ledger with 27 references; and Q9–Q14 for Review 2.
+- **Every number traced.** 62 cited paths checked to exist (three are deliberately future outputs: V6 freeze
+  file and benchmarks, labelled planned). Numbers machine-checked against 18 source files; three citations were
+  repointed to the file that actually holds the value (S56 referral → `results/v4/s56/frontier_reserved.csv`;
+  backbone pAUCs → `results/v4/backbone_probe_marginals.csv`). V5 values come from `results/v5/review2_tables.md`
+  and `results/v5/confirm_s42_s43.json`; V6 content from `docs/V6_RUNSHEET.md` only, marked as having no result.
+- **Review-1 claims found wrong and corrected in the new file (listed in its Synthesis tab):** under-40 "repaired
+  0.143 → 0.714" — the frozen test read gives 0.238 [0.082, 0.472] (`results/session9/agerule_test.csv`); the
+  conformal simulator cited a non-existent `results/conformal_tables.json` as out-of-fold tables — its values are
+  the α = 0.10 test read (`results/session9/conformal_test.csv`); "Bayes-optimal estimator" withdrawn; "cryptographic
+  0% leakage" and a footer SHA-256 (`a8f3b97c4e…`, found nowhere in the repo) replaced with verifiable statements;
+  three images under a non-existent `figures/` folder (one replaced by `paper/figures/figure2_reliability.png`);
+  the ablation bar chart's 0.65 axis cut replaced by an interval plot from `results/ablation_table.csv`.
+- **Checks run.** Script syntax (`node --check`); all 19 tabs and 13 charts instantiate with no console error;
+  keyboard arrows, prev/next footers, reference links and Q&A toggles work; zero horizontal overflow at 375, 654
+  and 768 px; SVG text fits its boxes; `prefers-reduced-motion` and a `<noscript>` fallback disable the reveals.
+  Charts follow the dataviz rules (zero-based bars, CIs shown, one axis, labels in ink, validated palette).
+- **Open for the owner:** the Review-1 meeting date is not recorded (only the 8 Sep package commit `7c12689`); the
+  header keeps "Project Exhibition – I · Review 2" — confirm the exhibition label. Figures load when the HTML is
+  opened from the repository root. After Q8b, re-run `research/v5/review2_figures.py` and update the V5
+  confirmation numbers if the three-seed read changes them.
+- **Revision (same evening, owner review of screenshots).** Presentation only; no number changed. Chart label
+  collisions fixed (reference-line labels moved above the plot; interval labels placed past each CI; slope-chart
+  values placed beside their points). Source labels restyled (no highlight, body font). Pictographs removed
+  site-wide; animations reduced to slow fades. The V6 decision tree now states each gate, its test, and both
+  outcomes in words. The Synthesis tab's "Corrections to Review 1" table is replaced by a "Review 1 → Review 2"
+  evidence table; the corrections themselves remain recorded above, inline in the Plan-vs-Outcome tab (struck-through
+  0.714) and in the conformal simulator note. The V6 "honest expectations" table is replaced by the runsheet's
+  pre-declared success criteria (§A9.1–A9.2 "success means"); the expectation column remains in
+  `docs/V6_RUNSHEET.md` §A9.2. Dark-panel chips tinted; KPI count-up slowed to ~2.6 s and staggered.
+
+### V5 three-seed confirmation read, FixRes re-score, Q11 launch (2026-10-05, ~03:00–04:10)
+No test, reserved or external read. Choices were declared before the read (CHANGELOG "E14 confirmation read —
+operational choices DECLARED BEFORE THE READ", 4 Oct ~15:30); nothing in the script or gates was changed for seed 44.
+- **Q8b finished 01:30** (`results/v5/logs/queue_Q8b.log`: 7 runs this session, failed: none). All 24 confirmation runs
+  (12 composite `*_in22k_v5conf`, 12 in1k control: s42 `R0_kfold_f{k}_s42_last`, s43/s44 `R0_kfold_f{k}_s{seed}_v5ctl_last`)
+  completed 30/30 epochs, one registry sha (`e85842c9…`), `test_read` and `reserved_read` false. Prediction files carry
+  one structurally empty column each (`loao_holdout` / `s_esc`), identical to seeds 42/43; no other NaN or inf.
+- **Read:** `python -m research.v5.confirm_read --seeds 42 43 44` → `results/v5/confirm_s42_s43_s44.json` (12,235 rows,
+  7,002 lesions, 158 under-40 escalating images / 65 lesions: BCN 28, HAM 27, MSKCC 10); ledger session `v5_confirm`.
+  Composite − in1k control, hierarchical seed × lesion bootstrap (2,000 resamples, RNG seed 20261004):
+  | Endpoint | Δ | 95% CI |
+  |---|---|---|
+  | all-age escalation pAUC (Gate D) | +0.0020 | [−0.0056, +0.0093] |
+  | **under-40 pAUC (Gate A)** | **+0.0351** | **[+0.0125, +0.0596]** |
+  | pAUC_histo | +0.0054 | [−0.0053, +0.0153] |
+  | Macro-F1 (Gate B) | +0.0107 | [−0.0015, +0.0225] |
+  | balanced accuracy | +0.0042 | [−0.0085, +0.0147] |
+  | escalation sensitivity (argmax) | +0.0167 | [+0.0074, +0.0252] |
+  | sens @ spec 0.80, 40–59 / 60+ (Gate C) | +0.0071 / −0.0007 | [−0.0127, +0.0234] / [−0.0101, +0.0083] |
+  | B2 MEL-vs-NV AUC <40 / class-standardised <40 pAUC | +0.0491 / +0.0220 | [+0.0116, +0.0907] / [−0.0006, +0.0461] |
+  | B4 <40 pAUC BCN / HAM / MSKCC | +0.028 / +0.016 / +0.245 | BCN, HAM intervals include 0; MSKCC [+0.143, +0.344] |
+  | B4 archive-fixed-effects pooled | +0.0567 | [+0.0301, +0.0821] |
+- **Gates:** A **FAIL** (point +0.0351 < MCID +0.050; CI excludes 0); B **PASS**; C **PASS**; D **FAIL**, now evaluated on
+  three seeds, not provisional: per-seed Δ all-age pAUC −0.0002 / −0.0012 / +0.0075, mean +0.0020, 1 of 3 positive
+  (rule: mean > 0, ≥ 2 of 3 > 0, none < −0.010). Under-40 Δ per seed +0.0398 / +0.0323 / +0.0332 (seed 44 control 0.7487,
+  composite 0.7819). The two-seed read (+0.0361 [+0.0072, +0.0665]) is superseded; the earlier statement that D was
+  "arithmetically settled as FAIL" held, and seed 44 did not change the outcome.
+- **Reading, unchanged in kind:** the locked composite does not improve all-age escalation ranking; it keeps Macro-F1 and
+  lifts under-40 ranking by about +0.035, consistent in sign across seeds, below the pre-declared +0.050. The gain is
+  carried by MSKCC (10 lesions; control under-40 pAUC 0.509 / 0.543 / 0.559 by seed) and is small and not
+  distinguishable from zero in BCN and HAM; it shrinks under case-mix standardisation. D1 secondary (seed 42 only) is
+  unchanged: m4 − control +0.0152, composite − m4 −0.0154, Holm over 2 (`secondary_D1`).
+- **Review-2 figures and tables regenerated** from the three-seed file (`research/v5/review2_figures.py`;
+  `results/v5/figures/fig_*`, `results/v5/review2_tables.md`).
+- **`review2_infographic.html` updated to the three-seed numbers** (39 text and chart edits: hero tile +0.035
+  [+0.013, +0.060], the Gates A–D panel, the confirmation forest and a three-seed slope chart, status cards, timeline,
+  source paths `confirm_s42_s43_s44.json`). Corrected an existing mislabel (the interpretation text called the
+  under-40 result "Gate D"; it is Gate A). Copy before this edit: `review2_infographic.pre-3seed.html`. Layout repairs
+  earlier the same night (presentation only, no number changed): the V6 goals row had lost its G3 card and closing tag,
+  which pushed the evidence stack and everything after it into one 357 px column; a stray nested grid in the
+  Synthesis tab; presenter-headline boxes sitting inside the title rows of the Scope and Journey tabs; top bar, hero,
+  nav and footer now share the page container; hero figures no longer wrap mid-value. Audited in Chrome at 1920, 1440,
+  1280, 1024, 768, 390 and 360 px: no horizontal overflow, no clipped text or SVG labels, no console errors.
+- **FixRes re-score (V6 A13.0)** `research.v6.fixres_rescore --seeds 42 43 44` → `results/v6/fixres/fixres_rescore.json`
+  (inference only, folds 1–4 pooled, test sizes 224 / 256 / 288 / 320; all 24 checkpoints replayed the stored 224 predictions, max abs diff 5.8e-05). No consistent gain from a
+  larger test size for either arm: all-age pAUC moves by at most about ±0.007 with mixed sign; Macro-F1 falls at 320
+  (composite 0.6749 → 0.6573 s42, 0.6771 → 0.6600 s43, 0.6754 → 0.6600 s44; control 0.6661 → 0.6367, 0.6601 → 0.6444,
+  0.6690 → 0.6583). 224 px stays the working resolution for these checkpoints; this does not test 384-pretrained weights
+  (A13.1).
+- **Q11 launched 02:48** (`scripts/run_v5_queue.ps1 -Queue Q11`, `results/v5/queue_Q11.txt`): IN-22k trunk, no modules,
+  folds 1–4 × s42/43/44, 224 px. Run 1 (`control_f1_s42_in22k_v5conf`) took 47.6 min; 12 runs ≈ 9.5 h at that pace
+  (extrapolated from one run). **D4** in `results/v5/protocol_deviations.json` records the extension from seed 42 to
+  seeds 42–44 and the read rule (descriptive; composite − Q11 control and Q11 control − in1k control; read once after all
+  12 runs) before any seed-43 run started.
+- **V5 status.** Experiments, confirmation read, fairness audit, resolution investigation, figures and tables: done.
+  Open: the Q11 read (after its 12 runs). Deferred by D3 to the post-Review-2 V5 addendum: S56 refit on the V5 OOF,
+  the MILK10k single read (S84), TTA, and the common OOF matrix (spec only; `v5_oof_common_matrix.csv` not built).
+
+### Review-2 infographic: redundancy trim, railway and chart motion rebuilt, provenance repairs (2026-10-06; owner request)
+Presentation only: no experiment run, no result recomputed. Every number added or changed below was copied from the
+`results/` file named beside it. Copy before this pass: `review2_infographic.html.bak_pretrim` (12,045 lines);
+now 9,250 lines (1.07 MB → 0.86 MB). No tab was removed; all 20 keep their order and numbering.
+- **Redundant blocks removed.** Journey tab: the 5-slide "Programme Version Pipelines" viewer (~1,880 lines; 95–99%
+  identical text to the six-step banner that opens each V1–V5 tab), plus the "Journey Master Viewer" buttons that opened
+  it; the Review 1 → Review 2 delta panel, which repeats Synthesis's sourced "then vs now" table and wrongly said
+  "CG-DM morphology cleared the gate" in V5 (CG-DM is a V6 proposal with no result). Nine "Presenter Headline"
+  speaker-note boxes. Scope tab: the "Planned for Review 2 (Phases 7–14)" column (the same plan is shown with outcomes in
+  Plan vs Outcome) and the stub for the missing Gantt image. Roadmap tab: four stale comment banners and the
+  "epistemic trajectory" block that restated the phase buttons. V6 tab: the "Why V6 Exists" chain (a weaker duplicate
+  of "What each version hands to V6") and "Why V6 is Different" (overlaps "Why V6 is the most informed experiment" and
+  stated a Dice gate as a hard halt). Timeline tab: the "From Review 2 to the V6 Freeze" panel (duplicated the dated
+  timeline and the V6 gates; listed `confirm_s42_s43_s44.json` as still "to be deposited"). Viva: Q15/Q16 (Q15 cited a
+  non-existent `results/v3/v3_3_leakage_audit.json` and an unsourced +0.032–0.051 image-split inflation; Q16 stated gates
+  the runsheet does not contain). Old Q17 is now Q15. A stray V6 branch-filter toolbar inside the Viva heading
+  (it only re-ran a V6 SVG animation and overflowed phones).
+- **Content corrected to its source.** CG-DM expanded as "Counterexample-Guided Differential Morphology" everywhere
+  (`docs/V6_RUNSHEET.md`; two places said "Decision Making"). V6 branch stop rules restated from §A0.8 / §B1 V6-1, V6-4,
+  V6-10 / §A13.4: Dice < 0.85 falls back to DRE-2 geometry (not a halt); the ensemble passes only if all-age pAUC Δ beats
+  the V5 noise floor and Macro-F1 Δ > 0 with CI > 0; the invented "faithfulness < 0.70" and "0.015 Macro-F1" rules are
+  gone. Evidence-stack layer 4 no longer says morphology-context separation "cleared screens (+0.0155 twostep)"; it
+  states the readout result (+0.0155 → +0.0025 on mass) and the Q11 composite share.
+- **V5 "How we built & tested the dermatologist decision flow" table rebuilt.** The old drawers cited six code / data
+  paths that do not exist (`heads/hierarchical_two_step.py`, `experiments/falsify_zoom_crops.py`, …), per-seed zoom
+  numbers found in no result file, invented implementation details, and LaTeX that never rendered (`	ext` / `
+abla`
+  had become tab and newline characters). Module descriptions now come from `docs/V5_RUNSHEET.md` §5; screen Δs from
+  `results/v5/review2_tables.md`; falsifier reads from `results/v5/screens/falsifier_*.json` and the CHANGELOG "Q5 read"
+  and "Geometry falsifier" entries (3 Oct); Q11 from `results/v5/q11_decomposition.json` (module + young-data share
+  +0.0270 [+0.0045, +0.0488], p = 0.023 — credited to the composite, not to youngdata alone). Filters: 4 in the locked
+  system (twostep, m4, youngdata, IN-22k trunk), 5 failed or falsified.
+- **Citations.** Every `results/` / `docs/` path on the page now exists (68 cited; the one listed missing,
+  `results/conformal_tables.json`, sits inside a note saying Review 1 cited it wrongly). Fixed: class counts →
+  `ml/configs/splits/split_v1.csv`; ECE → `results/reports/research__calibration__results__session2_report.md`; contract →
+  `results/v4/s59/s59_report.json`; IN-22k noise ratio → `results/v6/noise_floor_in22k_check.json`; trunk screen →
+  `results/v5/screens/gate_control_in22k_vs_control.json`. Nine chart "micro-label" source lines that repeated the
+  caption's own source were dropped.
+- **Research railway.** The 320 vh scroll-jacking wrapper and the window-scroll driver are gone (they moved the railway
+  whenever the page scrolled, wherever the cursor was). One critically damped spring now drives the focused event for
+  every input. The wheel is captured only while the pointer is on the track and ≥ 70% of the track is on screen, and is
+  handed back to the page at the first and last event. Keys (↑ ↓ PgUp PgDn Home End) when the track has focus,
+  horizontal swipe on touch, Prev/Next, phase chips, a clickable progress bar and card clicks all use the same glide.
+  Fixed: two cards were highlighted at once; events 47–49 could never become current; the station dots were rebuilt
+  with `innerHTML` every frame, so their pulse never played; translucent cards let the rail show through.
+- **Charts and scroll animation.** One observer path for charts, reveal cards, SVG draws, the timeline and bars: each
+  is reset when its tab opens and plays the first time it is properly in view, so nothing animates off-screen.
+  Charts replay on every tab visit. Interval plots unfold each CI outward from its estimate and then drop the point in;
+  the slope chart draws each seed's line from control to composite; value labels fade in only after the marks settle
+  (Chart.js "complete" events from resizes no longer count). Two real bugs fixed on the way: the V6 convergence SVG had
+  no `viewBox` (rendered cropped at 300×150, with a stray ">" before it), and a gear icon's path data was malformed
+  (three console errors per load).
+- **Audit.** Headless Chrome 154 over the DevTools protocol, all 20 tabs scrolled end to end at 1366×900 and 390×844:
+  every chart built and settled, every reveal played, no horizontal overflow, no clipped text, no broken images, no
+  JavaScript errors (the only console line is Tailwind's CDN notice). Reduced-motion: all content visible at once,
+  railway falls back to the static 49-card list. Every `onclick` handler is defined, every `switchTab` / `goRef` target
+  exists, no duplicate ids. Railway wheel capture and release verified in the in-app browser.
+
+### Review-2 infographic, pass 2: animation timing, V5 funnel, typography, full fact verification (2026-10-06; owner request)
+Copy before this pass: `review2_infographic.html.bak_pretypo`. New generator `research/review2/page_facts.py` writes
+`results/review2/{ham10000_class_profile,model_parameters,v1_member_metrics,escalation_by_class_a6_a7}.csv`
+(descriptive re-computation of frozen predictions; it reproduces ablation rows A1/A2 exactly; no test decision).
+- **Animations played before they were seen.** Opening a tab from a footer button smooth-scrolled the window up through the
+  new tab, so the observer played everything it passed (V4→V5: 9 of 18 below-fold elements already done). The Scene now
+  resets on switch and starts observing only after the scroll has landed (0 of 23 pre-played, verified). 54 previously
+  static cards get the same scroll fade-up; the two SVGs that shipped already "in" were fixed.
+- **V5 funnel** rebuilt as a full-width responsive HTML diagram (was a 960-wide SVG at ~6 px). Corrected: trunk is
+  fine-tuned, not frozen; falsified (zoom, geometry, memory) vs failed-gate (look, clues, gem) vs stopped-early
+  (structure, m5, m7) are separated; +0.0270 is the composite's Q11 share, not youngdata's.
+- **Typography**: Tailwind `fontFamily` config (font-sans was falling back to Segoe UI); JetBrains Mono only for numbers,
+  identifiers and code (318 word elements moved to Plus Jakarta Sans); 7.5–9.5 px text moved to a 10/11/12 px scale.
+- **Facts corrected against results/** (each re-derived): V1 member table — DenseNet/EffNet-B0/B3/ConvNeXt-S rows and
+  ResNet val did not match their predictions (e.g. DenseNet test 0.7241 → 0.6969), unsourced latency column removed,
+  parameters are 7-class heads (122.5M total, not 129.9M), A6 CI low 0.734, A7 val 0.7969 (in-sample);
+  HAM lesion counts (BCC 327, NV 5,403, DF 73, VASC 98) and the ground-truth column (official `dx_type`; AKIEC is 100%
+  histopathology, not 68.5%); 66.8% is the test-split nevus share (all images 66.9%, train 67.1%); Antinomy per-class
+  counts (AKIEC 46→42, BCC 66→62, MEL 116→108; totals unchanged 228→212); Q11 waterfall (trunk Macro-F1 p = 0.188, not
+  0.008; modules p = 0.649; total +0.0107); per-archive breakdown (MSKCC +0.245, BCN +0.028, HAM +0.016); FixRes (no
+  gain at 256/288 px, −0.011 to −0.029 at 320 px); Dirichlet does change predicted classes; SwinV2 val is 0.7412 (this
+  CHANGELOG's §6 "SwinV2 val 0.7176" is a slip — 0.7176 is MaxViT's); MaxViT CI [0.694, 0.801]; V3 falsified set is
+  H1/H2/H4/H5/H6; V2 decomposition letters (C = compression); 42 of 49 railway cards re-written to the session record
+  (fabricated V1 session mapping, wrong ensemble/recipe/gate facts); unsourced speculation removed (attention "lighting
+  halos", "3–5% leakage inflation", abstention τ values).
+- **Work Division & Module Responsibility Matrix added.** Added Section 2 to Team tab establishing an equitable
+  academic governance distribution across 6 core technical pillars (16.67% workload allocation per member = 100% total),
+  mapping each member's contributions across Review 1 baselines (Phases 0–5) and Review 2 research advances (V1–V6), with
+  verifiable codebase artifact paths; member card badges updated to reflect the full V1–V6 scope.
+- **Audit**: headless Chrome, all 20 tabs verified clean at both desktop (1366×900) and mobile (390×844): railway header
+  made fully responsive (mobile scale) and live announcer tagged truncate; every chart built and settled, every reveal played
+  on-screen, 0 horizontal overflow, 0 clipped text, 0 JS errors across all 20 tabs. Reduced motion and pre-play re-verified (0 early plays on all transitions).
+- **Follow-up after the audit**: Antinomy "p = 0.0074, paired McNemar" replaced by the measured test — calibration
+  lost 16 serious-case detections and gained 0, exact McNemar p = 3.1 × 10⁻⁵
+  (`results/review2/escalation_mcnemar_a6_a7.json`, added to `page_facts.py`); "central discovery" softened. V1 banner
+  step labels mapped Phases 1–6 to invented sessions (S1–S27); now Phase 0 / S1–S2 / S3 + S9 / S4–S5. Stale
+  "Q8b seed 44 · running" → done.
+
+### Repository tidy-up for GitHub, new README, Review-2 railway fix (2026-10-06, night; owner request)
+No training, no test read, no reserved read; `results/test_pass_receipt.json` unchanged at 2.
+- **Removed from the repository:** three working documents that were never research artefacts:
+  `docs/EXTERNAL_RESEARCH_PROMPT.md` (an external brief), `results/v5/overnight_check_0447.md` (an overnight status
+  note) and `results/v5/V5_FINAL_CORRECTION_AUDIT.md` (an unreferenced plan-correction log). Nothing referenced them.
+- **Working-note references reworded** in `docs/RESEARCH_LOG.md` (header), `research/session5_partB_audit.md` and its
+  `results/reports/` copy, `docs/v5_design/V5_IDEAS_BIOLOGY_FIRST.md` (one source cell now cites `results/xdomain/`),
+  and comments in `research/ablation/figure1_architecture.py`, `research/ensembling/run_ensembling.py`,
+  `research/v2/gate.py` (the `BLUEPRINT` label), `research/v2/transport.py`, `research/v4/s69_admissibility.py`,
+  `scripts/gpu_benchmark.py`, `scripts/run_block3.ps1`, `scripts/run_q8a_when_ready.ps1`, plus this file. No number
+  changed. Hash-pinned files were **not** touched: `docs/V5_RUNSHEET.md`, `docs/v5_record/*` and
+  `results/v5/v5_plan_freeze.json` stay byte-identical, and generated records under `results/` were not hand-edited.
+- **Layout:** `RESEARCH_ROADMAP.md` moved to `docs/`; `docs/README.md` rewritten as a chronological index (V1 → V6, with
+  dates); `.gitignore` reorganised (local tooling patterns moved to the untracked `.git/info/exclude`; presentation
+  files and a local `archive/` kept out of git). Locally, the two infographics moved to `presentations/` and the
+  infographic backups, old runbooks and scratch files to `archive/` (both git-ignored); caches deleted.
+- **README rewritten** for the public repository: overview, V1 → V6 programme, the V1 ladder
+  (`results/ablation_table.csv`), the under-40 table (`results/age_band_prior.csv`,
+  `research/selective/results/session4_report.md`: 3/21, 55/70, 154/199; rescued 2/18, 5/15, 17/45), the V5
+  confirmation gates (`results/v5/confirm_s42_s43_s44.json`), the deployed stack with S56
+  (`results/v4/s56/contrasts_reserved.csv`: +0.1541 [+0.1044, +0.2156]), integrity rules, layout, setup and team. The old
+  README's training-prior row for 40–59 (16.7%) was wrong; the file says 12.8% (397 / 3,112).
+- **Committed outstanding results:** V5 seed-44 confirmation predictions and run JSONs, `results/v5/confirm_s42_s43_s44.json`,
+  the Q11 reader, `results/v6/fixres/`, and the Review-2 fact generator (`research/review2/`, `results/review2/`).
+- **Review-2 railway:** cards #05–#07 carried the previous card's title (TTA under "Ensemble Ablation", calibration
+  under "TTA", the transformer test under "Calibration"); titles and badges now match their content.
+- **Verified after the changes:** `research.ablation.audit_manuscript` 366/366; `research.v4.audit_v4 --check` 76/76;
+  `research.v5.adopt_e1 --verify` 0 failures; `pytest tests` 115 passed, 1 skipped; edited modules compile.

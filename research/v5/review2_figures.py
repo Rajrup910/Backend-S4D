@@ -191,6 +191,33 @@ def tables(scr: list[dict], conf: dict, conf_name: str) -> None:
         for name, m in (("in1k control (V4 recipe)", r["b"]), ("V5 locked composite", r["a"])):
             lines.append(f"| {name} | {r['seed']} | {m['macro_f1']:.4f} | {m['balanced_accuracy']:.4f} | "
                          f"{m['pauc_all']:.4f} | {m['pauc_u40']:.4f} | {m['esc_sens_argmax']:.4f} |")
+    q11_p = V5 / "q11_decomposition.json"
+    if q11_p.is_file():
+        q11 = json.loads(q11_p.read_text(encoding="utf-8"))
+        lines += ["", f"## Q11 Trunk vs Module Decomposition (folds 1–4, seeds {q11['seeds']}; source `results/v5/q11_decomposition.json`)", "",
+                  "| Contrast | Under-40 pAUC [95% CI] | p | Macro-F1 [95% CI] | p | All-age pAUC [95% CI] | p |",
+                  "|---|---|---|---|---|---|---|"]
+        m_u = q11["module_effect"]["delta"]["pauc_u40"]
+        m_f1 = q11["module_effect"]["delta"]["macro_f1"]
+        m_a = q11["module_effect"]["delta"]["pauc_all"]
+        lines.append(f"| Module effect: composite − Q11 control (same IN-22k trunk) | {m_u['point']:+.4f} [{m_u['ci95'][0]:+.4f}, {m_u['ci95'][1]:+.4f}] | {m_u['p_two_sided']:.3f} | "
+                     f"{m_f1['point']:+.4f} [{m_f1['ci95'][0]:+.4f}, {m_f1['ci95'][1]:+.4f}] | {m_f1['p_two_sided']:.3f} | "
+                     f"{m_a['point']:+.4f} [{m_a['ci95'][0]:+.4f}, {m_a['ci95'][1]:+.4f}] | {m_a['p_two_sided']:.3f} |")
+
+        t_u = q11["trunk_effect"]["delta"]["pauc_u40"]
+        t_f1 = q11["trunk_effect"]["delta"]["macro_f1"]
+        t_a = q11["trunk_effect"]["delta"]["pauc_all"]
+        lines.append(f"| Trunk effect: Q11 control − in1k control (trunk swap only) | {t_u['point']:+.4f} [{t_u['ci95'][0]:+.4f}, {t_u['ci95'][1]:+.4f}] | {t_u['p_two_sided']:.3f} | "
+                     f"{t_f1['point']:+.4f} [{t_f1['ci95'][0]:+.4f}, {t_f1['ci95'][1]:+.4f}] | {t_f1['p_two_sided']:.3f} | "
+                     f"{t_a['point']:+.4f} [{t_a['ci95'][0]:+.4f}, {t_a['ci95'][1]:+.4f}] | {t_a['p_two_sided']:.3f} |")
+
+        c_u = conf["primary"]["delta"]["pauc_u40"]
+        c_f1 = conf["primary"]["delta"]["macro_f1"]
+        c_a = conf["primary"]["delta"]["pauc_all"]
+        lines.append(f"| Total confirmation: composite − in1k control (primary) | {c_u['point']:+.4f} [{c_u['ci95'][0]:+.4f}, {c_u['ci95'][1]:+.4f}] | {c_u['p_two_sided']:.3f} | "
+                     f"{c_f1['point']:+.4f} [{c_f1['ci95'][0]:+.4f}, {c_f1['ci95'][1]:+.4f}] | {c_f1['p_two_sided']:.3f} | "
+                     f"{c_a['point']:+.4f} [{c_a['ci95'][0]:+.4f}, {c_a['ci95'][1]:+.4f}] | {c_a['p_two_sided']:.3f} |")
+
     (V5 / "review2_tables.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

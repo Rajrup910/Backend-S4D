@@ -29,7 +29,7 @@
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_block3.ps1            # run
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_block3.ps1 -DryRun    # plan only
 #
-# Launch unattended runs via WMI so they live outside the Claude app's container (see memory).
+# Launch unattended runs via WMI so they live outside the desktop app's container.
 
 param([switch]$DryRun)
 

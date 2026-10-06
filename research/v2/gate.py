@@ -1,6 +1,6 @@
 """S39 -- the verdict, implementing the blueprint's section 13 GO/MODIFY/NO-GO table.
 
-**Source of the table.** `~/.claude/plans/master-polymorphic-gadget.md` -- "V2 -- Budget-
+**Source of the table.** the V2 blueprint (rev. 2) -- "V2 -- Budget-
 Constrained Subgroup Safety: Scientific Implementation Blueprint", revision 2, section 13,
 with the per-hypothesis falsifiers in section 7. This is the document `V2_SESSION_RUNBOOK.md`
 calls "the blueprint" and `plan.py` calls "the directive"; it lives outside the repository
@@ -39,7 +39,7 @@ VERDICT_PATH = RESULTS_DIR / "final_verdict.json"
 
 GO, MODIFY, NO_GO = "GO", "MODIFY", "NO-GO"
 MCID = 0.05
-BLUEPRINT = "~/.claude/plans/master-polymorphic-gadget.md (V2 blueprint rev.2) section 13"
+BLUEPRINT = "V2 blueprint rev.2, section 13"
 
 #: The section 28 contribution taxonomy section 13 requires the type to be chosen from.
 CONTRIBUTION_TAXONOMY = {

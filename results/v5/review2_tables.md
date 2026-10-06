@@ -18,23 +18,21 @@
 | m5 | — | not run | | | | — | Q4 pre-check FAIL: 416 mask overlaps < 1,000 |
 | m7 | — | not run | | | | — | LOAO FAIL: mean present-class Macro-F1 −0.033 |
 
-## Confirmation (folds 1–4, seeds [42, 43]; source `results/v5/confirm_s42_s43.json`)
+## Confirmation (folds 1–4, seeds [42, 43, 44]; source `results/v5/confirm_s42_s43_s44.json`)
 
 | Endpoint | Δ composite − control | 95% CI | Gate |
 |---|---|---|---|
-| all-age escalation pAUC | -0.0007 | [-0.0082, +0.0067] | D: provisional (2/3 seeds) - not a pass or fail |
-| under-40 escalation pAUC | +0.0361 | [+0.0072, +0.0665] | A: FAIL (needs ≥ +0.050 and CI > 0) |
-| pAUC histopathology rows | +0.0033 | [-0.0094, +0.0158] | descriptive |
-| Macro-F1 | +0.0129 | [-0.0014, +0.0271] | B: pass |
-| balanced accuracy | +0.0063 | [-0.0077, +0.0191] | descriptive |
-| escalation sensitivity (argmax) | +0.0168 | [+0.0046, +0.0275] | descriptive |
-| sensitivity @ spec 0.80, 40–59 | +0.0038 | [-0.0180, +0.0217] | C: pass |
-| sensitivity @ spec 0.80, 60+ | -0.0029 | [-0.0140, +0.0078] | C: pass |
-| B2 MEL-vs-NV AUC, under 40 | +0.0413 | [-0.0009, +0.0900] | descriptive |
-| B2 class-standardised under-40 pAUC | +0.0252 | [-0.0018, +0.0528] | descriptive |
-| B4 archive-fixed-effects under-40 pAUC | +0.0573 | [+0.0229, +0.0909] | descriptive |
-
-Gate D is arithmetically settled as FAIL: both available seeds are ≤ 0, so ≥ 2 of 3 positive seeds is impossible whatever seed 44 shows.
+| all-age escalation pAUC | +0.0020 | [-0.0056, +0.0093] | D: FAIL |
+| under-40 escalation pAUC | +0.0351 | [+0.0125, +0.0596] | A: FAIL (needs ≥ +0.050 and CI > 0) |
+| pAUC histopathology rows | +0.0054 | [-0.0053, +0.0153] | descriptive |
+| Macro-F1 | +0.0107 | [-0.0015, +0.0225] | B: pass |
+| balanced accuracy | +0.0042 | [-0.0085, +0.0147] | descriptive |
+| escalation sensitivity (argmax) | +0.0167 | [+0.0074, +0.0252] | descriptive |
+| sensitivity @ spec 0.80, 40–59 | +0.0071 | [-0.0127, +0.0234] | C: pass |
+| sensitivity @ spec 0.80, 60+ | -0.0007 | [-0.0101, +0.0083] | C: pass |
+| B2 MEL-vs-NV AUC, under 40 | +0.0491 | [+0.0116, +0.0907] | descriptive |
+| B2 class-standardised under-40 pAUC | +0.0220 | [-0.0006, +0.0461] | descriptive |
+| B4 archive-fixed-effects under-40 pAUC | +0.0567 | [+0.0301, +0.0821] | descriptive |
 
 ## Absolute values on the same rows (folds 1–4, 12,235 images, last epoch, single models)
 
@@ -44,3 +42,13 @@ Gate D is arithmetically settled as FAIL: both available seeds are ≤ 0, so ≥
 | V5 locked composite | 42 | 0.6749 | 0.6660 | 0.8200 | 0.7694 | 0.8011 |
 | in1k control (V4 recipe) | 43 | 0.6601 | 0.6567 | 0.8220 | 0.7432 | 0.7839 |
 | V5 locked composite | 43 | 0.6771 | 0.6646 | 0.8208 | 0.7755 | 0.8053 |
+| in1k control (V4 recipe) | 44 | 0.6690 | 0.6670 | 0.8190 | 0.7487 | 0.7893 |
+| V5 locked composite | 44 | 0.6754 | 0.6668 | 0.8265 | 0.7819 | 0.8058 |
+
+## Q11 Trunk vs Module Decomposition (folds 1–4, seeds [42, 43, 44]; source `results/v5/q11_decomposition.json`)
+
+| Contrast | Under-40 pAUC [95% CI] | p | Macro-F1 [95% CI] | p | All-age pAUC [95% CI] | p |
+|---|---|---|---|---|---|---|
+| Module effect: composite − Q11 control (same IN-22k trunk) | +0.0270 [+0.0045, +0.0488] | 0.023 | +0.0025 [-0.0073, +0.0118] | 0.649 | +0.0011 [-0.0057, +0.0083] | 0.762 |
+| Trunk effect: Q11 control − in1k control (trunk swap only) | +0.0081 [-0.0127, +0.0301] | 0.432 | +0.0082 [-0.0045, +0.0191] | 0.188 | +0.0009 [-0.0047, +0.0067] | 0.776 |
+| Total confirmation: composite − in1k control (primary) | +0.0351 [+0.0125, +0.0596] | 0.003 | +0.0107 [-0.0015, +0.0225] | 0.095 | +0.0020 [-0.0056, +0.0093] | 0.596 |

@@ -464,7 +464,7 @@ def selftest() -> int:
     else:
         print("  [PASS] patient split is deterministic for a fixed seed")
 
-    # The anchor CLAUDE.md records for the exact interval at 3/21, where the percentile bootstrap
+    # The anchor the S7 statistics notes record for the exact interval at 3/21, where the percentile bootstrap
     # returns [0.000, 0.286] instead -- the case `research/stats/intervals.py` exists for.
     lo, hi = clopper_pearson(3, 21)
     if not (abs(lo - 0.030) < 5e-3 and abs(hi - 0.363) < 5e-3):

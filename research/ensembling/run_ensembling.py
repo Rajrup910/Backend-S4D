@@ -43,7 +43,7 @@ from research.ensembling.oof import oof_scores
 from research.ensembling.stats import bootstrap_macro_f1_ci, mcnemar_test
 from research.experiment_log import log_experiment
 
-BASELINE_ARCH = "convnext_tiny"  # current single-model leader, Macro-F1 0.746 (CLAUDE.md)
+BASELINE_ARCH = "convnext_tiny"  # current single-model leader, Macro-F1 0.746 (ml/results/)
 
 
 def _metrics_row(y_true: np.ndarray, scores: np.ndarray) -> dict:

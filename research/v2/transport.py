@@ -1,6 +1,6 @@
 """S38 -- V6 transport + V7 PAD: does a HAM-OOF-fitted mass threshold transport?
 
-The gap S21 left open (CLAUDE.md's S8b caveat): every prior cross-domain result in this
+The gap S21 left open (the S8b caveat): every prior cross-domain result in this
 project either re-tunes a cutoff on the target cohort (an oracle question, "how much
 information is in the score here") or applies a rule fitted somewhere else without ever
 separating *how much* of the gap is lost sensitivity from *how much* is simply spending
@@ -29,7 +29,7 @@ bootstrap intervals are reported, never a significance claim.
 
 **The PAD caveat, stated before any number below is read.** PAD-UFES-20's escalating
 prior is ~77% (inverted relative to HAM's ~19% and BCN/MSKCC's ~19-26%) -- documented
-repeatedly in this project (S8b, S12, CLAUDE.md). Any policy that refers a large
+repeatedly in this project (S8b, S12). Any policy that refers a large
 *constant* fraction of PAD mechanically achieves high sensitivity simply because most of
 PAD is escalating; a frozen HAM cutoff transporting "well" to PAD by this measure is not
 evidence the mechanism replicated, only that PAD's prior does most of the work. This is
