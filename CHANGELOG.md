@@ -9149,3 +9149,18 @@ No data, no numbers changed; `review2_infographic.html` stays local (git-ignored
 - **Verified (headless Chrome):** 20/20 tabs clean at 1366×900 and 390×844 (only the Tailwind CDN notice); all 49 panel
   jump targets resolve; hover, pin, Enter / Esc, jump, back and phone bottom-sheet unchanged; banner state correct on
   tab switch, return and deep link. The build scripts are idempotent (a second run leaves the file byte-identical).
+
+### Review-2 infographic: lane-aware pastel panel, pastel-purple V6; presentation script rewritten (2026-10-07; owner request)
+No data, no numbers changed; the infographic and `presentations/` stay local (git-ignored).
+- **Railway detail panel** now opens on the side its card leans toward (left-lane cards to the left, right-lane cards
+  to the right, sliding out from the card); with no room beside the card it hugs the screen edge on that same side, and
+  phones keep the bottom sheet. Its body is a see-through pastel gradient (lavender, orchid, periwinkle, sky, mint).
+- **V6 gloss** made clearly visible but soft, in the pastel-purple family: lilac page wash with a top sheen and a
+  diagonal glint, lilac-tinted cards and layer boxes, violet "What V6 adds" boxes and labels, periwinkle diagram lines;
+  the V6 tab button, floating button, railway chip, V6 railway cards and Journey card use the same palette.
+- **Presentation document** restructured: Part A explains how the infographic flows (story, page map, speaking order,
+  driving checklist); Part B is a full plain-language sample run-through, speaker by speaker, with every number checked
+  against the page; Part C routes Q&A with ready answers; Part D is the 25-minute cut.
+- **Verified (headless Chrome):** panel side matches the card's lane for cards 5–8 and 47 at 1366 px and 900 px; 20/20
+  tabs clean at 1366×900 and 390×844; all 49 jump targets, hover, pin, keyboard, jump, back and phone view unchanged;
+  both build scripts idempotent.
