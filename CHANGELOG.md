@@ -9164,3 +9164,18 @@ No data, no numbers changed; the infographic and `presentations/` stay local (gi
 - **Verified (headless Chrome):** panel side matches the card's lane for cards 5–8 and 47 at 1366 px and 900 px; 20/20
   tabs clean at 1366×900 and 390×844; all 49 jump targets, hover, pin, keyboard, jump, back and phone view unchanged;
   both build scripts idempotent.
+
+### Review-2 infographic: railway panel follows the card under the pointer after scrolling; Apple-style glass (2026-10-07; owner request)
+No data, no numbers changed; the infographic stays local (git-ignored).
+- **Bug:** after scrolling the railway by two or more cards, the panel kept showing the previous card on that card's
+  side. Cause: the panel opened on mouse-over events, and a browser sends none when cards slide under a still pointer.
+- **Fix:** the panel now tracks the pointer position and checks the card under it every frame. It hides while the
+  railway moves and, once it settles, reopens for the card actually under the pointer, on that card's own side
+  (left-lane left, right-lane right; at tablet widths against the screen edge on that side). A pinned panel (click /
+  Enter) rides along with its card and closes when the card leaves the track.
+- **Glass:** thinner tint (8–24% white) over a 14 px blur with boosted colour, a bright-to-lilac gradient rim, a curved
+  top-left shine, a diagonal glint and a soft violet base; tags, source box, close and jump buttons are lighter glass layers.
+- **Verified (headless Chrome, real mouse and wheel input, pointer held still):** wheel ×1, ×2, ×3 down and ×2 up over
+  either lane at 1366 px and 900 px → the panel always shows the card under the pointer on that card's side, and is
+  hidden while the railway moves; pinned panel follows its card; hover, leave, Enter / Esc, all 49 jump targets, jump,
+  back and phone tap unchanged; 20/20 tabs clean at 1366×900 and 390×844; build scripts idempotent.
