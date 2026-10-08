@@ -61,7 +61,7 @@ Every script takes `--help` and every default comes from `configs/training_confi
 **1. The split is grouped by `lesion_id`.** HAM10000 has multiple photographs of the same
 lesion. Splitting at random puts near-identical images in both train and test and inflates
 the result. `assert_no_leakage()` raises if any lesion spans a boundary — and a test asserts
-that the guard itself fails when it should. See [`docs/dataset.md`](../docs/dataset.md).
+that the guard itself fails when it should. See [`ml/results/split_report.md`](results/split_report.md).
 
 **2. The test set is touched once.** Checkpoints are selected on **validation macro F1**,
 chosen before any test evaluation. Repeatedly checking the test set turns it into a second
@@ -99,7 +99,7 @@ something else to the API is exactly the kind of silent error that matters here.
 
 ## Experiment log
 
-Every run appends to `results/experiments.csv` (plus a JSONL sidecar): seed, hyperparameters,
+Every run appends to `ml/results/experiments.csv` (plus a JSONL sidecar): seed, hyperparameters,
 augmentation, metrics, timings, device, checkpoint path.
 
 ## Tests

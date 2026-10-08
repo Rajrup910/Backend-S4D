@@ -9179,3 +9179,18 @@ No data, no numbers changed; the infographic stays local (git-ignored).
   either lane at 1366 px and 900 px → the panel always shows the card under the pointer on that card's side, and is
   hidden while the railway moves; pinned panel follows its card; hover, leave, Enter / Esc, all 49 jump targets, jump,
   back and phone tap unchanged; 20/20 tabs clean at 1366×900 and 390×844; build scripts idempotent.
+
+### Review-ready pass: railway entrance animation, repository audit, NAVIGATION.md (2026-10-08; owner request)
+No training, no test read; `results/test_pass_receipt.json` unchanged at 2.
+- **Review-2 infographic (local):** the Research Roadmap track no longer sits static while the section above it
+  animates. When it scrolls into view the toolbar and track rise in, the rail draws downward and the visible cards
+  cascade in from their own lane (about 1 s); it replays on every visit, resets instantly, and is off under reduced
+  motion. Only the cards' inner layer animates, so wheel, hover panel, pin and jump behaviour are unchanged.
+- **Repository audit:** working tree clean and in sync with `origin/main`; `research.ablation.audit_manuscript`
+  366/366, `research.v4.audit_v4 --check` 76/76, `research.v5.adopt_e1 --verify` 0 failures, `pytest tests` 115
+  passed / 1 skipped. Every relative link and backticked repo path in the public Markdown files resolves; two stale
+  references in `ml/README.md` fixed (a link to a non-existent `docs/dataset.md` now points to
+  `ml/results/split_report.md`; the experiment log path is `ml/results/experiments.csv`).
+- **New `NAVIGATION.md`:** fast lookups for the repository: a thirty-second map, "where is …" table, code / results /
+  plan per version (V1–V6), the file behind each headline number, verification commands, large-file warnings, a
+  glossary of terms and session ids, and search tips. All 95 links and 85 paths checked. Linked from `README.md`.

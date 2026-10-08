@@ -15,7 +15,7 @@
 
 **Team 193 · Project Exhibition · School of Computing Science and Engineering, VIT Bhopal University**
 
-[Overview](#overview) · [Programme](#the-research-programme-v1--v6) · [Results](#headline-results) · [Deployed system](#the-deployed-system) · [Integrity](#research-integrity) · [Repository](#repository-layout) · [Reproduce](#getting-started) · [Team](#team)
+[Overview](#overview) · [Programme](#the-research-programme-v1--v6) · [Results](#headline-results) · [Deployed system](#the-deployed-system) · [Integrity](#research-integrity) · [Repository](#repository-layout) · [Reproduce](#getting-started) · [Team](#team) · **[Navigate the repo →](NAVIGATION.md)**
 
 </div>
 
@@ -231,6 +231,7 @@ None of these read the test split.
 
 | Read this | For |
 |---|---|
+| [`NAVIGATION.md`](NAVIGATION.md) | Fast lookups: where each piece of code, result and number lives |
 | [`docs/README.md`](docs/README.md) | Every plan, runsheet and log, in the order it was written |
 | [`CHANGELOG.md`](CHANGELOG.md) | The full narrative: each session, its decision and the file behind each number |
 | [`results/README.md`](results/README.md) | How the V1 result files are generated |
