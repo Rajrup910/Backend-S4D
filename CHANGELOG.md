@@ -9225,3 +9225,80 @@ railway hover panel is open, and whenever it would cover a footer button. The V6
 Plan" button and each page's Next button are unchanged. Verified in headless Chrome by scrolling through all 20 pages
 at 1366×900 and 390×844: it appears only on those two blocks, never on phones; the railway, panel and jump tests and the
 20-page check are unchanged.
+
+### Review-2 infographic: page 17 "After Review 1", and an animated fold machine on page 14 (2026-10-09; owner request)
+No experiment was run and no result file changed; the infographic and the mock-review script stay local. Two Review 1
+comments (the work's novelty, and its reliance on a single dataset) now have one page that answers both, and page 14
+shows how the V5 confirmation's 12,235 held-out images were earned.
+
+- **Page 17 is now "After Review 1"** (it was "Novelty"). The hero names both comments (paraphrased) and links to
+  their answers. *Part 1 · Novelty* keeps the four sections built earlier the same night: A, novel and working, each
+  claim set beside its closest published work; B, what we wanted to be novel and why it failed; C, V6's CG-DM and the
+  three other proposed steps; D, how the pieces combine. Its numbers carry their source lines on the page:
+  `results/ablation_table.csv`, `results/review2/escalation_mcnemar_a6_a7.json`, `results/v2/frr_by_group.csv`,
+  `results/v3/final_verdict.json`, `results/v5/q11_decomposition.json`, `results/test_pass_receipt.json`,
+  `results/v4/backbone_probe_deltas.csv`, `results/v5/review2_tables.md`. References [28]–[39] and viva Q16–Q17 were
+  added with it.
+- **Part 2 · Dataset diversity** is new. Every number is computed by the build script from the files and cross-checked:
+  - Image counts by split and archive come from `ml/data/manifest_v4.csv` (git-ignored data, written by
+    `research/v4/build_corpus.py`), checked against
+    `results/v4/corpus_report.json` and `results/v4/kfold/fold_assignments.csv`:
+    - training folds 15,294 (HAM 6,981, BCN 6,704, MSKCC 1,609);
+    - validation 3,802 (HAM 1,532, BCN 1,853, MSKCC 417);
+    - reserved 4,733 (BCN 3,856, MSKCC 877, no HAM);
+    - HAM test 1,502;
+    - archive totals: HAM 10,015, BCN 12,413, MSKCC 2,903.
+  - Young data comes from `results/v5/young_data/extra_train.csv`: 2,078 images, ages 5–35, training only.
+  - PAD-UFES-20 comes from `research/xdomain/results/`, via `ensemble_on_pad.csv`, `mahalanobis_shift.json` and
+    `fitzpatrick_slice.csv`:
+    - 2,106 photos;
+    - Macro-F1 of the HAM-trained soft-vote 0.167, single networks 0.124–0.188;
+    - Mahalanobis shift AUROC 0.913;
+    - skin type recorded for 1,302 photos, with type V on 8 and type VI on 1.
+  - V1 Macro-F1 values come from `results/v5/same_footing.md`: 0.805 on its own HAM test, 0.411 on reserved, and 0.603
+    for the V4 pooled control on the same rows.
+  - Per-hospital under-40 ΔpAUC comes from `results/v5/confirm_s42_s43_s44.json`: MSKCC +0.245 (10 lesions),
+    BCN +0.028 (28), HAM +0.016 (27).
+  - Three numbers are repeated from the page-10 transfer card and asserted to match it: BCN 0.402 vs 0.784 in-domain,
+    HAM ⊂ ISIC-2019, and MSKCC lacking 71.79% of lesion IDs.
+
+  Viva Q18 ("one dataset?") was added; the Q&A tab now lists 18 questions.
+- **Fold machine (page 14, above the confirmation forest plot).** An animated, step-through diagram drawn as a butterfly:
+  - 15,294 training images begin as one cocoon;
+  - split by lesion, it opens into a body (fold 0, the screening fold) and four wings (folds 1–4), with each wing's
+    colour bands showing that fold's hospital mix;
+  - each wing is held out in turn while a ledger fills to 12,235 images and 65 under-40 serious lesions;
+  - three seeds per arm lead to the paired result, +0.0351 [+0.0125, +0.0596], p = 0.003, against the +0.050 target.
+
+  Every figure is embedded by the build script from:
+  - `results/v4/kfold/s71_plan.json` and `fold_assignments.csv`: per-fold images 3,059 / 3,059 / 3,059 / 3,059 / 3,058,
+    lesions 1,746 / 1,749 / 1,751 / 1,753 / 1,749, under-40 serious lesions 16 / 12 / 17 / 17 / 19;
+  - `results/v4/corpus_report.json`;
+  - `results/v5/young_data/extra_train.csv`;
+  - `results/v5/confirm_s42_s43_s44.json`;
+  - `results/v5/composite_lock.json`.
+
+  The script asserts that folds 1–4 sum to the confirmation file's 12,235 rows, 7,002 lesions and 65 under-40 lesions.
+  It has Play/Pause, step and stage controls; it pauses when scrolled away, replays on each visit, and shows the
+  finished picture with reduced motion or in print. Design notes, all at the owner's request:
+  - The wings are mirror images, a forewing with a rounded apex over a fan-shaped hindwing, with one dot pattern
+    laid out on the left and mirrored.
+  - All four wings beat together; a held-out wing is marked by tint, rim and pill.
+  - The palette is the page's quiet violet and sky, with a faint glow.
+  - The cocoon-to-butterfly step is an emergence: the cocoon splits in two with a soft light, the wings come out
+    small and folded, expand, open with a few settling beats, and the dots flow from the body out to the wing edges.
+  Earlier cloth and pleat versions were replaced.
+- **Corrections found on the way.** Page 14's per-seed table showed seed 42's under-40 delta as +0.0399, but the
+  file gives 0.03982, so it now reads +0.0398 (`results/v5/confirm_s42_s43_s44.json`). Page 17's integration-flow chip
+  read "+0.18" beside "V1 0.411 → V4 0.603", whose difference is 0.192. The +0.18 is the S54 Gate A
+  *composite* − V1 contrast (`results/v4/s54/s54_gate.json`, contrast A, 0.1798), so the chip now shows the two means.
+  The same "+0.18 = pooled control" wording on page 13 and in this CHANGELOG (S54 entry) is flagged for the owner,
+  not changed tonight. The mock-review script's stated length now matches its own timing table (48:00).
+- **Hardening.** The page's keyboard handler assumed every key event targets an element; a key event sent to the
+  document itself (the railway test does this) threw `e.target.closest is not a function`. It now falls back to `<body>`.
+- **Verified**:
+  - headless Chrome at 1366×900, 1366×768 and 390×844, with and without reduced motion: the fold machine passed 18/18
+    control, lifecycle and geometry checks, page 17 had no overflow, and the comment cards jump to their part;
+  - all 21 tabs audited on desktop and phone with no issues, railway jump/back checks and 8/8 railway scroll tests passed,
+    and the rebuilt phone copy loads with no broken images;
+  - `audit_manuscript` 366/366, `audit_v4` 76/76, `adopt_e1 --verify` no failures, pytest all pass (1 skipped).
