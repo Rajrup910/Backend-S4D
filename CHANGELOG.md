@@ -9194,3 +9194,25 @@ No training, no test read; `results/test_pass_receipt.json` unchanged at 2.
 - **New `NAVIGATION.md`:** fast lookups for the repository: a thirty-second map, "where is …" table, code / results /
   plan per version (V1–V6), the file behind each headline number, verification commands, large-file warnings, a
   glossary of terms and session ids, and search tips. All 95 links and 85 paths checked. Linked from `README.md`.
+
+### Review-2 viva preparation for Rajrup (2026-10-08; owner request)
+No training, no test read, no edit to the infographic or the flow script; `results/test_pass_receipt.json` unchanged at 2.
+- **Read** `presentations/MOCK_REVIEW_FLOW.md` and the full text of `review2_infographic.html` (all 19 tabs, 49 railway cards).
+- **Re-checked Rajrup's V4 slot numbers** against source: S55 signed-gap spread 0.0679 → 0.0084
+  (`research/multical/results_oof/gap_summary.json`); S56 under-40 system sensitivity +0.1541 [+0.1044, +0.2156]
+  (`results/v4/s56/s56_report.json`); S59 under-40 sensitivity 0.763 vs floor 0.855, all terms NOT_MET
+  (`results/v4/s59/s59_report.json`); receipt = one plan, two stages on 4 Sep ("tables" 18 quantities, "attribution" 1).
+- **New local file** `presentations/RAJRUP_VIVA_GUIDE.md` (git-ignored): plain-language glossary, V1 → V6 narrative,
+  Rajrup's two slots explained, likely questions, number card.
+- **Flagged, not changed:** railway card #37 carries the status "384PX RESOLUTION LOCKED" while its own result says
+  resolution stays at 224 px; the Q3 card's "1/7 (~0.143)" collides with the under-40 0.143.
+
+### Review-2 infographic: team page reworded as natural team work (2026-10-08; owner request)
+No data, no numbers changed; the infographic stays local. Each member keeps exactly the same area, tasks, phases and
+files. Removed from the Team & Panel page: the 16.67 % shares and the "100 %" badge, "pillar", "matrix", "ownership",
+"lead", "work share" and "corresponding author" labels. Headings now read "How We Divided the Work" and "Who Did What:
+Review 1 to Review 2"; each summary card is headed by the member's name. Three cited paths that do not exist in the
+repository were corrected to where the work is: `ml/models/` → `ml/training/`, `results/v4/probe/` →
+`results/v4/backbone_probe_deltas.csv`, `results/v6/foundation_distillation.json` → `docs/V6_RUNSHEET.md` (V6
+distillation is a plan, with no result file). Every path on the page now resolves. 20/20 tabs clean at 1366×900 and
+390×844.
