@@ -9216,3 +9216,12 @@ repository were corrected to where the work is: `ml/models/` → `ml/training/`,
 `results/v4/backbone_probe_deltas.csv`, `results/v6/foundation_distillation.json` → `docs/V6_RUNSHEET.md` (V6
 distillation is a plan, with no result file). Every path on the page now resolves. 20/20 tabs clean at 1366×900 and
 390×844.
+
+### Review-2 infographic: floating V6 button shown only where it makes sense (2026-10-08; owner request)
+No data, no numbers changed; the infographic stays local. The floating "V6 Master Plan" button no longer follows the
+reader on every page. It fades in only while the closing "Why V6 exists" block of page 14 (V5 Mechanism) or the
+"THEREFORE: V6" block of page 15 (Synthesis) is on screen, and stays hidden on every other page, on phones, while the
+railway hover panel is open, and whenever it would cover a footer button. The V6 tab, the page-1 "Jump to the V6 Master
+Plan" button and each page's Next button are unchanged. Verified in headless Chrome by scrolling through all 20 pages
+at 1366×900 and 390×844: it appears only on those two blocks, never on phones; the railway, panel and jump tests and the
+20-page check are unchanged.
