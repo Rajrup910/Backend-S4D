@@ -9290,6 +9290,10 @@ shows how the V5 confirmation's 12,235 held-out images were earned.
   Earlier cloth and pleat versions were replaced. On a laptop, stage 1 (the cocoon and the locked test-set box,
   alone on screen) is shown zoomed in about 1.5× so the labels read clearly. Moving to stage 2 first zooms back out
   over 1.2 s, with the same aspect ratio so the page never shifts, and only then does the cocoon open.
+  Once a step stops moving, hovering (or tapping) a wing, the body, a fold label, the young-data box, the cocoon or
+  the locked box shows a glass card. It says what that part does in that step (training, screening or held out),
+  how many images train the model it feeds, and the fold's own counts, all from the same embedded data. The card
+  hides the moment the step changes.
 - **Corrections found on the way.** Page 14's per-seed table showed seed 42's under-40 delta as +0.0399, but the
   file gives 0.03982, so it now reads +0.0398 (`results/v5/confirm_s42_s43_s44.json`). Page 17's integration-flow chip
   read "+0.18" beside "V1 0.411 → V4 0.603", whose difference is 0.192. The +0.18 is the S54 Gate A
