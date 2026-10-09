@@ -9294,6 +9294,19 @@ shows how the V5 confirmation's 12,235 held-out images were earned.
   the locked box shows a glass card. It says what that part does in that step (training, screening or held out),
   how many images train the model it feeds, and the fold's own counts, all from the same embedded data. The card
   hides the moment the step changes.
+  While the butterfly is alone on screen (stage 2), it is drawn 1.6× larger (about 960 × 490 px instead of 600 × 300)
+  with its labels in one row underneath. It shrinks back when the model, ledger and charts arrive below, and an
+  overlap check confirms no label touches a wing or another label. The hover cards are smaller (232 px wide), and a
+  left wing's card opens to its left, a right wing's to its right.
+- **Page-tab bar.** It shows at the top of each page and slides away once you scroll down. A small glass pill then
+  shows the current page, the progress through all 20 pages and 'hover for all pages'. Hovering the top edge or the
+  pill (or tapping it on a phone) brings the bar back, and it leaves again when the pointer does.
+- **Fold machine, revised at the owner's request.** In the big stage-2 view (now 1.35×) the labels move to the free
+  corners beside their wings instead of a row underneath, and the leader lines are darker. A stage-4 panel under the
+  ledger names each round, explains why the fold is held out, and shows the three locked ideas (two-step head, m4,
+  young data). The cards light up as the ideas feed each round's model, and their F1–F4 dots fill across folds. After
+  round 4 the panel shows the Q11 split from `results/v5/q11_decomposition.json`: ideas + young data +0.0270
+  (p = 0.023), bigger pre-trained network +0.0081 (p = 0.432); the build script asserts they sum to the pooled +0.0351.
 - **Corrections found on the way.** Page 14's per-seed table showed seed 42's under-40 delta as +0.0399, but the
   file gives 0.03982, so it now reads +0.0398 (`results/v5/confirm_s42_s43_s44.json`). Page 17's integration-flow chip
   read "+0.18" beside "V1 0.411 → V4 0.603", whose difference is 0.192. The +0.18 is the S54 Gate A
