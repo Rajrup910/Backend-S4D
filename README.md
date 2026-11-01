@@ -35,7 +35,7 @@ classes **melanoma, basal-cell carcinoma and actinic keratosis**, to one, for ev
 | **Cohorts** | HAM10000, BCN20000, MSKCC, PAD-UFES-20 (smartphone), ISIC Archive (train-only young data) |
 | **Primary metrics** | Macro-F1, balanced accuracy, escalation sensitivity: **never accuracy** |
 | **Best V1 system** | 6-CNN soft vote + 24-view TTA + Dirichlet calibration: **Macro-F1 0.8047** on the 1,502-image test split |
-| **Central finding** | Under-40 escalation sensitivity is **0.143** (3 of 21) against about 0.78 in older bands, and the misses are *confident*: abstention refers only 11.1% of them |
+| **Central finding** | Under-40 escalation sensitivity is **0.143** (3 of 21 images, from only 10 lesions) against about 0.78 in older bands, and the misses are *confident*: abstention refers only 11.1% of them |
 | **Where it stands** | Five versions narrowed the cause to a **ranking limit in the learned representation**; V5's dermatologist-style modules give a real but sub-clinical under-40 gain; V6 is planned |
 
 <sub>Sources: `results/review2/ham10000_class_profile.csv`, `results/ablation_table.csv`, `research/selective/results/session4_report.md`.</sub>
@@ -58,7 +58,7 @@ flowchart LR
 
 | Version | Question | What the evidence said |
 |---|---|---|
-| **V1** · Phases 0–5, S1–S9 | How far do CNNs, ensembling, TTA and calibration go on HAM10000? | Only ensembling clears significance (McNemar p = 3.4 × 10⁻⁵ vs ConvNeXt-Tiny). Under-40 escalation sensitivity collapses to 0.143. |
+| **V1** · Phases 0–5, S1–S9 | How far do CNNs, ensembling, TTA and calibration go on HAM10000? | Only ensembling clears significance (McNemar p = 3.4 × 10⁻⁵ vs ConvNeXt-Tiny). Under-40 escalation sensitivity collapses to 0.143 (3 of 21 images, 10 lesions). |
 | **V2** · S28–S39 | Is the under-40 miss a decision-threshold problem? | No: score compression is ruled out (every interval spans 0). The only GO is bipartite conformal prediction, which cuts under-40 false reassurance from 6/29 to 1/29. |
 | **V3** · S40–S47 | Can a better head, more archives or age-invariance close it? | 5 hypotheses falsified, 1 certified: the representation is age-entangled, and removing age costs −0.1049 under-40 AUC. |
 | **V4** · S48–S75 | With a powered endpoint, does any recipe, foundation model or decision layer fix it? | Foundation features do not rank under-40 better (PanDerm −0.0363 [−0.0828, +0.0127]); the reserved read is "neither" (Macro-F1 −0.012 [−0.032, +0.010]); the pre-declared safety contract fails. Per-band abstention (S56) is kept. |
@@ -102,7 +102,7 @@ Two findings from this table shaped everything after it:
 | | < 40 | 40–59 | ≥ 60 |
 |---|:---:|:---:|:---:|
 | Escalating share of training images | **4.9%** | 12.8% | 35.5% |
-| Test escalation sensitivity (deployed V1 stack) | **0.143** (3 / 21) | 0.786 (55 / 70) | 0.774 (154 / 199) |
+| Test escalation sensitivity (deployed V1 stack) | **0.143** (3 / 21; 10 lesions) | 0.786 (55 / 70) | 0.774 (154 / 199) |
 | Misses referred by margin abstention | **11.1%** (2 / 18) | 33.3% (5 / 15) | 37.8% (17 / 45) |
 
 <sub>Sources: `results/age_band_prior.csv`, `research/selective/results/session4_report.md`. The test figure rests on 21 cases; the better-powered OOF estimate is 0.547 (35/64, `research/stats/results_oof/age_gap_intervals.csv`).</sub>

@@ -9321,3 +9321,102 @@ shows how the V5 confirmation's 12,235 held-out images were earned.
   - all 21 tabs audited on desktop and phone with no issues, railway jump/back checks and 8/8 railway scroll tests passed,
     and the rebuilt phone copy loads with no broken images;
   - `audit_manuscript` 366/366, `audit_v4` 76/76, `adopt_e1 --verify` no failures, pytest all pass (1 skipped).
+
+### Review-2 viva guide for Rajrup, rebuilt (2026-10-09; owner request)
+No training, no test or reserved read, no edit to the infographic or the flow script; receipt unchanged at 2.
+- **Rebuilt** `presentations/RAJRUP_VIVA_GUIDE.md` (git-ignored) from the 9 Oct 06:30 flow script and infographic.
+  Adds Rajrup's third slot (page 17, After Review 1: novelty A–D and the five-cohort table), his Q&A set
+  (Q1, Q3, Q4, Q8, Q16–Q18), the card-hover details, and a number-reconciliation table.
+- **Re-checked against source:** corpus 15,294 / 3,802 / 4,733 and archive sizes (`results/v4/corpus_report.json`);
+  young data 2,078 rows, ages 5–35 (`results/v5/young_data/extra_train.csv`); PAD 0.1669, members 0.124–0.188
+  (`research/xdomain/results/ensemble_on_pad.csv`); Mahalanobis AUROC 0.9128 (`mahalanobis_shift.json`); MSKCC null
+  lesion_id 0.7179 (`results/v2/provenance_matrix.json`); per-archive +0.2453 / 28 / 27 / 10 lesions and Q11
+  +0.0270 / +0.0081 (`results/v5/confirm_s42_s43_s44.json`, `q11_decomposition.json`); abstention 10% / 20% kept
+  1,340 / 1,170 with 54 / 36 missed (`results/ablation_table.csv`); simulator 2 default = bipartite RAPS α 0.10
+  (`results/session9/conformal_test.csv`); Dirichlet ODIR λ 0.1 (`research/calibration/methods.py`); ECE 15 bins.
+- **Flagged, not changed:** card #37 status label (still "384PX RESOLUTION LOCKED"); card #12 says five cohorts,
+  lists four; simulator 2's first button reads "Marginal LAC" while the default values are bipartite RAPS; the
+  current Fitzpatrick I–IV spread is 0.102 (`fitzpatrick_slice.csv`), so the 0.093 in CLAUDE.md is stale.
+
+### Review-2 readiness audit and morning fixes (2026-10-09; owner request)
+No training, no test or reserved read, no edit to `presentations/MOCK_REVIEW_FLOW.md` (the team's script);
+receipt unchanged at 2. Report: `presentations/REVIEW2_READINESS_REPORT.md` (git-ignored).
+- **Verification suite:** `audit_manuscript` 366/366; `audit_v4 --check` 76 passed, 0 failed, 0 warnings;
+  `adopt_e1 --verify` 11 hashes, no failures; `pytest tests` exit 0, 1 skipped. `origin/main` = `bd8d4a7`.
+- **Ground truth re-derived from `results/`:** A2/A5–A7 (`ablation_table.csv`); McNemar 3.36e-5, Holm 2.0e-4
+  (`mcnemar_delong.json`); 16/0, exact p 3.05e-5 (`review2/escalation_mcnemar_a6_a7.json`); ECE 0.1575 → 0.0206
+  (`research/calibration/results/session2_report.md`); prior 4.9% / 35.5% (`age_band_prior.csv`); 10 / 104 / 81
+  lesions (`v4/power_audit.json`); S56 +0.154 [+0.104, +0.216] at the 20% budget (`v4/s56/contrasts_reserved.csv`);
+  V5 +0.0351 [+0.0125, +0.0596], p 0.003, Gate A fail, all-age +0.0020 (`v5/confirm_s42_s43_s44.json`); Q11
+  +0.0270 / +0.0081 (`v5/q11_decomposition.json`); V3 −0.1049 (`v3/d2_strong_evaluation.json`).
+- **Source corrected:** "6/29 → 1/29" lives in `results/v2/conformal_subgroup_safety.csv` (HAM OOF, α 0.10, Holm
+  p 0.044), not `frr_by_group.csv` (marginal RAPS only). NAVIGATION.md now cites the right file.
+- **Infographic (`review2_infographic.html`, portable copy rebuilt, both git-ignored):** card #37 label "224 PX
+  KEPT · 384 FAILED"; card #12 "four archives"; page 9 "Evidence that…" and pill "Single models: 0.727–0.753"
+  (the old "~0.745 ceiling" was beaten by MaxViT's test 0.7525), pill row wraps on phones; page 13 "+0.18 for the V4
+  composite over V1 … pooled control alone +0.19" (`v4/s54/s54_contrasts.csv`); Q3 card drops "1/7 (~0.143)"; Q1/Q8
+  cards say "listed in the plan", "planned at Review 1", "marginal finite-sample coverage guarantee"; simulator 2's
+  Marginal button no longer looks pre-selected. Checked in a browser: 21 tabs, no horizontal scroll at 390, 1024 and
+  1366 px, no broken images, no console errors; simulator presets match `results/session9/conformal_cells_test.csv`.
+- **Docs:** README's three "0.143" mentions now carry "10 lesions"; NAVIGATION.md gains the Review-2 state line,
+  Review-2 file rows, V6 status (finalised, not frozen, no results), eight more headline-number rows, the last
+  verification run and glossary entries for V5 Gates A–D and Q11. The viva guide's §10 now lists the page fixes.
+- **Flagged, not changed:** both infographic copies load Tailwind and an unpinned Chart.js from CDNs, so the page
+  needs internet; V6 must be described as "finalised, frozen by hash before its first run", not "pre-registered"
+  (`docs/V6_RUNSHEET.md` says nothing is pre-registered yet); the MOCK script says "0.143 to 0.238" without the
+  lesion count (speaker adds it aloud).
+
+### DSN4091 Capstone Phase-I report filled from the department sample, up to Review 2 (2026-10-09; owner request)
+No training, no test or reserved read; receipt unchanged at 2. Output (git-ignored, local):
+`presentations/DSN4091_Phase1_Report_Team193.docx` and `.pdf`, 66 pages, 34 figures, 28 tables, 51 references.
+Follows the department sample's structure (cover, bonafide, acknowledgement, lists, abstract, tabular table of contents,
+Chapters 1–7 with the sample's section headings, Appendix A screenshots, Appendix B code, references); adds a List of
+Tables and §4.5 (novelty and the response to the two Review 1 comments).
+- **Every number is sourced** in a caption or table note: `results/ablation_table.csv`, `results/review2/*`,
+  `results/age_band_prior.csv`, `research/selective/results/session4_report.md`,
+  `research/conformal/results/session4_conformal_report.md`, `results/v2–v5/*`, `results/v5/review2_tables.md`,
+  `results/v5/same_footing.md`, `results/v4/kfold/fold_assignments.csv` (per-fold images and under-40 escalating
+  lesions 16/12/17/17/19 recomputed: folds 1–4 = 12,235 images, 65 lesions). Exact Clopper–Pearson intervals for the
+  age-band bars were computed for the report (<40 [0.030, 0.363]; 40–59 [0.671, 0.875]; 60+ [0.709, 0.830]).
+- **Verification suite re-run 9 Oct afternoon** (shown as Fig A.15): `audit_manuscript` 366/366; `audit_v4 --check`
+  76 passed, 0 failed; `adopt_e1 --verify` 11 hashes, no failures; `pytest tests` 115 passed, 1 skipped.
+- **Screenshots** of `review2_infographic.html` (served locally) and of the S60 service (`research/v4/s60_api.py`,
+  Swagger UI). A live `/predict` call used the six-member 24-view TTA soft vote of **validation** image ISIC_0024310
+  (mel, age 60): predicted mel (calibrated 0.7088), conformal set {mel}, no abstention (0.291 < 0.344), NNB@3% 7.99.
+  `.claude/launch.json` gained an `s60-service` entry for this.
+- **Not invented, left for the team:** the viva-voce date stays blank; the Program Chair, Dean and acknowledgement
+  wording are kept from the department sample; MOCK's "+0.0297" for S50 (identical to R1's value) was not used.
+- **Revision (same day, owner request): no infographic screenshots.** The infographic is now used only as a text
+  source; table notes that cited it point to the underlying `results/` files. Now 63 pages, 26 figures, 29 tables.
+  Replaced with real captures: three console windows (verification suite; leakage checks + fold layout + test receipt
+  + `TestSplitLocked` demo; the V5 composite fold-1 seed-42 training log `results/v5/logs/composite_f1_s42_in22k_v5conf.20261003-195703.out.log`)
+  and Swagger screens of the S60 service (endpoint list, `/predict` request and response, `/contract`). Each screenshot
+  has a "How to read" box. Four flowcharts added from the code: data pipeline (`research/v4/build_corpus.py`,
+  `s71_kfold.py`: dHash AND pHash radius 3, greedy stratified group assignment), pre-registration cycle, V5 confirmation
+  protocol, and the `/predict` decision flow (`research/v4/s60_contract.py:DecisionEngine.decide`). Timeline is now
+  Table 7.2. Checked in code that V5 reads last-epoch predictions only (`research/v5/confirm_read.py`).
+- **Revision 3 (same day, owner request): layout and naming.** "Source:" lines removed from every table and figure
+  (and the two sentences that promised them). "2.0" removed: the project is "Scan4Disease" throughout. One sizing
+  rule for all images (centred, at most 5.9 in wide and 3.6 in tall, blank margins trimmed, same spacing above and
+  below); tables no longer forced onto one page; chapter and appendix headings use page-break-before instead of a
+  separate break paragraph; list tables tightened to one page each. Page fill measured from the PDF: every content
+  page is at least 75% full (was down to 58%), no near-empty spill-over page, 58 pages (was 63). Three
+  explanations moved ahead of their figures to fill page ends (Fig 3.1, Figs 5.3–5.4); diagrams re-rendered with
+  larger fonts and wider boxes.
+
+### IEEE Transactions Manuscript Updated with V1–V5 Best Results & Rendered to PDF (2026-10-12; owner request)
+No training, no test or reserved read; receipt unchanged at 2. Output: `paper/v4/manuscript_v4.pdf` (and copies at `presentations/manuscript_IEEE.pdf`, `paper/manuscript_IEEE.pdf`).
+- **Target Manuscript Edited:** `paper/v4/manuscript_v4.tex` updated in IEEE Transactions journal format (`\documentclass[journal]{IEEEtran}`).
+- **Integrated Results Across All Phases:**
+  - V1 Benchmarks: ConvNeXt-Tiny lead baseline (Macro-F1 0.7459), MaxViT-Tiny (0.7525), 6-CNN soft-vote ensemble (Macro-F1 0.7718, McNemar p = 3.4e-5 vs ConvNeXt-Tiny), 24-view TTA (0.7859), Dirichlet calibration (slashing ECE from 0.1575 to 0.0206; source `research/calibration/results/session2_report.md`), selective classification at 20% budget (Macro-F1 0.8407 on retained, 54 -> 36 missed serious cases; source `results/ablation_table.csv`).
+  - V4 Limits: Under-40 ranking deficit on development data (AUC 0.878 vs 0.948 and 0.929; source `results/v4/s64/ceiling.json`), pre-registered negative results for general representation scale (PanDerm -0.036, DINOv2 -0.073, 384px +0.009; source `results/v4/backbone_probe_deltas.csv`), and decision layer referral tradeoffs (source `results/v4/s56/contrasts_reserved.csv`).
+  - V5 Confirmed Breakthrough: Locked composite model (ConvNeXt-Tiny IN-22k + hierarchical two-step head + border mass m4 + curated young-patient data) evaluated on held-out folds 1–4 ($N = 12,235$ images, 7,002 lesions, 65 under-40 escalating lesions across 3 seeds [42, 43, 44]):
+    - Under-40 pAUC@0.20 gain: +0.0351 [+0.0125, +0.0596], p = 0.003 (source `results/v5/confirm_s42_s43_s44.json`);
+    - Archive-fixed-effects under-40 pAUC: +0.0567 [+0.0301, +0.0821];
+    - Under-40 melanoma-vs-nevus AUC: +0.0491 [+0.0116, +0.0907];
+    - Escalation sensitivity: +0.0167 [$0.7874 \to 0.8041$, seed-44 max 0.8058];
+    - Macro-F1 retention: +0.0107 [$0.6651 \to 0.6758$, seed-43 max 0.6771];
+    - Older-cohort safety: 40–59 (+0.0071), 60+ (-0.0007).
+  - Q11 Mechanistic Decomposition: Module effect (hierarchical twostep + m4 + young data) drives 77% (+0.0270, p = 0.023) of the under-40 ranking gain, while trunk pretraining swap alone contributes only +0.0081 (p = 0.432; source `results/v5/q11_decomposition.json`).
+- **Compiled PDF Output:** Standalone XeTeX compiler (Tectonic 0.17.0) executed on `paper/v4/manuscript_v4.tex`; generated 6-page two-column IEEE Transactions PDF with embedded reliability diagrams (Fig. 2), under-40 ceiling curves (Fig. 1), and confirmation forest plot (Fig. 3), plus 6 formal IEEE tables.
+- **Verification Suite Re-Run:** `audit_manuscript` 366/366; `audit_v4 --check` 76 passed, 0 failed; `adopt_e1 --verify` 11 hashes, no failures; `pytest tests` all pass (1 skipped).

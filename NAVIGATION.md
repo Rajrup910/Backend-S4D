@@ -6,6 +6,10 @@ found) and [`CHANGELOG.md`](CHANGELOG.md) (the full session-by-session record).
 **Rule of thumb:** code lives in `ml/` (the reusable engine) and `research/` (one package per research
 question); every number lives in `results/`; plans and logs live in `docs/`; manuscripts live in `paper/`.
 
+**State at Capstone Review 2 (Fri 9 Oct 2026):** V1–V5 are complete and audited; V6 is a finalised plan that is
+**not yet frozen and has no results** (it is frozen by hash before its first run, after Review 2). The HAM10000
+test split has been read under one plan only (receipt: 2 executions, 4 Sep), and nothing since has read it.
+
 ---
 
 ## 1 · Thirty-second map
@@ -44,6 +48,8 @@ tests/       unit and contract tests
 | Every experiment ever run | [`research/experiments.csv`](research/experiments.csv) (append-only ledger) |
 | Grad-CAM explanations | [`ml/explainability/gradcam.py`](ml/explainability/gradcam.py), figures [`paper/figures/gradcam/`](paper/figures/gradcam/) |
 | The manuscript | [`paper/manuscript.tex`](paper/manuscript.tex) (full), [`paper/manuscript_edited.tex`](paper/manuscript_edited.tex) (condensed), [`paper/v4/`](paper/v4/) (V4 findings and model card) |
+| The numbers shown at Review 2 | [`research/review2/page_facts.py`](research/review2/page_facts.py) (recomputes them from `results/`), [`results/review2/`](results/review2/) (calibration-vs-escalation McNemar, class profile, model sizes), [`results/v5/review2_tables.md`](results/v5/review2_tables.md) (V5 screen and gate tables) |
+| The Review 2 figures | [`paper/figures/figure2_reliability.png`](paper/figures/figure2_reliability.png), [`results/v5/figures/`](results/v5/figures/) (confirmation forest plot, screens, per-archive under-40) |
 
 ---
 
@@ -57,7 +63,7 @@ tests/       unit and contract tests
 | **V3** (S40–S47) | Can more archives, a better head or removing age fix it? | [`research/v3/`](research/v3/) (`oos_probe.py`, `probes.py`, `eval_conditions.py`, `age_invariant.py`) | [`results/v3/`](results/v3/) — verdict [`final_verdict.json`](results/v3/final_verdict.json) | [`results/v3/analysis_plan_v3.json`](results/v3/analysis_plan_v3.json) |
 | **V4** (S48–S75) | With a powered endpoint, does any lever work? | [`research/v4/`](research/v4/) (`power.py`, `build_corpus.py`, `recipe.py`, `train_v4.py`, `s56_abstention.py`, `s59_cascade.py`, `s71_kfold.py`) | [`results/v4/`](results/v4/) — verdict [`final_verdict_v4.json`](results/v4/final_verdict_v4.json) | [`results/v4/analysis_plan_v4.json`](results/v4/analysis_plan_v4.json), [`paper/v4/v4_findings.md`](paper/v4/v4_findings.md) |
 | **V5** (Q0–Q11, E14) | Do dermatologist-style modules help young patients? | [`research/v5/`](research/v5/) (`train_v5.py`, `arms.py`, `modules.py`, `screen_gate.py`, `falsifiers.py`, `confirmation.py`, `q11_read.py`) | [`results/v5/`](results/v5/) — confirmation [`confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json), tables [`review2_tables.md`](results/v5/review2_tables.md) | [`docs/V5_RUNSHEET.md`](docs/V5_RUNSHEET.md), [`docs/v5_design/`](docs/v5_design/), [`docs/v5_record/`](docs/v5_record/) |
-| **V6** (planned) | Counterexample-guided differential morphology (CG-DM) | [`research/v6/`](research/v6/) (pre-checks only) | [`results/v6/`](results/v6/) | [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md) |
+| **V6** (planned, runs after Review 2) | Counterexample-guided differential morphology (CG-DM) | [`research/v6/`](research/v6/) (pre-checks only) | [`results/v6/`](results/v6/) (planning probes that re-score V5 predictions; no V6 model has been trained) | [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md) (finalised, not yet frozen) |
 
 ---
 
@@ -68,15 +74,21 @@ tests/       unit and contract tests
 | Best single CNN (ConvNeXt-Tiny), test Macro-F1 | 0.7459 | [`results/ablation_table.csv`](results/ablation_table.csv) (row A2) |
 | Six-CNN soft vote → + TTA → + Dirichlet | 0.7718 → 0.7859 → 0.8047 | [`results/ablation_table.csv`](results/ablation_table.csv) (rows A5–A7) |
 | Ensembling vs best single model, McNemar | p = 3.4 × 10⁻⁵ | [`results/mcnemar_delong.json`](results/mcnemar_delong.json) |
-| Calibration lost 16 escalations, gained 0 | exact p = 3.1 × 10⁻⁵ | [`results/review2/escalation_mcnemar_a6_a7.json`](results/review2/escalation_mcnemar_a6_a7.json) |
-| Under-40 escalation sensitivity on test | 3 of 21 (0.143) | [`research/selective/results/session4_report.md`](research/selective/results/session4_report.md) |
+| Dirichlet calibration: ECE before → after (test) | 0.1575 → 0.0206 | [`research/calibration/results/session2_report.md`](research/calibration/results/session2_report.md) |
+| The ensemble is under-confident (test) | confidence 0.7048 vs accuracy 0.8609, gap −0.156 | recomputed from [`research/predictions/`](research/predictions/) and asserted by [`research/ablation/audit_manuscript.py`](research/ablation/audit_manuscript.py) |
+| Calibration raised serious misses 62 → 78: lost 16 escalations, gained 0 | exact p = 3.1 × 10⁻⁵ | [`results/review2/escalation_mcnemar_a6_a7.json`](results/review2/escalation_mcnemar_a6_a7.json), misses per rung in [`results/ablation_table.csv`](results/ablation_table.csv) |
+| Under-40 escalation sensitivity on test | 3 of 21 images (0.143), from only 10 lesions | [`research/selective/results/session4_report.md`](research/selective/results/session4_report.md); lesion count in [`results/v4/power_audit.json`](results/v4/power_audit.json) |
+| Under-40 misses referred by margin abstention | 2 of 18 (11.1%) | [`research/selective/results/session4_report.md`](research/selective/results/session4_report.md) |
 | Training prior: escalating share under 40 vs 60+ | 4.9% vs 35.5% | [`results/age_band_prior.csv`](results/age_band_prior.csv) |
-| Bipartite conformal: under-40 false reassurance | 6/29 → 1/29 | [`results/v2/frr_by_group.csv`](results/v2/frr_by_group.csv) |
-| Removing age from the model: under-40 AUC | 0.8249 → 0.7201 | [`results/v3/d2_strong_evaluation.json`](results/v3/d2_strong_evaluation.json) |
+| Bipartite conformal: under-40 false reassurance (HAM OOF, α = 0.10) | 6/29 → 1/29, Holm p = 0.044 | [`results/v2/conformal_subgroup_safety.csv`](results/v2/conformal_subgroup_safety.csv) |
+| Marginal conformal: all-escalating false reassurance vs 1 − coverage | 0.0864 vs 0.0493 | [`results/v2/frr_by_group.csv`](results/v2/frr_by_group.csv) |
+| Removing age from the model: under-40 AUC | 0.8249 → 0.7201 (−0.1049) | [`results/v3/d2_strong_evaluation.json`](results/v3/d2_strong_evaluation.json) |
 | "3 of 21" is 10 lesions; lesions needed | 104 single-arm, 81 paired | [`results/v4/power_audit.json`](results/v4/power_audit.json) |
-| Per-age-band abstention, under-40 gain | +0.154 [+0.104, +0.216] | [`results/v4/s56/contrasts_reserved.csv`](results/v4/s56/contrasts_reserved.csv) |
-| V5 under-40 ranking gain (3 seeds) | +0.0351 [+0.0125, +0.0596] | [`results/v5/confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json) |
-| Share from modules + young data | +0.0270 (77%) | [`results/v5/q11_decomposition.json`](results/v5/q11_decomposition.json) |
+| Per-age-band abstention, under-40 gain (20% budget) | +0.154 [+0.104, +0.216] | [`results/v4/s56/contrasts_reserved.csv`](results/v4/s56/contrasts_reserved.csv) |
+| V5 held-out evidence (folds 1–4, 3 seeds) | 12,235 images, 7,002 lesions, 65 under-40 escalating lesions | [`results/v5/confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json) |
+| V5 under-40 ranking gain (3 seeds) | +0.0351 [+0.0125, +0.0596], p = 0.003; below the +0.050 MCID, so Gate A fails | [`results/v5/confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json) (`gates.A`) |
+| V5 all-age ranking change | +0.0020 [−0.0056, +0.0093] (null) | [`results/v5/confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json) |
+| Share from modules + young data vs the bigger trunk | +0.0270 (77%) vs +0.0081 (23%) | [`results/v5/q11_decomposition.json`](results/v5/q11_decomposition.json) |
 | HAM test split reads | 2 (one plan, 4 Sep) | [`results/test_pass_receipt.json`](results/test_pass_receipt.json) |
 
 ---
@@ -90,7 +102,9 @@ python -m research.v5.adopt_e1 --verify           # V5 pre-registration hashes
 pytest tests -q                                   # unit and contract tests
 ```
 
-None of these read the test split.
+None of these read the test split. Last run on 9 Oct 2026, the morning of Review 2: 366 / 366 manuscript
+claims, 76 passed / 0 failed / 0 warnings for V4 (receipt still at 2 executions), 11 pre-registration hashes
+with no failures, and the test suite passing (1 test skipped).
 
 ---
 
@@ -117,6 +131,8 @@ Read the summary files beside them instead. Checkpoints and image datasets are n
 | **OOF** | Out-of-fold: predictions on training images from models that never saw them |
 | **MCID** | Minimum clinically important difference, set before each read |
 | **Gate / falsifier** | A pass/fail rule, and a test that could prove an idea wrong, both written before the result |
+| **V5 Gates A–D** | A: under-40 pAUC gain ≥ +0.050 with CI above 0 (failed: +0.0351). B: Macro-F1 kept (passed). C: older-band sensitivity kept (passed). D: all-age gain in every seed (failed) |
+| **Q11 decomposition** | Splits the V5 gain into the modules + young data part and the bigger pre-trained trunk part |
 | **HAM / BCN / MSKCC / PAD** | HAM10000, BCN20000, MSKCC (ISIC Archive) dermoscopy; PAD-UFES-20 smartphone photos |
 | **Reserved cohort** | 4,733 BCN + MSKCC images held out in V4 for one-time reads |
 | **MILK10k, HIBA** | External cohorts declared for future one-time confirmation reads |
