@@ -218,6 +218,31 @@ def test_fix4_match_budget_searches_to_one_and_raises_on_a_gap():
         s84.match_budget(lambda r: 0.30 + 0.0 * r, 0.10)           # floor above the target
 
 
+def test_d6_linked_lesions_are_found_by_lesion_id_only():
+    from research.v5 import s84_lesion_links as links
+
+    out = links.linked_lesions(pd.Series(["IL_1", "IL_2", "IL_3", None]), pd.Series(["IL_2", "IL_9"]), pd.Series(["IL_3"]))
+    assert out == {"isic2019": {"IL_2"}, "young_extras": {"IL_3"}}
+    src = inspect.getsource(links)
+    assert "diagnosis" not in src.replace("No diagnosis column", "") and "class_7" not in src  # label-free
+
+
+def test_d6_analysed_subset_drops_linked_rows_label_free(tmp_path, monkeypatch):
+    path = tmp_path / "links.json"
+    path.write_text(json.dumps({"linked_lesion_ids": ["IL_2"]}))
+    monkeypatch.setattr(s84, "LESION_LINKS", path)
+    cohort = pd.DataFrame({"lesion_id": ["IL_1", "IL_2", "IL_3"], "age_band": ["<40", "60+", "40-59"]})
+    cohort["lesion_linked"] = s84.lesion_link_mask(cohort["lesion_id"])
+    v1 = np.arange(3 * 6 * 7, dtype=float).reshape(3, 6, 7)
+    v5 = np.arange(2 * 3 * 7, dtype=float).reshape(2, 3, 7)
+    kept, v1k, v5k, keep = s84.analysed_subset(cohort, v1, v5)
+    assert kept["lesion_id"].tolist() == ["IL_1", "IL_3"] and keep.tolist() == [True, False, True]
+    assert np.array_equal(v1k, v1[[0, 2]]) and np.array_equal(v5k, v5[:, [0, 2]])
+    src = inspect.getsource(s84.stage_analyse)
+    assert src.index("analysed_subset(") < src.index("v1_decide(")      # decisions only on analysed lesions
+    assert "lesion_links" in s84.frozen_inputs()                          # the list is pinned by the receipt
+
+
 def test_power_not_estimable_and_script_is_pinned():
     out = s84.power_from_lesions(np.ones(5), np.ones(5), 37)
     assert out["estimable"] is False and out["power_plugin"] == 0.0 and "NOT ESTIMABLE" in out["statement"] and out["underpowered"]

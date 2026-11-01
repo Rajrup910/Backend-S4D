@@ -70,6 +70,7 @@ REPORT_PATH = S84_DIR / "s84_report.json"
 MILK_DIR = REPO_ROOT / "data" / "external" / "milk10k"
 MILK_ZIP, MILK_META = MILK_DIR / "milk10k.zip", MILK_DIR / "milk10k.csv"
 S75_JSON = V5 / "s75_milk10k_eligibility.json"
+LESION_LINKS = V5 / "s84_lesion_links.json"  # D6: research/v5/s84_lesion_links.py, label-free
 POWER_NOTE = V5 / "s84_power_method.md"
 DIRICHLET_STATE = V5 / "refit" / "dirichlet_state.json"
 S56_POLICIES_V5 = V5 / "refit" / "s56_policies_v5.json"
@@ -118,7 +119,7 @@ def write_json(path: Path, blob: dict) -> None:
 # =================================================================== the single-read receipt
 def frozen_inputs() -> dict[str, Path]:
     """Every input whose hash the receipt pins. The power file is among them: power is computed before the read."""
-    return {"power_method": POWER_NOTE, "power_result": POWER_PATH, "s75_eligibility": S75_JSON,
+    return {"power_method": POWER_NOTE, "power_result": POWER_PATH, "s75_eligibility": S75_JSON, "lesion_links": LESION_LINKS,
             "dirichlet_state": DIRICHLET_STATE, "s56_policies_v5": S56_POLICIES_V5,
             "s56_policies_v1": S56_POLICIES_V1, "oof_matrix": OOF_MATRIX, "s84_script": Path(__file__)}
 
@@ -462,10 +463,26 @@ def stage_cohort() -> int:
     expected = json.loads(S75_JSON.read_text(encoding="utf-8"))["eligible_lesions"]
     if len(eligible) != expected:
         raise SystemExit(f"eligible lesions {len(eligible)} != S75's {expected}: the cohort is not the registered one")
+    # D6: the S75 cohort is kept whole (so S75's label-mapping check still runs at the read); lesions whose lesion_id
+    # is already in ISIC 2019 or the V5 extras are flagged here and dropped from every analysis in stage_analyse.
+    eligible["lesion_linked"] = lesion_link_mask(eligible["lesion_id"])
     S84_DIR.mkdir(parents=True, exist_ok=True)
-    eligible[["isic_id", "lesion_id", "age_band", "attribution", "zip_name"]].to_csv(COHORT_PATH, index=False)
-    print(f"cohort: {len(eligible):,} eligible lesions -> {rel(COHORT_PATH)}")
+    eligible[["isic_id", "lesion_id", "age_band", "attribution", "zip_name", "lesion_linked"]].to_csv(COHORT_PATH, index=False)
+    print(f"cohort: {len(eligible):,} eligible lesions ({int(eligible['lesion_linked'].sum()):,} lesion-linked, "
+          f"analysed: {int((~eligible['lesion_linked']).sum()):,}) -> {rel(COHORT_PATH)}")
     return 0
+
+
+def lesion_link_mask(lesion_ids: pd.Series) -> np.ndarray:
+    """D6: True where the lesion_id is in the frozen link list (results/v5/s84_lesion_links.json)."""
+    linked = set(json.loads(LESION_LINKS.read_text(encoding="utf-8"))["linked_lesion_ids"])
+    return lesion_ids.astype(str).isin(linked).to_numpy()
+
+
+def analysed_subset(cohort: pd.DataFrame, v1: np.ndarray, v5: np.ndarray):
+    """D6: drop lesion-linked rows, label-free. v1 is (lesions, models, 7); v5 is (models, lesions, 7)."""
+    keep = ~cohort["lesion_linked"].astype(bool).to_numpy()
+    return cohort.loc[keep].reset_index(drop=True), v1[keep], v5[:, keep], keep
 
 
 # =================================================================== stage: infer (GPU, no labels)
@@ -649,20 +666,30 @@ def stage_analyse(receipt: dict | None) -> int:
     inference = np.load(INFERENCE_PATH, allow_pickle=False)
     assert inference["isic_id"].astype(str).tolist() == cohort["isic_id"].astype(str).tolist(), "cohort / inference mismatch"
     assert list(inference["v1_names"]) == list(ARCHS)
+    full_cohort = cohort
+    # D6: lesion-linked rows leave every analysis; the mask uses lesion ids only, so it is label-free.
+    cohort, v1_probs, v5_probs, keep = analysed_subset(full_cohort, inference["v1"], inference["v5"])
     # BOTH systems' decisions are fixed here, from probabilities, age bands and the frozen policies alone, before the
-    # labels are read, so they provably cannot depend on them. Referral is matched over ALL eligible lesions.
+    # labels are read, so they provably cannot depend on them. Referral is matched over ALL analysed eligible lesions.
     bands = cohort["age_band"].astype(str).to_numpy()
-    v1 = v1_decide(inference["v1"], bands)
+    v1 = v1_decide(v1_probs, bands)
     target = float(v1["referred"].mean())
-    v5 = attach_deployed(v5_decide(inference["v5"].mean(axis=0), bands, target, np.ones(len(cohort), bool)), bands)
-    data = read_labels(cohort, receipt)  # the one label read
+    v5 = attach_deployed(v5_decide(v5_probs.mean(axis=0), bands, target, np.ones(len(cohort), bool)), bands)
+    full = read_labels(full_cohort, receipt)  # the one label read (all S75-eligible lesions, for S75's check)
     s75 = json.loads(S75_JSON.read_text(encoding="utf-8"))
+    full_inscope = full["class_7"].notna().to_numpy()
+    full_u40_esc = int((full_inscope & (full["age_band"] == "<40") & full["class_7"].isin(ESCALATING)).sum())
+    if int(full_inscope.sum()) != s75["in_scope_lesions"] or full_u40_esc != s75["under40_escalating_lesions"]:
+        raise SystemExit(f"label mapping disagrees with S75: in-scope {int(full_inscope.sum())} vs {s75['in_scope_lesions']}, "
+                         f"<40 escalating {full_u40_esc} vs {s75['under40_escalating_lesions']}")
+    data = full.loc[keep].reset_index(drop=True)
     inscope = data["class_7"].notna().to_numpy()
-    u40_esc = int((inscope & (data["age_band"] == "<40") & data["class_7"].isin(ESCALATING)).sum())
-    if int(inscope.sum()) != s75["in_scope_lesions"] or u40_esc != s75["under40_escalating_lesions"]:
-        raise SystemExit(f"label mapping disagrees with S75: in-scope {int(inscope.sum())} vs {s75['in_scope_lesions']}, "
-                         f"<40 escalating {u40_esc} vs {s75['under40_escalating_lesions']}")
     report = analyse_core(data, v5, v1)
+    report.update(d6_lesion_link_exclusion={
+        "excluded_lesions": int((~keep).sum()), "analysed_lesions": int(keep.sum()),
+        "analysed_under40_escalating_lesions": int((inscope & (data["age_band"] == "<40") & data["class_7"].isin(ESCALATING)).sum()),
+        "power_note": "power.json uses S75's pre-exclusion N; it is an upper bound for the analysed N above (D6)",
+        "links_file_sha256": sha256(LESION_LINKS)})
     report.update(power=json.loads(POWER_PATH.read_text(encoding="utf-8")),
                   v5_models=[str(n) for n in inference["v5_names"]], v5_n_models=int(len(inference["v5_names"])),
                   v5_budget_matched=v5["budget"], v5_referral_matched=v5["matched_rate"], v1_referral_target=target,

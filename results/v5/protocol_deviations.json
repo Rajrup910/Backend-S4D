@@ -68,6 +68,20 @@
     "Power never changes whether S84 runs, its alpha, its row definitions or its analysis.",
     "Stated residual bias: the V5 Dirichlet and S56 refits are fit on the whole V5 OOF including these rows, so the power estimate is slightly optimistic."
    ]
+  },
+  {
+   "id": "D6",
+   "declared": "2026-11-02T02:30+05:30",
+   "declared_before": "any S84 stage (no results/v5/s84/ directory, no results/v5/s84_receipt.json), any V5 or V1 prediction on a MILK10k image, and the power computation (no results/v5/s84/power.json)",
+   "kind": "pre-read correction of the S84 eligibility rule (leakage)",
+   "what": "S84 excludes from every analysis any MILK10k dermoscopic lesion whose ISIC Archive lesion_id appears in ISIC 2019 Training (collection 65), ISIC 2019 Test (collection 72) or the V5 young extras. The list is frozen in results/v5/s84_lesion_links.json (985 lesions: 859 Training, 126 Test, 2 extras, overlapping), built label-free by research/v5/s84_lesion_links.py from a live ISIC API pull (snapshot results/v5/isic2019_archive_lesion_ids.csv), and pinned in the S84 receipt. The S75 cohort (5,220) is kept whole in cohort.csv with a lesion_linked flag so that S75's label-mapping check still runs on all of it at the one label read; decisions, referral matching and every statistic use the unlinked lesions only.",
+   "why": "S75's rule matches images (ISIC id, or dHash AND pHash within 3), and 0 MILK10k images share an ISIC id with ISIC 2019, but MILK10k re-photographs lesions already in ISIC 2019: 616 MILK10k lesions are the same lesions as V5 development training rows (verified 2026-11-02 against ml/data/manifest_v4.csv). V5 trained on those lesions and V1 on the HAM ones, so including them would score both systems partly in-sample on an external cohort.",
+   "information_seen_before_declaring": "The declarer had read results/v5/s75_milk10k_eligibility.json (label counts only; no predictions exist) and a literature-agent note that about 21 of MILK10k's young escalating lesions are HAM-linked. The rule is all-or-nothing by lesion identity, with no threshold or choice that those counts could tune.",
+   "unchanged": "S84 systems, primary endpoint and test, key secondary, global Macro-F1 non-inferiority, descriptives, single-read receipt rule, D5 power method. Power is still computed at S75's pre-exclusion N (71 under-40 escalating lesions), so it is an upper bound; the report states the analysed N.",
+   "binding_constraints": [
+    "The lesion-linked lesions are never analysed, whatever their predictions.",
+    "Lesion identity rests on the lesion_id links contributors recorded in the ISIC Archive; unrecorded links cannot be excluded (stated limitation)."
+   ]
   }
  ]
 }
