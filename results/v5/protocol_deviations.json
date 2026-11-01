@@ -53,6 +53,21 @@
    "why": "The three-seed confirmation (results/v5/confirm_s42_s43_s44.json) is paired seed by seed; a one-seed trunk contrast could not be set against it. The 224 px arm also doubles as V6 A13.1.",
    "read_rule": "Descriptive, no gate. Two paired contrasts through research/v5/confirm_read.py machinery (same hierarchical seed x lesion bootstrap, 2,000 resamples, RNG seed 20261004): locked composite minus Q11 control (module + young-data effect on the same trunk) and Q11 control minus in1k control (trunk effect). Endpoints: all-age and under-40 escalation pAUC@0.20, Macro-F1. Read once, after all 12 runs finish; no Q11 prediction file is opened before then.",
    "unchanged": "Lock (results/v5/composite_lock.json), the confirmation read, Gates A-D, the recipe, 30 epochs, --num-workers 2, no test, reserved or external read."
+  },
+  {
+   "id": "D5",
+   "declared": "2026-11-01T21:47+05:30",
+   "declared_before": "any S84 or MILK10k read (no results/v5/s84_receipt.json), any read of a value in results/v5/s75_milk10k_eligibility.json by this declaration, any V1 prediction on the power rows, and any V1-vs-V5 discordance computation",
+   "kind": "pre-read specification of the S84 power method (runsheet 9 'Power', A01 A9) and of document precedence",
+   "what": "(a) S84 power uses V1-vs-V5 discordance on the non-HAM rows of OOF folds 1-4 only: archive in {bcn20000, mskcc}, excluding any row sharing group_id, dup_cluster or effective_lesion_id with a HAM row (6,672 rows, 2,838 lesions, 37 under-40 escalating lesions; one image excluded, ISIC_0010852, a near-duplicate of HAM training image ISIC_0032195). Power is the unconditional power of the one-sided exact McNemar test (alpha 0.05) on N = under40_escalating_lesions from the S75 file, with lesion-weighted discordance at matched referral and a 2,000-resample lesion-grouped bootstrap band (RNG seed 20261004). (b) Runsheet 9 governs S84 wholly; the one-sample exact binomial power, N >= 40 floor, Macro-F1 >= 0.75 boundary, tau80 threshold and fixed-sequence gate in results/v5/v5_external_analysis_spec.md are not used for any S84 decision.",
+   "why": "(a) The 6,981 HAM rows of the OOF are the HAM train split on which all six frozen V1 CNNs were trained and V1's Dirichlet and S56 layers were fit, so V1 would be scored in-sample against an out-of-fold V5, understating V5-favouring discordance and power by an amount that cannot be estimated. On BCN20000/MSKCC rows V1 is external and V5 out-of-fold from a pool containing those archives, the same position both systems hold on MILK10k (partly same-institution). Cost: 37 instead of 64 under-40 escalating lesions, carried into the reported power band. (b) The spec powers a different test (one-sample binomial) in a different hierarchy from the hashed runsheet's primary (paired exact McNemar at matched referral); runsheet 9 is the frozen plan (results/v5/v5_plan_freeze.json).",
+   "method_file": "results/v5/s84_power_method.md",
+   "unchanged": "S84 systems, primary endpoint and test (paired under-40 escalation sensitivity at matched referral, exact McNemar, one-sided alpha 0.05), key secondary (S70 contract, Clopper-Pearson), global Macro-F1 non-inferiority margin 0.02, descriptives, single-read receipt rule, MILK10k allocation (A01 B8).",
+   "binding_constraints": [
+    "Power is reported whatever it is; below 0.80 the primary result is labelled underpowered.",
+    "Power never changes whether S84 runs, its alpha, its row definitions or its analysis.",
+    "Stated residual bias: the V5 Dirichlet and S56 refits are fit on the whole V5 OOF including these rows, so the power estimate is slightly optimistic."
+   ]
   }
  ]
 }

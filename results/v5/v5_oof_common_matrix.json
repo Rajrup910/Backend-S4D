@@ -1,0 +1,160 @@
+{
+  "spec": "results/v5/v5_oof_matrix_spec.md",
+  "rows": 15294,
+  "lesions": 8748,
+  "groups": 8734,
+  "models": [
+    "composite_s42",
+    "control_s42",
+    "composite_s43",
+    "control_s43",
+    "composite_s44",
+    "control_s44",
+    "composite_mean",
+    "control_mean"
+  ],
+  "tta_included": false,
+  "selection_fold": 0,
+  "selection_fold_note": "fold 0 is the selection fold (deviation D2): numbers read off it are optimistic for V5; confirmation claims read folds 1-4.",
+  "assignments_sha256": "439786ca0df31d67afec37ce854a8a7e5a39d8f75fe631af1604b39f20762a1d",
+  "integrity": [
+    {
+      "check": "1 row count",
+      "ok": true,
+      "detail": "15294 rows (want 15294)"
+    },
+    {
+      "check": "2 key uniqueness and row-for-row match with fold_assignments.csv",
+      "ok": true,
+      "detail": "unique=True, same order=True"
+    },
+    {
+      "check": "3 lesion disjointness: group_id",
+      "ok": true,
+      "detail": "8,734 group_id values, max folds per value 1"
+    },
+    {
+      "check": "3 lesion disjointness: lesion_id (effective_lesion_id)",
+      "ok": true,
+      "detail": "8,748 lesion_id values, max folds per value 1"
+    },
+    {
+      "check": "4 zero missing / infinite values",
+      "ok": true,
+      "detail": "112 probability/logit columns"
+    },
+    {
+      "check": "5 probability normalisation (each model, each row)",
+      "ok": true,
+      "detail": "max |sum - 1| = 2.13e-07 over 8 models (tolerance 1e-05)"
+    },
+    {
+      "check": "6 no test / reserved / validation rows",
+      "ok": true,
+      "detail": "manifest split of the rows: {'train': 15294}"
+    },
+    {
+      "check": "7 age bands",
+      "ok": true,
+      "detail": "{'60+': 6497, '40-59': 5825, '<40': 2721, 'unknown': 251}"
+    },
+    {
+      "check": "8 fold 0 flagged as the selection fold (D2)",
+      "ok": true,
+      "detail": "3059 rows flagged"
+    }
+  ],
+  "descriptive_macro_f1": {
+    "composite_s42": {
+      "macro_f1_all_folds": 0.6717559720657013,
+      "macro_f1_folds_1_4": 0.6748949707448678,
+      "macro_f1_fold_0_selection": 0.6593000000668704
+    },
+    "control_s42": {
+      "macro_f1_all_folds": 0.6612453446440112,
+      "macro_f1_folds_1_4": 0.6660690565193808,
+      "macro_f1_fold_0_selection": 0.6394323267549685
+    },
+    "composite_s43": {
+      "macro_f1_all_folds": 0.6733993959766778,
+      "macro_f1_folds_1_4": 0.6770705496454933,
+      "macro_f1_fold_0_selection": 0.6578519229185879
+    },
+    "control_s43": {
+      "macro_f1_all_folds": 0.6519550900741032,
+      "macro_f1_folds_1_4": 0.6601431516140198,
+      "macro_f1_fold_0_selection": 0.6218379546302365
+    },
+    "composite_s44": {
+      "macro_f1_all_folds": 0.667623604438003,
+      "macro_f1_folds_1_4": 0.6753952417621021,
+      "macro_f1_fold_0_selection": 0.6360961626012717
+    },
+    "control_s44": {
+      "macro_f1_all_folds": 0.6635261600777752,
+      "macro_f1_folds_1_4": 0.6690111326019016,
+      "macro_f1_fold_0_selection": 0.6408552069522818
+    },
+    "composite_mean": {
+      "macro_f1_all_folds": 0.6847729883454041,
+      "macro_f1_folds_1_4": 0.6910660656470455,
+      "macro_f1_fold_0_selection": 0.6589867912431427
+    },
+    "control_mean": {
+      "macro_f1_all_folds": 0.6812905169837636,
+      "macro_f1_folds_1_4": 0.6867231632224431,
+      "macro_f1_fold_0_selection": 0.657763709287354
+    }
+  },
+  "sources": {
+    "composite_s42": {
+      "0": "results/v5/preds/composite_f0_s42_in22k_v5stack.csv  sha256=b9f56df83b96401f9dc91e4da91f7e1581abfc648c4fca9162e836db7c6e1b58",
+      "1": "results/v5/preds/composite_f1_s42_in22k_v5conf.csv  sha256=34328c3d635bb9100f0bedee298c088633e60c5d541c76f05c169bd10ceda96f",
+      "2": "results/v5/preds/composite_f2_s42_in22k_v5conf.csv  sha256=3c26c5a3b99dde1f65b24322e0b917c5c9eee91f33a11ef12e5e772720dcf26a",
+      "3": "results/v5/preds/composite_f3_s42_in22k_v5conf.csv  sha256=c5ba3eb485296deaca67389f4f51674b5b33b103fccf642ecdcf07748819a660",
+      "4": "results/v5/preds/composite_f4_s42_in22k_v5conf.csv  sha256=9b1942e6e65a17f5d86d712893251c2981f0419a923ee7e3a3876ec89dbea385"
+    },
+    "control_s42": {
+      "0": "results/v5/preds/R0_kfold_f0_s42_last.csv  sha256=70e5a9e65d7c09b8da165c96dfd9085a1c5c0e19892880fa1d9760317d7dcf18",
+      "1": "results/v5/preds/R0_kfold_f1_s42_last.csv  sha256=4c857a7fffc02245feba571f2fba81995214b774b1d0c56a65c75f0a897b54e3",
+      "2": "results/v5/preds/R0_kfold_f2_s42_last.csv  sha256=bff59570ed014f6c708ae62e1ed871ecbdb3e40d71d62a96c1313f2c0e123519",
+      "3": "results/v5/preds/R0_kfold_f3_s42_last.csv  sha256=adc8fc29a19817b058a46d942d1b34f07eae9fe412696a564b2f0504516ffbe0",
+      "4": "results/v5/preds/R0_kfold_f4_s42_last.csv  sha256=8422483ea87475f9a043cc36260a712977bbe734f6ba6ccd020f7e3f4731ab26"
+    },
+    "composite_s43": {
+      "0": "results/v5/preds/composite_f0_s43_in22k_v5stack.csv  sha256=dd5484ee358eb606ee46748a93e27470305a8978e536359a1692c8c4b81a1f12",
+      "1": "results/v5/preds/composite_f1_s43_in22k_v5conf.csv  sha256=44d76127718f9f9c517096c2c94f65901ef691c66ac4fa630d1cb689a09edca8",
+      "2": "results/v5/preds/composite_f2_s43_in22k_v5conf.csv  sha256=2cb4fd5f9d3dfd0e0355761ee11817b6406065950d12b6b6526f8631bf2762a8",
+      "3": "results/v5/preds/composite_f3_s43_in22k_v5conf.csv  sha256=b6f7fbdeb6396860f09c9846b4d7f0b6efb60d9dc2d927ceb536dda924c141f5",
+      "4": "results/v5/preds/composite_f4_s43_in22k_v5conf.csv  sha256=001e86f1390a1c93a8e5dc753e99677d3bf9220f5846a220950e9fd0eb14ce41"
+    },
+    "control_s43": {
+      "0": "results/v5/preds/R0_kfold_f0_s43_v5s01_last.csv  sha256=81135de8206ead5e9a2f26fba6dfec674f733dd5832b170c81ec2640d8a9bea2",
+      "1": "results/v5/preds/R0_kfold_f1_s43_v5ctl_last.csv  sha256=83acba902cb5430b6e92258d2cd1b1eb41c1be212019250c9401438df73a380f",
+      "2": "results/v5/preds/R0_kfold_f2_s43_v5ctl_last.csv  sha256=2afca0447e0ccbdbeb58545507673f5611e830d12cd679923d8114ef5f4fa394",
+      "3": "results/v5/preds/R0_kfold_f3_s43_v5ctl_last.csv  sha256=d26b0607bba3b81dc3d8eb21d04af069f5b0b0ce2ae0814c278702a47aca81c8",
+      "4": "results/v5/preds/R0_kfold_f4_s43_v5ctl_last.csv  sha256=ee5219670b7196f28f2b3fef73f472a3ab140f25aec2965c10eaac657310931d"
+    },
+    "composite_s44": {
+      "0": "results/v5/preds/composite_f0_s44_in22k_v5stack.csv  sha256=7ec727890ae2c0bde57e45386cc27119892b9fda483924f0a51edcfc166913d6",
+      "1": "results/v5/preds/composite_f1_s44_in22k_v5conf.csv  sha256=8ec801a101890fa37c78619301930b5d240bb973177829318de71555151aa74b",
+      "2": "results/v5/preds/composite_f2_s44_in22k_v5conf.csv  sha256=f3ebbb850ec83cec91731f5a16c924fa840f6baac8a480fd1cc21b212f879863",
+      "3": "results/v5/preds/composite_f3_s44_in22k_v5conf.csv  sha256=1390165dfd1933dd8d6a45a1b587a6555b426a971921fdeda75a58dada59e063",
+      "4": "results/v5/preds/composite_f4_s44_in22k_v5conf.csv  sha256=b7db45e73dc37fd7f85dc1af102698b65513c3ead659d713bc7d4938f27eb558"
+    },
+    "control_s44": {
+      "0": "results/v5/preds/R0_kfold_f0_s44_v5s01_last.csv  sha256=e95ae901936ba63f1046d5500a209be76a6ee4c780c5fc6993ba9871e8ed9786",
+      "1": "results/v5/preds/R0_kfold_f1_s44_v5ctl_last.csv  sha256=bde55b8b349c13fe5521f3efb95f5cc220fbfaa2dd8330df316bba6f2aa719fd",
+      "2": "results/v5/preds/R0_kfold_f2_s44_v5ctl_last.csv  sha256=0ea07a3dea65fd4202a0f5a20054c2ac5c8c97d6531ef7d64e4c207079ed52c0",
+      "3": "results/v5/preds/R0_kfold_f3_s44_v5ctl_last.csv  sha256=0cdb119f17b49670cd580cebfc0f6ddc0151f9fe0d01d3d2980a69b37c606c22",
+      "4": "results/v5/preds/R0_kfold_f4_s44_v5ctl_last.csv  sha256=57641053c8a0c0966c9001c13140ec97dfd26ed61001fa49a8121eacb9d49e35"
+    },
+    "composite_mean": {
+      "derived": "arithmetic mean of composite_s42/43/44"
+    },
+    "control_mean": {
+      "derived": "arithmetic mean of control_s42/43/44"
+    }
+  },
+  "matrix_sha256": "fa937f547e315707750dd8993c36d8e6b5904133c83b9c84a1bd6b2261af7605"
+}

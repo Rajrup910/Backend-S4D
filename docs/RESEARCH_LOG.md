@@ -597,3 +597,8 @@ Findings section.
   - ⚠️ The frozen S62 index says `reserved_reads: 7`; the true receipted count is **8** (S57a's audit).
   - ⚠️ S48's declared primary endpoint (sensitivity at V1-matched budget, lesion unit) was never read in
     that exact form; S54 used pAUC. Say so in any write-up.
+- **V5 addendum draft (2026-11-01)** (CHANGELOG §"V5 addendum draft"). `paper/v5/v5_addendum_draft.md`: confirmation (folds 1–4, s42/43/44: Gates A and D fail, B and C pass; under-40 pAUC +0.0351 [+0.0125, +0.0596] vs the +0.050 bar), Q11 (module +0.0270, trunk +0.0081, module ≈ 77% of the under-40 gain, derived), m4 secondary (seed 42, composite sub-additive vs m4 on all-age/histo), deviations D1/G1/D2/D3/D4. Sources `results/v5/confirm_s42_s43_s44.json`, `q11_decomposition.json`, `protocol_deviations.json`, `review2_tables.md`.
+  - ⚠️ **S84 section is a placeholder**; S84 has not run, MILK10k unread.
+  - ⚠️ D5 (S84 power method: non-HAM OOF folds 1–4, 6,672 rows / 2,838 lesions / 37 under-40 escalating; runsheet §9 McNemar governs, spec binomial unused) now included in the addendum §4.
+  - Under-40 gain by archive is individually significant only in mskcc (10 lesions); do not present it as uniform.
+  - Sessions A and B (Q9 queue/OOF table/refit and S84 scripts; D5 power method and `s84_milk10k.py` guard fix) are written up under the same CHANGELOG entry. Pending: Q9 TTA run, OOF table, both refits, `--power`, S84.

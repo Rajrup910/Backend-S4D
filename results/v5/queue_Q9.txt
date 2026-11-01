@@ -1,0 +1,26 @@
+# Q9 -- fold-0 training is DONE (composite + control x s42/43/44, banked 4 Oct); what is left is inference only (runsheet 8 Q9):
+# (1) TTA benchmark, (2) 24-view TTA of the 15 composite _last.pt (folds 0-4 x s42/43/44), (3) V1 six-CNN 24-view TTA on the
+# NON-HAM rows of folds 1-4 (6,672 rows / 2,838 lesions; V1 trained on HAM, so HAM rows are not held-out for it). Row set = s84_power_method.md (D5): non-HAM minus ISIC_0010852. It follows
+# (declared 1 Nov 21:47, asserted in v1_infer).
+# NOT for scripts/run_v5_queue.ps1 (it only dispatches train_v4/train_v5). Run with:  python -m research.v5.q9_runner
+# Lines are `tta <research.v5.tta_v5 args>` or `v1 <research.v5.v1_infer args>`; a finished job is skipped on re-run.
+# Timings are UNMEASURED until the benchmark lines run: CPU view building measured on this machine (0.117 s/image for 24 views,
+# 1 process); GPU forward is extrapolated. Expect composite ~3-6 min/model (~1-1.5 h for 15), V1 ~0.5-1 h. Read the benchmark first.
+tta --benchmark
+v1 --benchmark
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f0_s42_in22k_v5stack_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f1_s42_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f2_s42_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f3_s42_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f4_s42_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f0_s43_in22k_v5stack_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f1_s43_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f2_s43_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f3_s43_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f4_s43_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f0_s44_in22k_v5stack_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f1_s44_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f2_s44_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f3_s44_in22k_v5conf_last.pt
+tta --checkpoint ml/checkpoints/convnext_tiny-v5_composite_f4_s44_in22k_v5conf_last.pt
+v1 --rows nonham --folds 1 2 3 4
