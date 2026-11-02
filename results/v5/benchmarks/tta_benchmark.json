@@ -1,0 +1,12 @@
+{
+  "n_images": 48,
+  "device": "cuda",
+  "workers": 2,
+  "batch_size": 4,
+  "data_loader_only_s_per_image": 0.16954990724722543,
+  "end_to_end_s_per_image": 0.16648935774962106,
+  "peak_vram_gb": 0.874573312,
+  "projected_min_per_composite_model": 8.488182422601515,
+  "projected_h_15_composite_models": 2.1220456056503787,
+  "projected_note": "fold = 3,059 images; V1 pass projection is in research.v5.v1_infer --benchmark"
+}

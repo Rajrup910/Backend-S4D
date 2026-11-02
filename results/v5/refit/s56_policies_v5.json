@@ -1,0 +1,387 @@
+{
+  "score": "msp",
+  "score_note": "inherited from the V1 S56 plan (selected on HAM val); V5 has no val predictions",
+  "primary_budget": 0.2,
+  "n_rows": 15294,
+  "matrix_sha256": "cf7f9a0f68b66f2024f80af700ed0d668a88afd6d0f6dc0e60e22e5666c96b69",
+  "crossfit_sha256": "b49a60a40ecaf7af2876c639305c469e4ed6ae1cfce87c9013c7f9f98a4c28b0",
+  "policies": {
+    "band_0.1": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.1,
+      "floor": 0.795,
+      "tau_band": {
+        "<40": 0.11951923940493403,
+        "40-59": 0.350329865751257,
+        "60+": Infinity
+      },
+      "tau_global": 0.671726380559722,
+      "fit_counts": {
+        "<40": 728,
+        "40-59": 774,
+        "60+": 0,
+        "global_topup": 27
+      }
+    },
+    "global_0.1": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.1,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.44650520563012774,
+      "fit_counts": {
+        "ALL": 1529
+      }
+    },
+    "band_0.15": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.15,
+      "floor": 0.84,
+      "tau_band": {
+        "<40": 0.09514995163428619,
+        "40-59": 0.25131444545277437,
+        "60+": 0.5788373305634174
+      },
+      "tau_global": 0.5715255464939266,
+      "fit_counts": {
+        "<40": 896,
+        "40-59": 1158,
+        "60+": 217,
+        "global_topup": 23
+      }
+    },
+    "global_0.15": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.15,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.3763542748784059,
+      "fit_counts": {
+        "ALL": 2294
+      }
+    },
+    "band_0.2": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.2,
+      "floor": 0.855,
+      "tau_band": {
+        "<40": 0.0894309600684664,
+        "40-59": 0.21229839333235734,
+        "60+": 0.5233815875143752
+      },
+      "tau_global": 0.4786480784279947,
+      "fit_counts": {
+        "<40": 960,
+        "40-59": 1352,
+        "60+": 453,
+        "global_topup": 294
+      }
+    },
+    "global_0.2": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.2,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.30964583125054834,
+      "fit_counts": {
+        "ALL": 3059
+      }
+    },
+    "band_0.25": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.25,
+      "floor": 0.875,
+      "tau_band": {
+        "<40": 0.08059259522120277,
+        "40-59": 0.16729468663360303,
+        "60+": 0.4656351477870804
+      },
+      "tau_global": 0.4426039681211159,
+      "fit_counts": {
+        "<40": 1213,
+        "40-59": 1626,
+        "60+": 816,
+        "global_topup": 169
+      }
+    },
+    "global_0.25": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.25,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.2496699064070247,
+      "fit_counts": {
+        "ALL": 3824
+      }
+    },
+    "band_0.3": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.3,
+      "floor": 0.89,
+      "tau_band": {
+        "<40": 0.0789274053501704,
+        "40-59": 0.13853411166633356,
+        "60+": 0.4145297003405366
+      },
+      "tau_global": 0.38289756473748304,
+      "fit_counts": {
+        "<40": 1316,
+        "40-59": 1915,
+        "60+": 1159,
+        "global_topup": 198
+      }
+    },
+    "global_0.3": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.3,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.1979936047908376,
+      "fit_counts": {
+        "ALL": 4588
+      }
+    }
+  },
+  "oof_in_sample_description": {
+    "band_0.1": {
+      "referral_rate": 0.09997384595266118,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8171578749765346,
+        "referral_rate": 0.09997384595266118
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.8031088082901554,
+        "referral_rate": 0.2675486953325983
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.7956254272043746,
+        "referral_rate": 0.1328755364806867
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.8286423841059603,
+        "referral_rate": 0.004155764198861013
+      }
+    },
+    "global_0.1": {
+      "referral_rate": 0.09997384595266118,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8333020461798386,
+        "referral_rate": 0.09997384595266118
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.5958549222797928,
+        "referral_rate": 0.05292171995589857
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.7505126452494874,
+        "referral_rate": 0.07330472103004292
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.8810706401766004,
+        "referral_rate": 0.14545174696013544
+      }
+    },
+    "band_0.15": {
+      "referral_rate": 0.14999346148816528,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8402477942556786,
+        "referral_rate": 0.14999346148816528
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.844559585492228,
+        "referral_rate": 0.3292907019478133
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8407382091592618,
+        "referral_rate": 0.19879828326180257
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.8421633554083885,
+        "referral_rate": 0.03694012621209789
+      }
+    },
+    "global_0.15": {
+      "referral_rate": 0.14999346148816528,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8558287966960766,
+        "referral_rate": 0.14999346148816528
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.616580310880829,
+        "referral_rate": 0.08416023520764425
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.7785372522214627,
+        "referral_rate": 0.11399141630901287
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9014900662251656,
+        "referral_rate": 0.21163613975681084
+      }
+    },
+    "band_0.2": {
+      "referral_rate": 0.2000130770236694,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.865214942744509,
+        "referral_rate": 0.2000130770236694
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.8601036269430051,
+        "referral_rate": 0.3528114663726571
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8557758031442242,
+        "referral_rate": 0.2321030042918455
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.8714128035320088,
+        "referral_rate": 0.1132830537171002
+      }
+    },
+    "global_0.2": {
+      "referral_rate": 0.2000130770236694,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8806082222639384,
+        "referral_rate": 0.2000130770236694
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.6528497409326425,
+        "referral_rate": 0.11172363101800808
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8168147641831852,
+        "referral_rate": 0.15793991416309014
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9199779249448123,
+        "referral_rate": 0.27674311220563336
+      }
+    },
+    "band_0.25": {
+      "referral_rate": 0.25003269255917354,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8789187159752205,
+        "referral_rate": 0.25003269255917354
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.8808290155440415,
+        "referral_rate": 0.4457919882396178
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8755980861244019,
+        "referral_rate": 0.2791416309012876
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.8824503311258278,
+        "referral_rate": 0.14960751115899645
+      }
+    },
+    "global_0.25": {
+      "referral_rate": 0.25003269255917354,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8997559602027407,
+        "referral_rate": 0.25003269255917354
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.7150259067357513,
+        "referral_rate": 0.14737228959941198
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8414217361585783,
+        "referral_rate": 0.19948497854077255
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.934878587196468,
+        "referral_rate": 0.3403109127289518
+      }
+    },
+    "band_0.3": {
+      "referral_rate": 0.29998692297633056,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8958137788623991,
+        "referral_rate": 0.29998692297633056
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.8963730569948186,
+        "referral_rate": 0.4836457184858508
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8906356801093643,
+        "referral_rate": 0.32875536480686696
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9001103752759382,
+        "referral_rate": 0.20517161766969372
+      }
+    },
+    "global_0.3": {
+      "referral_rate": 0.29998692297633056,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.9145860709592641,
+        "referral_rate": 0.29998692297633056
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.7616580310880829,
+        "referral_rate": 0.17824329290701948
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8605604921394395,
+        "referral_rate": 0.24566523605150214
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9459161147902869,
+        "referral_rate": 0.40126212097891334
+      }
+    }
+  }
+}

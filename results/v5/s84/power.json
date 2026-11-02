@@ -1,0 +1,30 @@
+{
+  "p10": 0.25396396396396403,
+  "p01": 0.022432432432432432,
+  "discordance": 0.27639639639639646,
+  "n_lesions_estimation": 37,
+  "N": 71,
+  "power_plugin": 0.9924975108665853,
+  "discordant_lesions_V5_only": 9.396666666666668,
+  "discordant_lesions_V1_only": 0.83,
+  "power_bootstrap_median": 0.9926034506939125,
+  "power_bootstrap_p10": 0.8768439105655972,
+  "power_bootstrap_p90": 0.9999038684054519,
+  "n_boot": 2000,
+  "rng_seed": 20261004,
+  "estimable": true,
+  "underpowered": false,
+  "method": "results/v5/s84_power_method.md (D5)",
+  "v5_model": "composite_tta_mean",
+  "v5_view": "24-view TTA",
+  "matched_budget_R": 0.29541015625,
+  "v1_referral_lesion_weighted": 0.3224970943897874,
+  "v5_referral_lesion_weighted": 0.3225175418195237,
+  "rows": 6672,
+  "lesions": 2838,
+  "archive_split_u40_lesions": {
+    "bcn20000": 28,
+    "mskcc": 9
+  },
+  "residual_bias_note": "V5 Dirichlet and S56 refits include these rows: V5 slightly in-sample, power slightly optimistic"
+}

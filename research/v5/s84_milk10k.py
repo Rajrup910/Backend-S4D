@@ -486,29 +486,35 @@ def analysed_subset(cohort: pd.DataFrame, v1: np.ndarray, v5: np.ndarray):
 
 
 # =================================================================== stage: infer (GPU, no labels)
+class MilkViews:
+    """Map-style dataset at module level (D7): Windows spawns DataLoader workers, which cannot pickle a local class."""
+
+    def __init__(self, names: list[str]) -> None:
+        self.names, self._zip, self._views = names, None, None
+
+    def __len__(self) -> int:
+        return len(self.names)
+
+    def __getitem__(self, i: int):
+        import io
+
+        import torch
+        from PIL import Image
+
+        from research.tta.transforms import build_tta_views
+
+        if self._zip is None:
+            self._zip, self._views = zipfile.ZipFile(MILK_ZIP), build_tta_views(224)
+        image = Image.open(io.BytesIO(self._zip.read(self.names[i]))).convert("RGB")
+        return torch.stack([v.transform(image) for v in self._views]), 0  # no label exists at this stage
+
+
 def stage_infer(device_name: str, batch_size: int, workers: int) -> int:
-    import torch
-    from torch.utils.data import DataLoader, Dataset
-    from PIL import Image
-    import io
+    from torch.utils.data import DataLoader
 
     from ml.training.common import build_model_from_checkpoint, resolve_device
     from research.ensembling.data import ARCHS
-    from research.tta.transforms import build_tta_views
     from research.v5.tta_v5 import load_composite, tta_pass
-
-    class MilkViews(Dataset):
-        def __init__(self, names: list[str]) -> None:
-            self.names, self._zip, self._views = names, None, None
-
-        def __len__(self) -> int:
-            return len(self.names)
-
-        def __getitem__(self, i: int):
-            if self._zip is None:
-                self._zip, self._views = zipfile.ZipFile(MILK_ZIP), build_tta_views(224)
-            image = Image.open(io.BytesIO(self._zip.read(self.names[i]))).convert("RGB")
-            return torch.stack([v.transform(image) for v in self._views]), 0  # no label exists at this stage
 
     device = resolve_device(device_name)
     cohort = pd.read_csv(COHORT_PATH)
@@ -530,7 +536,8 @@ def stage_infer(device_name: str, batch_size: int, workers: int) -> int:
     result = tta_pass(models, loader, device, "S84 TTA", views_per_forward=48)
     S84_DIR.mkdir(parents=True, exist_ok=True)
     tmp = INFERENCE_PATH.with_name("inference.tmp.npz")
-    np.savez(tmp, isic_id=cohort["isic_id"].astype(str).to_numpy(), v5_names=np.array(v5_names),
+    # D7: fixed-width unicode, not object dtype, so stage_analyse can load it with allow_pickle=False
+    np.savez(tmp, isic_id=np.asarray(cohort["isic_id"].astype(str).tolist()), v5_names=np.array(v5_names),
              v5=np.stack([result["pooled"][f"v5:{n}"] for n in v5_names]),
              v1_names=np.array(ARCHS), v1=np.stack([result["pooled"][f"v1:{a}"] for a in ARCHS], axis=1))
     tmp.replace(INFERENCE_PATH)
@@ -690,13 +697,14 @@ def stage_analyse(receipt: dict | None) -> int:
         "analysed_under40_escalating_lesions": int((inscope & (data["age_band"] == "<40") & data["class_7"].isin(ESCALATING)).sum()),
         "power_note": "power.json uses S75's pre-exclusion N; it is an upper bound for the analysed N above (D6)",
         "links_file_sha256": sha256(LESION_LINKS)})
-    report.update(power=json.loads(POWER_PATH.read_text(encoding="utf-8")),
+    power = json.loads(POWER_PATH.read_text(encoding="utf-8"))  # D7: read before the update that formats it
+    report.update(power=power,
                   v5_models=[str(n) for n in inference["v5_names"]], v5_n_models=int(len(inference["v5_names"])),
                   v5_budget_matched=v5["budget"], v5_referral_matched=v5["matched_rate"], v1_referral_target=target,
                   v1_policy=v1["policy"], cohort_label="cohort-external, partly same-institution",
                   in_scope_lesions=int(inscope.sum()), out_of_scope_lesions=int((~inscope).sum()),
                   underpowered_statement=("UNDERPOWERED: planned power "
-                                          f"{report['power']['power_plugin']:.2f} < 0.80" if report["power"]["underpowered"] else "power >= 0.80"))
+                                          f"{power['power_plugin']:.2f} < 0.80" if power["underpowered"] else "power >= 0.80"))
     write_json(REPORT_PATH, report)
     pd.DataFrame({"isic_id": data["isic_id"], "V5_pred": v5["probs"].argmax(1), "V5_referred": v5["referred"],
                   "V1_pred": v1["probs"].argmax(1), "V1_referred": v1["referred"]}).to_csv(S84_DIR / "decisions.csv", index=False)

@@ -82,6 +82,23 @@
     "The lesion-linked lesions are never analysed, whatever their predictions.",
     "Lesion identity rests on the lesion_id links contributors recorded in the ISIC Archive; unrecorded links cannot be excluded (stated limitation)."
    ]
+  },
+  {
+   "id": "D7",
+   "declared": "2026-11-02T09:32:35+0530",
+   "declared_before": "the S84 label read (receipt label_read_count = 0, status started); after the cohort and inference stages, whose outputs are unchanged",
+   "kind": "pre-read software fix of the S84 script (no analysis choice changed)",
+   "what": [
+    "stage_analyse: report.update() formatted underpowered_statement from report['power'] inside the same call that sets it -> KeyError AFTER the label read; power is now read into a local first (found by a fake-label rehearsal on the real inference, before the read).",
+    "stage_infer: isic_id saved as object dtype, which stage_analyse's np.load(allow_pickle=False) refuses; now fixed-width unicode. The existing inference.npz was re-saved with isic_id as <U12; v5/v1/name arrays verified bit-identical; original kept as results/v5/s84/inference.object_ids.bak.npz.",
+    "stage_infer: MilkViews moved to module level (Windows spawned DataLoader workers cannot pickle a local class); the overnight run fell back to --num-workers 0, so inference outputs are unaffected."
+   ],
+   "information_seen_before_declaring": "No MILK10k label. Only label-free artefacts: cohort.csv, inference.npz (probabilities), the receipt, and a rehearsal report on synthetic labels.",
+   "unchanged": "Cohort, inference outputs, every frozen input other than the script, systems, decision rules, primary/secondary/global endpoints, D5 power, D6 exclusion, single-read rule.",
+   "receipt_amendment": {
+    "s84_script_sha256_old": "d432c747b4c4e444e08a3f40c7b2fd866d55f642a96b3936054fb2d1ecce8c68",
+    "s84_script_sha256_new": "b7b8d8791cf68e24ed0305f669158e1b081d018edcdf68a9469c7566912c9ed5"
+   }
   }
  ]
 }

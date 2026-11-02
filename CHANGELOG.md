@@ -9433,3 +9433,238 @@ No training, no test or reserved read; receipt unchanged at 2. Output: `paper/v4
 
 - **Session A (Q9 queue, OOF table, scripts; reported to C).** Wrote `research/v5/tta_v5.py`, `v1_infer.py`, `q9_runner.py` and `results/v5/queue_Q9.txt` (TTA benchmark, then 15 composite `_last.pt` × 24-view TTA, then V1 six-CNN TTA on the D5 rows; `python -m research.v5.q9_runner` resumes past finished jobs). Built the V5 OOF table `results/v5/v5_oof_common_matrix.{csv,json}` (fold 0 flagged as the selection fold, per D2). Wrote `refit_dirichlet.py`, `refit_s56.py` and `s84_milk10k.py`, none of them run. Fixes after B's review: S70 is scored at V5's own deployed S56 band-0.20 policy and the S70 relative term (MCID 0.05) is reported; referral is matched over all eligible lesions with both systems' decisions computed before the label read; `match_budget` searches up to 1.0 and refuses a gap above 0.01; `require_tta_state()` checks the Dirichlet map and S56 policies are the TTA model before the receipt starts; `power.json` says "not estimable" at 0 discordant lesions and counts the archive split in lesions; the script's own hash is pinned in the receipt. 36 CPU unit tests pass (19 in `tests/test_v5_s84.py`, 17 in `tests/test_v5_refit.py`). **Pending:** tonight's TTA run, then `oof_table`, the two refits, `--power`, and S84 itself.
 - **Session B (S84 power method and script review; reported to C).** S84 power fixed on V1's non-HAM rows of OOF folds 1–4 minus ISIC_0010852 (6,672 rows, 2,838 lesions, 37 under-40 escalating lesions), registered as D5 in `results/v5/protocol_deviations.json` before any S84/MILK10k read. Runsheet §9's paired exact one-sided McNemar takes precedence over the binomial power in `v5_external_analysis_spec.md` (source `results/v5/s84_power_method.md`). Reviewed `research/v5/s84_milk10k.py` against §9 and D5: row set, McNemar test, power formula and lesion bootstrap match, and MILK10k diagnoses are read in one place only, after the receipt's `label_read_count` is incremented. Closed one guard gap: `--stage cohort/infer` could score MILK10k images outside the receipt and now refuses unless an execution has started.
+
+### V6 plan review — failure modes and a score, no changes made (2026-11-01, ~22:30; owner request)
+No GPU, no test/reserved/external read, no new number computed; `docs/V6_RUNSHEET.md` unchanged. A reading of the
+full runsheet (§A0–A13, Part B) against V5's final reads (`results/v5/confirm_s42_s43_s44.json`, the V5 fairness
+audit entry above). Opinion, not a result; every number below is quoted from the runsheet or CHANGELOG.
+- **Verdict: 6/10** — safeguards the strongest of any version (IN-22k noise-floor recalibration, void-run rule,
+  fp16-castability, archive-stratified Stage 0, ADAE weights excluded for leakage, single HIBA read); strategy diffuse:
+  four competing frames (§A0 CG-DM, §A10 accumulation, §A12 ADAE, §A13 RMF), core path 88–147 GPU h before OT overhead,
+  R1/R2, §A11 and §A12 members (runsheet's own extrapolation).
+- **Expected failures:** (1) CG-DM likely stops at Stage 0 — the misses are nevus-like pigmented young melanomas
+  (51/55 called `nv`, B1), so their residual against nearest biopsied nevi is smallest exactly where rescue is
+  needed; (2) Stage A train/eval mismatch — training queries and references are rows the model fitted, so D is
+  deflated in training relative to held-out rows (Stage 0 is not affected); (3) novelty collapses if D_nn is
+  equivalent; (4) R1 likely underpowered under 40 (ISIC-2020 median age 50, 584 malignant); (5) R2 infeasible on
+  8.55 GB (10 cross-fitted generators); (6) E-primary likely ties — IN-1k 224 px V1 members vs the IN-22k 3-seed
+  V5 system, intersection-union power; (7) §A12 fold-k teachers predict on their own training rows, so distillation
+  targets are near one-hot; (8) §A11.4 selects the ensemble and reads the headline BA on the same 5-fold OOF —
+  optimistic; HIBA is the only clean read; (9) Gate A (+0.050 under 40) likely fails again (measured effects
+  +0.01 to +0.035 on 65 lesions).
+- **Relative placement (plan quality, expected value per GPU hour):** V4 > V1 > V5 ≈ V6 > V2/V3 (V2/V3 judged from
+  CHANGELOG only).
+- **Recommended for the post-Review-2 brainstorm:** make §A10 + §A12 the headline with one roster (§A11 Tier 1, not
+  the V1 six); keep CG-DM Stage 0 as a cheap CPU screen with a pre-committed stop; drop R2 and DINOv3-LLRD; R1 only if
+  the ISIC-2020 under-40 count suffices; run `scripts/run_v6_benchmarks.ps1` and cut to ≈ 100 GPU h; finish S84 and
+  Q9 so §A5 can be filled and the plan frozen.
+
+### V6 redesign — Part 0 written from V1–V5 and four literature reviews; MILK10k lesion leak found (2026-11-02; owner request)
+No GPU, no test/reserved/external label read, no model result. CPU metadata joins only. Not frozen, not committed.
+- **Research** (four subagents; reports with VERIFIED/SECONDARY tags copied to `docs/v6_design/`): ISIC winners
+  2016–2025 (`research_isic_winners.md`), dermoscopy beyond competitions (`research_derm_sota.md`), techniques from
+  other fields (`research_transfer_techniques.md`), public data sources with ISIC API metadata counts
+  (`research_data_sources.md`); internal ledger `internal_evidence.md` (every number with its `results/` file).
+- **`docs/V6_RUNSHEET.md` Part 0** (supersedes §A0 as the headline and Part B's core path; nothing deleted): one
+  headline — a leak-audited, data-maximal ensemble across pretraining families (IN-22k ConvNeXt-T anchor, PanDerm-B,
+  EVA02-S, EfficientNetV2-S, a 384 px member), selected for the under-40 band by nested leave-one-fold-out selection;
+  E-primary and Gate A **unchanged**; claim 3 (does the domain-SSL member help under 40) in its own Holm family;
+  matched optimiser steps so a data gain is never a compute gain; core ≈ 35–55 GPU h (extrapolated from the measured
+  58.6-min `youngdata` run), hard cap 80 h with a declared cut order. CG-DM becomes a CPU diagnostic; R1, R2,
+  DINOv3-LLRD, the V1-six roster and the large ADAE members are demoted (Part 0.9).
+- **Checks run this session (sources):**
+  - CE is already class-weighted (`research/v5/train_v5.py:694`, effective number), so the winners' largest
+    single-model lever is already in place.
+  - The corpus reads ISIC 2019 **Training** files only (`research/v4/build_corpus.py:61`), so the ISIC 2019 Test set
+    was never used as corpus data. 530 of its BCN images are among the 2,078 V5 young extras, and 112 more are
+    MILK-team images.
+  - V5 young extras vs `ml/data/manifest_v4.csv`, with archive lesion ids mapped onto every split: **0** shared images
+    and **0** shared lesions. There is no fold leakage in V5.
+  - **MILK10k (ISIC collection 425): 859 dermoscopic lesions share a `lesion_id` with ISIC 2019 Training (616 of them
+    with development training rows) and 126 with ISIC 2019 Test; 2 share one with the V5 young extras; 0 share an
+    ISIC id.** `research/v5/s84_milk10k.py` excludes by ISIC id or hash only, so these lesions would enter the V5
+    external read. **Action for V5 (owner):** exclude them by `lesion_id` before S84, declared as a deviation.
+    Metadata: `scratchpad/isic_meta/all_{65,72,70,249,425}.csv`, pulled from the ISIC API on 1 Nov (not in the repo).
+- **Re-score against the same rubric as 1 Nov** (rigour / strategy-focus / feasibility; expected value per GPU h):
+  9 / 8 / 8 → **8/10** (was 9 / 4 / 4 → 6).
+  - What keeps it from 9: Gate A is still expected to fail, the novelty is evaluative rather than architectural, and the
+    member costs are unmeasured until the benchmarks run.
+  - If the ViT members benchmark above 2.5× the anchor, the roster shrinks and the plan is nearer 7.
+- **Not verified:**
+  - That the ISIC 2019 Test diagnoses are public, and that its BCN lesions are disjoint from reserved BCN rows (the
+    data agent's derivation; re-checked at V6-0).
+  - The DERM12345 class map.
+  - The BCN20000 licence conflict (paper CC-BY 4.0 vs archive CC-BY-NC).
+  - PanDerm-B, EVA02-S and EfficientNetV2-S costs.
+
+### S84 fix — lesion-level exclusion of MILK10k lesions already in ISIC 2019 (deviation D6) (2026-11-02; owner "yes, fix S84")
+Declared before any S84 stage ran: no `results/v5/s84/`, no receipt, no power file, no MILK10k prediction.
+- **`research/v5/s84_lesion_links.py`** (new, label-free) pulled ISIC 2019 Training and Test lesion ids live from the
+  ISIC API → `results/v5/isic2019_archive_lesion_ids.csv` (33,569 rows) and `results/v5/s84_lesion_links.json`.
+  - Of 5,240 MILK10k dermoscopic lesions, **985** share a `lesion_id` with ISIC 2019: 859 with Training, 126 with Test.
+    2 also link to the V5 young extras and are already among the 985.
+  - 0 MILK10k images share an ISIC id with ISIC 2019.
+  - This reproduces the agent's 1 Nov pull exactly.
+- **`research/v5/s84_milk10k.py`:**
+  - Cohort: keeps S75's 5,220 lesions and adds a `lesion_linked` flag.
+  - Analyse: drops the linked lesions label-free (`analysed_subset`) before both systems' decisions and referral
+    matching. Labels are still read once for all 5,220 so S75's mapping check holds. The report gains
+    `d6_lesion_link_exclusion` (excluded and analysed counts, analysed under-40 N, links sha256).
+  - The links file is pinned in the receipt. The infer stage is unchanged and scores all 5,220.
+- **D6** in `results/v5/protocol_deviations.json`, including what the declarer had seen (S75 label counts, no
+  predictions). Power stays at S75's pre-exclusion N = 71, now stated as an upper bound.
+- **Tests:** 2 new in `tests/test_v5_s84.py` (lesion-id-only linking, label-free source, subset alignment, decisions
+  after the subset, links pinned). `tests/test_v5_s84.py` + `tests/test_v5_refit.py`: 38 passed.
+- **Not run:** S84 itself, `--power`, the refits (still pending from session A).
+
+### V6 Part 0: TTA made unconditional; external research prompt (2026-11-02; owner request)
+- `docs/V6_RUNSHEET.md` Part 0, V6-5: 24-view TTA is **always applied** to every member (it overrides the §A5 TTA row's
+  condition on V5's Q9 read). The E-primary system is reported with and without TTA on the same rows.
+- §0.7 gains a "best pooled Macro-F1" row: it is compared with V5 on identical rows (≈ 0.676), never with V1's HAM-test
+  0.805, and escalation sensitivity is reported beside it.
+- **`docs/v6_design/V6_EXTERNAL_RESEARCH_PROMPT.md`:** a self-contained prompt for other models (ChatGPT, Antigravity)
+  with the project context, V1–V5 results, Part 0 and eight research questions. It requires VERIFIED/UNVERIFIED tags and
+  no invented numbers.
+
+### V6 Part 0: Antigravity review checked and partly adopted (2026-11-02; owner request)
+Each claim was checked against the repo and the four reviews. The full adopt/reject/correct log is in
+`docs/V6_RUNSHEET.md` §0.10.
+- **Adopted:**
+  - SWAD for every run in place of EMA (the existing `SwadAverager`).
+  - Distillation out of the core: the deployed system is the ensemble.
+  - A Gate A power statement before any run.
+- **Not adopted:**
+  - **Swapping the 384 px member for MaxViT-T / SwinV2-T.** Applied briefly, then reverted on owner recheck. On HAM val
+    MaxViT scored 0.7176 and SwinV2 0.7412, both below the anchor's 0.7482 (`results/review2/v1_member_metrics.csv`),
+    and adding both to the 6-CNN vote was a wash. ConvNeXt-T 384 px has the best in-repo record (S53r +0.0297, 3/3
+    seeds; S01 HAM rows 3/3).
+  - JTT and Correct-n-Contrast, as near-repeats of S67 hard-case reweighting.
+  - Antigravity's effect sizes and VRAM/time figures, which were labelled verified but not measured here.
+- **Corrected:**
+  - The +0.047 photometric figure comes from arXiv 2607.26765, not Ktena 2024.
+  - The MILK10k link count is 985, not 859.
+  - Its colour-constancy evidence conflicts with ours.
+
+### V6 Part 0: Antigravity changes rechecked; roster rebuilt by training objective (2026-11-02; owner request)
+- **Weight averaging rechecked:**
+  - `SwadAverager` (`research/v5/m7.py`) is epoch-level SWA, not iteration-dense SWAD.
+  - Measured on V5 LOAO (`results/v5/runs/*_loao-*_s42_in22k_v5scr.json`, averaged vs last Macro-F1, one seed):
+    BCN +0.013 in both arms; HAM −0.002 / −0.000; MSKCC −0.002 / −0.003.
+  - Kept in arm R. The averaging window now scales with the step budget, and BatchNorm statistics are re-estimated
+    rather than averaged.
+  - The older "SWAD positive on LOAO" line overstates this result.
+- **Distillation out:** G3 becomes a deployable system. V6-5 measures ensemble + TTA latency, and S60 is extended to
+  serve the ensemble.
+- **Member search** (subagent; `docs/v6_design/research_ensemble_members.md`):
+  - DINOv2 ViT-B/14 replaces EVA02-S.
+  - SigLIP 2 B/16 replaces EfficientNetV2-S, which becomes its fallback.
+  - Why: error inconsistency rises with objective and data diversity, not architecture (Gontijo-Lopes ICLR 2022:
+    0.085 seed, 0.103–0.147 architecture, 0.169–0.230 CLIP/ALIGN).
+  - PanDerm and EVA-02 share the masked-modelling-against-CLIP-features objective, and EfficientNetV2-S is a second
+    supervised CNN.
+  - SigLIP 2 has no dermoscopy result, so it is first in the cut order.
+  - MedImageInsight is excluded: ISIC 2019 is in its pretraining.
+- **Benchmark script:** `scripts/run_v6_benchmarks.ps1` gains `vit_base_patch14_dinov2.lvd142m`.
+  `gpu_benchmark.py` already passes `img_size`.
+- **Header fix:** a `---` separator now closes Part 0, before the header's "Inherits from V5".
+
+### V6 freeze-readiness audit (2026-11-02; owner request; not frozen)
+`docs/V6_RUNSHEET.md` §0.8b gives the verdict: the design is complete, and the freeze is blocked by work only. Checks
+run (no label, test or reserved read):
+- ISIC 2019 Test shares 0 lesion ids with every manifest split; diagnoses are public for 7,082 of 8,238 images.
+- HIBA (ISIC collections 175/176/251; live API) shares 0 images and 0 lesions with the V5 extras and the manifest.
+- The V6-1 control's banked predictions exist.
+- V5 preflight (`q9_runner --dry-run`: 17 jobs to do; `oof_table --check-only`: PASS, no TTA columns yet;
+  `s84_milk10k --dry-run`: only the refit outputs are missing).
+
+Seven defects fixed in Part 0:
+- the undeclared anchor heads (the anchor is now the `youngdata` recipe without `twostep`/`m4`, with fold-0 evidence);
+- Gate A's comparator change, now stated as stricter, with the in1k contrast reported alongside;
+- C4 parity against per-member normalisation;
+- TTA views now built at each member's input size;
+- the stale 35–55 h total, withdrawn until the benchmarks, with a declared PanDerm compute proxy;
+- missing freeze items (statistical families, Gate A power, unit tests);
+- PanDerm NC-ND deployment scope.
+
+### V5 overnight finish automated (2026-11-02, 03:15; owner request)
+- **`scripts/run_v5_finish.ps1`** waits for the running Q9 runner (pid 41060) to exit, then runs `oof_table` →
+  `refit_dirichlet` → `refit_s56` → `s84 --power` → `s84 --dry-run` → `s84 --execute`.
+- **Deterministic gates:**
+  - Q9 must show 0 `todo` jobs.
+  - Every step must exit 0.
+  - S84 runs only on a clean preflight (no MISSING / NOT READY, n_executions = 0) with ≥ 5 GB free on C:.
+  - Nothing is retried, and the chain keeps Windows awake.
+- **Gate test:** with a fake PID the chain stopped correctly, finding 13 Q9 jobs not yet done.
+- **Launched** detached as pid 48776; log at `results/v5/logs/v5_finish.log`.
+- **Pre-sleep check found one real risk.**
+  - System commit stood at 33.4 / 34.5 GB (1.1 GB headroom) while Q9 ran. The pagefile is system-managed (19.75 GB)
+    with 31.9 GB of disk free.
+  - Fix: S84 now runs with 1 data worker, and the disk floor is 10 GB so the pagefile can grow. If inference crashes
+    while `label_read_count == 0`, the chain runs one `--resume` with 0 workers.
+  - The chain was relaunched at 03:18 as pid 12184.
+  - Power on AC (80%); no Windows-update reboot pending.
+- **Q9 pace, measured:** 3.5–3.9 min per composite model on the first 3. The V1 benchmark projects 47.7 min.
+
+### V6 Part 0: ChatGPT review checked and partly adopted (2026-11-02; owner request)
+No GPU, no test/reserved/external label read, no model result. CPU metadata joins, one public ISIC API facets call and a
+web check of the review's sources. Full adopt/reject log in `docs/V6_RUNSHEET.md` §0.10. The review (8.1/10) scored the
+brief MaxViT-core version of Part 0, which had already been reverted.
+- **Counts reconciled** (`results/v5/s84_lesion_links.json` joined to `ml/data/manifest_v4.csv` via
+  `results/v5/isic2019_archive_lesion_ids.csv`): 985 MILK10k lesions are linked in all (859 ISIC 2019 Training, 126
+  Test, 2 extras, union). The 859 split as 616 train, 113 ham_val and 130 ham_test; the 126 are in no manifest row.
+  §0.3 said "618 excluded" while D6 excludes 985. Fixed, and §0.1's mixed-unit sentence was rewritten.
+- **ISIC 2019 Test identifiers** (ISIC facets API, `collections=72`, 2 Nov): `patient_id` is present for 0 of 8,238
+  images and `lesion_id` for 8,238 of 8,238. The review's "3,232 lesion ids" is out of date. Patient-level
+  deduplication is impossible for this source, so `data_allocation.json` now counts missing-identifier rows separately
+  and never calls them patient-deduplicated (§0.3, §0.8).
+- **Adopted, besides the above:**
+  - The nested selector is described as a Macro-F1 optimiser with an under-40 non-inferiority guard (§0.2, §0.5).
+  - "First" is dropped from the novelty claims.
+  - The Gate A power statement reports the point-estimate, CI > 0 and joint probabilities separately.
+  - A descriptive per-member subgroup contribution report is added to V6-3; it is never a gate.
+  - The PanDerm-B checkpoint is pinned by hash, and DermFM-Zero / "PanDerm-2" is excluded, because its Hugging Face
+    model card lists ISIC, BCN20000, MSKCC and HIBA as training data.
+- **Not adopted:**
+  - **Swin-T screening.** The J Clin Med 2026 result (PMID 42881884) is verified: BCN BA 0.476 vs ConvNeXt-T 0.451. But
+    it trained on HAM only with one seed, gave no external CI, and V6 trains with BCN in the pool.
+  - **Phenotype audit.** It needs dermatologists, and its cited 2026 study was not found.
+  - **UQ longitudinal set and MCR-SL** as cohorts.
+  - **SFPL and test-time adaptation.**
+- PanDerm repo recipe verified: 50 ep, lr 5e-4, 10 warm-up, layer decay 0.65, drop path 0.2, wd 0.05, Mixup/CutMix,
+  weighted sampler. Its example is PanDerm-Large on PAD-UFES, so it is a starting point only.
+
+### V5 finished: S84, the single MILK10k read (2026-11-02, 09:40; owner request)
+- **Overnight chain** (`results/v5/logs/v5_finish.log`): Q9 0 todo (04:14); `oof_table` (all checks PASS),
+  `refit_dirichlet`, `refit_s56`, `s84 --power` and the dry-run were clean by 04:17. S84 inference scored 15 V5 + 6 V1
+  models on 5,220 lesions (05:18). The chain then STOPPED in the analysis stage **before the label read**
+  (`label_read_count` 0).
+- **Three bugs in `research/v5/s84_milk10k.py`, all fixed before the read and declared as D7**
+  (`results/v5/protocol_deviations.json`):
+  1. **Worker pickling.** The local `MilkViews` class could not be pickled into Windows workers. The chain's 0-worker
+     resume got past it; the class is now at module level.
+  2. **Object-dtype ids.** `isic_id` was saved as object dtype, which `np.load(allow_pickle=False)` refuses. The
+     existing `inference.npz` was re-saved with the ids as `<U12`; the probability arrays are bit-identical. The original
+     is kept as `results/v5/s84/inference.object_ids.bak.npz`.
+  3. **Post-read crash.** `report['power']` was read inside the same `update()` that sets it, which would have raised a
+     KeyError **after** the label read and burned it. A fake-label dress rehearsal on the real inference caught it.
+  - The receipt's script hash was re-pinned (d432c747… → b7b8d879…) with an `amendments` record. No analysis choice
+    changed. S84 tests pass (21) and the smoke run is OK.
+- **S84 completed** (`results/v5/s84/s84_report.json`, `decisions.csv`; receipt `n_executions` 1, `label_read_count` 1,
+  `completed`). D6 excluded 965 lesion-linked lesions, leaving 4,255 analysed (4,148 in scope).
+  - **Escalating prevalence is 81.4%** (3,375 / 4,148), against about 19% on HAM, so MILK10k is a cancer-enriched
+    cohort.
+  - **Primary, not met.** Under-40 escalation sensitivity at matched referral (V5 0.524 / V1 0.524) is V5 49/50 = 0.980
+    [0.894, 1.000] vs V1 47/50 = 0.940 [0.835, 0.988]. Discordant 3 vs 1; exact one-sided McNemar p = 0.3125.
+    - Only 50 under-40 escalating lesions remain after D6 (71 planned).
+    - The observed discordance (4/50, 8%) is far below the planning value (27.6%, `power.json`). The planned power 0.99
+      therefore did not hold: both systems sit at the ceiling at about 52% referral.
+  - **Key secondary (S70 contract at V5's deployed S56 band 0.20), not met.** Sensitivity is 48/50 = 0.960, CI lower
+    bound 0.863 ≥ 0.855, but referral is 0.463 against a cap of 0.25. The relative term +0.040 falls short of the MCID
+    0.05.
+  - **Global Macro-F1, non-inferior with a CI clear of zero.** V5 0.474 vs V1 0.374, Δ +0.100 [+0.074, +0.127], margin
+    0.02. Retained-set Macro-F1 is 0.588 vs 0.477.
+  - **Descriptive escalation AUROC**, V5 vs V1: all 0.831 vs 0.782; under-40 0.849 vs 0.834; 40–59 0.830 vs 0.784; 60+
+    0.796 vs 0.743. Under-40 pAUC@0.20 is 0.747 vs 0.767, the one cell where V1 leads.
+  - The per-institution breakdown has one attribution value ("MILK study team"), so it is uninformative.
+- **V6 §A5:** the "S84 under-40 CI crosses 0" row fired. MILK10k now moves to V6 training as planned (§0.3), minus the
+  985 linked lesions.

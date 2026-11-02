@@ -32,6 +32,7 @@ $configs = @(
   @("tf_efficientnetv2_s.in21k_ft_in1k", 224),
   @("caformer_s18.sail_in22k_ft_in1k", 224),
   @("vit_small_patch14_reg4_dinov2.lvd142m", 224),
+  @("vit_base_patch14_dinov2.lvd142m", 224),  # V6 Part 0 V6-3 member (2 Nov); gpu_benchmark.py passes img_size to timm
   @("seresnext50_32x4d.racm_in1k", 224),
   @("edgenext_small.usi_in1k", 224),
   @("maxvit_tiny_tf_224.in1k", 224),

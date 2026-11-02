@@ -1,0 +1,45 @@
+{
+  "cohort": "MILK10k dermoscopic, S75-eligible (S84, runsheet section 9)",
+  "n_executions": 1,
+  "label_read_count": 1,
+  "status": "completed",
+  "inputs": {
+    "power_method": "05e7819ec83e959d97cc01f03f07c206f2f22945d93a9501b161a164905d0db8",
+    "power_result": "6e12ce09112f7f18df221d6c9f006b42e1233e19467aab3a8c14296a29f7bf78",
+    "s75_eligibility": "bc5971eceaa9526f96697f94711c7c8c3a7b72b5b5e64f9ca2ab636f40083fa2",
+    "lesion_links": "151f4730919a5d11b7f0c3cab0ffc335acb199113f971b725efc365eb52dd3f2",
+    "dirichlet_state": "816d5a3e5ab7c26c260b1a2451a0e355a81673c8de127c3f1b792be72e2b9c31",
+    "s56_policies_v5": "19a928c1e86ce81bd28c014f7cc692633d8c8d81bc9f68b3f18f130f61144489",
+    "s56_policies_v1": "42ccf450da8b193d569ce885b40ca2005e183a52378851abc51c894451875a9b",
+    "oof_matrix": "cf7f9a0f68b66f2024f80af700ed0d668a88afd6d0f6dc0e60e22e5666c96b69",
+    "s84_script": "b7b8d8791cf68e24ed0305f669158e1b081d018edcdf68a9469c7566912c9ed5"
+  },
+  "executions": [
+    {
+      "execution": 1,
+      "started_at": "2026-11-02T04:16:56+0530",
+      "git_head": "f9f45f5ee32703e976cad5525b31c31908ec5954",
+      "resumed_at": [
+        "2026-11-02T04:17:23+0530",
+        "2026-11-02T09:32:45+0530"
+      ],
+      "amendments": [
+        {
+          "at": "2026-11-02T09:32:35+0530",
+          "deviation": "D7",
+          "s84_script_sha256_old": "d432c747b4c4e444e08a3f40c7b2fd866d55f642a96b3936054fb2d1ecce8c68",
+          "s84_script_sha256_new": "b7b8d8791cf68e24ed0305f669158e1b081d018edcdf68a9469c7566912c9ed5",
+          "label_read_count": 0
+        }
+      ],
+      "labels_read_at": "2026-11-02T09:32:54+0530",
+      "completed_at": "2026-11-02T09:32:59+0530",
+      "outputs": {
+        "results/v5/s84/s84_report.json": "539bb90ea75e6bd320650d56508d5c5a0c0bf3062bd0d7d988035d7117738c93",
+        "results/v5/s84/decisions.csv": "3a48f55745e81012aa05a8c6213dd334974db2c4a995629f65ef173056fc4c4b",
+        "results/v5/s84/cohort.csv": "1199f14f36bda4713c0d78669f4c3ea1617a57bf45ce99f41dfa0b50b4b34299",
+        "results/v5/s84/inference.npz": "070616b21d468de8f543bad8466c76c88ed43eb3c07cf18c8acf0d223ae0f02a"
+      }
+    }
+  ]
+}

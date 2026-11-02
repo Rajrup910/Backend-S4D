@@ -1,0 +1,217 @@
+{
+  "primary": {
+    "n_escalating_u40_lesions": 17,
+    "V5": {
+      "caught": 11,
+      "n_escalating": 17,
+      "sensitivity": 0.6470588235294118,
+      "ci95_clopper_pearson": [
+        0.3832836634434029,
+        0.857902516889779
+      ]
+    },
+    "V1": {
+      "caught": 7,
+      "n_escalating": 17,
+      "sensitivity": 0.4117647058823529,
+      "ci95_clopper_pearson": [
+        0.18443696178394667,
+        0.6707528460532426
+      ]
+    },
+    "discordant_V5_only": 7,
+    "discordant_V1_only": 3,
+    "delta_sensitivity": 0.23529411764705882,
+    "mcnemar_exact_one_sided_p": 0.171875,
+    "alpha": 0.05,
+    "reject_V5_better": false,
+    "referral_all_eligible_matched": {
+      "V5": 0.21833333333333332,
+      "V1": 0.20666666666666667
+    },
+    "referral_matched": false
+  },
+  "key_secondary": {
+    "contract": "<40 system sensitivity >= 0.855 and referral <= 0.25, V5 deployed S56 band 0.20",
+    "v5_deployed_u40": {
+      "caught": 11,
+      "n_escalating": 17,
+      "sensitivity": 0.6470588235294118,
+      "ci95_clopper_pearson": [
+        0.3832836634434029,
+        0.857902516889779
+      ]
+    },
+    "v5_deployed_referral_all_eligible": 0.21166666666666667,
+    "v5_deployed_referral_u40": 0.2366412213740458,
+    "point_estimate_meets": false,
+    "lower_bound_meets_sensitivity": false,
+    "relative_term": {
+      "quantity": "V5 minus V1 <40 system sensitivity at matched referral (S70 D2)",
+      "mcid": 0.05,
+      "delta": 0.23529411764705882,
+      "meets_mcid": true
+    }
+  },
+  "global": {
+    "macro_f1_V5": 0.10769680380389442,
+    "macro_f1_V1": 0.10568389581191093,
+    "delta": 0.0020129079919834897,
+    "ci95_bootstrap": [
+      -0.024323412424593707,
+      0.04374514477399473
+    ],
+    "margin": 0.02,
+    "non_inferior": false,
+    "n_boot": 50,
+    "rng_seed": 20261004,
+    "retained_macro_f1": {
+      "V5": 0.1131068058641975,
+      "V1": 0.1006904294337639
+    }
+  },
+  "descriptive": {
+    "by_age_band": {
+      "ALL": {
+        "V5": {
+          "auroc": 0.5084303492573263,
+          "pauc_0.20": 0.4988625719255988,
+          "n": 576,
+          "n_escalating": 106
+        },
+        "V1": {
+          "auroc": 0.4908871938980329,
+          "pauc_0.20": 0.5053860564699585,
+          "n": 576,
+          "n_escalating": 106
+        }
+      },
+      "<40": {
+        "V5": {
+          "auroc": 0.5299277605779154,
+          "pauc_0.20": 0.4937507166609334,
+          "n": 131,
+          "n_escalating": 17
+        },
+        "V1": {
+          "auroc": 0.36016511867905054,
+          "pauc_0.20": 0.49260405916752664,
+          "n": 131,
+          "n_escalating": 17
+        }
+      },
+      "40-59": {
+        "V5": {
+          "auroc": 0.603641456582633,
+          "pauc_0.20": 0.5219421101774043,
+          "n": 149,
+          "n_escalating": 30
+        },
+        "V1": {
+          "auroc": 0.4661064425770308,
+          "pauc_0.20": 0.5026455026455027,
+          "n": 149,
+          "n_escalating": 30
+        }
+      },
+      "60+": {
+        "V5": {
+          "auroc": 0.4436435124508519,
+          "pauc_0.20": 0.4692005242463958,
+          "n": 137,
+          "n_escalating": 28
+        },
+        "V1": {
+          "auroc": 0.522608125819135,
+          "pauc_0.20": 0.506152613950779,
+          "n": 137,
+          "n_escalating": 28
+        }
+      },
+      "unknown": {
+        "V5": {
+          "auroc": 0.46018145161290325,
+          "pauc_0.20": 0.5018481182795699,
+          "n": 159,
+          "n_escalating": 31
+        },
+        "V1": {
+          "auroc": 0.5632560483870968,
+          "pauc_0.20": 0.5389504928315412,
+          "n": 159,
+          "n_escalating": 31
+        }
+      }
+    },
+    "by_institution": {
+      "MSKCC": {
+        "n": 187,
+        "u40_V5": {
+          "caught": 6,
+          "n_escalating": 7,
+          "sensitivity": 0.8571428571428571,
+          "ci95_clopper_pearson": [
+            0.4212768029568048,
+            0.9963897031380994
+          ]
+        },
+        "u40_V1": {
+          "caught": 2,
+          "n_escalating": 7,
+          "sensitivity": 0.2857142857142857,
+          "ci95_clopper_pearson": [
+            0.03669256617608555,
+            0.7095791362626572
+          ]
+        }
+      },
+      "Other": {
+        "n": 199,
+        "u40_V5": {
+          "caught": 2,
+          "n_escalating": 4,
+          "sensitivity": 0.5,
+          "ci95_clopper_pearson": [
+            0.06758598648854294,
+            0.932414013511457
+          ]
+        },
+        "u40_V1": {
+          "caught": 1,
+          "n_escalating": 4,
+          "sensitivity": 0.25,
+          "ci95_clopper_pearson": [
+            0.006309463209709865,
+            0.8058795503167565
+          ]
+        }
+      },
+      "Vienna": {
+        "n": 190,
+        "u40_V5": {
+          "caught": 3,
+          "n_escalating": 6,
+          "sensitivity": 0.5,
+          "ci95_clopper_pearson": [
+            0.11811724875702521,
+            0.8818827512429748
+          ]
+        },
+        "u40_V1": {
+          "caught": 4,
+          "n_escalating": 6,
+          "sensitivity": 0.6666666666666666,
+          "ci95_clopper_pearson": [
+            0.22277809550351213,
+            0.9567281317072583
+          ]
+        }
+      }
+    },
+    "out_of_scope": {
+      "n": 24,
+      "referral_V5": 0.20833333333333334,
+      "referral_V1": 0.25
+    }
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "primary": {
+    "n_escalating_u40_lesions": 50,
+    "V5": {
+      "caught": 49,
+      "n_escalating": 50,
+      "sensitivity": 0.98,
+      "ci95_clopper_pearson": [
+        0.8935304542885001,
+        0.9994937720169592
+      ]
+    },
+    "V1": {
+      "caught": 47,
+      "n_escalating": 50,
+      "sensitivity": 0.94,
+      "ci95_clopper_pearson": [
+        0.8345180533962271,
+        0.9874514121646659
+      ]
+    },
+    "discordant_V5_only": 3,
+    "discordant_V1_only": 1,
+    "delta_sensitivity": 0.04,
+    "mcnemar_exact_one_sided_p": 0.3125,
+    "alpha": 0.05,
+    "reject_V5_better": false,
+    "referral_all_eligible_matched": {
+      "V5": 0.5238542890716804,
+      "V1": 0.5240893066980024
+    },
+    "referral_matched": true
+  },
+  "key_secondary": {
+    "contract": "<40 system sensitivity >= 0.855 and referral <= 0.25, V5 deployed S56 band 0.20",
+    "v5_deployed_u40": {
+      "caught": 48,
+      "n_escalating": 50,
+      "sensitivity": 0.96,
+      "ci95_clopper_pearson": [
+        0.8628623743960326,
+        0.9951185665738356
+      ]
+    },
+    "v5_deployed_referral_all_eligible": 0.4627497062279671,
+    "v5_deployed_referral_u40": 0.6954022988505747,
+    "point_estimate_meets": false,
+    "lower_bound_meets_sensitivity": true,
+    "relative_term": {
+      "quantity": "V5 minus V1 <40 system sensitivity at matched referral (S70 D2)",
+      "mcid": 0.05,
+      "delta": 0.04,
+      "meets_mcid": false
+    }
+  },
+  "global": {
+    "macro_f1_V5": 0.47436001330348176,
+    "macro_f1_V1": 0.37424988387994584,
+    "delta": 0.10011012942353592,
+    "ci95_bootstrap": [
+      0.07391797614899706,
+      0.12714252469388507
+    ],
+    "margin": 0.02,
+    "non_inferior": true,
+    "n_boot": 2000,
+    "rng_seed": 20261004,
+    "retained_macro_f1": {
+      "V5": 0.5883265842819583,
+      "V1": 0.4764894901201262
+    }
+  },
+  "descriptive": {
+    "by_age_band": {
+      "ALL": {
+        "V5": {
+          "auroc": 0.8305445833932249,
+          "pauc_0.20": 0.7061819962840518,
+          "n": 4148,
+          "n_escalating": 3375
+        },
+        "V1": {
+          "auroc": 0.7816790762301759,
+          "pauc_0.20": 0.6601048770489621,
+          "n": 4148,
+          "n_escalating": 3375
+        }
+      },
+      "<40": {
+        "V5": {
+          "auroc": 0.8487096774193548,
+          "pauc_0.20": 0.7468637992831542,
+          "n": 174,
+          "n_escalating": 50
+        },
+        "V1": {
+          "auroc": 0.8341935483870966,
+          "pauc_0.20": 0.7673835125448029,
+          "n": 174,
+          "n_escalating": 50
+        }
+      },
+      "40-59": {
+        "V5": {
+          "auroc": 0.8303461063040791,
+          "pauc_0.20": 0.7085884849087611,
+          "n": 1041,
+          "n_escalating": 809
+        },
+        "V1": {
+          "auroc": 0.7841044712501598,
+          "pauc_0.20": 0.6648012777706738,
+          "n": 1041,
+          "n_escalating": 809
+        }
+      },
+      "60+": {
+        "V5": {
+          "auroc": 0.7955978290663888,
+          "pauc_0.20": 0.6754145118749582,
+          "n": 2922,
+          "n_escalating": 2516
+        },
+        "V1": {
+          "auroc": 0.7427488702843673,
+          "pauc_0.20": 0.6311684039878767,
+          "n": 2922,
+          "n_escalating": 2516
+        }
+      },
+      "unknown": {
+        "V5": {
+          "auroc": null,
+          "pauc_0.20": null,
+          "n": 11,
+          "n_escalating": 0
+        },
+        "V1": {
+          "auroc": null,
+          "pauc_0.20": null,
+          "n": 11,
+          "n_escalating": 0
+        }
+      }
+    },
+    "by_institution": {
+      "MILK study team": {
+        "n": 4148,
+        "u40_V5": {
+          "caught": 49,
+          "n_escalating": 50,
+          "sensitivity": 0.98,
+          "ci95_clopper_pearson": [
+            0.8935304542885001,
+            0.9994937720169592
+          ]
+        },
+        "u40_V1": {
+          "caught": 47,
+          "n_escalating": 50,
+          "sensitivity": 0.94,
+          "ci95_clopper_pearson": [
+            0.8345180533962271,
+            0.9874514121646659
+          ]
+        }
+      }
+    },
+    "out_of_scope": {
+      "n": 107,
+      "referral_V5": 0.5233644859813084,
+      "referral_V1": 0.5327102803738317
+    }
+  },
+  "d6_lesion_link_exclusion": {
+    "excluded_lesions": 965,
+    "analysed_lesions": 4255,
+    "analysed_under40_escalating_lesions": 50,
+    "power_note": "power.json uses S75's pre-exclusion N; it is an upper bound for the analysed N above (D6)",
+    "links_file_sha256": "151f4730919a5d11b7f0c3cab0ffc335acb199113f971b725efc365eb52dd3f2"
+  },
+  "power": {
+    "p10": 0.25396396396396403,
+    "p01": 0.022432432432432432,
+    "discordance": 0.27639639639639646,
+    "n_lesions_estimation": 37,
+    "N": 71,
+    "power_plugin": 0.9924975108665853,
+    "discordant_lesions_V5_only": 9.396666666666668,
+    "discordant_lesions_V1_only": 0.83,
+    "power_bootstrap_median": 0.9926034506939125,
+    "power_bootstrap_p10": 0.8768439105655972,
+    "power_bootstrap_p90": 0.9999038684054519,
+    "n_boot": 2000,
+    "rng_seed": 20261004,
+    "estimable": true,
+    "underpowered": false,
+    "method": "results/v5/s84_power_method.md (D5)",
+    "v5_model": "composite_tta_mean",
+    "v5_view": "24-view TTA",
+    "matched_budget_R": 0.29541015625,
+    "v1_referral_lesion_weighted": 0.3224970943897874,
+    "v5_referral_lesion_weighted": 0.3225175418195237,
+    "rows": 6672,
+    "lesions": 2838,
+    "archive_split_u40_lesions": {
+      "bcn20000": 28,
+      "mskcc": 9
+    },
+    "residual_bias_note": "V5 Dirichlet and S56 refits include these rows: V5 slightly in-sample, power slightly optimistic"
+  },
+  "v5_models": [
+    "composite_f0_s42_in22k_v5stack",
+    "composite_f1_s42_in22k_v5conf",
+    "composite_f2_s42_in22k_v5conf",
+    "composite_f3_s42_in22k_v5conf",
+    "composite_f4_s42_in22k_v5conf",
+    "composite_f0_s43_in22k_v5stack",
+    "composite_f1_s43_in22k_v5conf",
+    "composite_f2_s43_in22k_v5conf",
+    "composite_f3_s43_in22k_v5conf",
+    "composite_f4_s43_in22k_v5conf",
+    "composite_f0_s44_in22k_v5stack",
+    "composite_f1_s44_in22k_v5conf",
+    "composite_f2_s44_in22k_v5conf",
+    "composite_f3_s44_in22k_v5conf",
+    "composite_f4_s44_in22k_v5conf"
+  ],
+  "v5_n_models": 15,
+  "v5_budget_matched": 0.24560546875,
+  "v5_referral_matched": 0.5238542890716804,
+  "v1_referral_target": 0.5240893066980024,
+  "v1_policy": {
+    "arm": "band",
+    "score": "msp",
+    "budget": 0.2,
+    "floor": 0.855,
+    "tau_band": {
+      "<40": 0.07148993334109954,
+      "40-59": 0.20535960718218416,
+      "60+": 0.34395075797674346
+    },
+    "tau_global": 0.37250286262959076,
+    "fit_counts": {
+      "<40": 418,
+      "40-59": 478,
+      "60+": 498,
+      "global_topup": 2
+    }
+  },
+  "cohort_label": "cohort-external, partly same-institution",
+  "in_scope_lesions": 4148,
+  "out_of_scope_lesions": 107,
+  "underpowered_statement": "power >= 0.80"
+}
