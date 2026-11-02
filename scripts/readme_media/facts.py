@@ -146,8 +146,8 @@ def load() -> dict:
     front = [r for r in _csv("results/v4/s56/frontier_reserved.csv") if r["budget"] == "0.2" and r["band"] == "<40" and r["score"] == "msp"]
     f["v4_ref_global"] = float(next(r for r in front if r["arm"] == "global")["referral_rate"])
     f["v4_ref_band"] = float(next(r for r in front if r["arm"] == "band")["referral_rate"])
-    ceil = _json("results/v4/s64/ceiling.json")
-    f["v4_ceiling_raw"] = ceil
+    ceil = _json("results/v4/s64/ceiling.json")["bands"]
+    f["v4_auc"] = {k: ceil[k]["auc_d"] for k in ("<40", "40-59", "60+")}
 
     # ------------------------------------------------------------------ V5
     conf = _json("results/v5/confirm_s42_s43_s44.json")
@@ -158,8 +158,10 @@ def load() -> dict:
     f["v5_gates"] = gates
     f["v5_lock_sha"] = re.search(r"sha256 ([0-9a-f]{8})", conf["lock"])[1]
     q11 = _json("results/v5/q11_decomposition.json")
-    f["v5_q11_raw"] = q11
-    f["v5_primary_raw"] = conf["primary"]
+    f["v5_primary"] = conf["primary"]["delta"]
+    f["v5_module"], f["v5_trunk"] = q11["module_effect"]["delta"], q11["trunk_effect"]["delta"]
+    per_seed = conf["primary"]["per_seed"]
+    f["v5_seed_rows"] = [(s["seed"], s["b"]["pauc_u40"], s["a"]["pauc_u40"], s["delta"]["pauc_u40"]) for s in per_seed]
     matrix = _json("results/v5/v5_oof_common_matrix.json")
     f["v5_oof_rows"], f["v5_oof_lesions"] = matrix["rows"], matrix["lesions"]
     f["v5_oof_f1"] = matrix["descriptive_macro_f1"]
@@ -170,8 +172,22 @@ def load() -> dict:
     f["s84_receipt"] = {"n": receipt["n_executions"], "labels": receipt["label_read_count"], "status": receipt["status"]}
     s75 = _json("results/v5/s75_milk10k_eligibility.json")
     f["s75_eligible"], f["s75_u40"] = s75["eligible_lesions"], s75["under40_escalating_lesions"]
-    links = _json("results/v5/s84_lesion_links.json")
-    f["s84_links_raw"] = links
+    links = _json("results/v5/s84_lesion_links.json")["counts"]
+    f["s84_linked_total"] = links["linked_total_union"]
+    with (REPO / "results/v5/v5_oof_common_matrix.csv").open(encoding="utf-8", newline="") as handle:
+        status = [row["escalation_status"] for row in csv.DictReader(handle)]
+    f["v5_dev_prevalence_values"] = sorted(set(status))
+    f["v5_dev_prevalence"] = sum(s in ("escalating", "1", "True", "escalate") for s in status) / len(status)
+    f["ham_prevalence"] = float(oof[("oof", "ALL")]["escalating_prior"])
+
+    # calibration report (V1 session 2): the columns are read by name from the table header
+    text = (REPO / "results/reports/research__calibration__results__session2_report.md").read_text(encoding="utf-8")
+    header = next(ln for ln in text.splitlines() if ln.startswith("|") and "ece" in ln.lower())
+    cols = [c.strip() for c in header.strip("|").split("|")]
+    f["calib_cols"] = cols
+    for key, pattern in (("calib_raw", r"^\| uncalibrated \|(.+)\|$"), ("calib_dirichlet", r"^\| dirichlet[^|]*\|(.+)\|$")):
+        values = [float(v) for v in re.search(pattern, text, re.M)[1].split("|")]
+        f[key] = dict(zip(cols[1:], values))
     return f
 
 

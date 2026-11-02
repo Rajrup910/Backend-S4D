@@ -9668,3 +9668,49 @@ brief MaxViT-core version of Part 0, which had already been reverted.
   - The per-institution breakdown has one attribution value ("MILK study team"), so it is uninformative.
 - **V6 §A5:** the "S84 under-40 CI crosses 0" row fired. MILK10k now moves to V6 training as planned (§0.3), minus the
   985 linked lesions.
+
+### README rebuilt around horizontal GIFs, with an audit (2026-11-02; owner request)
+No GPU, no test/reserved/external label read, no new result. The README now reflects V5 final (S84) and V6 Part 0.
+- **Ten GIFs in `docs/assets/readme/`** (900 x 432; the fold machine is 900 x 576; 25 fps), replacing the static PNGs,
+  which needed zooming: `hero`, `programme`, `v1`–`v5`, `v5_fold`, `v5_milk10k`, `system`. Two kinds of footage:
+  - charts, step strips, the abstention simulator and the fold machine, recorded from `review2_infographic.html` with
+    each piece lifted out of the page and shown alone at legible size (the page's data and animation code unchanged);
+  - big-type scenes whose numbers `scripts/readme_media/facts.py` reads directly from `results/`.
+- **`scripts/readme_media/audit_readme.py`:** checks 99 exact claims, every decimal in the README (211), 68 file links,
+  anchors and GIF size and shape, and that there is no AI attribution. It passes and exits 1 on any failure.
+- **Other checks run:** every chart value recorded from the page was compared with its `results/` file, and all match.
+  The README's verification commands pass: `audit_manuscript` (366), `audit_v4 --check` (76), `adopt_e1 --verify`, and
+  `pytest tests` (exit 0).
+- **Corrections to the old README:**
+  - V1 is S1–S27 (Aug – 7 Sep), not S1–S9.
+  - The HAM test receipt's 2 executions are two stages of one plan (`tables`, `attribution`), not two reads.
+  - V6 is now the Part 0 plan, with CG-DM as a CPU diagnostic.
+  - "λ and conformal both lose (S65)" now reads as what the file shows: no gain at matched workload, combined policy
+    +0.004 [−0.014, +0.025] (`results/v4/s65/contrasts_reserved.csv`).
+- **Deliberately not copied from the infographic:**
+  - Its antinomy panel pairs ECE 0.1575 → 0.0206, which belongs to the plain soft vote (Macro-F1 0.7718 → 0.7907,
+    `results/reports/research__calibration__results__session2_report.md`), with Macro-F1 0.7859 → 0.8047 from the TTA
+    stack. The scene labels them separately.
+  - "Missed Lethal Cancers" / "Missed Malignancies" include AKIEC, which is pre-malignant, so the wording is "missed
+    serious cases". The numbers are unchanged.
+  - Panels S84 made stale ("V5 partially complete", "MILK10k deferred") and the V6 tab (the older CG-DM plan) are not
+    recorded. The railway is not used: its cards truncate their text.
+- **Correction to a chat statement this session:** S56's V5 policy was refit on the development pool, which is 34.8%
+  escalating (`results/v5/v5_oof_common_matrix.csv`), not "about 19%". The 19% is HAM's training split
+  (`research/stats/results_oof/age_gap_intervals.csv`).
+- **Lag fix (owner report: "frames are a bit laggy"), measured:**
+  - Causes: every GIF played at 12.5 fps (80 ms per frame); the fold machine was time-lapsed 3.6× on top of that, about
+    290 ms of animation per frame; and its real-time recording had stalls of up to 261 ms.
+  - Capture now runs on a virtual clock (`CLOCK_JS` in `scripts/readme_media/cdp.py`). Page timers,
+    `requestAnimationFrame` and CSS animations advance exactly 40 ms per frame, so a slow frame cannot stall the footage.
+  - Output is 25 fps. Transitions went from 9 frames at 80 ms to 15 at 40 ms. The fold machine's motion is 2.2×, not 3.6×.
+  - The slider's thumb now glides between stops. On the fold reel, 6 s of tail on the closing caption was cut.
+  - A size bug fixed along the way: `optimize=False` stopped Pillow blanking unchanged pixels, so every frame re-encoded
+    its whole changed box. With `optimize=True`, the fold reel at the same settings went from 32.9 MB to 11.8 MB, and the
+    set fell from 39.3 MB at 12.5 fps to about 36 MB at 25 fps.
+  - Playback in headless Chrome, all ten GIFs on one 830 px page: `v5_fold` and `system`, which are planned at 40 ms per
+    frame, painted at a median 42.4–42.5 ms, worst gap 56.5 ms. `v3`, `v4` and `hero` have planned holds of up to
+    80–160 ms, and their worst gaps match those holds (97–167 ms). No dropped runs. This machine's software rendering;
+    other devices were not measured.
+  - `audit_readme.py` now also fails any GIF slower than 20 fps.
+- **Not verified:** the page as GitHub renders it (not pushed).
