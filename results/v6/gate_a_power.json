@@ -1,0 +1,27 @@
+{
+  "source": "results/v5/confirm_s42_s43_s44.json",
+  "n_u40_escalating_lesions": 65,
+  "v5_delta_point": 0.03510565350362408,
+  "v5_delta_ci95": [
+    0.01253216414164378,
+    0.05958711632464988
+  ],
+  "sd_from_ci": 0.01200403490935792,
+  "mcid": 0.05,
+  "power": {
+    "+0.035": {
+      "p_point_ge_mcid": 0.10572653598588089,
+      "p_ci_lower_gt_0": 0.8303937246819826,
+      "p_gate_a": 0.10572653598588089
+    },
+    "+0.050": {
+      "p_point_ge_mcid": 0.5,
+      "p_ci_lower_gt_0": 0.9862835502089008,
+      "p_gate_a": 0.5
+    }
+  },
+  "caveats": [
+    "the SD is V5's composite-vs-control contrast with 3 seeds; V6-vs-V5 pairs other systems, so it is a planning value, not a property of the V6 read",
+    "V6's comparator is the V5 system, so a true +0.050 here means about +0.085 over the in1k control, against V5's measured +0.035"
+  ]
+}

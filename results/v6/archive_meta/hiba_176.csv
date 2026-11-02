@@ -1,0 +1,1636 @@
+isic_id,lesion_id,patient_id,age,diagnosis_3,confirm,image_type
+ISIC_7874486,IL_9261445,IP_4577038,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8229835,IL_9261445,IP_4577038,65,Basal cell carcinoma,histopathology,clinical: close-up
+ISIC_9314666,IL_1313631,IP_7048742,55,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_4385084,IL_7279125,IP_4513580,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6874409,IL_7279125,IP_4513580,75,Basal cell carcinoma,histopathology,clinical: close-up
+ISIC_5426538,IL_4221866,IP_4132519,25,Nevus,histopathology,dermoscopic
+ISIC_5646747,IL_6821221,IP_6251525,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8021816,IL_6821221,IP_6251525,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5363974,IL_6821221,IP_6251525,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1908890,IL_6821221,IP_6251525,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4831758,IL_9496373,IP_4906546,45,Nevus,histopathology,dermoscopic
+ISIC_2345765,IL_6821221,IP_6251525,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4237289,IL_6821221,IP_6251525,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_2314763,IL_9143711,IP_6251525,75,Nevus,histopathology,dermoscopic
+ISIC_1014434,IL_9143711,IP_6251525,75,Nevus,histopathology,clinical: overview
+ISIC_9907628,IL_3417598,IP_7428337,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1976390,IL_3417598,IP_7428337,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1733131,IL_6588725,IP_7428337,70,Solar lentigo,,dermoscopic
+ISIC_6259135,IL_6588725,IP_7428337,70,Solar lentigo,,clinical: overview
+ISIC_1483208,IL_6467350,IP_7428337,70,Nevus,,dermoscopic
+ISIC_9396732,IL_6467350,IP_7428337,70,Nevus,,clinical: overview
+ISIC_7802948,IL_5757144,IP_4906546,45,Nevus,histopathology,dermoscopic
+ISIC_9743746,IL_4800880,IP_3530264,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6589022,IL_4800880,IP_3530264,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2892864,IL_2585638,IP_3530264,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7035648,IL_2585638,IP_3530264,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6911134,IL_9851410,IP_3530264,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2553643,IL_3662071,IP_3530264,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4864283,IL_4437201,IP_2754431,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1906502,IL_4437201,IP_2754431,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_7697103,IL_4437201,IP_2754431,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9379115,IL_4437201,IP_2754431,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_2248597,IL_3247383,IP_1609582,30,Nevus,histopathology,dermoscopic
+ISIC_2391775,IL_2552401,IP_3464474,45,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9611196,IL_2659423,IP_1414430,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_4926587,IL_2659423,IP_1414430,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_4515080,IL_2659423,IP_1414430,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_0820482,IL_2659423,IP_1414430,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1309231,IL_2659423,IP_1414430,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_4963877,IL_4436851,IP_0212365,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6342903,IL_4436851,IP_0212365,60,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_2797379,IL_6201048,IP_0212365,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7221652,IL_6201048,IP_0212365,60,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_1415980,IL_3644246,IP_8235588,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2657529,IL_5354427,IP_0212365,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1321984,IL_5354427,IP_0212365,60,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_2535067,IL_5370176,IP_3371330,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0562305,IL_5370176,IP_3371330,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0656566,IL_7758603,IP_4270560,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_6085014,IL_7758603,IP_4270560,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_4563689,IL_7758603,IP_4270560,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_7016647,IL_3365653,IP_9332216,50,Seborrheic keratosis,,dermoscopic
+ISIC_7346994,IL_0452159,IP_1773608,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7587257,IL_0452159,IP_1773608,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1542632,IL_0665186,IP_8235588,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2134696,IL_0235947,IP_1914877,55,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3804099,IL_0235947,IP_1914877,55,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_5718895,IL_9726141,IP_1914877,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3610996,IL_9726141,IP_1914877,55,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6240035,IL_8672238,IP_8945353,45,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7796132,IL_8672238,IP_8945353,45,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1609875,IL_5443888,IP_4336233,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_4732712,IL_5443888,IP_4336233,70,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_8224838,IL_0652737,IP_6093731,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2536109,IL_0652737,IP_6093731,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0095134,IL_4530268,IP_8235588,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0889265,IL_5404208,IP_2434850,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5361878,IL_5404208,IP_2434850,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_5516918,IL_9195889,IP_2681150,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9257589,IL_9195889,IP_2681150,65,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_9229628,IL_5384200,IP_2681150,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3553101,IL_5384200,IP_2681150,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3240114,IL_5384200,IP_2681150,65,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_6604083,IL_2257174,IP_1780405,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1990662,IL_2257174,IP_1780405,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_1985159,IL_4995475,IP_5549808,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9663992,IL_2266035,IP_5213199,75,Nevus,histopathology,dermoscopic
+ISIC_9446067,IL_4995475,IP_5549808,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3333078,IL_2452828,IP_1319015,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5475971,IL_2452828,IP_1319015,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9841598,IL_1778616,IP_1319015,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3968056,IL_1778616,IP_1319015,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3541262,IL_7229255,IP_1319015,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6178183,IL_7229255,IP_1319015,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0483611,IL_6844641,IP_1319015,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3228579,IL_6844641,IP_1319015,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_8097683,IL_8628562,IP_1319015,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9870670,IL_4437816,IP_5213199,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2286569,IL_8628562,IP_1319015,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_8986575,IL_6022331,IP_1319015,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9660302,IL_6022331,IP_1319015,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9561124,IL_3372341,IP_8165031,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3323494,IL_7404456,IP_8165031,80,Lichen planus like keratosis,,dermoscopic
+ISIC_4788959,IL_7404456,IP_8165031,80,Lichen planus like keratosis,,clinical: overview
+ISIC_0853333,IL_3969994,IP_8165031,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9323828,IL_0909134,IP_5625034,55,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_0973304,IL_0909134,IP_5625034,55,Solar or actinic keratosis,histopathology,clinical: overview
+ISIC_2463938,IL_5507125,IP_2427319,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5771780,IL_5821829,IP_0632920,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3585954,IL_5507125,IP_2427319,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7221222,IL_2686098,IP_8867554,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3247622,IL_2686098,IP_8867554,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_5843101,IL_4358060,IP_7248754,75,Nevus,histopathology,dermoscopic
+ISIC_2072583,IL_4358060,IP_7248754,75,Nevus,histopathology,clinical: overview
+ISIC_1267080,IL_5872418,IP_4675400,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3760884,IL_8621943,IP_6449966,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3102961,IL_2951362,IP_9652021,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2060578,IL_4555670,IP_3753936,75,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_5677432,IL_4538888,IP_3923816,60,Nevus,histopathology,dermoscopic
+ISIC_6364866,IL_4621761,IP_1780999,60,Nevus,histopathology,dermoscopic
+ISIC_3569199,IL_4640314,IP_9326183,65,,,dermoscopic
+ISIC_3271069,IL_6844243,IP_9691655,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4886694,IL_6953663,IP_2159758,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5189439,IL_3567561,IP_5805678,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3275416,IL_3895273,IP_5805678,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_7378130,IL_3895273,IP_5805678,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_0388469,IL_9181352,IP_6360818,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1143976,IL_0400264,IP_5430722,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6215457,IL_0400264,IP_5430722,65,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_3535471,IL_6036150,IP_5430722,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9311797,IL_6036150,IP_5430722,65,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_3468294,IL_8591642,IP_9238891,75,Nevus,histopathology,dermoscopic
+ISIC_7382954,IL_5856523,IP_3279811,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0514929,IL_5856523,IP_3279811,65,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_5733031,IL_0889434,IP_2279844,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3125036,IL_9353341,IP_2279844,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7903404,IL_9133248,IP_9565045,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7444626,IL_0352449,IP_9565045,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3743174,IL_0352449,IP_9565045,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3719985,IL_7385265,IP_5418505,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7586374,IL_3648459,IP_6783950,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0278351,IL_3766031,IP_1557078,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9071060,IL_7750730,IP_6483049,40,Nevus,histopathology,dermoscopic
+ISIC_8160405,IL_0835543,IP_5756413,50,Nevus,histopathology,dermoscopic
+ISIC_9276265,IL_0421499,IP_0031038,35,Nevus,histopathology,dermoscopic
+ISIC_1479187,IL_5143908,IP_0031038,35,Nevus,histopathology,dermoscopic
+ISIC_6248396,IL_1321704,IP_9656549,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5172790,IL_1321704,IP_9656549,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3002927,IL_1321704,IP_9656549,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5232077,IL_5777895,IP_9656549,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5307259,IL_5777895,IP_9656549,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3433035,IL_8810391,IP_3759020,45,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2594715,IL_5889946,IP_3759020,45,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5582062,IL_4069279,IP_6720662,40,Nevus,histopathology,dermoscopic
+ISIC_9908866,IL_5889946,IP_3759020,45,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8172964,IL_3938806,IP_0076707,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9021203,IL_7391525,IP_0076707,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3124231,IL_7391525,IP_0076707,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_6886000,IL_7871663,IP_0180297,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1858813,IL_8994652,IP_7381561,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2233551,IL_2339753,IP_0150225,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9495622,IL_3459478,IP_1619354,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6892280,IL_3459478,IP_1619354,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7656000,IL_5475527,IP_5251892,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9698115,IL_3584418,IP_6720662,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1559934,IL_5475527,IP_5251892,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_7421277,IL_5933160,IP_7046757,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6026692,IL_1701779,IP_5508520,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1610047,IL_1204728,IP_1566683,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4292551,IL_4204665,IP_1801534,,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_4038015,IL_6055479,IP_7772101,85,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_4856639,IL_0026279,IP_1684513,70,Seborrheic keratosis,,dermoscopic
+ISIC_7078727,IL_5977140,IP_1684513,70,Nevus,histopathology,dermoscopic
+ISIC_5135425,IL_0149051,IP_1684513,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9003833,IL_5868402,IP_1684513,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4589863,IL_0028991,IP_9380899,50,Nevus,histopathology,dermoscopic
+ISIC_6471282,IL_7215851,IP_0197196,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1635231,IL_9564184,IP_0197196,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5470538,IL_3159581,IP_0197196,40,Nevus,histopathology,dermoscopic
+ISIC_5487025,IL_7455931,IP_5685461,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9777827,IL_3171739,IP_5685461,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6861284,IL_0455150,IP_5685461,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1255828,IL_5693734,IP_5685461,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6135076,IL_1849090,IP_4419089,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9605390,IL_7690459,IP_4419089,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2339761,IL_8997419,IP_4419089,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5535303,IL_5405021,IP_2436647,80,,histopathology,dermoscopic
+ISIC_6707573,IL_0524150,IP_4419089,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1065512,IL_9806320,IP_5349935,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9389788,IL_1806732,IP_5349935,75,Solar or actinic keratosis,histopathology,clinical: overview
+ISIC_0718694,IL_4205718,IP_5958526,45,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3983413,IL_2764872,IP_4349934,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8917750,IL_4939505,IP_9710310,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2871326,IL_4546629,IP_3567526,70,Nevus,histopathology,dermoscopic
+ISIC_6529148,IL_2629933,IP_7285817,80,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_7224952,IL_6861626,IP_4643758,55,Nevus,histopathology,dermoscopic
+ISIC_5669463,IL_5888696,IP_3285261,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5827804,IL_3713441,IP_7605373,60,Seborrheic keratosis,,dermoscopic
+ISIC_0211882,IL_2104021,IP_9515056,35,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9700037,IL_8660999,IP_2899400,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6912369,IL_2266721,IP_0426105,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6970728,IL_2080328,IP_1043202,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5506127,IL_2141263,IP_1312835,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8841053,IL_3206008,IP_4595006,45,,histopathology,dermoscopic
+ISIC_4041328,IL_3508054,IP_3047490,45,Nevus,,dermoscopic
+ISIC_3359090,IL_3706643,IP_3047490,45,Nevus,,dermoscopic
+ISIC_1817773,IL_1979170,IP_1069141,75,Solar or actinic keratosis,,dermoscopic
+ISIC_8219918,IL_1406871,IP_1069141,75,Solar or actinic keratosis,,dermoscopic
+ISIC_6634689,IL_1600217,IP_7605373,60,Nevus,histopathology,dermoscopic
+ISIC_3143079,IL_5221633,IP_8464178,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2068188,IL_5221633,IP_8464178,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7504036,IL_5221633,IP_8464178,85,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0789847,IL_5630284,IP_2317296,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6611750,IL_2230533,IP_2317296,60,Nevus,histopathology,dermoscopic
+ISIC_1328183,IL_2230533,IP_2317296,60,Nevus,histopathology,dermoscopic
+ISIC_4690178,IL_6260188,IP_5105492,70,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_9163137,IL_3679921,IP_3851887,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3217752,IL_6483224,IP_4349293,60,Nevus,,dermoscopic
+ISIC_1016877,IL_9283976,IP_4349293,60,Nevus,,dermoscopic
+ISIC_1436772,IL_4207641,IP_6976405,45,Nevus,histopathology,dermoscopic
+ISIC_8749951,IL_5176081,IP_4349293,60,Nevus,,dermoscopic
+ISIC_1237464,IL_8342863,IP_4349293,60,Nevus,,dermoscopic
+ISIC_0293360,IL_1731723,IP_4349293,60,Nevus,,dermoscopic
+ISIC_3657799,IL_5920878,IP_4349293,60,Nevus,,dermoscopic
+ISIC_0236147,IL_0007834,IP_4349293,60,Nevus,,dermoscopic
+ISIC_6772786,IL_3078445,IP_4349293,60,Nevus,,dermoscopic
+ISIC_5779099,IL_0680311,IP_4349293,60,Nevus,,dermoscopic
+ISIC_8331251,IL_6673466,IP_4349293,60,Nevus,,dermoscopic
+ISIC_6892725,IL_9636253,IP_4349293,60,Nevus,,dermoscopic
+ISIC_4259027,IL_3769390,IP_4349293,60,Nevus,,dermoscopic
+ISIC_6885409,IL_1178666,IP_5919148,55,Nevus,histopathology,dermoscopic
+ISIC_5854879,IL_0624639,IP_9326183,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7400800,IL_0097932,IP_4349293,60,Nevus,,dermoscopic
+ISIC_2801460,IL_0137450,IP_4349293,60,Nevus,,dermoscopic
+ISIC_4650728,IL_9230859,IP_4349293,60,Nevus,,dermoscopic
+ISIC_7155576,IL_7476140,IP_4349293,60,Nevus,,dermoscopic
+ISIC_3782782,IL_0340594,IP_4349293,60,Nevus,,dermoscopic
+ISIC_8251625,IL_7943617,IP_5291194,20,Nevus,,dermoscopic
+ISIC_8837942,IL_1035125,IP_5291194,20,Nevus,,dermoscopic
+ISIC_1773092,IL_9253571,IP_5291194,20,Nevus,,dermoscopic
+ISIC_3372885,IL_0764543,IP_5291194,20,Nevus,,dermoscopic
+ISIC_9641773,IL_5407326,IP_5291194,20,Nevus,,dermoscopic
+ISIC_7952870,IL_2794261,IP_5919148,55,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4620682,IL_6131058,IP_5291194,20,Nevus,,dermoscopic
+ISIC_0933165,IL_4997109,IP_5291194,20,Nevus,,dermoscopic
+ISIC_3059594,IL_6237029,IP_5291194,20,Nevus,,dermoscopic
+ISIC_0516105,IL_7484405,IP_5291194,20,Nevus,,dermoscopic
+ISIC_4521912,IL_9351912,IP_5291194,20,Nevus,,dermoscopic
+ISIC_6666738,IL_7332611,IP_5291194,20,Nevus,,dermoscopic
+ISIC_3896065,IL_8000514,IP_5291194,20,Nevus,,dermoscopic
+ISIC_2342692,IL_4627083,IP_5291194,20,Nevus,,dermoscopic
+ISIC_3788423,IL_7940400,IP_5291194,20,Nevus,,dermoscopic
+ISIC_1067532,IL_4887161,IP_5291194,20,Nevus,,dermoscopic
+ISIC_8969274,IL_1524376,IP_5924646,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6204275,IL_8978163,IP_5291194,20,Nevus,,dermoscopic
+ISIC_2515861,IL_0519984,IP_5291194,20,Nevus,,dermoscopic
+ISIC_9309046,IL_4020580,IP_5291194,20,Nevus,,dermoscopic
+ISIC_0499306,IL_2236602,IP_5291194,20,Nevus,,dermoscopic
+ISIC_6164036,IL_7167874,IP_1396436,55,,histopathology,dermoscopic
+ISIC_1000868,IL_7955938,IP_1354259,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7716885,IL_5608518,IP_1354259,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9782748,IL_0785616,IP_4097497,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3011033,IL_9294150,IP_7562016,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7698231,IL_3659443,IP_7243858,55,Nevus,,dermoscopic
+ISIC_2261128,IL_1400206,IP_5924646,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3063248,IL_1274675,IP_7243858,55,Nevus,,dermoscopic
+ISIC_9672493,IL_7100298,IP_7243858,55,Nevus,,dermoscopic
+ISIC_1116159,IL_9375162,IP_7243858,55,Nevus,,dermoscopic
+ISIC_0416482,IL_5727463,IP_7243858,55,Nevus,,dermoscopic
+ISIC_1544365,IL_4315270,IP_7243858,55,Nevus,,dermoscopic
+ISIC_9192498,IL_3537150,IP_7243858,55,Nevus,,dermoscopic
+ISIC_9983708,IL_3662756,IP_7243858,55,Nevus,,dermoscopic
+ISIC_4815806,IL_6781257,IP_7243858,55,Nevus,,dermoscopic
+ISIC_2654001,IL_6119706,IP_7243858,55,Nevus,,dermoscopic
+ISIC_1364073,IL_6217739,IP_7243858,55,Nevus,,dermoscopic
+ISIC_5375398,IL_9768948,IP_5924646,65,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_9681659,IL_4862343,IP_7243858,55,Nevus,,dermoscopic
+ISIC_3082952,IL_0314261,IP_7243858,55,Nevus,,dermoscopic
+ISIC_3734863,IL_1807391,IP_7243858,55,Nevus,,dermoscopic
+ISIC_6846478,IL_7046293,IP_7243858,55,Nevus,,dermoscopic
+ISIC_5504535,IL_6494017,IP_7243858,55,Nevus,,dermoscopic
+ISIC_0246142,IL_7613468,IP_7243858,55,Nevus,,dermoscopic
+ISIC_9110427,IL_9572790,IP_7243858,55,Nevus,,dermoscopic
+ISIC_7200286,IL_3655618,IP_7243858,55,Nevus,,dermoscopic
+ISIC_0267056,IL_2079152,IP_7243858,55,Nevus,,dermoscopic
+ISIC_4975248,IL_6866293,IP_7243858,55,Nevus,,dermoscopic
+ISIC_3875940,IL_0523598,IP_6443464,70,Nevus,histopathology,dermoscopic
+ISIC_5131286,IL_4296126,IP_6515463,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4146888,IL_6672170,IP_6515463,75,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_9349247,IL_2250085,IP_4058211,30,Dermatofibroma,histopathology,dermoscopic
+ISIC_7683106,IL_8406844,IP_6588465,35,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9597037,IL_8406844,IP_6588465,35,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0169895,IL_7418069,IP_4683624,85,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_2032139,IL_0615609,IP_9074122,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_8386678,IL_0176882,IP_3302800,60,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_7254040,IL_0176882,IP_3302800,60,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_4879289,IL_0176882,IP_3302800,60,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_1810549,IL_6291255,IP_6443464,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1128187,IL_0341545,IP_4968898,40,Nevus,,dermoscopic
+ISIC_9704734,IL_3262935,IP_4968898,40,Nevus,,dermoscopic
+ISIC_3222487,IL_4778488,IP_4968898,40,Nevus,,dermoscopic
+ISIC_7342310,IL_3597065,IP_4968898,40,Nevus,,dermoscopic
+ISIC_6543139,IL_0525537,IP_4968898,40,Nevus,,dermoscopic
+ISIC_6828620,IL_7103148,IP_4968898,40,Nevus,,dermoscopic
+ISIC_8843280,IL_4211784,IP_4968898,40,Nevus,,dermoscopic
+ISIC_3973357,IL_8441819,IP_4968898,40,Nevus,,dermoscopic
+ISIC_1681704,IL_9624580,IP_4968898,40,Nevus,,dermoscopic
+ISIC_0393678,IL_9124957,IP_4968898,40,Nevus,,dermoscopic
+ISIC_8319588,IL_7365600,IP_9140462,40,Nevus,histopathology,dermoscopic
+ISIC_3159029,IL_9893119,IP_4968898,40,Nevus,,dermoscopic
+ISIC_0819010,IL_8748934,IP_4968898,40,Nevus,,dermoscopic
+ISIC_7740693,IL_6481002,IP_4968898,40,Nevus,,dermoscopic
+ISIC_0174268,IL_9781276,IP_4968898,40,Nevus,,dermoscopic
+ISIC_1542284,IL_3035260,IP_4968898,40,Nevus,,dermoscopic
+ISIC_0181785,IL_6770823,IP_7035571,40,Nevus,,dermoscopic
+ISIC_7908490,IL_7949489,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4784710,IL_9770171,IP_7035571,40,Nevus,,dermoscopic
+ISIC_1165924,IL_5697593,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6972176,IL_8626997,IP_7035571,40,Nevus,,dermoscopic
+ISIC_8706734,IL_3257339,IP_9531637,35,Nevus,histopathology,dermoscopic
+ISIC_4020299,IL_6028136,IP_7035571,40,Nevus,,dermoscopic
+ISIC_9134293,IL_3584743,IP_7035571,40,Nevus,,dermoscopic
+ISIC_1223179,IL_0591796,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4937722,IL_2417454,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6615839,IL_9281983,IP_7035571,40,Nevus,,dermoscopic
+ISIC_9937715,IL_7385485,IP_7035571,40,Nevus,,dermoscopic
+ISIC_9680465,IL_7912899,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4983159,IL_6486804,IP_7035571,40,Nevus,,dermoscopic
+ISIC_7277200,IL_9837867,IP_7035571,40,Nevus,,dermoscopic
+ISIC_0624969,IL_4633314,IP_7035571,40,Nevus,,dermoscopic
+ISIC_3992341,IL_4135776,IP_9531637,35,Nevus,histopathology,dermoscopic
+ISIC_5108945,IL_1872431,IP_7035571,40,Nevus,,dermoscopic
+ISIC_1632850,IL_5873409,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6913414,IL_5412116,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4565303,IL_3125009,IP_7035571,40,Nevus,,dermoscopic
+ISIC_9590599,IL_6087806,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4055713,IL_2575189,IP_7035571,40,Nevus,,dermoscopic
+ISIC_1833010,IL_7760705,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4787478,IL_0544421,IP_7035571,40,Nevus,,dermoscopic
+ISIC_2439069,IL_6380351,IP_7035571,40,Nevus,,dermoscopic
+ISIC_0664537,IL_5063892,IP_7035571,40,Nevus,,dermoscopic
+ISIC_9532969,IL_8532385,IP_9531637,35,Nevus,histopathology,dermoscopic
+ISIC_5764331,IL_0798792,IP_9326183,65,,histopathology,dermoscopic
+ISIC_9083409,IL_0202677,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6001467,IL_4827112,IP_7035571,40,Nevus,,dermoscopic
+ISIC_3573737,IL_2451805,IP_7035571,40,Nevus,,dermoscopic
+ISIC_5137665,IL_2174668,IP_7035571,40,Nevus,,dermoscopic
+ISIC_5652129,IL_6266492,IP_7035571,40,Nevus,,dermoscopic
+ISIC_0142436,IL_7386068,IP_7035571,40,Nevus,,dermoscopic
+ISIC_2062303,IL_9756761,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6192787,IL_5972519,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4349244,IL_3938826,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4110967,IL_8354156,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6442663,IL_6643572,IP_7736597,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8565066,IL_0214462,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4245761,IL_9509013,IP_7035571,40,Nevus,,dermoscopic
+ISIC_8801293,IL_8636254,IP_7035571,40,Nevus,,dermoscopic
+ISIC_7831385,IL_8011325,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6699015,IL_3205022,IP_7035571,40,Nevus,,dermoscopic
+ISIC_5653394,IL_7215674,IP_7035571,40,Nevus,,dermoscopic
+ISIC_9576566,IL_5402496,IP_7035571,40,Nevus,,dermoscopic
+ISIC_1482166,IL_5250728,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6672136,IL_2272931,IP_7035571,40,Nevus,,dermoscopic
+ISIC_5629618,IL_7192466,IP_7035571,40,Nevus,,dermoscopic
+ISIC_5877775,IL_8023144,IP_7736597,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0421725,IL_8740100,IP_7035571,40,Nevus,,dermoscopic
+ISIC_3388627,IL_5447795,IP_7035571,40,Nevus,,dermoscopic
+ISIC_0647139,IL_7611794,IP_7035571,40,Nevus,,dermoscopic
+ISIC_8244796,IL_5145025,IP_7035571,40,Nevus,,dermoscopic
+ISIC_9500805,IL_2068103,IP_7035571,40,Nevus,,dermoscopic
+ISIC_9944002,IL_2520087,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6926667,IL_3679152,IP_7035571,40,Nevus,,dermoscopic
+ISIC_2135576,IL_4455971,IP_7035571,40,Nevus,,dermoscopic
+ISIC_7249773,IL_2234731,IP_7035571,40,Nevus,,dermoscopic
+ISIC_1225394,IL_8578130,IP_7035571,40,Nevus,,dermoscopic
+ISIC_9275875,IL_7452668,IP_7736597,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7817418,IL_2177414,IP_7035571,40,Nevus,,dermoscopic
+ISIC_5323960,IL_4823994,IP_7035571,40,Nevus,,dermoscopic
+ISIC_1949347,IL_7036224,IP_7035571,40,Nevus,,dermoscopic
+ISIC_0988073,IL_6480724,IP_7035571,40,Nevus,,dermoscopic
+ISIC_7188290,IL_4204922,IP_7035571,40,Nevus,,dermoscopic
+ISIC_4683392,IL_5616637,IP_7035571,40,Nevus,,dermoscopic
+ISIC_5924838,IL_6768854,IP_7035571,40,Nevus,,dermoscopic
+ISIC_6258800,IL_4392343,IP_7035571,40,Nevus,,dermoscopic
+ISIC_2525721,IL_5632887,IP_1489055,45,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8056469,IL_0036649,IP_9018935,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8829983,IL_5142318,IP_1384522,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1596930,IL_6813359,IP_9750730,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2000035,IL_5911888,IP_5264036,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8735220,IL_2837651,IP_2504588,30,Nevus,,dermoscopic
+ISIC_0967146,IL_5403853,IP_2504588,30,Nevus,,dermoscopic
+ISIC_9105532,IL_0374505,IP_2504588,30,Nevus,,dermoscopic
+ISIC_2047884,IL_5523737,IP_2504588,30,Nevus,,dermoscopic
+ISIC_7049497,IL_4414647,IP_2504588,30,Nevus,,dermoscopic
+ISIC_0630222,IL_7022222,IP_2504588,30,Nevus,,dermoscopic
+ISIC_3734798,IL_4710229,IP_2504588,30,Nevus,,dermoscopic
+ISIC_4562668,IL_6895187,IP_2504588,30,Nevus,,dermoscopic
+ISIC_0692300,IL_2259035,IP_1165379,60,Dermatofibroma,histopathology,dermoscopic
+ISIC_0803812,IL_9944291,IP_2504588,30,Nevus,,dermoscopic
+ISIC_8362562,IL_9560939,IP_2504588,30,Nevus,,dermoscopic
+ISIC_8943077,IL_0106119,IP_2504588,30,Nevus,,dermoscopic
+ISIC_1134575,IL_5765757,IP_2504588,30,Nevus,,dermoscopic
+ISIC_8089258,IL_6242850,IP_2504588,30,Nevus,,dermoscopic
+ISIC_1932094,IL_1512859,IP_2504588,30,Nevus,,dermoscopic
+ISIC_8617778,IL_0600074,IP_2504588,30,Nevus,,dermoscopic
+ISIC_5564514,IL_6648018,IP_2504588,30,Nevus,,dermoscopic
+ISIC_9896159,IL_0195253,IP_2504588,30,Nevus,,dermoscopic
+ISIC_2899095,IL_3756850,IP_2504588,30,Nevus,,dermoscopic
+ISIC_6237589,IL_2898203,IP_1165379,60,Nevus,,dermoscopic
+ISIC_7648065,IL_2582243,IP_2504588,30,Nevus,,dermoscopic
+ISIC_8320375,IL_1782925,IP_2504588,30,Nevus,,dermoscopic
+ISIC_8554946,IL_3790742,IP_2504588,30,Nevus,,dermoscopic
+ISIC_8087078,IL_6063470,IP_2504588,30,Nevus,,dermoscopic
+ISIC_4120244,IL_2742516,IP_2504588,30,Nevus,,dermoscopic
+ISIC_1604897,IL_1287991,IP_2504588,30,Nevus,,dermoscopic
+ISIC_7595330,IL_3215398,IP_2504588,30,Nevus,,dermoscopic
+ISIC_3771739,IL_8334224,IP_2504588,30,Nevus,,dermoscopic
+ISIC_5286801,IL_6198269,IP_3770796,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2480502,IL_9903609,IP_7074257,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1713785,IL_7391643,IP_7506563,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2808161,IL_2156637,IP_7070517,50,Nevus,histopathology,dermoscopic
+ISIC_0928255,IL_5808549,IP_1671091,40,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_7392005,IL_5092355,IP_5809978,30,,histopathology,dermoscopic
+ISIC_4919062,IL_7515599,IP_9432107,80,Solar lentigo,histopathology,dermoscopic
+ISIC_9678073,IL_0856931,IP_7040685,45,,histopathology,dermoscopic
+ISIC_3235777,IL_0880615,IP_8822719,65,,histopathology,dermoscopic
+ISIC_2210618,IL_3001812,IP_2292420,45,Nevus,histopathology,dermoscopic
+ISIC_6669306,IL_4981763,IP_2998823,20,Nevus,histopathology,dermoscopic
+ISIC_7599710,IL_0288201,IP_0709746,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9026520,IL_0787677,IP_7034777,50,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_8283429,IL_3153736,IP_7506563,55,Solar or actinic keratosis,,dermoscopic
+ISIC_2966808,IL_8182102,IP_6124657,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1778959,IL_3990222,IP_2341275,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8694134,IL_9727429,IP_6463258,65,Nevus,histopathology,dermoscopic
+ISIC_7758839,IL_6482607,IP_1390183,30,Nevus,histopathology,dermoscopic
+ISIC_1930795,IL_1149796,IP_3814178,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5189637,IL_2248656,IP_0698655,55,Dermatofibroma,,dermoscopic
+ISIC_1775932,IL_3547064,IP_0698655,55,Dermatofibroma,,dermoscopic
+ISIC_9995847,IL_1047690,IP_8538177,75,,histopathology,dermoscopic
+ISIC_9116328,IL_8581865,IP_7614546,45,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_0400309,IL_8166474,IP_4065457,35,Nevus,histopathology,dermoscopic
+ISIC_6596750,IL_3152128,IP_7506563,55,Nevus,,dermoscopic
+ISIC_5237045,IL_8648040,IP_3398957,40,Nevus,histopathology,dermoscopic
+ISIC_2608686,IL_3865898,IP_7296975,70,Nevus,histopathology,dermoscopic
+ISIC_2836241,IL_1232311,IP_4580444,45,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4048896,IL_9788442,IP_7144815,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9144329,IL_8556564,IP_7144815,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0750046,IL_0398851,IP_7964395,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8277825,IL_5983850,IP_2074301,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2801005,IL_0263603,IP_7168930,55,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1297252,IL_5185294,IP_5193164,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9337100,IL_3871197,IP_0905638,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2719332,IL_1179218,IP_7506563,55,,,dermoscopic
+ISIC_1388152,IL_4906683,IP_9326183,65,Nevus,,dermoscopic
+ISIC_9465155,IL_7245628,IP_4259365,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3192152,IL_2379694,IP_2552028,50,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4867646,IL_2674348,IP_9461434,35,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1077735,IL_2423899,IP_9922378,50,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9951988,IL_3901065,IP_5985919,35,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7737773,IL_4798233,IP_7304770,60,Nevus,histopathology,dermoscopic
+ISIC_5070010,IL_0875217,IP_7304770,60,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_9187524,IL_5132774,IP_7304770,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8750784,IL_6585280,IP_7966589,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4636431,IL_6585280,IP_7966589,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4704027,IL_3992102,IP_7506563,55,Seborrheic keratosis,,dermoscopic
+ISIC_0365225,IL_6585280,IP_7966589,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3760864,IL_6585280,IP_7966589,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9178395,IL_0955363,IP_8292097,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8851514,IL_2423851,IP_8216345,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2678887,IL_2853667,IP_4794455,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6725312,IL_1463061,IP_0903782,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7708200,IL_6446523,IP_3423518,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7376452,IL_6446523,IP_3423518,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6090497,IL_6446523,IP_3423518,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8671596,IL_6768931,IP_2559304,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0086914,IL_9767756,IP_7506563,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6034442,IL_3971241,IP_0080786,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3344632,IL_4400056,IP_6420395,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4441641,IL_2912006,IP_6420395,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6043099,IL_9464341,IP_6420395,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1842966,IL_5962239,IP_6420395,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8687441,IL_6634733,IP_5352106,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0599463,IL_1008743,IP_7181522,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5988562,IL_5360583,IP_9549575,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4029605,IL_8831240,IP_2661584,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0229233,IL_7520515,IP_6418662,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2564940,IL_6264203,IP_7506563,55,Nevus,histopathology,dermoscopic
+ISIC_6152032,IL_7520515,IP_6418662,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4957310,IL_8767905,IP_7200500,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1753011,IL_1155011,IP_1120258,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9585033,IL_1155011,IP_1120258,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1701883,IL_1155011,IP_1120258,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1864096,IL_3110397,IP_9891821,45,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9941411,IL_3110397,IP_9891821,45,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1758803,IL_8470504,IP_6189247,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5206657,IL_7898912,IP_6189247,65,Dermatofibroma,histopathology,dermoscopic
+ISIC_7509056,IL_7311742,IP_3564884,75,Nevus,,dermoscopic
+ISIC_1352389,IL_3483455,IP_2728527,50,Nevus,,dermoscopic
+ISIC_3979501,IL_5689125,IP_3564884,75,Solar lentigo,,dermoscopic
+ISIC_8349136,IL_9150472,IP_3564884,75,Nevus,histopathology,dermoscopic
+ISIC_9790120,IL_1241859,IP_8961406,30,Nevus,,dermoscopic
+ISIC_4877425,IL_8544426,IP_8961406,30,Nevus,,dermoscopic
+ISIC_1021252,IL_2939179,IP_8961406,30,Nevus,,dermoscopic
+ISIC_5098698,IL_0024631,IP_8961406,30,Nevus,,dermoscopic
+ISIC_7602580,IL_5891398,IP_8961406,30,Nevus,,dermoscopic
+ISIC_5562413,IL_1197704,IP_8961406,30,Nevus,,dermoscopic
+ISIC_8798068,IL_0966829,IP_8961406,30,Nevus,,dermoscopic
+ISIC_6807550,IL_8312711,IP_3303370,55,Seborrheic keratosis,,dermoscopic
+ISIC_2512321,IL_8939972,IP_2728527,50,Nevus,,dermoscopic
+ISIC_7130469,IL_7230205,IP_3303370,55,Nevus,,dermoscopic
+ISIC_4641709,IL_1362230,IP_3303370,55,Seborrheic keratosis,,dermoscopic
+ISIC_2349734,IL_5287043,IP_3303370,55,Nevus,,dermoscopic
+ISIC_4709950,IL_8496313,IP_3571314,80,Dermatofibroma,,dermoscopic
+ISIC_4506388,IL_0508736,IP_3571314,80,Dermatofibroma,,dermoscopic
+ISIC_5018708,IL_6325559,IP_3571314,80,Seborrheic keratosis,,dermoscopic
+ISIC_1212037,IL_9502834,IP_3571314,80,Seborrheic keratosis,,dermoscopic
+ISIC_5877281,IL_6515105,IP_9507746,50,Nevus,histopathology,dermoscopic
+ISIC_9801717,IL_9028192,IP_9507746,50,Nevus,histopathology,dermoscopic
+ISIC_3527069,IL_7955657,IP_3736688,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_0736975,IL_5141157,IP_2728527,50,Nevus,,dermoscopic
+ISIC_4390920,IL_7955657,IP_3736688,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5595591,IL_4354280,IP_3736688,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8057521,IL_1460166,IP_1512479,30,Nevus,histopathology,dermoscopic
+ISIC_4937427,IL_3293670,IP_4016358,35,Nevus,histopathology,dermoscopic
+ISIC_5569726,IL_7497589,IP_2512373,85,Seborrheic keratosis,,dermoscopic
+ISIC_4164859,IL_7497589,IP_2512373,85,Seborrheic keratosis,,dermoscopic
+ISIC_4323935,IL_3755962,IP_2512373,85,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_6281685,IL_1401679,IP_3186244,5,Nevus,,dermoscopic
+ISIC_3641359,IL_5140504,IP_3186244,5,Nevus,,dermoscopic
+ISIC_4561534,IL_8679044,IP_3186244,5,Nevus,,dermoscopic
+ISIC_1915490,IL_0361049,IP_2728527,50,Nevus,,dermoscopic
+ISIC_0764879,IL_2432754,IP_3186244,5,Nevus,,dermoscopic
+ISIC_1250653,IL_6262612,IP_3186244,5,Nevus,,dermoscopic
+ISIC_8031206,IL_9652094,IP_3235334,35,Nevus,histopathology,dermoscopic
+ISIC_1567732,IL_5053545,IP_3235334,35,Nevus,histopathology,dermoscopic
+ISIC_9600955,IL_8866439,IP_6851796,50,Nevus,,dermoscopic
+ISIC_7022431,IL_3400082,IP_6851796,50,Nevus,,dermoscopic
+ISIC_8799134,IL_7155605,IP_4869081,60,Nevus,histopathology,dermoscopic
+ISIC_4679243,IL_5077196,IP_4869081,60,Nevus,histopathology,dermoscopic
+ISIC_9869653,IL_9488998,IP_4869081,60,Solar lentigo,histopathology,dermoscopic
+ISIC_4182862,IL_6663142,IP_9180971,65,,,dermoscopic
+ISIC_9289401,IL_4640383,IP_2728527,50,Nevus,,dermoscopic
+ISIC_8883101,IL_8228479,IP_4451052,70,Nevus,histopathology,dermoscopic
+ISIC_3420082,IL_6332209,IP_4451052,70,Nevus,histopathology,dermoscopic
+ISIC_4652973,IL_0125648,IP_4451052,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4092287,IL_7051641,IP_1785797,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3796317,IL_7051641,IP_1785797,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8077139,IL_7051641,IP_1785797,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9907020,IL_7051641,IP_1785797,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8400587,IL_0398849,IP_4032231,45,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1935227,IL_0398849,IP_4032231,45,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4564463,IL_4543263,IP_3114566,75,Seborrheic keratosis,,dermoscopic
+ISIC_0526911,IL_9351924,IP_2728527,50,Nevus,histopathology,dermoscopic
+ISIC_0542765,IL_0090343,IP_3114566,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2536460,IL_3900490,IP_8474771,35,Nevus,,dermoscopic
+ISIC_2647879,IL_0776987,IP_8474771,35,Nevus,,dermoscopic
+ISIC_5016039,IL_5791443,IP_8474771,35,Nevus,,dermoscopic
+ISIC_1045759,IL_9306019,IP_8474771,35,Nevus,,dermoscopic
+ISIC_4727095,IL_6963592,IP_8474771,35,Nevus,,dermoscopic
+ISIC_3246265,IL_9836146,IP_8474771,35,Nevus,,dermoscopic
+ISIC_7657199,IL_6814274,IP_8474771,35,Nevus,,dermoscopic
+ISIC_4289921,IL_9603681,IP_8474771,35,Nevus,,dermoscopic
+ISIC_6118945,IL_3658935,IP_8474771,35,Nevus,,dermoscopic
+ISIC_5280920,IL_8008538,IP_4361900,40,Nevus,histopathology,dermoscopic
+ISIC_3030394,IL_6414362,IP_9326183,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8989457,IL_5660874,IP_8474771,35,Nevus,,dermoscopic
+ISIC_8266547,IL_7133604,IP_8474771,35,Nevus,,dermoscopic
+ISIC_6803717,IL_7002600,IP_8474771,35,Nevus,,dermoscopic
+ISIC_1030794,IL_8797370,IP_8474771,35,Nevus,,dermoscopic
+ISIC_6073696,IL_7188329,IP_8474771,35,Nevus,,dermoscopic
+ISIC_4849988,IL_5578064,IP_8474771,35,Nevus,,dermoscopic
+ISIC_1143376,IL_9656882,IP_8474771,35,Nevus,,dermoscopic
+ISIC_6287618,IL_6418323,IP_8474771,35,Nevus,,dermoscopic
+ISIC_8954845,IL_8372358,IP_8474771,35,Nevus,,dermoscopic
+ISIC_9892170,IL_7858907,IP_2538639,70,Solar or actinic keratosis,,dermoscopic
+ISIC_2688303,IL_9348116,IP_6762758,20,Nevus,,dermoscopic
+ISIC_1096866,IL_8333361,IP_2538639,70,Solar or actinic keratosis,,dermoscopic
+ISIC_5008132,IL_6665559,IP_2538639,70,Solar or actinic keratosis,,dermoscopic
+ISIC_8649181,IL_3867356,IP_2538639,70,Solar or actinic keratosis,,dermoscopic
+ISIC_4100884,IL_8367983,IP_2538639,70,,,dermoscopic
+ISIC_8941935,IL_2727524,IP_2538639,70,,,dermoscopic
+ISIC_1195993,IL_5707375,IP_2538639,70,,,dermoscopic
+ISIC_0841460,IL_0944800,IP_2538639,70,,single image expert consensus,dermoscopic
+ISIC_2767271,IL_4464085,IP_2650374,85,,,dermoscopic
+ISIC_1603017,IL_4464085,IP_2650374,85,,,dermoscopic
+ISIC_1980790,IL_6480787,IP_2650374,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5711830,IL_3206792,IP_6762758,20,Nevus,,dermoscopic
+ISIC_4426133,IL_6480787,IP_2650374,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3028898,IL_6480787,IP_2650374,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7982985,IL_5885260,IP_2650374,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3868876,IL_6905874,IP_2650374,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_6901614,IL_6905874,IP_2650374,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1349417,IL_0521079,IP_2650374,85,Solar or actinic keratosis,,dermoscopic
+ISIC_4893808,IL_0521079,IP_2650374,85,Solar or actinic keratosis,,dermoscopic
+ISIC_4564422,IL_0521079,IP_2650374,85,Solar or actinic keratosis,,dermoscopic
+ISIC_8822408,IL_0521079,IP_2650374,85,Solar or actinic keratosis,,dermoscopic
+ISIC_3969664,IL_0521079,IP_2650374,85,Solar or actinic keratosis,,dermoscopic
+ISIC_9356985,IL_0925069,IP_6762758,20,Nevus,,dermoscopic
+ISIC_8074199,IL_2553823,IP_2650374,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7936019,IL_2553823,IP_2650374,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5538629,IL_2553823,IP_2650374,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1354980,IL_2553823,IP_2650374,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3839985,IL_2553823,IP_2650374,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7199177,IL_1193094,IP_5722309,75,Solar or actinic keratosis,,dermoscopic
+ISIC_8327495,IL_2046229,IP_5722309,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2596471,IL_5847789,IP_5722309,75,Solar or actinic keratosis,,dermoscopic
+ISIC_5882793,IL_9104107,IP_5722309,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8007904,IL_9271518,IP_5722309,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4921433,IL_2357723,IP_6762758,20,Nevus,,dermoscopic
+ISIC_2618460,IL_0094624,IP_5193650,75,,,dermoscopic
+ISIC_7666432,IL_3394383,IP_7056884,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7660163,IL_4507074,IP_3322141,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7738029,IL_8292848,IP_2132492,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_0469739,IL_8169413,IP_8408163,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3037651,IL_8169413,IP_8408163,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2837037,IL_8169413,IP_8408163,85,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_9579068,IL_8916823,IP_8408163,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_0900341,IL_8916823,IP_8408163,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_4932163,IL_8916823,IP_8408163,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3613321,IL_5378885,IP_6762758,20,Nevus,,dermoscopic
+ISIC_8220302,IL_7952985,IP_1219162,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2869797,IL_1930364,IP_1219162,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3179415,IL_9871491,IP_2640696,20,Nevus,,dermoscopic
+ISIC_9162639,IL_6666746,IP_2640696,20,Nevus,,dermoscopic
+ISIC_6988783,IL_0407879,IP_2640696,20,Nevus,,dermoscopic
+ISIC_8610200,IL_4713558,IP_2640696,20,Nevus,,dermoscopic
+ISIC_1878950,IL_4371762,IP_2640696,20,Nevus,,dermoscopic
+ISIC_6470456,IL_5727978,IP_2640696,20,Nevus,,dermoscopic
+ISIC_7161696,IL_9203137,IP_2640696,20,Nevus,,dermoscopic
+ISIC_0604869,IL_3474593,IP_2640696,20,Nevus,,dermoscopic
+ISIC_5170788,IL_3180849,IP_6762758,20,Nevus,,dermoscopic
+ISIC_6650394,IL_7644176,IP_2640696,20,Nevus,,dermoscopic
+ISIC_0617780,IL_4592008,IP_2640696,20,Nevus,,dermoscopic
+ISIC_8877777,IL_2019555,IP_4064247,60,Nevus,,dermoscopic
+ISIC_0375301,IL_1444659,IP_4064247,60,Nevus,,dermoscopic
+ISIC_1705532,IL_5001012,IP_4064247,60,Nevus,,dermoscopic
+ISIC_4889384,IL_4041528,IP_4064247,60,Nevus,,dermoscopic
+ISIC_9418190,IL_3920732,IP_4064247,60,Nevus,,dermoscopic
+ISIC_2025941,IL_8895402,IP_4064247,60,Nevus,,dermoscopic
+ISIC_5507397,IL_3827555,IP_4064247,60,Nevus,,dermoscopic
+ISIC_3844442,IL_6805753,IP_4064247,60,Nevus,,dermoscopic
+ISIC_7739392,IL_1937691,IP_6381524,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4007421,IL_6247959,IP_4064247,60,Nevus,,dermoscopic
+ISIC_5634599,IL_4612097,IP_0823466,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_6998964,IL_1928438,IP_5796068,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5140276,IL_9714393,IP_0939358,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1714225,IL_1126225,IP_6621115,75,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_7903695,IL_9701157,IP_5664551,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_7752332,IL_5299187,IP_5112313,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9759583,IL_5447502,IP_0041636,55,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_8902611,IL_2946051,IP_6937340,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9989778,IL_8944708,IP_1404370,40,Nevus,,dermoscopic
+ISIC_4093488,IL_7544597,IP_6044945,45,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9292767,IL_0066556,IP_1404370,40,Nevus,,dermoscopic
+ISIC_9951833,IL_4818356,IP_1404370,40,Nevus,,dermoscopic
+ISIC_7350243,IL_4856569,IP_1404370,40,Nevus,,dermoscopic
+ISIC_5258479,IL_7957871,IP_1404370,40,Nevus,,dermoscopic
+ISIC_8842827,IL_6705568,IP_1404370,40,Nevus,,dermoscopic
+ISIC_7314588,IL_7406599,IP_1404370,40,Nevus,,dermoscopic
+ISIC_5944090,IL_0860595,IP_1404370,40,Nevus,,dermoscopic
+ISIC_1109178,IL_4720761,IP_1404370,40,Nevus,,dermoscopic
+ISIC_6760120,IL_1517503,IP_1404370,40,Nevus,,dermoscopic
+ISIC_5649585,IL_5429641,IP_1404370,40,Nevus,,dermoscopic
+ISIC_2006754,IL_4098954,IP_3130162,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2665133,IL_9842387,IP_1404370,40,Nevus,,dermoscopic
+ISIC_0776470,IL_2768754,IP_1404370,40,Nevus,,dermoscopic
+ISIC_9235932,IL_1048304,IP_1404370,40,Nevus,,dermoscopic
+ISIC_0320077,IL_0581481,IP_1404370,40,Nevus,,dermoscopic
+ISIC_7110015,IL_5532380,IP_1404370,40,Nevus,,dermoscopic
+ISIC_7087262,IL_0748342,IP_1404370,40,Nevus,,dermoscopic
+ISIC_0641560,IL_2580047,IP_1404370,40,Nevus,,dermoscopic
+ISIC_0289994,IL_7059987,IP_9998114,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_7465865,IL_7059987,IP_9998114,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5805361,IL_1960281,IP_9998114,70,Seborrheic keratosis,,dermoscopic
+ISIC_3386975,IL_8645132,IP_6179768,35,Nevus,,dermoscopic
+ISIC_5587663,IL_6829361,IP_9495313,50,Nevus,,dermoscopic
+ISIC_6357401,IL_8991738,IP_9998114,70,Nevus,histopathology,dermoscopic
+ISIC_0224810,IL_5681285,IP_7789397,35,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1999826,IL_5681285,IP_7789397,35,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3204657,IL_9585230,IP_7547464,55,Dermatofibroma,histopathology,dermoscopic
+ISIC_7164903,IL_5664729,IP_9234838,55,Nevus,histopathology,dermoscopic
+ISIC_4947108,IL_6133491,IP_9992081,45,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6775574,IL_7568313,IP_5518588,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0088904,IL_8711401,IP_0222733,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8473293,IL_3064026,IP_9648606,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4572891,IL_3143295,IP_1829752,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7866161,IL_4460987,IP_6179768,35,Nevus,,dermoscopic
+ISIC_3606734,IL_3043470,IP_9328831,35,Nevus,,dermoscopic
+ISIC_8054866,IL_0435529,IP_9328831,35,Nevus,,dermoscopic
+ISIC_3929329,IL_0067988,IP_9328831,35,Nevus,,dermoscopic
+ISIC_2941155,IL_2531515,IP_9328831,35,Nevus,,dermoscopic
+ISIC_9089005,IL_7629973,IP_9328831,35,Nevus,,dermoscopic
+ISIC_7747824,IL_9327085,IP_9328831,35,Solar lentigo,,dermoscopic
+ISIC_0875010,IL_2965987,IP_9328831,35,Nevus,,dermoscopic
+ISIC_6243440,IL_3659700,IP_9328831,35,Nevus,,dermoscopic
+ISIC_3772311,IL_3659700,IP_9328831,35,Nevus,,dermoscopic
+ISIC_6021247,IL_2632067,IP_9328831,35,Nevus,,dermoscopic
+ISIC_1156761,IL_4959696,IP_6179768,35,Nevus,,dermoscopic
+ISIC_6155733,IL_3209636,IP_9328831,35,Nevus,,dermoscopic
+ISIC_4635075,IL_6905839,IP_9328831,35,Nevus,,dermoscopic
+ISIC_3107044,IL_6953278,IP_9328831,35,Nevus,,dermoscopic
+ISIC_8253210,IL_8578128,IP_9328831,35,Nevus,,dermoscopic
+ISIC_1591541,IL_3045189,IP_9328831,35,Nevus,,dermoscopic
+ISIC_1593833,IL_5399682,IP_9328831,35,Nevus,,dermoscopic
+ISIC_9811964,IL_2955769,IP_9328831,35,Nevus,,dermoscopic
+ISIC_6725236,IL_2380316,IP_9328831,35,Nevus,,dermoscopic
+ISIC_8653165,IL_3891700,IP_9328831,35,Nevus,,dermoscopic
+ISIC_9542893,IL_8283457,IP_9328831,35,Nevus,,dermoscopic
+ISIC_5254914,IL_8056394,IP_6804093,50,Nevus,,dermoscopic
+ISIC_5530584,IL_9765728,IP_9328831,35,Nevus,,dermoscopic
+ISIC_0079358,IL_3989348,IP_9328831,35,Nevus,,dermoscopic
+ISIC_9250149,IL_8063701,IP_9328831,35,Nevus,,dermoscopic
+ISIC_5918979,IL_5000141,IP_9328831,35,Nevus,,dermoscopic
+ISIC_8086106,IL_7187554,IP_9328831,35,Nevus,,dermoscopic
+ISIC_5888810,IL_6606588,IP_9328831,35,Nevus,,dermoscopic
+ISIC_5264349,IL_6439523,IP_3746855,25,Nevus,,dermoscopic
+ISIC_8234208,IL_8618140,IP_3746855,25,Nevus,,dermoscopic
+ISIC_4564762,IL_6639566,IP_3746855,25,Nevus,,dermoscopic
+ISIC_7577697,IL_3068593,IP_3746855,25,Nevus,,dermoscopic
+ISIC_3033701,IL_6084851,IP_4287801,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8232332,IL_8381900,IP_3746855,25,Nevus,,dermoscopic
+ISIC_6547193,IL_2417986,IP_3746855,25,Nevus,,dermoscopic
+ISIC_0984487,IL_1451416,IP_3746855,25,Nevus,,dermoscopic
+ISIC_6177508,IL_7081499,IP_3746855,25,Nevus,,dermoscopic
+ISIC_6438679,IL_7682253,IP_3746855,25,Nevus,,dermoscopic
+ISIC_5852950,IL_3545516,IP_3746855,25,Nevus,,dermoscopic
+ISIC_1970454,IL_5256970,IP_8450638,35,Nevus,,dermoscopic
+ISIC_7518056,IL_3627796,IP_8450638,35,Nevus,,dermoscopic
+ISIC_6032373,IL_1043970,IP_8450638,35,Nevus,,dermoscopic
+ISIC_8614007,IL_5713873,IP_8450638,35,Nevus,,dermoscopic
+ISIC_4645865,IL_0910000,IP_4287801,65,Nevus,histopathology,dermoscopic
+ISIC_8032536,IL_4673359,IP_8450638,35,Nevus,,dermoscopic
+ISIC_5503013,IL_9602806,IP_8450638,35,Nevus,,dermoscopic
+ISIC_0141408,IL_2773088,IP_8450638,35,Nevus,,dermoscopic
+ISIC_2058767,IL_5739151,IP_8450638,35,Nevus,,dermoscopic
+ISIC_3654102,IL_4004543,IP_8450638,35,Nevus,,dermoscopic
+ISIC_7711976,IL_4707174,IP_8450638,35,Nevus,,dermoscopic
+ISIC_6800389,IL_5892615,IP_8450638,35,Nevus,,dermoscopic
+ISIC_3382191,IL_6482445,IP_8450638,35,Nevus,,dermoscopic
+ISIC_0679886,IL_9497750,IP_8450638,35,Nevus,single image expert consensus,dermoscopic
+ISIC_1099966,IL_7733031,IP_8450638,35,Nevus,,dermoscopic
+ISIC_0235462,IL_1580365,IP_5504955,80,Seborrheic keratosis,,dermoscopic
+ISIC_4185188,IL_2997977,IP_8450638,35,Nevus,,dermoscopic
+ISIC_9058406,IL_0847224,IP_8450638,35,Nevus,,dermoscopic
+ISIC_4623020,IL_1893456,IP_8450638,35,Nevus,,dermoscopic
+ISIC_8479513,IL_0754213,IP_8450638,35,Nevus,,dermoscopic
+ISIC_1096970,IL_6232291,IP_8450638,35,Nevus,,dermoscopic
+ISIC_8837985,IL_4322116,IP_8450638,35,Nevus,,dermoscopic
+ISIC_1243946,IL_9044478,IP_8450638,35,Nevus,,dermoscopic
+ISIC_3403532,IL_1323170,IP_8450638,35,Nevus,,dermoscopic
+ISIC_8113304,IL_2779948,IP_8450638,35,Nevus,,dermoscopic
+ISIC_3473056,IL_4729479,IP_8450638,35,Nevus,,dermoscopic
+ISIC_0333412,IL_7170324,IP_5504955,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1565082,IL_3150083,IP_3875370,50,Nevus,,dermoscopic
+ISIC_8081874,IL_4452698,IP_3875370,50,Nevus,,dermoscopic
+ISIC_2082962,IL_3121779,IP_3875370,50,Solar lentigo,,dermoscopic
+ISIC_0480697,IL_8904771,IP_3875370,50,Nevus,,dermoscopic
+ISIC_4447916,IL_2677729,IP_3875370,50,Nevus,,dermoscopic
+ISIC_1859025,IL_9064596,IP_3875370,50,Nevus,,dermoscopic
+ISIC_3549843,IL_9877734,IP_3875370,50,Nevus,,dermoscopic
+ISIC_5041733,IL_8468133,IP_3875370,50,Nevus,,dermoscopic
+ISIC_1979964,IL_4417364,IP_3875370,50,Nevus,,dermoscopic
+ISIC_6858967,IL_2385137,IP_3875370,50,Nevus,,dermoscopic
+ISIC_0225097,IL_9070623,IP_1668152,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4105940,IL_0658399,IP_3875370,50,Solar lentigo,,dermoscopic
+ISIC_2322882,IL_5868536,IP_3875370,50,Nevus,,dermoscopic
+ISIC_2791829,IL_9143040,IP_3875370,50,Nevus,,dermoscopic
+ISIC_8073246,IL_0969802,IP_3875370,50,Nevus,,dermoscopic
+ISIC_1114771,IL_3774987,IP_3875370,50,Nevus,,dermoscopic
+ISIC_9988844,IL_5724975,IP_3875370,50,Nevus,,dermoscopic
+ISIC_3471895,IL_9809343,IP_3875370,50,Nevus,,dermoscopic
+ISIC_7022116,IL_4619760,IP_6793136,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4542236,IL_0966191,IP_6793136,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0404097,IL_9559854,IP_6182640,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8954688,IL_4892242,IP_8546360,60,Nevus,histopathology,dermoscopic
+ISIC_3830607,IL_7771775,IP_6182640,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5978232,IL_5675353,IP_4817230,75,Nevus,histopathology,dermoscopic
+ISIC_8030233,IL_8671426,IP_4817230,75,Nevus,,dermoscopic
+ISIC_1133103,IL_3330226,IP_4817230,75,Nevus,,dermoscopic
+ISIC_5819075,IL_3808977,IP_4817230,75,Nevus,,dermoscopic
+ISIC_6463451,IL_2055980,IP_4817230,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2762326,IL_2055980,IP_4817230,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1521119,IL_2055980,IP_4817230,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5604408,IL_2055980,IP_4817230,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1299452,IL_3354760,IP_4817230,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6126704,IL_0066008,IP_8546360,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9876533,IL_7972414,IP_9495313,50,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8772836,IL_7570397,IP_0214625,80,Nevus,,dermoscopic
+ISIC_9149374,IL_6610222,IP_0214625,80,Nevus,,dermoscopic
+ISIC_1573370,IL_4840568,IP_0214625,80,Nevus,,dermoscopic
+ISIC_5567431,IL_8563830,IP_0214625,80,Nevus,,dermoscopic
+ISIC_4208886,IL_0820072,IP_0214625,80,,,dermoscopic
+ISIC_9626660,IL_0391815,IP_0214625,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7894542,IL_0391815,IP_0214625,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2750923,IL_3242610,IP_0214625,80,,,dermoscopic
+ISIC_0630195,IL_4297272,IP_5190758,40,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2914469,IL_3292072,IP_9876233,20,Nevus,,dermoscopic
+ISIC_1516153,IL_3148066,IP_1529893,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7131837,IL_6316270,IP_9876233,20,Nevus,,dermoscopic
+ISIC_7217475,IL_6003270,IP_9876233,20,Nevus,,dermoscopic
+ISIC_1385650,IL_1375445,IP_9876233,20,Nevus,,dermoscopic
+ISIC_8774580,IL_3761230,IP_9876233,20,Nevus,,dermoscopic
+ISIC_1141058,IL_0907670,IP_9876233,20,Nevus,,dermoscopic
+ISIC_2061233,IL_2068231,IP_9696499,55,Nevus,histopathology,dermoscopic
+ISIC_9120796,IL_1699781,IP_9696499,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7320676,IL_2337181,IP_7938826,55,Nevus,,dermoscopic
+ISIC_7087577,IL_5883415,IP_7938826,55,Nevus,,dermoscopic
+ISIC_5868397,IL_4221809,IP_7938826,55,Nevus,,dermoscopic
+ISIC_1588157,IL_5730696,IP_1529893,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0199971,IL_6773574,IP_7938826,55,Nevus,,dermoscopic
+ISIC_0554180,IL_3916081,IP_7938826,55,Nevus,,dermoscopic
+ISIC_8311079,IL_1000328,IP_7938826,55,Nevus,,dermoscopic
+ISIC_5186358,IL_2089739,IP_7938826,55,Nevus,,dermoscopic
+ISIC_2132963,IL_3498762,IP_7938826,55,Nevus,,dermoscopic
+ISIC_0462317,IL_3570098,IP_7938826,55,Nevus,,dermoscopic
+ISIC_4299584,IL_1052174,IP_9642873,50,Dermatofibroma,,dermoscopic
+ISIC_5703951,IL_0298823,IP_9642873,50,Dermatofibroma,,dermoscopic
+ISIC_5822470,IL_0098914,IP_9642873,50,Nevus,,dermoscopic
+ISIC_1993128,IL_1557294,IP_9642873,50,Solar lentigo,,dermoscopic
+ISIC_9333062,IL_8899158,IP_6809738,35,Nevus,histopathology,dermoscopic
+ISIC_9729122,IL_2205959,IP_9642873,50,Nevus,,dermoscopic
+ISIC_7076637,IL_9792863,IP_2363839,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1935605,IL_9792863,IP_2363839,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0141681,IL_1666755,IP_6206689,50,Nevus,,dermoscopic
+ISIC_4033848,IL_6991366,IP_1296603,55,Nevus,,dermoscopic
+ISIC_8792684,IL_3049104,IP_9277025,35,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6992479,IL_7873244,IP_7263570,45,Nevus,,dermoscopic
+ISIC_9397749,IL_4678969,IP_7263570,45,Nevus,,dermoscopic
+ISIC_6600684,IL_5068945,IP_7228742,35,Nevus,,dermoscopic
+ISIC_6270346,IL_3637074,IP_7228742,35,Nevus,,dermoscopic
+ISIC_2421565,IL_2253396,IP_6809738,35,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1368976,IL_6149955,IP_5002052,35,Nevus,,dermoscopic
+ISIC_7586913,IL_0514683,IP_5002052,35,Nevus,,dermoscopic
+ISIC_1366505,IL_7175130,IP_5002052,35,Nevus,,dermoscopic
+ISIC_6906741,IL_1877268,IP_5002052,35,Nevus,,dermoscopic
+ISIC_8346315,IL_9587540,IP_5002052,35,Nevus,,dermoscopic
+ISIC_9417047,IL_4267487,IP_6347933,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8925463,IL_6866730,IP_6347933,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6050113,IL_1347663,IP_0398509,40,Nevus,histopathology,dermoscopic
+ISIC_9239505,IL_1751294,IP_7705323,65,Nevus,,dermoscopic
+ISIC_2643675,IL_3640591,IP_8123122,20,Nevus,,dermoscopic
+ISIC_6813711,IL_9189667,IP_2306048,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7492627,IL_0711234,IP_8123122,20,Nevus,,dermoscopic
+ISIC_5867238,IL_8926433,IP_8123122,20,Nevus,,dermoscopic
+ISIC_9939005,IL_1418943,IP_8123122,20,Nevus,,dermoscopic
+ISIC_7307028,IL_6818892,IP_0024882,20,Nevus,,dermoscopic
+ISIC_5601722,IL_2799934,IP_6292883,15,Nevus,histopathology,dermoscopic
+ISIC_1163959,IL_2556632,IP_7760539,85,Nevus,,dermoscopic
+ISIC_1936710,IL_4124713,IP_7760539,85,Nevus,,dermoscopic
+ISIC_4172789,IL_2623480,IP_6525026,50,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5295520,IL_9881910,IP_1908503,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9955470,IL_7534613,IP_8760962,25,Nevus,,dermoscopic
+ISIC_8678583,IL_8085303,IP_8549992,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5409096,IL_2070628,IP_8760962,25,Nevus,,dermoscopic
+ISIC_1169087,IL_9584311,IP_8760962,25,Nevus,,dermoscopic
+ISIC_7058279,IL_9421186,IP_8760962,25,Nevus,,dermoscopic
+ISIC_4767060,IL_2111798,IP_8326549,25,Nevus,,dermoscopic
+ISIC_8693729,IL_6429649,IP_8326549,25,Nevus,,dermoscopic
+ISIC_2883836,IL_4837884,IP_8326549,25,Nevus,,dermoscopic
+ISIC_0511290,IL_0396863,IP_8326549,25,Nevus,,dermoscopic
+ISIC_7924913,IL_2921619,IP_7432169,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0331449,IL_6041952,IP_1287590,45,Nevus,histopathology,dermoscopic
+ISIC_8998096,IL_2973966,IP_2738413,35,Nevus,,dermoscopic
+ISIC_4085035,IL_1809634,IP_9284170,75,Seborrheic keratosis,,dermoscopic
+ISIC_9712239,IL_3183000,IP_2738413,35,Nevus,,dermoscopic
+ISIC_2657883,IL_2730258,IP_2738413,35,Nevus,,dermoscopic
+ISIC_2283090,IL_3299234,IP_2738413,35,Nevus,histopathology,dermoscopic
+ISIC_1600101,IL_5096547,IP_2318326,45,Nevus,,dermoscopic
+ISIC_5817621,IL_6803312,IP_2318326,45,Nevus,,dermoscopic
+ISIC_4445863,IL_1409489,IP_2318326,45,Nevus,,dermoscopic
+ISIC_7629750,IL_3251055,IP_2318326,45,Nevus,,dermoscopic
+ISIC_6585351,IL_8603777,IP_1749049,30,Nevus,histopathology,dermoscopic
+ISIC_5174665,IL_1561991,IP_3733060,45,Nevus,,dermoscopic
+ISIC_9766934,IL_1728025,IP_9107521,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4537252,IL_7615671,IP_9284170,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3839522,IL_7226995,IP_9107521,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4716453,IL_0813786,IP_1252834,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3304758,IL_0904087,IP_4772694,75,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_8092226,IL_7070145,IP_9973647,55,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_2943379,IL_9024634,IP_1429861,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9420341,IL_3668756,IP_2919597,55,Nevus,histopathology,dermoscopic
+ISIC_2627758,IL_0137792,IP_6304785,70,Nevus,histopathology,dermoscopic
+ISIC_0371179,IL_2236610,IP_1794938,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1195561,IL_7632784,IP_1794938,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3438618,IL_1523771,IP_6102993,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5698566,IL_8499384,IP_9284170,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8927080,IL_1977299,IP_6102993,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9930788,IL_9569130,IP_2576931,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3143299,IL_5222998,IP_9966565,25,Nevus,histopathology,dermoscopic
+ISIC_8614870,IL_9925958,IP_9966565,25,Nevus,histopathology,dermoscopic
+ISIC_8617795,IL_5361546,IP_9966565,25,Nevus,,dermoscopic
+ISIC_5916445,IL_6898262,IP_8107767,75,,,dermoscopic
+ISIC_3388616,IL_6898262,IP_8107767,75,,,clinical: overview
+ISIC_6218790,IL_3557062,IP_8107767,75,Seborrheic keratosis,,dermoscopic
+ISIC_4415554,IL_3557062,IP_8107767,75,Seborrheic keratosis,,clinical: overview
+ISIC_0477738,IL_0602189,IP_8107767,75,,,dermoscopic
+ISIC_6646645,IL_5837846,IP_4051388,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7346491,IL_2601737,IP_8542863,25,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2596867,IL_0602189,IP_8107767,75,,,clinical: overview
+ISIC_9729425,IL_0051948,IP_8107767,75,,,dermoscopic
+ISIC_0784936,IL_0051948,IP_8107767,75,,,clinical: overview
+ISIC_5759661,IL_3538887,IP_8107767,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5555131,IL_0632184,IP_3386756,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1606343,IL_0862264,IP_7460725,70,Nevus,histopathology,dermoscopic
+ISIC_6524286,IL_8960181,IP_0939434,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3844971,IL_1926940,IP_4573488,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9214111,IL_3293475,IP_4573488,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3131925,IL_9960543,IP_0311962,40,Nevus,histopathology,dermoscopic
+ISIC_3397588,IL_2612813,IP_0330850,35,Nevus,histopathology,dermoscopic
+ISIC_8760682,IL_0812366,IP_0311962,40,Nevus,histopathology,dermoscopic
+ISIC_9569426,IL_8841301,IP_0311962,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8902296,IL_4520698,IP_0311962,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4854546,IL_7738407,IP_2498144,85,Solar lentigo,histopathology,dermoscopic
+ISIC_7150949,IL_7722505,IP_6035700,45,Nevus,histopathology,dermoscopic
+ISIC_9187217,IL_4146389,IP_3225258,55,Nevus,histopathology,dermoscopic
+ISIC_1293255,IL_2256733,IP_6384187,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9309212,IL_3094443,IP_9046195,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1412871,IL_9220560,IP_7805648,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3037206,IL_4594339,IP_1702479,50,Nevus,histopathology,dermoscopic
+ISIC_7836709,IL_2469593,IP_3928555,35,Nevus,,dermoscopic
+ISIC_6128833,IL_9538195,IP_3370482,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5373632,IL_2034257,IP_2409824,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9280667,IL_4427884,IP_2333985,30,Nevus,histopathology,dermoscopic
+ISIC_4029548,IL_2822496,IP_3525266,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5841971,IL_3096683,IP_9428318,30,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1997620,IL_8182238,IP_0446005,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1431710,IL_4723897,IP_7968700,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3740351,IL_4250712,IP_7968700,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4163869,IL_0054159,IP_2105239,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3487766,IL_5533380,IP_4247962,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8233814,IL_4195929,IP_3928555,35,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5566484,IL_0144737,IP_8195964,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1813577,IL_1252219,IP_0774325,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7993515,IL_8123853,IP_6831352,40,Nevus,histopathology,dermoscopic
+ISIC_1810807,IL_7437495,IP_1615343,30,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6200169,IL_9438417,IP_8461521,50,Nevus,histopathology,dermoscopic
+ISIC_6926022,IL_4195290,IP_1751755,,Dermatofibroma,histopathology,dermoscopic
+ISIC_5121137,IL_0973744,IP_8208342,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_5220778,IL_9229911,IP_8208342,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3359048,IL_7639685,IP_8208342,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_7611886,IL_7982414,IP_7265725,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_8850095,IL_5217061,IP_7265725,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1152189,IL_1792549,IP_1483579,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7753429,IL_9548275,IP_0214540,75,Nevus,histopathology,dermoscopic
+ISIC_3159253,IL_9645108,IP_1483579,70,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_7169848,IL_2440183,IP_3315006,80,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_4875503,IL_5428065,IP_3315006,80,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_3754853,IL_3699892,IP_2004044,55,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0633437,IL_7402225,IP_2137123,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_7964676,IL_1923670,IP_0013793,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_8044078,IL_2695277,IP_0013793,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0370022,IL_4510049,IP_4446353,40,Nevus,,clinical: overview
+ISIC_7771190,IL_5240289,IP_2356300,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2287405,IL_0998198,IP_5234321,50,Solar lentigo,histopathology,dermoscopic
+ISIC_0774442,IL_8223491,IP_3195622,25,Nevus,histopathology,dermoscopic
+ISIC_8536717,IL_7484000,IP_1366489,75,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_5847539,IL_0065869,IP_6792187,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_0708451,IL_8692596,IP_9341045,60,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4766156,IL_5167755,IP_8710793,40,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_6584700,IL_0182231,IP_2955877,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_9396173,IL_3397118,IP_9731995,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_6889410,IL_2351875,IP_4771889,45,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_4256211,IL_6884432,IP_6838851,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0761934,IL_3905702,IP_6838851,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_6340616,IL_9408242,IP_8463557,65,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_2367098,IL_2243414,IP_1222567,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2567615,IL_1761906,IP_2139616,85,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_3231047,IL_3241236,IP_9326388,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_9401469,IL_3949893,IP_0964498,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3518714,IL_3810076,IP_6406539,50,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_7490806,IL_3110118,IP_8541253,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_7579869,IL_4865608,IP_3992665,40,Nevus,histopathology,clinical: overview
+ISIC_4047069,IL_3964017,IP_6904980,75,Solar or actinic keratosis,,clinical: overview
+ISIC_7089477,IL_7679546,IP_8376420,35,Dermatofibroma,,clinical: overview
+ISIC_7979741,IL_2126205,IP_1522045,75,Seborrheic keratosis,,clinical: overview
+ISIC_8165921,IL_5287196,IP_7252898,70,Basal cell carcinoma,histopathology,clinical: close-up
+ISIC_1268424,IL_5012247,IP_3809381,30,Nevus,histopathology,dermoscopic
+ISIC_4910630,IL_3270641,IP_9667170,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_7038061,IL_3210798,IP_7735544,75,"Squamous cell carcinoma, NOS",histopathology,clinical: close-up
+ISIC_3222130,IL_9896383,IP_0095265,,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9651464,IL_3878395,IP_2411102,75,Nevus,,clinical: overview
+ISIC_4663260,IL_6462293,IP_2411102,75,Nevus,,clinical: overview
+ISIC_5205467,IL_8910852,IP_2877009,80,Dermatofibroma,,clinical: overview
+ISIC_0373249,IL_1701283,IP_9885775,60,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_5400713,IL_6030771,IP_9885775,60,Nevus,,clinical: overview
+ISIC_6542300,IL_1424221,IP_9885775,60,Seborrheic keratosis,,clinical: overview
+ISIC_5731511,IL_0573832,IP_9853265,35,Solar lentigo,,clinical: overview
+ISIC_3978885,IL_0395628,IP_9853265,35,Nevus,,clinical: overview
+ISIC_2474411,IL_4684735,IP_3809381,30,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4035478,IL_3094244,IP_3297302,60,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_4258119,IL_7214907,IP_3297302,60,,,clinical: overview
+ISIC_2870496,IL_1374464,IP_7144003,65,,,clinical: overview
+ISIC_7756020,IL_4541196,IP_9454026,25,Nevus,histopathology,clinical: overview
+ISIC_6487305,IL_2307963,IP_1040510,75,Nevus,histopathology,dermoscopic
+ISIC_0921082,IL_2307963,IP_1040510,75,Nevus,histopathology,clinical: overview
+ISIC_1709695,IL_7588215,IP_3389004,75,Nevus,histopathology,dermoscopic
+ISIC_6937526,IL_7588215,IP_3389004,75,Nevus,histopathology,clinical: overview
+ISIC_2425218,IL_9391482,IP_5650689,60,Nevus,histopathology,dermoscopic
+ISIC_9611628,IL_9391482,IP_5650689,60,Nevus,histopathology,clinical: overview
+ISIC_2039831,IL_5787211,IP_3809381,30,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1225057,IL_9505800,IP_5650689,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2465944,IL_9505800,IP_5650689,60,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6479781,IL_1866559,IP_3019489,45,Nevus,histopathology,dermoscopic
+ISIC_5770532,IL_1866559,IP_3019489,45,Nevus,histopathology,clinical: overview
+ISIC_9977122,IL_8889739,IP_6123331,80,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_6129060,IL_8889739,IP_6123331,80,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_5727659,IL_7500912,IP_2933627,40,Dermatofibroma,histopathology,dermoscopic
+ISIC_0520507,IL_7500912,IP_2933627,40,Dermatofibroma,histopathology,clinical: overview
+ISIC_6563304,IL_4791021,IP_1726741,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2505335,IL_4606486,IP_9586825,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7105988,IL_7767090,IP_9525378,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1112864,IL_4606486,IP_9586825,70,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0151137,IL_6061997,IP_1773325,55,Nevus,histopathology,dermoscopic
+ISIC_9905557,IL_6061997,IP_1773325,55,Nevus,histopathology,clinical: overview
+ISIC_6119111,IL_0337405,IP_1773325,55,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3424187,IL_0337405,IP_1773325,55,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_5644234,IL_5890741,IP_0281050,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5644176,IL_5890741,IP_0281050,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1075553,IL_1605286,IP_6714333,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3435457,IL_1605286,IP_6714333,50,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7368264,IL_5520788,IP_6783333,75,Nevus,histopathology,dermoscopic
+ISIC_2826889,IL_0357537,IP_2958522,55,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_4816001,IL_5520788,IP_6783333,75,Nevus,histopathology,clinical: overview
+ISIC_5000172,IL_3070676,IP_6783333,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7128085,IL_3070676,IP_6783333,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3235131,IL_1581392,IP_5488862,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7435333,IL_1581392,IP_5488862,60,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_9669158,IL_9313691,IP_0679532,45,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2732077,IL_0896205,IP_8404073,65,Nevus,histopathology,dermoscopic
+ISIC_6045898,IL_0896205,IP_8404073,65,Nevus,histopathology,clinical: overview
+ISIC_3088921,IL_3108375,IP_9806536,45,Nevus,histopathology,dermoscopic
+ISIC_0662865,IL_5133203,IP_9806536,45,Nevus,histopathology,dermoscopic
+ISIC_2153041,IL_6378232,IP_6744475,30,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7346353,IL_6278941,IP_7436342,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0408926,IL_6585676,IP_9854686,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_0202238,IL_9855102,IP_7008738,55,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5264466,IL_0256906,IP_0500329,30,Nevus,histopathology,dermoscopic
+ISIC_8775112,IL_0256906,IP_0500329,30,Nevus,histopathology,clinical: overview
+ISIC_0630968,IL_1775432,IP_7203368,20,Nevus,histopathology,dermoscopic
+ISIC_9925949,IL_1775432,IP_7203368,20,Nevus,histopathology,clinical: overview
+ISIC_9464094,IL_2606689,IP_5701997,55,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_8111280,IL_2606689,IP_5701997,55,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_1936429,IL_5626445,IP_7808184,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3298946,IL_8963555,IP_6995173,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5577519,IL_5626445,IP_7808184,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0638700,IL_7131880,IP_7808184,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2114677,IL_7131880,IP_7808184,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_9999251,IL_1343671,IP_3975331,65,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_2122607,IL_6425441,IP_3975331,65,Nevus,histopathology,dermoscopic
+ISIC_8102884,IL_9587318,IP_2079372,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0119854,IL_9587318,IP_2079372,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_8577193,IL_5705728,IP_4097598,60,Nevus,histopathology,dermoscopic
+ISIC_3881430,IL_5705728,IP_4097598,60,Nevus,histopathology,clinical: overview
+ISIC_3249490,IL_9685676,IP_4097598,60,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_9188672,IL_8394236,IP_3672872,65,Dermatofibroma,histopathology,dermoscopic
+ISIC_1733229,IL_9685676,IP_4097598,60,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_4486613,IL_2920159,IP_3702153,85,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_2214759,IL_2920159,IP_3702153,85,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_6486288,IL_3664250,IP_3702153,85,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_0799918,IL_3664250,IP_3702153,85,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_8194745,IL_0102345,IP_7765996,50,Nevus,histopathology,dermoscopic
+ISIC_3566586,IL_8088150,IP_7765996,50,Nevus,histopathology,dermoscopic
+ISIC_6038442,IL_8088150,IP_7765996,50,Nevus,histopathology,clinical: overview
+ISIC_5086151,IL_7224729,IP_6872677,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_6961311,IL_7224729,IP_6872677,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_2642164,IL_0545896,IP_3672872,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4514316,IL_3039529,IP_6872677,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8939503,IL_3039529,IP_6872677,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_8906116,IL_9784934,IP_9621492,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1949623,IL_9784934,IP_9621492,60,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9721167,IL_7247003,IP_0601118,45,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7498025,IL_7247003,IP_0601118,45,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6994675,IL_4681551,IP_1100982,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9043183,IL_4681551,IP_1100982,60,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_5702387,IL_1954016,IP_0232163,30,Nevus,,clinical: overview
+ISIC_8413624,IL_1954016,IP_0232163,30,Nevus,,dermoscopic
+ISIC_7824315,IL_4069815,IP_1081239,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8852229,IL_2917009,IP_0232163,30,Nevus,histopathology,dermoscopic
+ISIC_1383624,IL_2917009,IP_0232163,30,Nevus,histopathology,clinical: overview
+ISIC_1707031,IL_5047846,IP_0232163,30,Nevus,histopathology,dermoscopic
+ISIC_0644328,IL_5047846,IP_0232163,30,Nevus,histopathology,clinical: overview
+ISIC_8348187,IL_2174880,IP_3356357,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5086721,IL_6565119,IP_7034445,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3906318,IL_6490041,IP_0292037,50,Nevus,histopathology,dermoscopic
+ISIC_3118406,IL_5923839,IP_6257236,55,Solar lentigo,histopathology,dermoscopic
+ISIC_6428520,IL_6671594,IP_1657399,80,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_8453583,IL_3871707,IP_0645386,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3504002,IL_4088847,IP_3088564,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9573206,IL_7552896,IP_9355646,75,Nevus,histopathology,dermoscopic
+ISIC_8941944,IL_8942388,IP_4932731,75,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_4999508,IL_8942388,IP_4932731,75,Solar or actinic keratosis,histopathology,clinical: overview
+ISIC_6297688,IL_8200012,IP_4932731,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8502375,IL_9278370,IP_8277789,55,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_8519085,IL_7436943,IP_7884622,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8930922,IL_7436943,IP_7884622,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0501192,IL_3177073,IP_7884622,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_4970724,IL_3177073,IP_7884622,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_8272399,IL_9362413,IP_3451310,85,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_0437776,IL_9826099,IP_3451310,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_8614156,IL_9185684,IP_2385814,50,Nevus,histopathology,dermoscopic
+ISIC_1480519,IL_9826099,IP_3451310,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_0765095,IL_9826099,IP_3451310,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_4828029,IL_0873714,IP_1059364,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2700242,IL_0873714,IP_1059364,55,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6348247,IL_5041050,IP_0551634,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8966458,IL_5041050,IP_0551634,60,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3570858,IL_3066011,IP_4641203,60,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3471170,IL_3066011,IP_4641203,60,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_0377055,IL_8239498,IP_7256360,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_0580759,IL_8239498,IP_7256360,65,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_8133882,IL_7474548,IP_0248765,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5290918,IL_7041260,IP_7256360,65,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_3114203,IL_7041260,IP_7256360,65,Solar or actinic keratosis,histopathology,clinical: overview
+ISIC_7993345,IL_2912868,IP_4291496,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4205538,IL_2912868,IP_4291496,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4125711,IL_3895709,IP_3915964,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8489375,IL_3895709,IP_3915964,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2017112,IL_0766796,IP_5966083,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7957576,IL_0766796,IP_5966083,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1061847,IL_9049450,IP_2208139,55,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_4888155,IL_9049450,IP_2208139,55,Solar or actinic keratosis,histopathology,clinical: overview
+ISIC_1400723,IL_8379264,IP_0248765,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3951375,IL_4705234,IP_4297168,30,Nevus,histopathology,dermoscopic
+ISIC_2401042,IL_6066818,IP_1226729,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2464528,IL_6066818,IP_1226729,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6885294,IL_1035603,IP_3373935,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9060197,IL_1035603,IP_3373935,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7388524,IL_8887018,IP_5527482,75,Nevus,histopathology,dermoscopic
+ISIC_3019909,IL_8887018,IP_5527482,75,Nevus,histopathology,clinical: overview
+ISIC_3110126,IL_3807827,IP_1561363,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8738680,IL_3807827,IP_1561363,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4679083,IL_3801788,IP_2413128,45,Nevus,histopathology,dermoscopic
+ISIC_2387381,IL_6151684,IP_1566368,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9513630,IL_3801788,IP_2413128,45,Nevus,histopathology,clinical: overview
+ISIC_0588796,IL_4524069,IP_6558273,80,Nevus,histopathology,dermoscopic
+ISIC_9082062,IL_4524069,IP_6558273,80,Nevus,histopathology,clinical: overview
+ISIC_9248617,IL_1309007,IP_6558273,80,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_2224029,IL_1309007,IP_6558273,80,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_3684951,IL_0462608,IP_6558273,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9765735,IL_0462608,IP_6558273,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0993014,IL_9265651,IP_6558273,80,Nevus,histopathology,dermoscopic
+ISIC_9882427,IL_9265651,IP_6558273,80,Nevus,histopathology,clinical: overview
+ISIC_9010344,IL_9330933,IP_6558273,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8673390,IL_0032035,IP_0207220,65,Nevus,histopathology,dermoscopic
+ISIC_8948371,IL_9330933,IP_6558273,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9444427,IL_2668525,IP_7513820,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4489603,IL_2668525,IP_7513820,60,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2856850,IL_9222824,IP_0147267,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9910672,IL_9222824,IP_0147267,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_4331030,IL_9069382,IP_0147267,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4706882,IL_9069382,IP_0147267,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1301476,IL_5502639,IP_7526334,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0116640,IL_5502639,IP_7526334,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_8802195,IL_6361168,IP_4473222,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3209410,IL_0220249,IP_2346299,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9947461,IL_6361168,IP_4473222,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9314356,IL_5870994,IP_4473222,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6127908,IL_5870994,IP_4473222,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1047011,IL_1134487,IP_1117498,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4212047,IL_1134487,IP_1117498,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0168716,IL_1134487,IP_1117498,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6315203,IL_1134487,IP_1117498,85,"Melanoma, NOS",histopathology,clinical: close-up
+ISIC_0342851,IL_3865867,IP_1117498,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3289563,IL_3865867,IP_1117498,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_7215728,IL_2965116,IP_0276872,70,,,dermoscopic
+ISIC_3440320,IL_8860012,IP_2346299,55,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0107741,IL_2965116,IP_0276872,70,,,clinical: overview
+ISIC_7770086,IL_9809892,IP_0276872,70,Nevus,,dermoscopic
+ISIC_9353417,IL_9809892,IP_0276872,70,Nevus,,clinical: overview
+ISIC_4185946,IL_3083015,IP_2967644,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3426358,IL_3083015,IP_2967644,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_0848988,IL_7571871,IP_1724147,30,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9481737,IL_7571871,IP_1724147,30,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0135184,IL_2147560,IP_7559190,75,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_8539737,IL_2147560,IP_7559190,75,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_3598192,IL_3440737,IP_7559190,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7041400,IL_3012343,IP_8641208,65,Nevus,histopathology,dermoscopic
+ISIC_7360494,IL_3440737,IP_7559190,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_7547877,IL_8656384,IP_2118132,80,Nevus,histopathology,dermoscopic
+ISIC_1306256,IL_8656384,IP_2118132,80,Nevus,histopathology,clinical: overview
+ISIC_9104374,IL_0879434,IP_2118132,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5645939,IL_0879434,IP_2118132,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_8408331,IL_1454921,IP_2118132,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3560753,IL_1454921,IP_2118132,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7709870,IL_0941887,IP_5828031,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2845345,IL_0941887,IP_5828031,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9138658,IL_0370820,IP_5828031,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9416204,IL_9241217,IP_8641208,65,Nevus,histopathology,dermoscopic
+ISIC_4918794,IL_0370820,IP_5828031,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_7474602,IL_0370820,IP_5828031,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3867890,IL_0370820,IP_5828031,80,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_1388529,IL_7625655,IP_9155557,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5141599,IL_7625655,IP_9155557,80,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_1595622,IL_7575344,IP_8188962,40,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7653833,IL_6538837,IP_0412162,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1536832,IL_6538837,IP_0412162,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1315058,IL_6271464,IP_0412162,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5233904,IL_6271464,IP_0412162,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7330612,IL_5313594,IP_8641208,65,Nevus,histopathology,dermoscopic
+ISIC_8201369,IL_7240638,IP_9355646,75,Nevus,histopathology,dermoscopic
+ISIC_5017483,IL_2089622,IP_0412162,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3630590,IL_2089622,IP_0412162,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2763446,IL_8678803,IP_2738763,70,Seborrheic keratosis,,dermoscopic
+ISIC_8548189,IL_8678803,IP_2738763,70,Seborrheic keratosis,,clinical: overview
+ISIC_8412921,IL_8887437,IP_2738763,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7338852,IL_8887437,IP_2738763,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7091639,IL_5806562,IP_0031063,70,Nevus,,dermoscopic
+ISIC_1735952,IL_5806562,IP_0031063,70,Nevus,,clinical: overview
+ISIC_3241563,IL_0729649,IP_0031063,70,Nevus,,dermoscopic
+ISIC_2400793,IL_0729649,IP_0031063,70,Nevus,,clinical: overview
+ISIC_0425007,IL_9233839,IP_8641208,65,Nevus,histopathology,dermoscopic
+ISIC_4786444,IL_6342673,IP_0031063,70,Seborrheic keratosis,,dermoscopic
+ISIC_7546980,IL_6342673,IP_0031063,70,Seborrheic keratosis,,clinical: overview
+ISIC_4217986,IL_9035337,IP_0031063,70,Nevus,,dermoscopic
+ISIC_4036953,IL_9035337,IP_0031063,70,Nevus,,clinical: overview
+ISIC_9353595,IL_9299492,IP_0031063,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5973072,IL_9299492,IP_0031063,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0570235,IL_4970090,IP_0031063,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8613600,IL_4970090,IP_0031063,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0789191,IL_0060490,IP_0031063,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8767311,IL_0060490,IP_0031063,70,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4906990,IL_9707629,IP_8641208,65,Nevus,histopathology,dermoscopic
+ISIC_0143790,IL_2407401,IP_0031063,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2354429,IL_2407401,IP_0031063,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0897309,IL_3918161,IP_5230560,65,Dermatofibroma,,dermoscopic
+ISIC_3615362,IL_3918161,IP_5230560,65,Dermatofibroma,,clinical: overview
+ISIC_1317893,IL_7601203,IP_5230560,65,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0255566,IL_7601203,IP_5230560,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8260443,IL_3928264,IP_0778689,60,Seborrheic keratosis,,dermoscopic
+ISIC_4525930,IL_3928264,IP_0778689,60,Seborrheic keratosis,,clinical: overview
+ISIC_5989162,IL_8738429,IP_0778689,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7461496,IL_8738429,IP_0778689,60,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2000497,IL_9289474,IP_8641208,65,Nevus,histopathology,dermoscopic
+ISIC_2079571,IL_9247514,IP_3235188,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8570943,IL_9247514,IP_3235188,65,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_2710069,IL_6812801,IP_3150219,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1640110,IL_6812801,IP_3150219,80,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_8728477,IL_0520999,IP_3150219,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6788393,IL_0520999,IP_3150219,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2857128,IL_6014689,IP_3150219,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6015979,IL_6014689,IP_3150219,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4733474,IL_2978481,IP_7351253,40,Dermatofibroma,,dermoscopic
+ISIC_9480238,IL_2978481,IP_7351253,40,Dermatofibroma,,clinical: overview
+ISIC_3639272,IL_7311295,IP_4966888,55,Nevus,histopathology,dermoscopic
+ISIC_6248652,IL_9875496,IP_4891909,70,Dermatofibroma,,dermoscopic
+ISIC_9653384,IL_9875496,IP_4891909,70,Dermatofibroma,,clinical: overview
+ISIC_0517734,IL_0293819,IP_4891909,70,Nevus,,dermoscopic
+ISIC_5992988,IL_0293819,IP_4891909,70,Nevus,,clinical: overview
+ISIC_1083942,IL_4911898,IP_5265455,45,Dermatofibroma,,dermoscopic
+ISIC_3136193,IL_4911898,IP_5265455,45,Dermatofibroma,,clinical: overview
+ISIC_8521370,IL_1035115,IP_8694186,70,,,dermoscopic
+ISIC_1659879,IL_1035115,IP_8694186,70,,,clinical: overview
+ISIC_3245953,IL_1994979,IP_8694186,70,,,dermoscopic
+ISIC_0797749,IL_1994979,IP_8694186,70,,,clinical: overview
+ISIC_2270337,IL_4169125,IP_4966888,55,Nevus,histopathology,dermoscopic
+ISIC_7242294,IL_4038060,IP_5485052,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9523184,IL_4038060,IP_5485052,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0234964,IL_3035673,IP_8779056,45,Nevus,histopathology,dermoscopic
+ISIC_9701230,IL_3035673,IP_8779056,45,Nevus,histopathology,clinical: overview
+ISIC_9351344,IL_0786376,IP_8779056,45,Dermatofibroma,histopathology,dermoscopic
+ISIC_0962020,IL_0786376,IP_8779056,45,Dermatofibroma,histopathology,clinical: overview
+ISIC_0348670,IL_3097501,IP_7551030,40,,,dermoscopic
+ISIC_2414214,IL_9494337,IP_4278708,50,,,dermoscopic
+ISIC_3823228,IL_3523344,IP_4278708,50,,,dermoscopic
+ISIC_1773269,IL_4087846,IP_6005497,70,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_4207602,IL_6532075,IP_3426045,55,Nevus,,dermoscopic
+ISIC_3332799,IL_0501728,IP_6005497,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9116556,IL_1123157,IP_2304858,40,Dermatofibroma,,dermoscopic
+ISIC_7844517,IL_1123157,IP_2304858,40,Dermatofibroma,,clinical: overview
+ISIC_9417725,IL_0998127,IP_6089636,55,Seborrheic keratosis,,dermoscopic
+ISIC_5280521,IL_0998127,IP_6089636,55,Seborrheic keratosis,,clinical: overview
+ISIC_5159406,IL_0621051,IP_6089636,55,Dermatofibroma,histopathology,dermoscopic
+ISIC_1596920,IL_1663524,IP_6003393,55,Nevus,,dermoscopic
+ISIC_9378991,IL_1663524,IP_6003393,55,Nevus,,clinical: overview
+ISIC_4489007,IL_5334768,IP_6003393,55,Dermatofibroma,,dermoscopic
+ISIC_5985738,IL_5334768,IP_6003393,55,Dermatofibroma,,clinical: overview
+ISIC_0772328,IL_1632455,IP_3426045,55,Nevus,,dermoscopic
+ISIC_2408370,IL_4609375,IP_9503214,50,Nevus,,dermoscopic
+ISIC_8668169,IL_4609375,IP_9503214,50,Nevus,,clinical: overview
+ISIC_5272415,IL_5856952,IP_9503214,50,Nevus,,dermoscopic
+ISIC_5279645,IL_5856952,IP_9503214,50,Nevus,,clinical: overview
+ISIC_2355590,IL_9859418,IP_9503214,50,Solar lentigo,,dermoscopic
+ISIC_1735322,IL_9859418,IP_9503214,50,Solar lentigo,,clinical: overview
+ISIC_3531035,IL_2291469,IP_8693311,60,Solar or actinic keratosis,,dermoscopic
+ISIC_6614811,IL_2291469,IP_8693311,60,Solar or actinic keratosis,,clinical: overview
+ISIC_7338502,IL_0060683,IP_7442897,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4762072,IL_0060683,IP_7442897,85,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_9445352,IL_2315848,IP_3426045,55,Nevus,histopathology,dermoscopic
+ISIC_5227868,IL_4838500,IP_7442897,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9393700,IL_4838500,IP_7442897,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_5900008,IL_3077206,IP_1344764,80,Seborrheic keratosis,,dermoscopic
+ISIC_6516485,IL_3077206,IP_1344764,80,Seborrheic keratosis,,clinical: overview
+ISIC_2696751,IL_4406287,IP_1344764,80,Solar or actinic keratosis,,dermoscopic
+ISIC_7964849,IL_4406287,IP_1344764,80,Solar or actinic keratosis,,clinical: overview
+ISIC_7380125,IL_9520027,IP_2495114,45,Dermatofibroma,,dermoscopic
+ISIC_4700556,IL_9520027,IP_2495114,45,Dermatofibroma,,clinical: overview
+ISIC_8894889,IL_7294588,IP_1371309,45,Dermatofibroma,,dermoscopic
+ISIC_8721218,IL_7294588,IP_1371309,45,Dermatofibroma,,clinical: overview
+ISIC_7534765,IL_1917034,IP_3426045,55,Nevus,histopathology,dermoscopic
+ISIC_5053874,IL_5968442,IP_1371309,45,Dermatofibroma,,dermoscopic
+ISIC_8373120,IL_5968442,IP_1371309,45,Dermatofibroma,,clinical: overview
+ISIC_2456191,IL_0498308,IP_3060715,75,Solar or actinic keratosis,,dermoscopic
+ISIC_4596148,IL_0498308,IP_3060715,75,Solar or actinic keratosis,,clinical: overview
+ISIC_3619132,IL_3011668,IP_1248331,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6933767,IL_3011668,IP_1248331,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2293513,IL_5507680,IP_7298406,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3108030,IL_5507680,IP_7298406,55,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3053413,IL_1045215,IP_6754451,45,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5249982,IL_1045215,IP_6754451,45,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6572032,IL_3009245,IP_2521894,35,Nevus,histopathology,dermoscopic
+ISIC_2763265,IL_9661241,IP_9355646,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2574924,IL_4683423,IP_6754451,45,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3971184,IL_4683423,IP_6754451,45,"Melanoma, NOS",histopathology,clinical: close-up
+ISIC_2503657,IL_0441214,IP_6184736,65,Dermatofibroma,,dermoscopic
+ISIC_6546922,IL_2506187,IP_6184736,65,,,dermoscopic
+ISIC_1293502,IL_1349993,IP_6184736,65,,,dermoscopic
+ISIC_5058915,IL_5530521,IP_6184736,65,,,dermoscopic
+ISIC_0749272,IL_0646334,IP_6184736,65,,,dermoscopic
+ISIC_7899998,IL_5447318,IP_6184736,65,,,dermoscopic
+ISIC_8647229,IL_9587219,IP_1638675,45,Dermatofibroma,,dermoscopic
+ISIC_5502098,IL_5440652,IP_8075842,35,Dermatofibroma,,dermoscopic
+ISIC_8544975,IL_4023041,IP_3852191,35,Nevus,histopathology,dermoscopic
+ISIC_0469469,IL_6070149,IP_8075842,35,,,dermoscopic
+ISIC_9307961,IL_8070081,IP_8075842,35,,,dermoscopic
+ISIC_1538558,IL_9115175,IP_8075842,35,,,dermoscopic
+ISIC_3121700,IL_9301722,IP_8519697,70,,,dermoscopic
+ISIC_6563537,IL_3192877,IP_6375518,50,,,dermoscopic
+ISIC_5113624,IL_5699623,IP_3682931,70,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_7812886,IL_5699623,IP_3682931,70,Solar or actinic keratosis,histopathology,clinical: overview
+ISIC_7058949,IL_9366956,IP_3682931,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1641940,IL_9366956,IP_3682931,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2602043,IL_6794721,IP_3682931,70,Nevus,histopathology,dermoscopic
+ISIC_4141548,IL_3308062,IP_3459479,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9497941,IL_6794721,IP_3682931,70,Nevus,histopathology,clinical: overview
+ISIC_3891136,IL_8605960,IP_3682931,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6241688,IL_8605960,IP_3682931,70,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4627848,IL_1160690,IP_3682931,70,Nevus,histopathology,dermoscopic
+ISIC_8781042,IL_1160690,IP_3682931,70,Nevus,histopathology,clinical: overview
+ISIC_2003612,IL_6848602,IP_0221369,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2136197,IL_6848602,IP_0221369,80,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_6653614,IL_4193678,IP_4307149,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_0521708,IL_4193678,IP_4307149,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5401158,IL_4193678,IP_4307149,70,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_3271387,IL_6925379,IP_5633768,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2113665,IL_7302914,IP_9086452,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9107240,IL_7302914,IP_9086452,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_5513102,IL_1669261,IP_2080217,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1939384,IL_1669261,IP_2080217,65,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1667487,IL_3947218,IP_2080217,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4550448,IL_3947218,IP_2080217,65,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9417610,IL_4914444,IP_5750465,60,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7154868,IL_7408964,IP_4758258,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8559763,IL_0533405,IP_7550129,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8403508,IL_0533405,IP_7550129,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7239902,IL_2083533,IP_7014123,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7835312,IL_6968885,IP_2440667,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6616147,IL_6968885,IP_2440667,60,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3377796,IL_7459254,IP_8999577,25,Nevus,histopathology,dermoscopic
+ISIC_4794233,IL_3266357,IP_2081101,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6525238,IL_3266357,IP_2081101,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_5783705,IL_5720550,IP_2081101,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5560888,IL_5720550,IP_2081101,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_5618299,IL_9889961,IP_6959152,45,Nevus,histopathology,dermoscopic
+ISIC_3716776,IL_9889961,IP_6959152,45,Nevus,histopathology,clinical: overview
+ISIC_3176105,IL_2793518,IP_1221322,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_2606092,IL_0797235,IP_3028994,40,Nevus,histopathology,clinical: overview
+ISIC_4079825,IL_2793518,IP_1221322,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_5928120,IL_4374423,IP_5842685,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5184876,IL_4374423,IP_5842685,65,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9998679,IL_3341905,IP_5842685,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0211418,IL_3341905,IP_5842685,65,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2362051,IL_1486711,IP_6555777,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0799972,IL_1486711,IP_6555777,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3491406,IL_1486711,IP_6555777,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8157239,IL_1486711,IP_6555777,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1634408,IL_1486711,IP_6555777,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4798806,IL_7167818,IP_3028994,40,,,clinical: overview
+ISIC_5926655,IL_5490451,IP_6555777,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2720030,IL_5490451,IP_6555777,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7854366,IL_3529997,IP_4260877,85,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_0821196,IL_3529997,IP_4260877,85,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_4319626,IL_8214313,IP_3580447,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9097641,IL_8214313,IP_3580447,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_7298213,IL_9884616,IP_3612977,75,Dermatofibroma,,dermoscopic
+ISIC_2900342,IL_9884616,IP_3612977,75,Dermatofibroma,,clinical: overview
+ISIC_2692371,IL_8063573,IP_6578239,35,Dermatofibroma,,dermoscopic
+ISIC_8174547,IL_8063573,IP_6578239,35,Dermatofibroma,,clinical: overview
+ISIC_6415252,IL_8598907,IP_3028994,40,Nevus,,clinical: overview
+ISIC_4817412,IL_2473888,IP_3404622,65,Solar or actinic keratosis,,dermoscopic
+ISIC_6341872,IL_2473888,IP_3404622,65,Solar or actinic keratosis,,clinical: overview
+ISIC_6427207,IL_9626445,IP_8812719,55,Dermatofibroma,,dermoscopic
+ISIC_1966520,IL_9626445,IP_8812719,55,Dermatofibroma,,clinical: overview
+ISIC_6883883,IL_3984045,IP_9800473,55,Dermatofibroma,,dermoscopic
+ISIC_2084085,IL_3984045,IP_9800473,55,Dermatofibroma,,clinical: overview
+ISIC_7908827,IL_4489985,IP_0290734,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3078834,IL_4489985,IP_0290734,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1613057,IL_9024769,IP_0685905,40,Dermatofibroma,histopathology,dermoscopic
+ISIC_4825485,IL_9024769,IP_0685905,40,Dermatofibroma,histopathology,clinical: overview
+ISIC_1000616,IL_0925062,IP_3028994,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1914461,IL_3803224,IP_7762922,50,Dermatofibroma,,dermoscopic
+ISIC_9071082,IL_3803224,IP_7762922,50,Dermatofibroma,,clinical: overview
+ISIC_5612133,IL_8571682,IP_0545294,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4214029,IL_8571682,IP_0545294,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_8470466,IL_7079473,IP_0123674,40,Dermatofibroma,histopathology,dermoscopic
+ISIC_7901155,IL_7079473,IP_0123674,40,Dermatofibroma,histopathology,clinical: overview
+ISIC_7952844,IL_3023782,IP_1589808,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5280241,IL_3023782,IP_1589808,55,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7663270,IL_6032807,IP_6566825,25,Nevus,histopathology,dermoscopic
+ISIC_6450459,IL_6032807,IP_6566825,25,Nevus,histopathology,clinical: overview
+ISIC_7085235,IL_0461540,IP_0159171,40,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3373047,IL_4589945,IP_0912178,20,,histopathology,dermoscopic
+ISIC_7550648,IL_0822230,IP_0383433,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1411587,IL_0822230,IP_0383433,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_4343221,IL_2529443,IP_6328281,60,Nevus,histopathology,dermoscopic
+ISIC_8707120,IL_2529443,IP_6328281,60,Nevus,histopathology,clinical: overview
+ISIC_4301851,IL_4052831,IP_9929036,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9645798,IL_4052831,IP_9929036,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7485597,IL_8001964,IP_8857970,60,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3439101,IL_8001964,IP_8857970,60,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2031479,IL_6640027,IP_8388966,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_1791643,IL_3286248,IP_5505844,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0929319,IL_9246113,IP_8631699,65,Nevus,,dermoscopic
+ISIC_3498622,IL_6640027,IP_8388966,70,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_4976736,IL_9353525,IP_4567280,60,Nevus,histopathology,dermoscopic
+ISIC_7151644,IL_9353525,IP_4567280,60,Nevus,histopathology,clinical: overview
+ISIC_2700225,IL_2139148,IP_9436253,60,Dermatofibroma,histopathology,dermoscopic
+ISIC_8969985,IL_2139148,IP_9436253,60,Dermatofibroma,histopathology,clinical: overview
+ISIC_7317801,IL_0247953,IP_9079253,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1482223,IL_0247953,IP_9079253,60,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0959325,IL_3861159,IP_4790522,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7261723,IL_3861159,IP_4790522,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4207454,IL_5765588,IP_2359644,75,,,dermoscopic
+ISIC_3885770,IL_0339787,IP_1599385,,Nevus,histopathology,dermoscopic
+ISIC_3007796,IL_5765588,IP_2359644,75,,,clinical: overview
+ISIC_5024302,IL_8955295,IP_2359644,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9600064,IL_8955295,IP_2359644,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_5836857,IL_8955295,IP_2359644,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_2706694,IL_1694184,IP_5801898,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9922955,IL_1694184,IP_5801898,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1091339,IL_0455383,IP_5801898,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8097277,IL_0455383,IP_5801898,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1962816,IL_5638546,IP_1942334,50,Nevus,histopathology,dermoscopic
+ISIC_2685699,IL_5638546,IP_1942334,50,Nevus,histopathology,clinical: overview
+ISIC_4711209,IL_1264174,IP_8033847,45,Nevus,histopathology,dermoscopic
+ISIC_0206756,IL_3250161,IP_9393377,35,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8664178,IL_3250161,IP_9393377,35,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_8236269,IL_1956821,IP_2692251,70,Solar or actinic keratosis,,dermoscopic
+ISIC_9997367,IL_1956821,IP_2692251,70,Solar or actinic keratosis,,clinical: overview
+ISIC_8459589,IL_9163996,IP_1612316,70,Solar or actinic keratosis,,dermoscopic
+ISIC_0721601,IL_9163996,IP_1612316,70,Solar or actinic keratosis,,clinical: overview
+ISIC_3518630,IL_0834101,IP_5138682,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3299133,IL_0834101,IP_5138682,70,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0625744,IL_0174675,IP_3418123,50,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5081865,IL_0174675,IP_3418123,50,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_7410617,IL_6199400,IP_8208875,35,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5529430,IL_6414572,IP_5719687,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0898734,IL_1570524,IP_5719687,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9804428,IL_2378537,IP_5719687,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1859657,IL_7568646,IP_5719687,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4750998,IL_9092931,IP_7513395,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4117958,IL_9092931,IP_7513395,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3894866,IL_4885444,IP_9947705,55,Nevus,histopathology,dermoscopic
+ISIC_8904408,IL_4885444,IP_9947705,55,Nevus,histopathology,clinical: overview
+ISIC_5007109,IL_5682932,IP_5543648,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8841175,IL_5682932,IP_5543648,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7838914,IL_7619293,IP_2179904,,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5036479,IL_1038560,IP_5543648,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5815174,IL_1038560,IP_5543648,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_0579124,IL_2429626,IP_1729411,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9683541,IL_2429626,IP_1729411,75,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_6824249,IL_2144167,IP_8369422,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9706840,IL_2144167,IP_8369422,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5784016,IL_2144167,IP_8369422,70,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_4719387,IL_9000367,IP_4626612,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4661821,IL_9000367,IP_4626612,70,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_6950870,IL_2635206,IP_7923120,70,Solar or actinic keratosis,,dermoscopic
+ISIC_0261344,IL_5086605,IP_2564151,65,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_1687088,IL_2635206,IP_7923120,70,Solar or actinic keratosis,,clinical: overview
+ISIC_7934367,IL_9840135,IP_7923120,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0647125,IL_9840135,IP_7923120,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_8035370,IL_1427673,IP_7923120,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6652468,IL_1427673,IP_7923120,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_3932849,IL_7399308,IP_7923120,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_4489445,IL_7399308,IP_7923120,70,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_7739038,IL_2025836,IP_5398777,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2228720,IL_2025836,IP_5398777,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7597095,IL_2025836,IP_5398777,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1827925,IL_6500902,IP_9655283,50,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_3069438,IL_2025836,IP_5398777,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7465137,IL_6936924,IP_7362744,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3311204,IL_6936924,IP_7362744,60,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_6713497,IL_9603815,IP_0936356,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_9074861,IL_3176026,IP_4079884,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_4462757,IL_0526105,IP_5048300,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_1341581,IL_0526105,IP_5048300,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6284148,IL_7614927,IP_6579706,65,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_2436138,IL_7614927,IP_6579706,65,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_5164664,IL_5969628,IP_6579706,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3139747,IL_5788979,IP_4336720,40,Nevus,histopathology,dermoscopic
+ISIC_5408518,IL_5969628,IP_6579706,65,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9200533,IL_8168888,IP_6579706,65,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_3342666,IL_8168888,IP_6579706,65,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_9476229,IL_4771776,IP_7800510,85,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_8053508,IL_4771776,IP_7800510,85,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_4679927,IL_8688599,IP_2175925,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8544566,IL_8688599,IP_2175925,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1760258,IL_7629840,IP_0991357,80,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_9795586,IL_7629840,IP_0991357,80,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_3750476,IL_4559146,IP_7960361,55,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_2070728,IL_8939141,IP_9516151,50,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5959220,IL_4559146,IP_7960361,55,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_0426193,IL_0978837,IP_9694153,45,Nevus,histopathology,dermoscopic
+ISIC_4263601,IL_6263448,IP_1549548,75,Solar or actinic keratosis,,dermoscopic
+ISIC_5733934,IL_6263448,IP_1549548,75,Solar or actinic keratosis,,clinical: overview
+ISIC_6069561,IL_4104011,IP_7872950,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7560813,IL_7949381,IP_7872950,80,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2729912,IL_7949381,IP_7872950,80,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_5948139,IL_4757470,IP_9786236,55,Solar lentigo,,dermoscopic
+ISIC_6289062,IL_4757470,IP_9786236,55,Solar lentigo,,clinical: overview
+ISIC_7481097,IL_1878538,IP_4253242,50,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0792800,IL_2767330,IP_6661147,55,Nevus,histopathology,dermoscopic
+ISIC_1831970,IL_1878538,IP_4253242,50,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9078177,IL_3383993,IP_3342129,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0133379,IL_3383993,IP_3342129,65,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1583042,IL_8218104,IP_3342129,65,Seborrheic keratosis,,dermoscopic
+ISIC_2522620,IL_8218104,IP_3342129,65,Seborrheic keratosis,,clinical: overview
+ISIC_6118568,IL_4579628,IP_3342129,65,Seborrheic keratosis,,dermoscopic
+ISIC_4192421,IL_5825485,IP_3342129,65,Dermatofibroma,,dermoscopic
+ISIC_7901514,IL_5825485,IP_3342129,65,Dermatofibroma,,clinical: overview
+ISIC_3073256,IL_0316981,IP_3342129,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6689070,IL_0316981,IP_3342129,65,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_7910779,IL_5400065,IP_5049519,70,Nevus,histopathology,dermoscopic
+ISIC_1642069,IL_5703090,IP_8631699,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5746105,IL_2584095,IP_0093557,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5848879,IL_2584095,IP_0093557,75,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_5481480,IL_7782929,IP_0093557,75,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7231071,IL_7782929,IP_0093557,75,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0330896,IL_7198013,IP_2844264,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_9704179,IL_9624120,IP_8785134,70,Seborrheic keratosis,,dermoscopic
+ISIC_1464726,IL_9624120,IP_8785134,70,Seborrheic keratosis,,clinical: overview
+ISIC_1241693,IL_0983679,IP_1418688,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_5940534,IL_0983679,IP_1418688,75,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_3749849,IL_1248740,IP_1418688,75,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_9874172,IL_5978849,IP_7358226,55,Nevus,histopathology,dermoscopic
+ISIC_8095537,IL_1248740,IP_1418688,75,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_3597597,IL_8606570,IP_6728907,35,Nevus,histopathology,dermoscopic
+ISIC_1816574,IL_8606570,IP_6728907,35,Nevus,histopathology,clinical: overview
+ISIC_8150058,IL_5313721,IP_6728907,35,Nevus,histopathology,dermoscopic
+ISIC_5007626,IL_5313721,IP_6728907,35,Nevus,histopathology,clinical: overview
+ISIC_0115851,IL_3312003,IP_9935521,30,Nevus,histopathology,dermoscopic
+ISIC_6925301,IL_3312003,IP_9935521,30,Nevus,histopathology,clinical: overview
+ISIC_7439706,IL_4336943,IP_3739383,55,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_2035987,IL_4336943,IP_3739383,55,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_6253779,IL_9547816,IP_7708591,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_7931985,IL_8807627,IP_4704077,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5521474,IL_9686443,IP_5924149,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5086718,IL_9686443,IP_5924149,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_4407852,IL_9975476,IP_5892304,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1816965,IL_9975476,IP_5892304,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_4082554,IL_9975476,IP_5892304,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_5794546,IL_1022413,IP_6640998,80,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0133773,IL_1022413,IP_6640998,80,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2277714,IL_3229123,IP_6640998,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3381026,IL_3632801,IP_6640998,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5610304,IL_3632801,IP_6640998,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1541229,IL_0274493,IP_2292214,45,Nevus,histopathology,dermoscopic
+ISIC_1000675,IL_3632801,IP_6640998,80,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_6315176,IL_4512262,IP_4216830,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9486550,IL_4512262,IP_4216830,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5033005,IL_4512262,IP_4216830,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1135829,IL_4512262,IP_4216830,70,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_2211948,IL_4891081,IP_0325006,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5059671,IL_4891081,IP_0325006,85,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_8987984,IL_3798662,IP_0682714,50,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1346627,IL_3798662,IP_0682714,50,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_8384844,IL_4874075,IP_3388406,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8229257,IL_9356702,IP_9096125,45,Nevus,histopathology,dermoscopic
+ISIC_8803373,IL_4874075,IP_3388406,65,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6478713,IL_3063049,IP_6610729,70,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_4310474,IL_3063049,IP_6610729,70,Seborrheic keratosis,histopathology,clinical: overview
+ISIC_6119596,IL_8573962,IP_9002218,35,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8495716,IL_8573962,IP_9002218,35,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6037786,IL_1728878,IP_6819963,55,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_2317385,IL_5244040,IP_6819963,55,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_3149813,IL_5244040,IP_6819963,55,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_8540289,IL_0219895,IP_5091395,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6803155,IL_8876724,IP_5091395,70,Solar or actinic keratosis,,dermoscopic
+ISIC_2887367,IL_1319562,IP_9096125,45,Dermatofibroma,histopathology,dermoscopic
+ISIC_6426979,IL_9453442,IP_5091395,70,Nevus,histopathology,dermoscopic
+ISIC_4875964,IL_9453442,IP_5091395,70,Nevus,histopathology,clinical: overview
+ISIC_8880006,IL_2090686,IP_5091395,70,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_8329844,IL_2090686,IP_5091395,70,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_2212637,IL_5005356,IP_9093111,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_5704967,IL_5005356,IP_9093111,85,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3234368,IL_5005356,IP_9093111,85,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_0942544,IL_6065258,IP_5520689,45,Seborrheic keratosis,,dermoscopic
+ISIC_6168031,IL_2990239,IP_5520689,45,Seborrheic keratosis,,dermoscopic
+ISIC_3550047,IL_6631639,IP_5520689,45,Dermatofibroma,,dermoscopic
+ISIC_5862918,IL_7535821,IP_0906253,80,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_1714551,IL_4525954,IP_5520689,45,Dermatofibroma,,dermoscopic
+ISIC_0413031,IL_9777032,IP_6444963,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0830433,IL_9777032,IP_6444963,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1907579,IL_6020575,IP_4393692,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5449807,IL_6020575,IP_4393692,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1425492,IL_8012686,IP_9116795,65,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_0542742,IL_8012686,IP_9116795,65,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1497097,IL_3412296,IP_8624681,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5911355,IL_3412296,IP_8624681,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_1262790,IL_2551859,IP_4805821,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_6727830,IL_1463789,IP_4968071,75,Seborrheic keratosis,histopathology,dermoscopic
+ISIC_7541596,IL_2551859,IP_4805821,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_7373164,IL_2551859,IP_4805821,70,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9195841,IL_2551859,IP_4805821,70,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4326975,IL_3601366,IP_0240453,60,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_8793798,IL_3601366,IP_0240453,60,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_8786983,IL_6841868,IP_5804995,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_9098311,IL_6841868,IP_5804995,65,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_1195906,IL_7370033,IP_7670614,80,Nevus,histopathology,dermoscopic
+ISIC_9968790,IL_7370033,IP_7670614,80,Nevus,histopathology,clinical: overview
+ISIC_6263512,IL_1120407,IP_1173614,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_5583449,IL_2753088,IP_3536249,35,Nevus,histopathology,dermoscopic
+ISIC_3098914,IL_1120407,IP_1173614,85,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_6231941,IL_5882175,IP_9189981,50,Nevus,histopathology,dermoscopic
+ISIC_7105580,IL_3522149,IP_9189981,50,Nevus,histopathology,dermoscopic
+ISIC_8810984,IL_2628887,IP_9189981,50,Nevus,histopathology,dermoscopic
+ISIC_9211210,IL_4890198,IP_8382257,70,"Squamous cell carcinoma, NOS",histopathology,dermoscopic
+ISIC_6736065,IL_4890198,IP_8382257,70,"Squamous cell carcinoma, NOS",histopathology,clinical: overview
+ISIC_8995601,IL_7047330,IP_8411585,30,Nevus,histopathology,dermoscopic
+ISIC_1452632,IL_6961144,IP_1218261,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_0094098,IL_6961144,IP_1218261,65,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_2368449,IL_3211111,IP_1218261,65,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3443621,IL_3949403,IP_1770335,85,Solar lentigo,histopathology,dermoscopic
+ISIC_2107859,IL_3211111,IP_1218261,65,"Melanoma, NOS",histopathology,clinical: overview
+ISIC_4407081,IL_5173845,IP_4744338,65,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_5749049,IL_5173845,IP_4744338,65,Solar or actinic keratosis,histopathology,clinical: overview
+ISIC_3130146,IL_4010754,IP_5143517,75,Nevus,histopathology,dermoscopic
+ISIC_8788296,IL_7230509,IP_4836760,85,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_6800726,IL_4901291,IP_8947694,75,Basal cell carcinoma,histopathology,dermoscopic
+ISIC_2704825,IL_4901291,IP_8947694,75,Basal cell carcinoma,histopathology,clinical: overview
+ISIC_4695565,IL_2485486,IP_8947694,75,Solar or actinic keratosis,histopathology,dermoscopic
+ISIC_9129115,IL_2485486,IP_8947694,75,Solar or actinic keratosis,histopathology,clinical: overview
+ISIC_9677008,IL_3556705,IP_5493434,30,"Melanoma, NOS",histopathology,dermoscopic
+ISIC_3079785,IL_3797557,IP_4906546,45,Nevus,histopathology,dermoscopic
+ISIC_4485929,IL_1921228,IP_9326183,65,Seborrheic keratosis,,dermoscopic
+ISIC_6230191,IL_8124990,IP_8542863,25,"Melanoma, NOS",histopathology,dermoscopic

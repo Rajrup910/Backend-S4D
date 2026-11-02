@@ -1,0 +1,10 @@
+# V6-0 noise-floor seeds (docs/V6_RUNSHEET.md section 0.4, section 0.8 item 5). Fold 0 only; no test, reserved or external read.
+# Part 1, the anchor recipe (IN-22k ConvNeXt-T + young extras, no heads): seeds 45/46/47 join the banked youngdata 42/43/44.
+# Every V6 screen is read against this recipe, so its six seeds give the bars. 58.6 min/run measured (58.5-58.7, queue_Q4.log).
+--arm youngdata --fold 0 --seed 45 --image-size 224 --batch-size 32 --trunk in22k --extra-train results/v5/young_data/extra_train.csv --no-save-best --run-tag v6nf
+--arm youngdata --fold 0 --seed 46 --image-size 224 --batch-size 32 --trunk in22k --extra-train results/v5/young_data/extra_train.csv --no-save-best --run-tag v6nf
+--arm youngdata --fold 0 --seed 47 --image-size 224 --batch-size 32 --trunk in22k --extra-train results/v5/young_data/extra_train.csv --no-save-best --run-tag v6nf
+# Part 2, section A0.9 as originally written: IN-22k control seeds 45/46/47, for the recipe comparison. 40.5-49.9 min/run measured.
+--arm control --fold 0 --seed 45 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v6nf
+--arm control --fold 0 --seed 46 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v6nf
+--arm control --fold 0 --seed 47 --image-size 224 --batch-size 32 --trunk in22k --no-save-best --run-tag v6nf

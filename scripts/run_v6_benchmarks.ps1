@@ -25,14 +25,20 @@ $queue = New-Object System.Threading.Mutex($false, "Global\capstone_v5_queue")
 try { $free = $queue.WaitOne(0) } catch [System.Threading.AbandonedMutexException] { $free = $true }
 if (-not $free) { Log "the V5 queue is running; refusing to start."; exit 3 }
 
-# tag, size. Tier 1 then Tier 2 (section A11.2), then the ADAE-recipe members (section A12.3). SwinV2 window8 needs 256 px.
+# tag, size. The V6 Part 0 roster first (anchor, PanDerm-B's proxy, DINOv2-B, SigLIP 2, 384 px member, the two declared
+# fallbacks), then Tier 1 and Tier 2 (section A11.2), then the ADAE-recipe members (section A12.3). SwinV2 window8 needs 256 px.
+# PanDerm-B is not a timm model: vit_base_patch16_224 is its declared compute proxy (section 0.4), confirmed on its first run.
 $configs = @(
   @("convnext_tiny.fb_in22k_ft_in1k", 224),
-  @("eva02_small_patch14_224.mim_in22k", 224),
+  @("vit_base_patch16_224.augreg_in21k_ft_in1k", 224),
+  @("vit_base_patch14_dinov2.lvd142m", 224),
+  @("vit_base_patch16_siglip_224.v2_webli", 224),
+  @("convnext_tiny.fb_in22k_ft_in1k", 384),
+  @("vit_small_patch14_dinov2.lvd142m", 224),
   @("tf_efficientnetv2_s.in21k_ft_in1k", 224),
+  @("eva02_small_patch14_224.mim_in22k", 224),
   @("caformer_s18.sail_in22k_ft_in1k", 224),
   @("vit_small_patch14_reg4_dinov2.lvd142m", 224),
-  @("vit_base_patch14_dinov2.lvd142m", 224),  # V6 Part 0 V6-3 member (2 Nov); gpu_benchmark.py passes img_size to timm
   @("seresnext50_32x4d.racm_in1k", 224),
   @("edgenext_small.usi_in1k", 224),
   @("maxvit_tiny_tf_224.in1k", 224),
@@ -42,9 +48,7 @@ $configs = @(
   @("convnext_small.dinov3_lvd1689m", 224),
   @("eva02_base_patch14_224.mim_in22k", 224),
   @("vit_base_patch16_dinov3.lvd1689m", 224),
-  @("vit_base_patch16_siglip_224.v2_webli", 224),
   # ADAE-recipe members (V6_RUNSHEET section A12.3), at the higher resolutions the recipe relies on
-  @("convnext_tiny.fb_in22k_ft_in1k", 384),
   @("tf_efficientnet_b3.ns_jft_in1k", 384),
   @("tf_efficientnet_b4.ns_jft_in1k", 384),
   @("tf_efficientnet_b5.ns_jft_in1k", 384),

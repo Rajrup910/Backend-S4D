@@ -9735,3 +9735,73 @@ No GPU, no test/reserved/external label read, no new result. The README now refl
   and I carried it into the hero GIF's title and badge, even though the manuscript had already dropped it. All removed and the
   hero GIF rebuilt. `audit_readme.py` now fails if the name carries a version number. The rest of the repo, the local
   infographic and the GitHub description were searched and do not use it.
+
+### V6 delivery audit and V6-0 preparation (2026-11-03, ~02:40; owner request)
+No GPU run by this session, no test/reserved/external label read, no V6 result. CPU joins on ISIC identifiers and a read of
+banked V5 files. Part 0 is **not frozen**. Full record: `docs/V6_RUNSHEET.md` §0.8c.
+- **Verdict.** G2/G3 are testable and fair once the fixes below are in. G1 is measured fairly but not attacked: Gate A's
+  probability is 0.106 at a true +0.035 and 0.50 at a true +0.050 over the V5 system, from an SD of 0.0120 taken from V5's
+  bootstrap CI (`results/v6/gate_a_power.json`, `research/v6/gate_a_power.py`). It is a planning value, not a property of
+  the V6 read.
+- **Found and fixed:**
+  - **Noise-floor recipe.** §A0.9 trained `control` seeds, but the anchor is `youngdata`. On 3 banked seeds the all-age
+    pAUC pair SD is 0.0071 vs 0.0153 (`results/v6/anchor_noise_floor.json`; rough, 3 pairs, not final). Bars now come from
+    six anchor seeds, and the control seeds run too (`results/v5/queue_V6N0.txt`).
+  - **V5 bar in §0.7.** 0.676 was one seed. The system scores 0.6911, and 0.7005 with TTA
+    (`results/v5/v5_oof_common_matrix.json`, `descriptive_macro_f1`, folds 1–4).
+  - **TTA on the comparator.** V6-5 now compares like with like, with and without TTA.
+  - **Head stage vs step budget.** `HEAD_EPOCHS = 3` is fixed, so a shortened run would over-spend on the frozen stage. It
+    is now declared as one tenth of the step budget.
+  - **PanDerm compute proxy.** It was missing from `scripts/run_v6_benchmarks.ps1`. It is added, and the roster now runs
+    first (25 configurations).
+  - **HIBA as a link target.** The added sources had not been checked against it. By identifier, ISIC 2020, ISIC 2019 Test
+    and MILK10k share 0 images, 0 lesions and 0 patients with HIBA (1,635 images, 1,257 lesions, 628 patients; live API,
+    3 Nov). DERM12345 and image hashes are still to do.
+  - **Between added sources.** MILK10k shares 126 lesions with ISIC 2019 Test (already excluded by D6) and 0 with ISIC 2020.
+  - **Also:** `bar_k1` declared for single-realisation reads (owner to confirm at the freeze); a class map for every added
+    source (ISIC 2019 Test holds Scar 314 and Melanoma metastasis 633); MILK10k has no patient ids; four V6 families in
+    `research/stats/families.py`; §A5 final status added.
+- **New code:** `research/v6/gate_a_power.py`, `research/v6/anchor_noise_floor.py` (imports torch through `screen_gate`, so
+  run it after the queue, not during), `research/v6/data_audit.py` (writes `results/v6/data_allocation.json`).
+- **Tonight's queue, run by the owner:** benchmarks, then `youngdata` seeds 45/46/47, then `control` seeds 45/46/47, ≈ 5.4–5.9 h.
+  Commit headroom was 3.1 GB at 02:30 against the runner's 6 GB floor, so memory must be freed first.
+- **Core total bounded at ≈ 37–62 GPU h**, inside the 80 h cap: measured anchor 58.6 min, measured 384 px 1.5×, each ViT-B
+  between a guessed 1× and the 2.5× cost rule. Re-quoted after the benchmarks.
+- **Not done:** member builder, averager changes, photometric and shades-of-grey caches, 8-class head, TTA size parameter, V6
+  runner rule, unit tests, downloads, image-hash audit, class maps, PanDerm hash, freeze.
+- **Pre-launch verification of the same queue (02:50–02:58; owner asked for it).** Smoke runs (2 batches, disposable, deleted
+  after, no ledger row) of both recipes and two benchmarks all exited 0.
+  - **Config:** against banked `youngdata_f0_s42` and `control_f1_s42`, the only differences are seed, tag and the smoke's
+    reduced row counts. Registry hash `e85842c9…` matches; prediction columns are identical (24); fold 0 is 12,235 train +
+    2,078 extras / 3,059 held out; extras file unchanged since 1 Oct 18:26, before the banked runs (sha256 `e6e0a84a…`, same as `results/v5/s84_lesion_links.json`); VRAM 2.20 GB.
+  - **Full-length path:** not re-run. `research/v5/train_v5.py` is unchanged since 3 Oct 13:52, and Q9 stack runs and Q11
+    ran 30 full epochs on it.
+  - **Changed:** new seeds are tagged `v6nf`, not `v5scr`, so V5's closed record gets no new rows that look like V5 screens.
+  - **Memory:** commit rose 11.6–12.5 GB during a smoke, and headroom reached 0 (−0.1). Windows grew the pagefile (limit 30.6 →
+    44.1 GB, then about 38 GB; alloc 23.3 GB; C: free 38.9 → 31.5 GB). Headroom afterwards is 7.0–7.7 GB, above the runner's
+    6 GB floor. Sleep on AC is off; the lid action could not be read.
+  - **Time:** ViT-B proxy 224 ms/batch (3.45 GB), DINOv2-B 302 ms/batch (4.41 GB), synthetic. Core total revised from
+    ≈ 37–62 h to **≈ 39–45 GPU h, extrapolated**; a benchmark takes about 12 s, not about 1 min.
+- **Data audit finished and corrected (03:00).** Two defects in its first version, both fixed: 2,074 MSKCC manifest rows
+  went unmapped (a `_downsampled` suffix on their ids, 615 of them reserved), and lesion links ignored images shared with the
+  target, so the extras links read 0. All numbers below are in `results/v6/data_allocation.json`; the inputs are in
+  `results/v6/archive_meta/`.
+  - **Links:** all 25,331 manifest rows and 2,078 extras now map. The added sources have 0 links to HIBA and 0 to the manifest,
+    except MILK10k's 859 lesions (D6).
+  - **Patient ids are nearly absent from the evaluation side:** 417 of 25,331 manifest rows (HAM 0, BCN 0, MSKCC 417), so "0
+    shared patients" there says little. Stated as a limit in §0.3.
+  - **New under-40 melanoma lesions beyond V5's pool: 15** (ISIC 2020 1, of its 74; ISIC 2019 Test 0; MILK10k 14 after D6;
+    DERM12345 has no age). The pool grows from 14,313 to about 43,000 rows, so V6-2 tests general data, not young data.
+  - **A rule added earlier tonight was too strict and is corrected:** against the extras (also training-only) only exact
+    copies are dropped, because a patient-level drop would discard 148 labelled ISIC 2020 rows, 81 of them young.
+
+### V6 headline changed, sampler arm added, freeze rule fixed (2026-11-03, ~03:40; owner decision)
+No GPU run, no result read. Committed before any `v6nf` seed existed, so the bar rule predates the seeds.
+- **Headline:** general performance and one deployable system (G2/G3). Under-40 keeps Gate A unchanged but is reported as the
+  measured boundary of public data and diversity. A new under-40 hypothesis is for V7 (owner decision).
+- **V6-2 arm Y:** a sampler holding the under-40 share at the V5 pool's level (27.6%, against 13.1% if diluted;
+  `results/v6/data_allocation.json`, `young_share`). It is carried only under a pre-declared rule. Expected not to be carried,
+  given S67. Adds 3 runs, so the total is ≈ 42–48 GPU h, extrapolated.
+- **Bars:** `bar_k1` and `bar_k3` confirmed by the owner, by formula from the six anchor seeds.
+- **Freeze:** §0.8 replaces §A0.14, whose CG-DM items V6 no longer runs. Approximate recipe values must become exact, only Part 0
+  and the V6 code are hashed, the owner approves the hash, and no V6-1 run comes before it. Part 0 is **not frozen**.

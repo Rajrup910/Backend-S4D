@@ -1,0 +1,241 @@
+{
+  "note": "metadata links only; hash matching needs the images and is still to do",
+  "inputs_sha256": {
+    "isic2019_train": "aee9ad700f8628137323f6fa91e1870a2f27cb1210b369ddcc04fec984604689",
+    "isic2019_test": "8c2c13f3a2f693712028612ff166e5fa767772a9f71ed0df53b2491d8353ce9f",
+    "isic2020": "0055ccc900340fd9e2fc751e4bf06bd4ccc432d04ec7df4062103c8a1521096c",
+    "milk10k": "9dd08060f88f1c8144c23b3ac3e94c15d33f2640072afd4195fd0cc4815796ce",
+    "derm12345": "48f3183c3f51a4a884111e60f05b1246762d1a78e5176a6f670184c7b9df657b",
+    "hiba_175": "f80ed2d22f5632f8c21448c73a133ce30e4d1ddc6a2fe8851f6f74c3593c99b9",
+    "hiba_176": "f80ed2d22f5632f8c21448c73a133ce30e4d1ddc6a2fe8851f6f74c3593c99b9",
+    "hiba_251": "acc3e16ec54f7db2e08ba54135d83578c54b854eb25c9963e24326f226585b59"
+  },
+  "image_hash_audit_done": false,
+  "manifest_rows_with_archive_id": 25331,
+  "manifest_rows": 25331,
+  "extras_rows_with_archive_id": 2078,
+  "extras_rows": 2078,
+  "extras_with_lesion_id": 1436,
+  "extras_with_patient_id": 1039,
+  "hiba": {
+    "images": 1635,
+    "lesions": 1257,
+    "patients": 628
+  },
+  "sources": {
+    "isic2019_test": {
+      "images": 8238,
+      "with_lesion_id": 8238,
+      "with_patient_id": 0,
+      "with_diagnosis_3": 7004,
+      "dedup_level": "lesion, patient unknown",
+      "links": {
+        "manifest": {
+          "shared_images": 0,
+          "shared_lesions": 0,
+          "shared_patients": 0,
+          "source_images_linked": 0
+        },
+        "young_extras": {
+          "shared_images": 642,
+          "shared_lesions": 222,
+          "shared_patients": 0,
+          "source_images_linked": 644
+        },
+        "hiba": {
+          "shared_images": 0,
+          "shared_lesions": 0,
+          "shared_patients": 0,
+          "source_images_linked": 0
+        }
+      },
+      "images_dropped_by_links": 644
+    },
+    "isic2020": {
+      "images": 33126,
+      "with_lesion_id": 33126,
+      "with_patient_id": 33126,
+      "with_diagnosis_3": 6015,
+      "dedup_level": "patient",
+      "links": {
+        "manifest": {
+          "shared_images": 0,
+          "shared_lesions": 0,
+          "shared_patients": 0,
+          "source_images_linked": 0
+        },
+        "young_extras": {
+          "shared_images": 322,
+          "shared_lesions": 325,
+          "shared_patients": 166,
+          "source_images_linked": 4616
+        },
+        "hiba": {
+          "shared_images": 0,
+          "shared_lesions": 0,
+          "shared_patients": 0,
+          "source_images_linked": 0
+        }
+      },
+      "images_dropped_by_links": 4616
+    },
+    "milk10k": {
+      "images": 10480,
+      "with_lesion_id": 10480,
+      "with_patient_id": 0,
+      "with_diagnosis_3": 10322,
+      "dedup_level": "lesion, patient unknown",
+      "links": {
+        "manifest": {
+          "shared_images": 0,
+          "shared_lesions": 859,
+          "shared_patients": 0,
+          "source_images_linked": 1718
+        },
+        "young_extras": {
+          "shared_images": 0,
+          "shared_lesions": 2,
+          "shared_patients": 0,
+          "source_images_linked": 4
+        },
+        "hiba": {
+          "shared_images": 0,
+          "shared_lesions": 0,
+          "shared_patients": 0,
+          "source_images_linked": 0
+        }
+      },
+      "images_dropped_by_links": 1722
+    },
+    "derm12345": {
+      "images": 12345,
+      "with_lesion_id": 0,
+      "with_patient_id": 12345,
+      "with_diagnosis_3": 12333,
+      "dedup_level": "patient",
+      "links": {
+        "manifest": {
+          "shared_images": 0,
+          "shared_lesions": 0,
+          "shared_patients": 0,
+          "source_images_linked": 0
+        },
+        "young_extras": {
+          "shared_images": 0,
+          "shared_lesions": 0,
+          "shared_patients": 0,
+          "source_images_linked": 0
+        },
+        "hiba": {
+          "shared_images": 0,
+          "shared_lesions": 0,
+          "shared_patients": 0,
+          "source_images_linked": 0
+        }
+      },
+      "images_dropped_by_links": 0
+    }
+  },
+  "between_added": {
+    "isic2019_test|isic2020": {
+      "shared_images": 0,
+      "shared_lesions": 0,
+      "shared_patients": 0
+    },
+    "isic2019_test|milk10k": {
+      "shared_images": 0,
+      "shared_lesions": 126,
+      "shared_patients": 0
+    },
+    "isic2019_test|derm12345": {
+      "shared_images": 0,
+      "shared_lesions": 0,
+      "shared_patients": 0
+    },
+    "isic2020|milk10k": {
+      "shared_images": 0,
+      "shared_lesions": 0,
+      "shared_patients": 0
+    },
+    "isic2020|derm12345": {
+      "shared_images": 0,
+      "shared_lesions": 0,
+      "shared_patients": 0
+    },
+    "milk10k|derm12345": {
+      "shared_images": 0,
+      "shared_lesions": 0,
+      "shared_patients": 0
+    }
+  },
+  "manifest_patient_id_coverage": {
+    "mskcc": {
+      "with_patient_id": 417,
+      "rows": 2903
+    },
+    "ham": {
+      "with_patient_id": 0,
+      "rows": 10015
+    },
+    "bcn20000": {
+      "with_patient_id": 0,
+      "rows": 12413
+    }
+  },
+  "manifest_with_lesion_id": 23664,
+  "net_training_contribution": {
+    "isic2019_test": {
+      "labelled_rows": 7004,
+      "rows_after_extras_images": 6374,
+      "rows_lost_to_extras_patient_drop": 0,
+      "young_rows_lost_to_extras_patient_drop": 0,
+      "rows_with_age": 6691,
+      "young_rows_after_extras_images": 409,
+      "young_melanoma_lesions_labelled": 35,
+      "young_melanoma_lesions_new": 0
+    },
+    "isic2020": {
+      "labelled_rows": 6015,
+      "rows_after_extras_images": 5693,
+      "rows_lost_to_extras_patient_drop": 148,
+      "young_rows_lost_to_extras_patient_drop": 81,
+      "rows_with_age": 6012,
+      "young_rows_after_extras_images": 618,
+      "young_melanoma_lesions_labelled": 74,
+      "young_melanoma_lesions_new": 1
+    },
+    "milk10k": {
+      "labelled_rows": 4176,
+      "rows_after_extras_images": 4176,
+      "rows_lost_to_extras_patient_drop": 0,
+      "young_rows_lost_to_extras_patient_drop": 0,
+      "rows_with_age": 4176,
+      "young_rows_after_extras_images": 191,
+      "young_melanoma_lesions_labelled": 14,
+      "young_melanoma_lesions_new": 14
+    },
+    "derm12345": {
+      "labelled_rows": 12333,
+      "rows_after_extras_images": 12333,
+      "rows_lost_to_extras_patient_drop": 0,
+      "young_rows_lost_to_extras_patient_drop": 0,
+      "rows_with_age": 0,
+      "young_rows_after_extras_images": 0,
+      "young_melanoma_lesions_labelled": 0,
+      "young_melanoma_lesions_new": 0
+    }
+  },
+  "young_share": {
+    "v5_pool": {
+      "young_rows": 4799,
+      "rows": 17372,
+      "share": 0.27624913654156114
+    },
+    "expanded_pool": {
+      "young_rows": 6017,
+      "rows": 45948,
+      "share": 0.13095238095238096
+    },
+    "note": "before class maps; DERM12345 has no age, so it counts as not young"
+  }
+}
