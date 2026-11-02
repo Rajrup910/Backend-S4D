@@ -18,6 +18,7 @@ from pathlib import Path
 import numpy as np
 
 from research.v5 import screen_gate as sg
+from research.v6 import lock_stage0
 
 REPO = Path(__file__).resolve().parents[2]
 PRED = REPO / "results" / "v5" / "preds"
@@ -44,6 +45,7 @@ def floor(arm: str) -> dict:
 
 
 def main() -> int:
+    lock_stage0.require()  # no bars from a changed recipe or rule (section 0.8d)
     report = {"youngdata_anchor_recipe": floor("youngdata"), "control_a0_9_as_written": floor("control"),
               "test_read": False, "reserved_read": False}
     OUT.write_text(json.dumps(report, indent=2), encoding="utf-8")

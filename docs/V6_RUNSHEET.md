@@ -359,6 +359,23 @@ supersedes the status column of 0.8b.
 | 10 | Exact recipe values | To do with the member builder |
 | 11 | Owner approval, then hash | Waits for 3, 4, 5, 6, 9, 10 |
 
+## 0.8d Stage-0 lock (3 Nov, owner request; this is NOT the plan freeze)
+**Why two steps:** the plan freeze (0.8 item 11) cannot happen yet, because the member builder, exact recipe values and class
+maps do not exist, and it needs tonight's benchmarks and bars as inputs. But everything tonight's run depends on is settled, so
+it is locked now, before any seed exists.
+
+**Locked** (`results/v6/v6_stage0_lock.json`, written by `research/v6/lock_stage0.py`): the queue and benchmark scripts; the
+trainer and bar script with every module they import, found by parsing; the manifest, fold assignments, class mapping and young
+extras; the six banked prediction files; package versions; and the rules, written out literally: which seeds, the bar formula,
+where `bar_k1` and `bar_k3` apply, Gate A, E-primary and the void-run rule.
+
+**Enforced:** creating the lock refuses if any `v6nf` output exists or a lock already exists. `--verify` must pass before launch
+(the launch command checks it), and `research/v6/anchor_noise_floor.py` refuses to compute bars if the lock is broken. A change to
+a locked file needs a dated amendment and a new, separately named lock; this one is never overwritten.
+
+**Not locked:** V6-1 onward, the member builder and recipes, class maps, downloads and the image-hash audit. Part 0 is recorded
+only as a snapshot hash, because it may still change by dated revision until the plan freeze.
+
 ## 0.9 What the older sections become
 - **§A0 CG-DM, §A0.12 R1, §A0.13 R2:** CG-DM Stage 0 survives as a **CPU-only diagnostic** run after V6-5 on the finalists'
   features, if time allows. Stage A/B, R1 and R2 need a new amendment. Reason: the misses are nevus-like in the very
@@ -488,7 +505,7 @@ roster. Each claim was checked against our files and the primary source first.
 
 **Contents:**
 - **Part 0 — Redesign (2 Nov, current plan):** 0.1 evidence · 0.2 headline and claims · 0.3 data · 0.4 stages and
-  gates · 0.5 nested selection · 0.6 not repeated · 0.7 expectations · 0.8 freeze checklist · 0.8b freeze-readiness audit · 0.8c delivery audit · 0.9 older sections · 0.10 external review log.
+  gates · 0.5 nested selection · 0.6 not repeated · 0.7 expectations · 0.8 freeze checklist · 0.8b freeze-readiness audit · 0.8c delivery audit · 0.8d stage-0 lock · 0.9 older sections · 0.10 external review log.
 - **Part A — Plan:** **A0 CG-DM headline (+ R1, R2)** · A1 goals · A2 data and allocation · A3 models (A3b V1 architectures: in-domain ensemble restored, portability demoted) · A4 CV techniques · A5 decision
   table · A6 registry and leakage audit · A7 Review-2 slide · A8 sources · **A9 standing issues →
   V6 and the V2–V4 carry-forward (1 Oct evening)** · **A10 headline benchmark, pool design,

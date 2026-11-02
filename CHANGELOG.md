@@ -9805,3 +9805,10 @@ No GPU run, no result read. Committed before any `v6nf` seed existed, so the bar
 - **Bars:** `bar_k1` and `bar_k3` confirmed by the owner, by formula from the six anchor seeds.
 - **Freeze:** §0.8 replaces §A0.14, whose CG-DM items V6 no longer runs. Approximate recipe values must become exact, only Part 0
   and the V6 code are hashed, the owner approves the hash, and no V6-1 run comes before it. Part 0 is **not frozen**.
+
+### V6 stage-0 lock before the noise-floor run (2026-11-03, ~03:50; owner request)
+No GPU run, no result read; 0 `v6nf` outputs existed at creation. The plan freeze cannot happen yet, so everything tonight's run
+depends on is locked instead (`docs/V6_RUNSHEET.md` §0.8d): `results/v6/v6_stage0_lock.json`, written by
+`research/v6/lock_stage0.py` (tests in `tests/test_v6_lock.py`). It hashes the queue and scripts, the trainer and bar script with
+their import closure, the partition, labels and extras, the banked predictions, package versions, and the rules literally. The
+launch command and the bar script both refuse a broken lock. Part 0 is **still not frozen**.
