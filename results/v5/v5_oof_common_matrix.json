@@ -6,14 +6,18 @@
   "models": [
     "composite_s42",
     "control_s42",
+    "composite_tta_s42",
     "composite_s43",
     "control_s43",
+    "composite_tta_s43",
     "composite_s44",
     "control_s44",
+    "composite_tta_s44",
     "composite_mean",
-    "control_mean"
+    "control_mean",
+    "composite_tta_mean"
   ],
-  "tta_included": false,
+  "tta_included": true,
   "selection_fold": 0,
   "selection_fold_note": "fold 0 is the selection fold (deviation D2): numbers read off it are optimistic for V5; confirmation claims read folds 1-4.",
   "assignments_sha256": "439786ca0df31d67afec37ce854a8a7e5a39d8f75fe631af1604b39f20762a1d",
@@ -41,12 +45,12 @@
     {
       "check": "4 zero missing / infinite values",
       "ok": true,
-      "detail": "112 probability/logit columns"
+      "detail": "168 probability/logit columns"
     },
     {
       "check": "5 probability normalisation (each model, each row)",
       "ok": true,
-      "detail": "max |sum - 1| = 2.13e-07 over 8 models (tolerance 1e-05)"
+      "detail": "max |sum - 1| = 2.33e-07 over 12 models (tolerance 1e-05)"
     },
     {
       "check": "6 no test / reserved / validation rows",
@@ -75,6 +79,11 @@
       "macro_f1_folds_1_4": 0.6660690565193808,
       "macro_f1_fold_0_selection": 0.6394323267549685
     },
+    "composite_tta_s42": {
+      "macro_f1_all_folds": 0.6823890856483855,
+      "macro_f1_folds_1_4": 0.6848110352130801,
+      "macro_f1_fold_0_selection": 0.6717789575762072
+    },
     "composite_s43": {
       "macro_f1_all_folds": 0.6733993959766778,
       "macro_f1_folds_1_4": 0.6770705496454933,
@@ -84,6 +93,11 @@
       "macro_f1_all_folds": 0.6519550900741032,
       "macro_f1_folds_1_4": 0.6601431516140198,
       "macro_f1_fold_0_selection": 0.6218379546302365
+    },
+    "composite_tta_s43": {
+      "macro_f1_all_folds": 0.6868792928636072,
+      "macro_f1_folds_1_4": 0.6906174621368654,
+      "macro_f1_fold_0_selection": 0.6715725973211762
     },
     "composite_s44": {
       "macro_f1_all_folds": 0.667623604438003,
@@ -95,6 +109,11 @@
       "macro_f1_folds_1_4": 0.6690111326019016,
       "macro_f1_fold_0_selection": 0.6408552069522818
     },
+    "composite_tta_s44": {
+      "macro_f1_all_folds": 0.6928383485132678,
+      "macro_f1_folds_1_4": 0.6939508428842592,
+      "macro_f1_fold_0_selection": 0.6874689638562002
+    },
     "composite_mean": {
       "macro_f1_all_folds": 0.6847729883454041,
       "macro_f1_folds_1_4": 0.6910660656470455,
@@ -104,6 +123,11 @@
       "macro_f1_all_folds": 0.6812905169837636,
       "macro_f1_folds_1_4": 0.6867231632224431,
       "macro_f1_fold_0_selection": 0.657763709287354
+    },
+    "composite_tta_mean": {
+      "macro_f1_all_folds": 0.6979327652220016,
+      "macro_f1_folds_1_4": 0.7005190211153162,
+      "macro_f1_fold_0_selection": 0.6866296106043344
     }
   },
   "sources": {
@@ -121,6 +145,13 @@
       "3": "results/v5/preds/R0_kfold_f3_s42_last.csv  sha256=adc8fc29a19817b058a46d942d1b34f07eae9fe412696a564b2f0504516ffbe0",
       "4": "results/v5/preds/R0_kfold_f4_s42_last.csv  sha256=8422483ea87475f9a043cc36260a712977bbe734f6ba6ccd020f7e3f4731ab26"
     },
+    "composite_tta_s42": {
+      "0": "results/v5/preds_tta/composite_f0_s42_in22k_v5stack_tta.csv  sha256=42eb9811f1384bc642a42181b3bd305abadc98254d3c39641eea14bd25ed12e6",
+      "1": "results/v5/preds_tta/composite_f1_s42_in22k_v5conf_tta.csv  sha256=b1980cd81018a10e3368aac02a085e9e91d5fc194f92c2d4e7a843d6705b3026",
+      "2": "results/v5/preds_tta/composite_f2_s42_in22k_v5conf_tta.csv  sha256=ef2349ea8efb6b36a0fa6984797b7c28669814ab7e55e5047d219abc310463d0",
+      "3": "results/v5/preds_tta/composite_f3_s42_in22k_v5conf_tta.csv  sha256=be486925320af5cacd298f5ba7394d0e61493806d7e5ffcd4476faf4296d4bdc",
+      "4": "results/v5/preds_tta/composite_f4_s42_in22k_v5conf_tta.csv  sha256=325f691902e6dc39aec38d08267e8d4f3a0f34676d133ad61014a737dd9edbca"
+    },
     "composite_s43": {
       "0": "results/v5/preds/composite_f0_s43_in22k_v5stack.csv  sha256=dd5484ee358eb606ee46748a93e27470305a8978e536359a1692c8c4b81a1f12",
       "1": "results/v5/preds/composite_f1_s43_in22k_v5conf.csv  sha256=44d76127718f9f9c517096c2c94f65901ef691c66ac4fa630d1cb689a09edca8",
@@ -134,6 +165,13 @@
       "2": "results/v5/preds/R0_kfold_f2_s43_v5ctl_last.csv  sha256=2afca0447e0ccbdbeb58545507673f5611e830d12cd679923d8114ef5f4fa394",
       "3": "results/v5/preds/R0_kfold_f3_s43_v5ctl_last.csv  sha256=d26b0607bba3b81dc3d8eb21d04af069f5b0b0ce2ae0814c278702a47aca81c8",
       "4": "results/v5/preds/R0_kfold_f4_s43_v5ctl_last.csv  sha256=ee5219670b7196f28f2b3fef73f472a3ab140f25aec2965c10eaac657310931d"
+    },
+    "composite_tta_s43": {
+      "0": "results/v5/preds_tta/composite_f0_s43_in22k_v5stack_tta.csv  sha256=b7864189da507c9a79fe49ba726af48c04ac9d6cac1d258221404e42e8b35454",
+      "1": "results/v5/preds_tta/composite_f1_s43_in22k_v5conf_tta.csv  sha256=27b6d8799e373ee5e225ccbad42b72c3f40f12a3c1951f2e48d7a9f11bfb0e36",
+      "2": "results/v5/preds_tta/composite_f2_s43_in22k_v5conf_tta.csv  sha256=8b2318963d5782de006f55b0c1d88438c94fbdf72b47c9791a778f59eca295d9",
+      "3": "results/v5/preds_tta/composite_f3_s43_in22k_v5conf_tta.csv  sha256=0ef61923b445782533d8ee44676bebc44703ee1d6f897e152e2a8fe0f48ea566",
+      "4": "results/v5/preds_tta/composite_f4_s43_in22k_v5conf_tta.csv  sha256=825d9e83c6bebe146b20dc0a849bb0b13fd20c21322d2ea7861b0778fd14664f"
     },
     "composite_s44": {
       "0": "results/v5/preds/composite_f0_s44_in22k_v5stack.csv  sha256=7ec727890ae2c0bde57e45386cc27119892b9fda483924f0a51edcfc166913d6",
@@ -149,12 +187,22 @@
       "3": "results/v5/preds/R0_kfold_f3_s44_v5ctl_last.csv  sha256=0cdb119f17b49670cd580cebfc0f6ddc0151f9fe0d01d3d2980a69b37c606c22",
       "4": "results/v5/preds/R0_kfold_f4_s44_v5ctl_last.csv  sha256=57641053c8a0c0966c9001c13140ec97dfd26ed61001fa49a8121eacb9d49e35"
     },
+    "composite_tta_s44": {
+      "0": "results/v5/preds_tta/composite_f0_s44_in22k_v5stack_tta.csv  sha256=bc80a8c8f2dae2c33bc2304a82f2e984ae12bb4d2ed5704409f8444804c7163c",
+      "1": "results/v5/preds_tta/composite_f1_s44_in22k_v5conf_tta.csv  sha256=32ac7cd50657a86f481befd68a8415796cc419b59b52090f1caa1246ff42dd5f",
+      "2": "results/v5/preds_tta/composite_f2_s44_in22k_v5conf_tta.csv  sha256=c4334a7fe081b09978628bf921e7c97d02ce8b0ff6a4c9c649bbd69ab644458e",
+      "3": "results/v5/preds_tta/composite_f3_s44_in22k_v5conf_tta.csv  sha256=56ffadc25867b7abe0b38634fe35c0e1d31f50e23cdad7fd8f9ed42eb6842531",
+      "4": "results/v5/preds_tta/composite_f4_s44_in22k_v5conf_tta.csv  sha256=5484ea3f820140cbb67d6960b59f5022a7e0510f8d9e5143ed984dbdca620b0e"
+    },
     "composite_mean": {
       "derived": "arithmetic mean of composite_s42/43/44"
     },
     "control_mean": {
       "derived": "arithmetic mean of control_s42/43/44"
+    },
+    "composite_tta_mean": {
+      "derived": "arithmetic mean of composite_tta_s42/43/44"
     }
   },
-  "matrix_sha256": "fa937f547e315707750dd8993c36d8e6b5904133c83b9c84a1bd6b2261af7605"
+  "matrix_sha256": "cf7f9a0f68b66f2024f80af700ed0d668a88afd6d0f6dc0e60e22e5666c96b69"
 }
