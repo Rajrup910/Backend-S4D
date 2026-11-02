@@ -9713,4 +9713,7 @@ No GPU, no test/reserved/external label read, no new result. The README now refl
     80–160 ms, and their worst gaps match those holds (97–167 ms). No dropped runs. This machine's software rendering;
     other devices were not measured.
   - `audit_readme.py` now also fails any GIF slower than 20 fps.
-- **Not verified:** the page as GitHub renders it (not pushed).
+- **Checked on GitHub after the push** (branch `v5-confirmation-review2`, commit `a8ab3e0`, 1440 px window): all ten GIFs
+  load at full size and animate, the README column is 838 px, all 36 in-page links resolve, and the 5 collapsible sections
+  and 14 tables render. GitHub wraps each GIF with its own play/pause control and strips `loading="lazy"`, so that
+  attribute has no effect there.
