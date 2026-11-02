@@ -19,6 +19,7 @@ REPO = Path(__file__).resolve().parents[2]
 FRAMES = Path(os.environ.get("README_MEDIA_TMP", Path(tempfile.gettempdir()) / "readme_media")) / "frames"
 PORT = 9333
 FPS = 25
+OUT_W = 1600  # recording width: about 2x the README column, so text stays sharp on high-resolution monitors
 
 # Installed before any page script. While recording, time only moves when tick() is called: performance.now, Date.now,
 # requestAnimationFrame, timers and CSS animations all read one virtual clock, so every frame is exactly 1/FPS later than

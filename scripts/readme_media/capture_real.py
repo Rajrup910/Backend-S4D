@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from cdp import REPO, Browser, Rec
+from cdp import OUT_W, REPO, Browser, Rec
 from facts import ci, load, num, sgn
 from scenes import ACCENT, TAG, sci
 
@@ -47,7 +47,7 @@ def css(width: int) -> str:
 
 
 async def setup(t, width, height):
-    await t.size(width, height, 1000 / width)
+    await t.size(width, height, OUT_W / width)
     await t.goto(PAGE, settle=2.5)
     await t.js("""(()=>{const s=document.createElement('style');s.id='__rec';document.head.appendChild(s);})()""")
     await t.js(STAGE_JS)

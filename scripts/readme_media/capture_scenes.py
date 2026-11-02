@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from cdp import Browser, Rec
+from cdp import OUT_W, Browser, Rec
 from scenes import H, PAGE, W, all_scenes
 
 
@@ -14,7 +14,7 @@ async def main(prefixes):
     base = Path(tempfile.gettempdir()) / "readme_media_scene.html"
     base.write_text(PAGE, encoding="utf-8")
     async with Browser() as t:
-        await t.size(W, H)
+        await t.size(W, H, OUT_W / W)
         await t.goto(base.as_uri())
         for name, (html, dur) in scenes.items():
             if prefixes and not any(name.startswith(p) for p in prefixes):

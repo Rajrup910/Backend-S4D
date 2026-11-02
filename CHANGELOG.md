@@ -9671,7 +9671,7 @@ brief MaxViT-core version of Part 0, which had already been reverted.
 
 ### README rebuilt around horizontal GIFs, with an audit (2026-11-02; owner request)
 No GPU, no test/reserved/external label read, no new result. The README now reflects V5 final (S84) and V6 Part 0.
-- **Ten GIFs in `docs/assets/readme/`** (900 x 432; the fold machine is 900 x 576; 25 fps), replacing the static PNGs,
+- **Ten GIFs in `docs/assets/readme/`** (1600 x 768; the fold machine is 1440 x 922; 25 fps), replacing the static PNGs,
   which needed zooming: `hero`, `programme`, `v1`–`v5`, `v5_fold`, `v5_milk10k`, `system`. Two kinds of footage:
   - charts, step strips, the abstention simulator and the fold machine, recorded from `review2_infographic.html` with
     each piece lifted out of the page and shown alone at legible size (the page's data and animation code unchanged);
@@ -9721,3 +9721,13 @@ No GPU, no test/reserved/external label read, no new result. The README now refl
   750 ms after a tab opens (`review2_infographic.html:9434`), and it was still running when the recording began.
   `capture_real.py` now cancels it first and raises an error unless the cards run exactly none, 1, 2, 3, 4, 5, 6. All four
   strips (V1–V4; V5 has none) pass that guard. V1–V4 re-recorded.
+- **Sharpness fix (owner report: pixelated on a monitor):** no hardware limit was involved. The GIFs were 900 px wide with
+  one 256-colour palette per GIF, so high-resolution screens stretched them.
+  - Recording and output are now 1600 px wide (fold machine 1440 px), about 2x the 838 px README column.
+  - Each scene and each transition gets its own palette, sampled from whole frames.
+  - Pixels kept during motion now snap to exact colours when a scene settles and at least once a second, which removed
+    faint ghost rectangles left by fade-ins.
+  - Cost: 57.4 MB in all, up from 35.5 MB; largest file 18.6 MB. Last-frame PSNR against the source is 44.6–51.6 dB
+    (36.8 dB for the fold machine, whose flutter is deliberately simplified).
+  - Playback in headless Chrome with all ten on one page: `v5_fold` and `system` paint at a median 42.4–42.5 ms, worst gap
+    56.9 ms; `v3` and `v4` median 48.5 ms, worst 135.6 ms against planned holds of 120 ms. Not measured on the owner's monitor.
