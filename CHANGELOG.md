@@ -9717,3 +9717,7 @@ No GPU, no test/reserved/external label read, no new result. The README now refl
   load at full size and animate, the README column is 838 px, all 36 in-page links resolve, and the 5 collapsible sections
   and 14 tables render. GitHub wraps each GIF with its own play/pause control and strips `loading="lazy"`, so that
   attribute has no effect there.
+- **Step-card order fixed (owner report: cards ran 2→3, then 1→2→3…):** `switchTab` starts the page's own walk-through
+  750 ms after a tab opens (`review2_infographic.html:9434`), and it was still running when the recording began.
+  `capture_real.py` now cancels it first and raises an error unless the cards run exactly none, 1, 2, 3, 4, 5, 6. All four
+  strips (V1–V4; V5 has none) pass that guard. V1–V4 re-recorded.

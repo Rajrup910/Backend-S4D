@@ -102,12 +102,27 @@ async def strip_scene(t, name, v, tab, key, title, pills=True):
         g.querySelectorAll('.pipeline-step-card').forEach(c=>{{c.parentElement.style.height='100%'}})}})()""")
     # V2's pills list output filenames, which cannot wrap inside a card this narrow
     await t.js(f"document.querySelectorAll('#__slot .pipeline-step-card>div:last-child').forEach(e=>e.style.display='{'' if pills else 'none'}')")
-    await asyncio.sleep(0.4)
+    # switchTab starts the page's own walk-through 750 ms after opening a tab. Cancel it, or the recording opens mid-walk.
+    await t.js(f"clearTimeout(switchTab.seqTimer);stopStepSequence('{key}');setPipelineStepState('{key}',0)")
+    await asyncio.sleep(0.6)
+    active = f"(()=>{{const c=document.querySelector('#pipeline-grid-{key} .pipeline-step-card.active-state');return c?+c.id.split('-').pop():0}})()"
+    order = []
+
+    async def play_watching(seconds):
+        for _ in range(round(seconds / 0.2)):
+            await rec.play(0.2)
+            state = await t.js(active)
+            if not order or order[-1] != state:
+                order.append(state)
+
     async with Rec(t, name) as rec:
         await t.js(f"triggerStepCascade(document.getElementById('pipeline-grid-{key}'))")
-        await rec.play(1.0)
+        await play_watching(1.0)
         await t.js(f"playStepSequence('{key}')")
-        await rec.play(6.1)
+        await play_watching(6.0)
+    if order[:7] != [0, 1, 2, 3, 4, 5, 6]:
+        raise RuntimeError(f"{name}: cards ran {order}, expected 0, 1, 2, 3, 4, 5, 6")
+    print(f"    {name}: cards ran {order}", flush=True)
 
 
 async def sim_scene(t, f):
