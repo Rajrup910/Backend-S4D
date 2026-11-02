@@ -248,3 +248,11 @@ results/v2/S3[4-9]_*.md
 results/v2/stale_artifacts.md
 results/v2/synthetic_validation.md
 
+
+# ---------- Local tidy-up (not for GitHub) ----------
+# LaTeX build outputs and the local tectonic binary
+paper/v4/manuscript_v4.pdf
+paper/manuscript_IEEE.pdf
+.tools/
+# manuscript backups kept locally
+*.tex.bak
