@@ -1,6 +1,6 @@
 <div align="center">
 
-# Scan4Disease 2.0 · Backend-S4D
+# Scan4Disease · Backend-S4D
 
 ### Leak-free, pre-registered research on safe skin-lesion triage in dermoscopy, and on why it keeps failing patients under 40
 
@@ -388,7 +388,7 @@ None of these read the test split.
 
 ```bibtex
 @misc{backend_s4d_2026,
-  title  = {Scan4Disease 2.0: Pre-Registered Evaluation of Safe Skin-Lesion Triage and the Under-40 Blind Spot},
+  title  = {Scan4Disease: Pre-Registered Evaluation of Safe Skin-Lesion Triage and the Under-40 Blind Spot},
   author = {Chhabra, Prateek and Roy Chowdhury, Rajrup and Srivastava, Aditya and
             Sonare, Kanak Pravin and Gupta, Manishka and Gupta, Uddhav},
   year   = {2026},

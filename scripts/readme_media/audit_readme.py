@@ -7,6 +7,7 @@
 3. Every relative link and image exists and is not git-ignored.
 4. Every GIF is horizontal, at least 850 px wide, at least 20 fps and under 20 MB.
 5. No AI attribution line.
+6. The project is Scan4Disease (S4D), with no version number in the name, in the README and in the GIF scenes.
 """
 from __future__ import annotations
 
@@ -23,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from facts import REPO, ci, load, sgn
 
 README = REPO / "README.md"
-ALLOW = {"3.12", "2.11", "12.8", "2.0", "0.80"}  # Python, PyTorch, CUDA, project name, the V3 ceiling and spec 0.80 as labels
+ALLOW = {"3.12", "2.11", "12.8", "0.80"}  # Python, PyTorch, CUDA, the V3 ceiling and spec 0.80 as labels
 # plan thresholds printed as labels, each checked against its source in the exact-claim list below
 SOURCES = [
     "results/ablation_table.csv", "results/mcnemar_delong.json", "results/review2/v1_member_metrics.csv", "results/age_band_prior.csv",
@@ -181,6 +182,12 @@ def main() -> int:
     # 5. attribution
     if re.search(r"Co-Authored-By|Generated with|Claude|Anthropic|ChatGPT|AI-generated", text, re.I):
         fails.append("AI attribution found in README")
+
+    # 6. project name
+    wrong_name = re.compile(r"(scan\s*4\s*disease|s4d)[\s·:_-]*(v\s*)?\d(\.\d+)?\b", re.I)  # \b lets a citation key's year (s4d_2026) through
+    for label, source in (("README", text), ("scenes.py", (Path(__file__).parent / "scenes.py").read_text(encoding="utf-8"))):
+        if wrong_name.search(source):
+            fails.append(f"{label}: the project name carries a version number: {wrong_name.search(source)[0]}")
 
     print(f"{len(checked)} exact claims, {len(tokens)} decimals, {links} file links, {len(gifs)} GIFs ({total:.1f} MB)")
     for line in fails:

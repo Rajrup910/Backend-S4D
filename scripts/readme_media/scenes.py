@@ -97,7 +97,7 @@ def sci(p: float) -> str:
 
 def chrome(v: str, src: str = "", theme: str = "dark") -> str:
     pills = "".join(f'<span class="pill{" on" if k == v else ""}">{k}</span>' for k in ("V1", "V2", "V3", "V4", "V5"))
-    chip = f'<span class="chip">{v} · {TAG[v].upper()}</span>' if v in TAG else '<span class="chip">SCAN4DISEASE 2.0</span>'
+    chip = f'<span class="chip">{v} · {TAG[v].upper()}</span>' if v in TAG else '<span class="chip">SCAN4DISEASE</span>'
     s = f'<div class="src">{src}</div>' if src else ""
     return f'<div class="top">{chip}<span class="pills">{pills}</span></div>{s}'
 
@@ -162,7 +162,7 @@ def hero(f) -> dict:
     u = b["<40"]
     return {
         "hero_title": (scene("ALL", f"""
-          <div style="margin:auto 0"><div class="wipe" style="font-size:72px;font-weight:800;letter-spacing:-.035em;line-height:1">Scan4Disease 2.0</div>
+          <div style="margin:auto 0"><div class="wipe" style="font-size:72px;font-weight:800;letter-spacing:-.035em;line-height:1">Scan4Disease</div>
           <div class="lead up" style="--d:.65s;margin-top:20px;font-size:30px;line-height:1.28;color:#e2e8f0">Can a skin-lesion classifier be trusted as a <span class="key">triage tool</span>, for <span class="key">every</span> patient?</div>
           <div class="row up" style="--d:1.2s;margin-top:26px;gap:11px;flex-wrap:wrap;font-size:18px;font-weight:700;color:#cbd5e1"><span>Lesion-grouped splits</span><span class="mute">·</span><span>Plans hashed before data</span><span class="mute">·</span><span>Every number from results/</span></div></div>"""), 3.6),
         "hero_trap": (scene("ALL", f"""
@@ -425,7 +425,7 @@ def system(f) -> dict:
             <div class="tile pop" style="--d:{d:.2f}s;flex:1.25;padding:12px 18px;border-color:#fbbf24"><div style="font-size:21px;font-weight:800;color:#fbbf24">S56 per-age-band abstention</div><div class="l" style="margin-top:4px;font-size:18px">Under-40 system sensitivity <b class="mono">{sgn(f['v4_s56'], 3)}</b> over global abstention at a 20% budget</div></div>
             <div class="tile pop" style="--d:{d + .5:.2f}s;padding:12px 18px;border-color:#34d399"><div style="font-size:21px;font-weight:800;color:#34d399">Confident</div><div class="l" style="margin-top:4px;font-size:18px">Automated triage decision</div></div>
             <div class="tile pop" style="--d:{d + .8:.2f}s;padding:12px 18px;border-color:#fb7185"><div style="font-size:21px;font-weight:800;color:#fb7185">Uncertain</div><div class="l" style="margin-top:4px;font-size:18px">Refer to a dermatologist</div></div>
-          </div>""", "Macro-F1 on HAM10000 test: results/ablation_table.csv · S56: results/v4/s56/contrasts_reserved.csv").replace('<span class="chip">SCAN4DISEASE 2.0</span>', '<span class="chip">DEPLOYED SINCE V4</span>'), 6.4),
+          </div>""", "Macro-F1 on HAM10000 test: results/ablation_table.csv · S56: results/v4/s56/contrasts_reserved.csv").replace('<span class="chip">SCAN4DISEASE</span>', '<span class="chip">DEPLOYED SINCE V4</span>'), 6.4),
     }
 
 

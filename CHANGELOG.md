@@ -9731,3 +9731,7 @@ No GPU, no test/reserved/external label read, no new result. The README now refl
     (36.8 dB for the fold machine, whose flutter is deliberately simplified).
   - Playback in headless Chrome with all ten on one page: `v5_fold` and `system` paint at a median 42.4–42.5 ms, worst gap
     56.9 ms; `v3` and `v4` median 48.5 ms, worst 135.6 ms against planned holds of 120 ms. Not measured on the owner's monitor.
+- **Name corrected (owner report):** the project is Scan4Disease (S4D). "2.0" had survived in the README title and citation
+  and I carried it into the hero GIF's title and badge, even though the manuscript had already dropped it. All removed and the
+  hero GIF rebuilt. `audit_readme.py` now fails if the name carries a version number. The rest of the repo, the local
+  infographic and the GitHub description were searched and do not use it.
