@@ -178,7 +178,7 @@ only exact image or hash copies are dropped: that is double counting, not leakag
 148 labelled ISIC 2020 rows, 81 of them young (`results/v6/data_allocation.json`).
 **Limit, stated:** only 417 of 25,331 manifest rows have a patient id (HAM 0, BCN 0, MSKCC 417), so "0 shared patients" with
 the evaluation rows is close to empty. A patient with different lesions in an added source and an evaluation fold cannot be
-ruled out, most plausibly in ISIC 2020's BCN and MSKCC images. Lesion ids (23,664 of 25,331) and image hashes are the real check. A **subclass → class map is
+ruled out, most plausibly in ISIC 2020's Vienna (4,364 kept rows; HAM10000's institution, and HAM has no patient ids), MSKCC (709) and BCN (136) images. Lesion ids (23,664 of 25,331) and image hashes are the real check. A **subclass → class map is
 declared at V6-0 for every added source**, not only DERM12345: ISIC 2019 Test holds classes the head does not have (Scar
 314, Melanoma metastasis 633, `results/v6/archive_meta/isic2019_test.csv`), and each is mapped or excluded before any
 training. MILK10k has no patient ids either, so it is lesion-deduplicated, patient unknown. Added images are stored as a
@@ -349,15 +349,15 @@ supersedes the status column of 0.8b.
 |---|---|---|
 | 1 | V5 final, §A5 filled | **Done** (S84 receipt completed; §A5 final status added) |
 | 2 | S84 lesion-level exclusion | **Done** (D6 applied) |
-| 3 | `data_allocation.json` | **Identifier links done for all sources and all 25,331 manifest rows** (`research/v6/data_audit.py`): 0 links to HIBA; 0 to the manifest except MILK10k's 859 lesions (D6). PanDerm hash done (0.8e). Image hashes and class maps to do |
+| 3 | `data_allocation.json` | **Identifier links done for all sources and all 25,331 manifest rows** (`research/v6/data_audit.py`): 0 links to HIBA; 0 to the manifest except MILK10k's 859 lesions (D6). PanDerm hash done (0.8e). **Image hashes and class maps done 3 Nov** (`research/v6/added_pool.py`, `results/v6/added_pool/audit.json`; 0.8e) |
 | 4 | Benchmarks, 80 h cap | **Done 3 Nov** (`results/v6/benchmarks/`, 25 configurations). Core total re-quoted in 0.8e: ≈ 37–47 GPU h, extrapolated, under the cap |
 | 5 | Six-seed bars | **Done 3 Nov** (`results/v6/anchor_noise_floor.json`, both arms final; commit `74518df`) |
 | 6 | C4 parity | **Done (0.8e):** `research/v6/members.py` asserts DINOv2's and SigLIP 2's mean/std against timm and keeps the repo's eval geometry (tests). PanDerm's ImageNet statistics are confirmed from its script, and the real file passes the wiring check |
 | 7 | Statistical families | **Done** |
 | 8 | Gate A power statement | **Done** |
-| 9 | Unit tests | **Partly done:** `tests/test_v6_engineering.py` covers the gate, averager (scaled window, BN re-estimation), TTA size/normalisation, 8-class collapse and member builder, including the real PanDerm file. `tests/test_v6_trainer.py` covers the trainer, the plan freeze and the gate's V6 paths |
+| 9 | Unit tests | **Done:** `tests/test_v6_added_pool.py` covers the class map, link rules, resize and hash audit; `tests/test_v6_engineering.py` covers the gate, averager (scaled window, BN re-estimation), TTA size/normalisation, 8-class collapse and member builder, including the real PanDerm file. `tests/test_v6_trainer.py` covers the trainer, the plan freeze and the gate's V6 paths |
 | 10 | Exact recipe values | **Done (0.8e, adopted).** All three members pass `members.require_exact`. The photometric recipe is no longer needed |
-| 11 | Owner approval, then hash | Waits for 3 (image hashes, class maps). All V6-1 code is written; `research/v6/plan_freeze.py --approve` writes the hash, and the trainer refuses a run of record without it |
+| 11 | Owner approval, then hash | **The only open item.** All V6-1 code is written and the pool is built; `research/v6/plan_freeze.py --approve` writes the hash, and the trainer refuses a run of record without it |
 
 **Engineering status, 3 Nov afternoon** (new files only, so the stage-0 lock still verifies; tests in `tests/test_v6_engineering.py`):
 - **Done:** `research/v6/gate.py` (screen gate read against the six anchor seeds; the V5 gate still reads the in1k control and is
@@ -489,8 +489,24 @@ roster (anchor, 384 px, DINOv2, SigLIP 2); V6-5 2.8–4.2 h; V6-6 ≤ 1 h.
   queue's retry reruns it. Added rows are re-checked against every manifest split. `gate.py --averaging-read` computes V6-1's `_swad` - `_last` rule. The runner's `v6 ` route was dry-run on a shortened run: `epochs_run` 14 of 14
   is complete and 13 of 14 is not.
 
-**What remains before the freeze:** downloads, image-hash audit and class maps, which give the added-rows CSV the trainer already accepts; the size of the resized cache; then the owner approves the hash
-(`python -m research.v6.plan_freeze --approve`).
+**Expanded pool, built 3 Nov night** (`research/v6/added_pool.py`; all numbers in `results/v6/added_pool/audit.json`, `selection.json`, `decode_cost.json`; no test, reserved or external label read):
+
+| Source | Archive rows | After class map and id links | After hash audit | Under 40 |
+|---|---:|---:|---:|---:|
+| ISIC 2019 Test, Barcelona part | 8,238 | 3,902 | 3,873 | 212 |
+| ISIC 2020 | 33,126 | 5,639 | 5,604 | 617 |
+| MILK10k, dermoscopic | 10,480 | 4,134 | 4,131 | 181 |
+| DERM12345 | 12,345 | 12,298 | 12,168 | 0 (no age field) |
+| **Added** | | **25,973** | **25,776** | **1,010** |
+
+- **Class map, declared for every source:** V5's `young_data.CLASS_RULES`, split to 8 classes; SCC, its in-situ form and keratoacanthoma are `scc`. Melanoma metastasis is excluded. Anything unmatched (scar, Kaposi sarcoma, Paget disease, no diagnosis) is excluded and counted.
+- **The plan's own figures reproduce:** 530 Barcelona rows already in the extras, and MILK10k's 985 D6 lesions (859 + 126). Enforcing "the BCN part" removed 1,592 otherwise usable rows attributed to the MILK study team, which an earlier count had included.
+- **The hash audit found links the identifiers missed:** 16 added images are near-copies of corpus images (ISIC 2019 Test 4, ISIC 2020 12). They are dropped, and so are the 21 other added images of their lesions (5) and patients (16), because a copy puts its lesion and patient in the corpus. **0 are copies of HIBA.** HIBA's 1,635 images were hashed and discarded: no pixels stored, no diagnosis used. Double counting removed 159 more (130 of them DERM12345 repeats) and 1 copy of a young extra.
+- **Cache:** shorter side 512 px, JPEG 95, 2.31 GB for the kept rows; hashes were taken from the full image. 38 DERM12345 images have a shorter side under 439 px (smallest 113) and are upsampled by the 384 px member's resize; they are kept.
+- **Effect on the runs:** fold 0 trains on 14,313 + 25,776 rows, 11 epochs, the last cut at the budget. The young share dilutes to about 13.1%, as planned, against the 29.6-29.9% arm Y holds.
+- **Decode cost, measured on one CPU thread (ms per image at 224 px):** manifest 12.4, young extras 47.0, added cache 9.3. So V6-2's unmeasured assumption is settled: added rows are cheaper than manifest rows. The formula gives V5 pool 279 ms/batch (72 min; the V6-0 seeds measured 73), arm P 195 ms/batch (about 50 min) and arm Y about 236 ms/batch (about 60 min), so **V6-2 is about 5.5 h, extrapolated**, the low side of its 5.8-7.3 h. The total stays inside its range.
+
+**What remains before the freeze:** only the owner's approval of the hash (`python -m research.v6.plan_freeze --approve`), which covers Part 0, `research/v6/`, the runner, the bars and `added_train.csv`.
 
 ## 0.9 What the older sections become
 - **§A0 CG-DM, §A0.12 R1, §A0.13 R2:** CG-DM Stage 0 survives as a **CPU-only diagnostic** run after V6-5 on the finalists'

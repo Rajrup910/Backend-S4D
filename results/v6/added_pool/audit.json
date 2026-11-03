@@ -1,0 +1,105 @@
+{
+  "rule": "dHash AND pHash within radius 3",
+  "corpus_images": 27629,
+  "extras_images": 2078,
+  "hiba_images_hashed": 1635,
+  "hiba_pixels_stored": false,
+  "sources": {
+    "isic2019_test": {
+      "candidates": 3902,
+      "dropped": {
+        "hash_copy_of_earlier_added": 20,
+        "same_lesion_id_as_a_hash_copy": 5,
+        "hash_copy_of_corpus": 4
+      },
+      "kept": 3873,
+      "kept_young": 212,
+      "kept_by_class_8": {
+        "nv": 1152,
+        "mel": 964,
+        "bcc": 831,
+        "bkl": 389,
+        "akiec_ak": 344,
+        "scc": 123,
+        "df": 40,
+        "vasc": 30
+      }
+    },
+    "isic2020": {
+      "candidates": 5639,
+      "dropped": {
+        "same_patient_id_as_a_hash_copy": 16,
+        "hash_copy_of_corpus": 12,
+        "hash_copy_of_earlier_added": 6,
+        "hash_copy_of_young_extras": 1
+      },
+      "kept": 5604,
+      "kept_young": 617,
+      "kept_by_class_8": {
+        "nv": 4934,
+        "mel": 498,
+        "bkl": 170,
+        "akiec_ak": 2
+      }
+    },
+    "milk10k": {
+      "candidates": 4134,
+      "dropped": {
+        "hash_copy_of_earlier_added": 3
+      },
+      "kept": 4131,
+      "kept_young": 181,
+      "kept_by_class_8": {
+        "bcc": 2409,
+        "scc": 650,
+        "bkl": 422,
+        "nv": 290,
+        "mel": 184,
+        "akiec_ak": 115,
+        "vasc": 31,
+        "df": 30
+      }
+    },
+    "derm12345": {
+      "candidates": 12298,
+      "dropped": {
+        "hash_copy_of_earlier_added": 130
+      },
+      "kept": 12168,
+      "kept_young": 0,
+      "kept_by_class_8": {
+        "nv": 9906,
+        "bkl": 667,
+        "bcc": 408,
+        "mel": 387,
+        "scc": 296,
+        "vasc": 276,
+        "df": 176,
+        "akiec_ak": 52
+      }
+    }
+  },
+  "added_rows": 25776,
+  "added_young": 1010,
+  "added_no_age": 12212,
+  "kept_by_class_8": {
+    "nv": 16282,
+    "bcc": 3648,
+    "mel": 2033,
+    "bkl": 1648,
+    "scc": 1069,
+    "akiec_ak": 513,
+    "vasc": 337,
+    "df": 246
+  },
+  "cache_gb": 2.31,
+  "cache_mean_kb": 89.5,
+  "full_gb_read": 3.69,
+  "short_side": 512,
+  "jpeg_quality": 95,
+  "young_share": {
+    "v5_pool": 0.27624913654156114,
+    "expanded_pool": 0.13462964679707054
+  },
+  "added_train": "results/v6/added_pool/added_train.csv"
+}

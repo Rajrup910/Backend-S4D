@@ -9906,3 +9906,12 @@ The owner adopted `docs/V6_RUNSHEET.md` section 0.8e. No training run, no test o
 - **GPU smokes (two fine-tune batches, disposable):** anchor 2.20 GB, anchor 384 px at batch 16 3.27 GB, PanDerm-B 3.01 GB, DINOv2-B 3.72 GB, SigLIP 2 2.80 GB, added rows with the young sampler 2.20 GB. Printed by each run; not retained. Real members' run times remain unmeasured.
 - **Fold shares for arm Y:** 0.2964, 0.2969, 0.2987, 0.2968, 0.2975 for folds 0-4, computed from `ml/data/manifest_v4.csv`, `results/v4/kfold/fold_assignments.csv` and `results/v5/young_data/extra_train.csv`. The runsheet's 27.6% is the whole development pool.
 - **Still before the freeze:** downloads, image-hash audit, class maps, the resized-cache size, then owner approval of the hash.
+
+### V6 expanded pool built; image-hash audit done (2026-11-03, night; owner go, no per-download approval)
+`research/v6/added_pool.py` declares the class maps, applies the id links, builds the resized cache and runs the hash audit. No training run of record, no test or reserved read, no HIBA pixels stored or HIBA diagnosis used. Part 0 is **still not frozen**. Numbers: `results/v6/added_pool/audit.json`, `selection.json`, `decode_cost.json`; `results/v6/data_allocation.json` updated.
+- **Rows:** ISIC 2019 Test Barcelona part 3,873; ISIC 2020 5,604; MILK10k 4,131; DERM12345 12,168. Added **25,776**, of which 1,010 are under 40 and 12,212 have no age. Output: `results/v6/added_pool/added_train.csv`.
+- **Download:** 3.69 GB read, 2.31 GB kept, no failures; about 50 minutes in all: 9 at 6 connections, then about 41 at 16. MILK10k came from the zip already on disk.
+- **Leak findings:** 16 added images are near-copies of corpus images that identifiers had missed, so they were dropped along with 21 other added images of their lesions and patients. 0 copies of HIBA.
+- **Plan details made exact:** "the BCN part" now enforced (1,592 otherwise usable MILK-attributed rows excluded; `data_audit.py`'s net count had included them), and the 0.3 patient limit now names ISIC 2020's Vienna rows, HAM10000's institution.
+- **Cost:** added rows decode faster than manifest rows, so V6-2 is about 5.5 h, extrapolated (runsheet 0.8e).
+- **Freeze:** `plan_freeze.py` now also hashes `added_train.csv`. `tests/test_v6_added_pool.py` added; 131 V6 tests pass. A smoke with the real file passed (2.20 GB). **Only the owner's approval of the hash remains in 0.8.**

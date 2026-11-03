@@ -1,0 +1,15 @@
+{
+  "what": "train transform per image, ms, including JPEG decode; one CPU thread, 300 images per set, seed 1, measured 3 Nov 2026 by hand, not retained as a script",
+  "manifest": {
+    "224": 12.4,
+    "384": 18.2
+  },
+  "young_extras": {
+    "224": 47.0,
+    "384": 55.1
+  },
+  "added_cache": {
+    "224": 9.3,
+    "384": 15.2
+  }
+}

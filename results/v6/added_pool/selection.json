@@ -1,0 +1,153 @@
+{
+  "isic2019_test": {
+    "archive_rows": 8238,
+    "kept": 3902,
+    "excluded": {
+      "no_class_on_the_head": 2101,
+      "isic2019_test_not_the_bcn_part": 1704,
+      "already_in_young_extras": 530,
+      "not_dermoscopic": 1
+    },
+    "kept_by_class_8": {
+      "nv": 1157,
+      "mel": 971,
+      "bcc": 839,
+      "bkl": 390,
+      "akiec_ak": 346,
+      "scc": 125,
+      "df": 44,
+      "vasc": 30
+    },
+    "unmapped_diagnosis_3": {
+      "(none)": 1156,
+      "Melanoma metastasis": 631,
+      "Scar": 314
+    },
+    "kept_by_attribution": {
+      "Hospital Cl\u00ednic de Barcelona": 3902
+    },
+    "kept_by_license": {
+      "CC-BY-NC": 3902
+    },
+    "kept_young": 214,
+    "kept_no_age": 41,
+    "full_download_gb": 0.24
+  },
+  "isic2020": {
+    "archive_rows": 33126,
+    "kept": 5639,
+    "excluded": {
+      "no_class_on_the_head": 27165,
+      "already_in_young_extras": 322
+    },
+    "kept_by_class_8": {
+      "nv": 4949,
+      "mel": 511,
+      "bkl": 177,
+      "akiec_ak": 2
+    },
+    "unmapped_diagnosis_3": {
+      "(none)": 27111,
+      "Lentigo NOS": 45,
+      "Scar": 2,
+      "Warty dyskeratoma": 2,
+      "Large cell acanthoma": 1,
+      "Tricholemmoma": 1,
+      "Porokeratosis": 1,
+      "Atypical melanocytic neoplasm": 1,
+      "Cafe au lait macule or patch": 1
+    },
+    "kept_by_attribution": {
+      "ViDIR Group, Department of Dermatology, Medical University of Vienna": 4364,
+      "Memorial Sloan Kettering Cancer Center": 737,
+      "Sydney Melanoma Diagnostic Center at Royal Prince Alfred Hospital, Pascale Guitera": 292,
+      "Department of Dermatology, Hospital Cl\u00ednic de Barcelona": 136,
+      "The University of Queensland Diamantina Institute, The University of Queensland, Dermatology Research Centre": 110
+    },
+    "kept_by_license": {
+      "CC-BY-NC": 4792,
+      "CC-BY": 847
+    },
+    "kept_young": 618,
+    "kept_no_age": 3,
+    "full_download_gb": 1.41
+  },
+  "milk10k": {
+    "archive_rows": 10480,
+    "kept": 4134,
+    "excluded": {
+      "not_dermoscopic": 5240,
+      "linked_to_manifest": 859,
+      "milk10k_d6": 126,
+      "no_class_on_the_head": 121
+    },
+    "kept_by_class_8": {
+      "bcc": 2412,
+      "scc": 650,
+      "bkl": 422,
+      "nv": 290,
+      "mel": 184,
+      "akiec_ak": 115,
+      "vasc": 31,
+      "df": 30
+    },
+    "unmapped_diagnosis_3": {
+      "(none)": 77,
+      "Melanoma metastasis": 14,
+      "Mucosal melanotic macule": 7,
+      "Clear cell acanthoma": 4,
+      "Juvenile xanthogranuloma": 3,
+      "Trichoblastoma": 3,
+      "Porokeratosis": 3,
+      "Ink-spot lentigo": 2,
+      "Infundibular or epidermal cyst": 2,
+      "Sebaceous hyperplasia": 2,
+      "Mastocytosis": 2,
+      "Molluscum": 1,
+      "Supernumerary nipple": 1
+    },
+    "kept_by_attribution": {
+      "MILK study team": 4134
+    },
+    "kept_by_license": {
+      "CC-BY-NC": 4134
+    },
+    "kept_young": 181,
+    "kept_no_age": 0,
+    "full_download_gb": 0.1
+  },
+  "derm12345": {
+    "archive_rows": 12345,
+    "kept": 12298,
+    "excluded": {
+      "no_class_on_the_head": 47
+    },
+    "kept_by_class_8": {
+      "nv": 9977,
+      "bkl": 675,
+      "bcc": 423,
+      "mel": 400,
+      "scc": 303,
+      "vasc": 282,
+      "df": 180,
+      "akiec_ak": 58
+    },
+    "unmapped_diagnosis_3": {
+      "Kaposi sarcoma": 16,
+      "(none)": 12,
+      "Paget disease": 9,
+      "Ink-spot lentigo": 6,
+      "Dermatofibrosarcoma protuberans": 4
+    },
+    "kept_by_attribution": {
+      "Imperial College London": 12298
+    },
+    "kept_by_license": {
+      "CC-BY": 12298
+    },
+    "kept_young": 0,
+    "kept_no_age": 12298,
+    "full_download_gb": 1.85
+  },
+  "lesions_in_two_added_sources": 0
+}

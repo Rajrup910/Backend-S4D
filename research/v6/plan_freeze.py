@@ -22,7 +22,7 @@ from research.v6 import lock_stage0
 REPO = Path(__file__).resolve().parents[2]
 FREEZE = REPO / "results" / "v6" / "v6_plan_freeze.json"
 RUN_DIR = REPO / "results" / "v6" / "runs"
-EXTRA_FILES = ("scripts/run_v6_queue.ps1", "results/v6/anchor_noise_floor.json")
+EXTRA_FILES = ("scripts/run_v6_queue.ps1", "results/v6/anchor_noise_floor.json", "results/v6/added_pool/added_train.csv")
 
 
 def frozen_paths() -> list[str]:

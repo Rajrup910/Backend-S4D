@@ -256,3 +256,5 @@ paper/manuscript_IEEE.pdf
 .tools/
 # manuscript backups kept locally
 *.tex.bak
+# Re-pullable archive metadata for the V6 pool; candidates.csv is the kept record.
+results/v6/added_pool/meta_*.csv
