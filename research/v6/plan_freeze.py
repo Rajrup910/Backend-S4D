@@ -4,7 +4,8 @@
     python -m research.v6.plan_freeze --approve                      # the owner's decision, once, before any V6-1 run
     python -m research.v6.plan_freeze --approve --amendment "<why>"  # a dated amendment after the hash
 
-`train_v6.py` calls `require()`, so "no V6-1 or later run before the hash" is enforced by the trainer rather than by memory. Hashing
+The freeze covers Part 0, the V6 code and all it imports, the runner and the V6-1 queue, the statistical families, the bars, the pool with its image hashes, and V5's comparator
+files. `train_v6.py` calls `require()`, so "no V6-1 or later run before the hash" is enforced by the trainer rather than by memory. Hashing
 only Part 0 means status lines elsewhere can change without breaking the hash. New files in `research/v6/` (V6-5's ensemble code) are
 allowed; changing a frozen file is not, without an amendment. The stage-0 lock must also hold. Standard library only.
 """
@@ -22,12 +23,20 @@ from research.v6 import lock_stage0
 REPO = Path(__file__).resolve().parents[2]
 FREEZE = REPO / "results" / "v6" / "v6_plan_freeze.json"
 RUN_DIR = REPO / "results" / "v6" / "runs"
-EXTRA_FILES = ("scripts/run_v6_queue.ps1", "results/v6/anchor_noise_floor.json", "results/v6/added_pool/added_train.csv")
+#: Beyond the V6 code: the runner, the statistical families, the bars and planning numbers, the pool, and every V5 file a V6 read compares with.
+EXTRA_FILES = ("scripts/run_v6_queue.ps1", "research/stats/families.py", "results/v6/anchor_noise_floor.json", "results/v6/gate_a_power.json",
+               "results/v6/e_primary_power.json", "results/v6/added_pool/added_train.csv", "results/v6/added_pool/audit.json",
+               "results/v6/added_pool/selection.json", "results/v6/data_allocation.json", "results/v5/v5_oof_common_matrix.csv",
+               "results/v5/v5_oof_common_matrix.json", "results/v5/refit/dirichlet_state.json", "results/v5/refit/s56_policies_v5.json",
+               "results/v6/added_pool/young_labels_8.csv", "results/v6/added_pool/near_pairs.csv", "results/v6/added_pool/cache_sha256.csv", "results/v5/queue_V61.txt")
 
 
 def frozen_paths() -> list[str]:
-    code = [p.relative_to(REPO).as_posix() for p in sorted((REPO / "research" / "v6").glob("*.py"))]
-    return sorted({*code, *EXTRA_FILES})
+    """The V6 code, everything it imports from the repo (found by parsing, as the stage-0 lock does), and `EXTRA_FILES`."""
+    modules = sorted((REPO / "research" / "v6").glob("*.py"))
+    code = [p.relative_to(REPO).as_posix() for p in modules]
+    closure = lock_stage0.import_closure(tuple(f"research.v6.{p.stem}" for p in modules))
+    return sorted({*code, *closure, *EXTRA_FILES})
 
 
 def build_record(note: str) -> dict:

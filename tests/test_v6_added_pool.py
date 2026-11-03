@@ -180,3 +180,64 @@ def test_a_copy_of_the_young_extras_does_not_spread_and_an_empty_id_is_not_a_lin
     rows = pd.DataFrame({"lesion_id": ["L1", "L1", None, None], "patient_id": ["P1", "P1", None, None],
                          "hash_reason": ["hash_copy_of_young_extras", None, "hash_copy_of_hiba", None]})
     assert _reasons(added_pool.linked_to_copies(rows)) == ["hash_copy_of_young_extras", None, "hash_copy_of_hiba", None]
+
+
+def test_a_true_copy_spreads_by_id_and_a_look_alike_does_not() -> None:
+    rows = pd.DataFrame({"lesion_id": ["L1", "L1"], "patient_id": ["P1", "P2"], "hash_reason": ["centre_copy_of_corpus", None]})
+    assert _reasons(added_pool.linked_to_copies(rows)) == ["centre_copy_of_corpus", "same_lesion_id_as_a_hash_copy"]
+    rows = pd.DataFrame({"lesion_id": ["L1", "L1"], "patient_id": ["P1", "P1"], "hash_reason": ["near_copy_of_corpus", None]})
+    assert _reasons(added_pool.linked_to_copies(rows)) == ["near_copy_of_corpus", None]
+
+
+def _pairs(*rows: tuple) -> pd.DataFrame:
+    return pd.DataFrame(rows, columns=["added", "source", "cohort", "target", "centre_correlation"])
+
+
+def test_near_reasons_use_the_limit_and_keep_a_first_reason() -> None:
+    rows = pd.DataFrame({"image_id": ["a", "b", "c", "d"], "hash_reason": [None, None, "hash_copy_of_earlier_added", None]}, dtype=object)
+    pairs = _pairs(("a", "s", "corpus", "x", 0.96), ("b", "s", "corpus", "y", 0.89), ("c", "s", "corpus", "z", 0.99), ("d", "s", "hiba", "h", 0.91), ("d", "s", "corpus", "w", 0.2))
+    assert _reasons(added_pool.near_reasons(rows, pairs)) == ["centre_copy_of_corpus", None, "hash_copy_of_earlier_added", "near_copy_of_hiba"]
+
+
+def test_centre_correlation_ignores_a_shared_black_border(tmp_path) -> None:
+    def framed(seed: int) -> np.ndarray:
+        array = np.zeros((400, 400, 3), dtype=np.uint8)
+        array[100:300, 100:300] = np.asarray(Image.fromarray(np.random.default_rng(seed).integers(0, 255, (8, 8, 3), dtype=np.uint8)).resize((200, 200), Image.BICUBIC))
+        return array
+
+    first, second = framed(1), framed(2)
+    paths = []
+    for name, array in (("a", first), ("b", second), ("c", first)):
+        Image.fromarray(array).save(tmp_path / f"{name}.png")
+        paths.append(tmp_path / f"{name}.png")
+    a, b, c = (added_pool.centre_gray(p) for p in paths)
+    assert added_pool.correlation(a, c) == pytest.approx(1.0)
+    assert added_pool.correlation(a, b) < 0.9
+
+
+def test_hash_neighbours_need_both_hashes_within_the_radius() -> None:
+    d, p = np.array([0b1111, 0, 0xFF00], dtype=np.uint64), np.array([0, 0b1111, 0xFF], dtype=np.uint64)
+    assert added_pool.hash_neighbours(0, 0, d, p, radius=4).tolist() == [0, 1]
+    assert added_pool.hash_neighbours(0, 0, d, p, radius=3).tolist() == []
+
+
+def test_every_real_young_label_collapses_and_vascular_is_never_scc() -> None:
+    from research.v6 import young_labels
+
+    frame = pd.read_csv(young_labels.EXTRAS, low_memory=False, dtype={"image_id": str})
+    fixed = young_labels.apply(frame)
+    assert (fixed.loc[frame["class_7"] == "vasc", "class_8"] == "vasc").all() and (fixed.loc[frame["class_7"] == "vasc", "class_index_8"] == 7).all()
+    assert set(fixed.loc[frame["class_7"] == "akiec", "class_8"]) == {"akiec_ak", "scc"}
+    assert set(fixed["class_8"]) <= set(head8.CLASSES_8)
+    assert (head8.collapse_labels(fixed["class_index_8"].to_numpy()) == frame["class_index_7"].to_numpy()).all()
+
+
+def test_young_labels_refuse_a_missing_row_and_a_wrong_label(tmp_path) -> None:
+    from research.v6 import young_labels
+
+    path = tmp_path / "labels.csv"
+    pd.DataFrame({"image_id": ["a"], "class_index_8": [6], "class_8": ["scc"]}).to_csv(path, index=False)
+    with pytest.raises(AssertionError, match="collapse"):
+        young_labels.apply(pd.DataFrame({"image_id": ["a"], "class_index_7": [6]}), path)  # 6 is vasc on the 7-class head
+    with pytest.raises(AssertionError, match="no 8-class label"):
+        young_labels.apply(pd.DataFrame({"image_id": ["b"], "class_index_7": [0]}), path)

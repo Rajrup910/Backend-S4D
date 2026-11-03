@@ -1,0 +1,75 @@
+train --member anchor --seed 42 --run-tag v61t -> exit 0 in 57s
+PASS A train anchor s42 v61t (57s)
+train --member anchor --seed 43 --run-tag v61t -> exit 0 in 37s
+PASS A train anchor s43 v61t (37s)
+train --member anchor --seed 44 --run-tag v61t -> exit 0 in 37s
+PASS A train anchor s44 v61t (37s)
+anchor_f0_s42_in22k_v61t.json {'head': 8, 'epochs': 30, 'epochs_run': 30, 'optimizer_steps': 60, 'step_budget': 60, 'head_steps': 6, 'warmup_steps': 0, 'sampler': 'plain', 'train_images': 64, 'train_class_counts': [2, 5, 4, 2, 14, 37, 0, 0], 'young_share_trained_on': 0.515625} stages hhhfffffffffffffffffffffffffff vram 2.41
+PASS A stage v61 (0s)
+train --member anchor --seed 42 --run-tag v62p --added-train results/v6/added_pool/added_train.csv -> exit 0 in 22s
+PASS A train P s42 (22s)
+train --member anchor --seed 42 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young -> exit 0 in 25s
+PASS A train Y s42 (25s)
+train --member anchor --seed 43 --run-tag v62p --added-train results/v6/added_pool/added_train.csv -> exit 0 in 21s
+PASS A train P s43 (21s)
+train --member anchor --seed 43 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young -> exit 0 in 24s
+PASS A train Y s43 (24s)
+train --member anchor --seed 44 --run-tag v62p --added-train results/v6/added_pool/added_train.csv -> exit 0 in 21s
+PASS A train P s44 (21s)
+train --member anchor --seed 44 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young -> exit 0 in 26s
+PASS A train Y s44 (26s)
+anchor_f0_s42_in22k_v62p.json {'head': 8, 'epochs': 9, 'epochs_run': 9, 'optimizer_steps': 60, 'step_budget': 60, 'head_steps': 6, 'warmup_steps': 0, 'sampler': 'plain', 'train_images': 234, 'train_class_counts': [9, 24, 16, 7, 29, 138, 7, 4], 'young_share_trained_on': 0.15384615384615385} stages fffffffff vram 2.41
+anchor_f0_s42_in22k_v62y.json {'head': 8, 'epochs': 9, 'epochs_run': 9, 'optimizer_steps': 60, 'step_budget': 60, 'head_steps': 6, 'warmup_steps': 0, 'sampler': 'young', 'train_images': 234, 'train_class_counts': [9, 24, 16, 7, 29, 138, 7, 4], 'young_share_trained_on': 0.15384615384615385} stages fffffffff vram 2.41
+PASS A stage v62 (0s)
+train --member panderm_b --seed 42 --run-tag v63 --added-train results/v6/added_pool/added_train.csv -> exit 0 in 33s
+PASS A train panderm_b (33s)
+panderm_b_f0_s42_v63.json {'head': 8, 'epochs': 9, 'epochs_run': 9, 'optimizer_steps': 60, 'step_budget': 60, 'head_steps': 6, 'warmup_steps': 11, 'sampler': 'plain', 'train_images': 234, 'train_class_counts': [9, 24, 16, 7, 29, 138, 7, 4], 'young_share_trained_on': 0.15384615384615385} stages fffffffff vram 3.7
+train --member dinov2_b --seed 42 --run-tag v63 --added-train results/v6/added_pool/added_train.csv -> exit 0 in 39s
+PASS A train dinov2_b (39s)
+dinov2_b_f0_s42_v63.json {'head': 8, 'epochs': 9, 'epochs_run': 9, 'optimizer_steps': 60, 'step_budget': 60, 'head_steps': 6, 'warmup_steps': 0, 'sampler': 'plain', 'train_images': 234, 'train_class_counts': [9, 24, 16, 7, 29, 138, 7, 4], 'young_share_trained_on': 0.15384615384615385} stages fffffffff vram 4.42
+train --member siglip2_b --seed 42 --run-tag v63 --added-train results/v6/added_pool/added_train.csv -> exit 0 in 33s
+PASS A train siglip2_b (33s)
+siglip2_b_f0_s42_v63.json {'head': 8, 'epochs': 9, 'epochs_run': 9, 'optimizer_steps': 60, 'step_budget': 60, 'head_steps': 6, 'warmup_steps': 11, 'sampler': 'plain', 'train_images': 234, 'train_class_counts': [9, 24, 16, 7, 29, 138, 7, 4], 'young_share_trained_on': 0.15384615384615385} stages fffffffff vram 4.42
+train --member anchor --image-size 384 --batch-size 16 --grad-accum 2 --seed 42 --run-tag v63 --added-train results/v6/added_pool/added_train.csv -> exit 0 in 116s
+PASS A train anchor384 (116s)
+anchor384_f0_s42_in22k_v63.json {'head': 8, 'epochs': 9, 'epochs_run': 9, 'optimizer_steps': 60, 'step_budget': 60, 'head_steps': 6, 'warmup_steps': 0, 'sampler': 'plain', 'train_images': 234, 'train_class_counts': [9, 24, 16, 7, 29, 138, 7, 4], 'young_share_trained_on': 0.15384615384615385} stages fffffffff vram 4.42
+PASS A stage v63 (0s)
+v63 routes {'panderm_b': {'single_route': True, 'vote_route': True, 'affordable': True, 'qualified': True}, 'dinov2_b': {'single_route': True, 'vote_route': True, 'affordable': True, 'qualified': True}, 'siglip2_b': {'single_route': True, 'vote_route': True, 'affordable': True, 'qualified': True}, 'anchor384': {'single_route': True, 'vote_route': False, 'affordable': False, 'qualified': False}} promoted ['panderm_b', 'dinov2_b', 'siglip2_b'] dropped [] cost {'panderm_b': 1.581521739130435, 'dinov2_b': 1.8532608695652175, 'siglip2_b': 1.5380434782608696, 'anchor384': 5.804347826086957}
+PASS A TTA last (73s)
+PASS A TTA swad (13s)
+PASS A go-no-go (0s)
+go-no-go {'v6_beats_v5': False, 'combined_beats_v5': True, 'continue_to_v6_4': True}
+train --member anchor --head 7 --seed 42 --run-tag v62p --added-train results/v6/added_pool/added_train.csv -> exit 0 in 21s
+PASS B train P h7 s42 (21s)
+train --member anchor --head 7 --seed 42 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young -> exit 0 in 25s
+PASS B train Y h7 s42 (25s)
+train --member anchor --head 7 --seed 43 --run-tag v62p --added-train results/v6/added_pool/added_train.csv -> exit 0 in 21s
+PASS B train P h7 s43 (21s)
+train --member anchor --head 7 --seed 43 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young -> exit 0 in 24s
+PASS B train Y h7 s43 (24s)
+train --member anchor --head 7 --seed 44 --run-tag v62p --added-train results/v6/added_pool/added_train.csv -> exit 0 in 22s
+PASS B train P h7 s44 (22s)
+train --member anchor --head 7 --seed 44 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young -> exit 0 in 26s
+PASS B train Y h7 s44 (26s)
+PASS B stage v62 (0s)
+train --member anchor --head 7 --seed 42 --run-tag v63b -> exit 0 in 36s
+PASS B train anchor h7 v5 pool (36s)
+train --member panderm_b --head 7 --seed 42 --run-tag v63b -> exit 0 in 56s
+PASS B train panderm h7 (56s)
+train --member anchor --image-size 384 --batch-size 16 --grad-accum 2 --head 7 --seed 42 --run-tag v63b -> exit 0 in 241s
+PASS B train 384 h7 (241s)
+PASS B stage v63 (0s)
+v63 B promoted ['panderm_b_h7'] claim3 True
+PASS B TTA (41s)
+PASS B go-no-go (0s)
+mixed recipe refused: refusing to read:
+  members or folds used different recipes (head, pool, sampler): ["(8, 'results/v6/added_pool/added_tr
+PASS guard: mixed recipe refused (0s)
+PASS reads: full run (9s)
+e_primary fields ['bootstrap', 'checkpoint', 'combined_vote', 'continuity_vs_in1k_control_no_tta', 'deployed_system', 'descriptive', 'e_primary', 'executed_utc', 'finalists', 'fold_0_pooled', 'gate_a', 'no_harm', 'plan_freeze_part0_sha256', 'recipe_check', 'rerun_reason', 'reserved_read', 'rows', 'tag', 'test_read', 'without_tta'] deployed v5_system dMF1 0.0 combined vs V5 0.0
+claim3 -0.0001619229413386547 nested replaces False ledger rows 1
+second read refused: e_primary.json exists: the read happens once. Pass --rerun-reason to repeat it, which is r
+PASS guard: the read runs once (0s)
+PASS reads: rerun with reason, 7-class labels (9s)
+claim3 h7 panderm_b_h7
+REHEARSAL: 36 passed, 0 failed: []

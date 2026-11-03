@@ -1,0 +1,4 @@
+# V6-1, arm T: 8-class head, V5 pool, fold 0, seeds 42 43 44 (docs/V6_RUNSHEET.md 0.4). Run only after the plan freeze; the trainer refuses earlier.
+v6 --member anchor --fold 0 --seed 42 --run-tag v61t
+v6 --member anchor --fold 0 --seed 43 --run-tag v61t
+v6 --member anchor --fold 0 --seed 44 --run-tag v61t

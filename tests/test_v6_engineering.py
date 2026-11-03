@@ -16,6 +16,14 @@ from research.tta.transforms import build_tta_views
 from research.v5 import arms as registry
 from research.v6 import averaging, gate, head8, members, tta
 
+
+def test_tokens_and_position_embeddings_take_no_weight_decay() -> None:
+    spec = members.ROSTER["panderm_b"]
+    model = members.build_member(spec, num_classes=8, pretrained=False)
+    names = {id(p): n for n, p in model.named_parameters()}
+    decay = {names[id(p)]: g["weight_decay"] for g in members.param_groups(model, spec) for p in g["params"]}
+    assert decay["cls_token"] == 0 and decay["blocks.0.attn.relative_position_bias_table"] == 0 and decay["blocks.0.mlp.fc1.weight"] == spec.weight_decay
+
 # ---------------------------------------------------------------- gate
 
 

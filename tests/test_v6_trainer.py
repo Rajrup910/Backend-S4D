@@ -262,6 +262,10 @@ def test_the_recipe_forms_are_accepted() -> None:
 def test_run_ids_are_the_ones_the_runner_and_the_gate_build() -> None:
     assert train_v6.run_id_for("anchor", 0, 42, "v61t") == "anchor_f0_s42_in22k_v61t"
     assert train_v6.run_id_for("panderm_b", 0, 42, "v63") == "panderm_b_f0_s42_v63"
+    assert train_v6.run_id_for("anchor", 0, 42, "v63", 384) == "anchor384_f0_s42_in22k_v63"
+    assert train_v6.run_id_for("anchor", 0, 42, "v63", 224, 7) == "anchor_h7_f0_s42_in22k_v63"
+    forms = {train_v6.run_id_for("anchor", 0, 42, "t", size, head) for size in (224, 384) for head in (7, 8)}
+    assert len(forms) == 4  # no two forms can share a run id, so the runner can never skip one as "complete"
     runner = (Path(__file__).resolve().parents[1] / "scripts" / "run_v6_queue.ps1").read_text(encoding="utf-8")
     assert re.search(r'research\.v6\.train_v6"\) \{\s+\$member = Get-Arg \$t "--member"', runner)
     assert 'results\\v6\\runs\\{0}.json' in runner and '$member -eq "anchor"' in runner
@@ -287,6 +291,12 @@ def test_the_summary_has_every_field_the_ledger_writer_reads(tmp_path: Path, mon
 
 
 # ---------------------------------------------------------------- plan freeze
+
+
+def test_the_freeze_covers_everything_v6_imports() -> None:
+    paths = set(plan_freeze.frozen_paths())
+    assert {"research/v5/tta_v5.py", "research/tta/transforms.py", "ml/preprocessing/transforms.py", "research/stats/families.py", "results/v5/queue_V61.txt"} <= paths
+    assert all((plan_freeze.REPO / p).exists() for p in paths)
 
 
 def test_no_freeze_file_blocks_a_run(tmp_path: Path) -> None:

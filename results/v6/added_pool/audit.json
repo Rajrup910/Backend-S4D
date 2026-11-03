@@ -1,5 +1,6 @@
 {
-  "rule": "dHash AND pHash within radius 3",
+  "rule": "dHash AND pHash within radius 3; near copies: within radius 8 and centre correlation >= 0.9",
+  "near_pairs_compared": 3259,
   "corpus_images": 27629,
   "extras_images": 2078,
   "hiba_images_hashed": 1635,
@@ -9,18 +10,19 @@
       "candidates": 3902,
       "dropped": {
         "hash_copy_of_earlier_added": 20,
-        "same_lesion_id_as_a_hash_copy": 5,
-        "hash_copy_of_corpus": 4
+        "near_copy_of_corpus": 20,
+        "hash_copy_of_corpus": 4,
+        "same_lesion_id_as_a_hash_copy": 2
       },
-      "kept": 3873,
-      "kept_young": 212,
+      "kept": 3856,
+      "kept_young": 209,
       "kept_by_class_8": {
-        "nv": 1152,
-        "mel": 964,
-        "bcc": 831,
+        "nv": 1144,
+        "mel": 962,
+        "bcc": 825,
         "bkl": 389,
         "akiec_ak": 344,
-        "scc": 123,
+        "scc": 122,
         "df": 40,
         "vasc": 30
       }
@@ -28,32 +30,37 @@
     "isic2020": {
       "candidates": 5639,
       "dropped": {
-        "same_patient_id_as_a_hash_copy": 16,
+        "same_patient_id_as_a_hash_copy": 27,
+        "near_copy_of_corpus": 26,
         "hash_copy_of_corpus": 12,
+        "centre_copy_of_corpus": 6,
         "hash_copy_of_earlier_added": 6,
+        "near_copy_of_hiba": 2,
         "hash_copy_of_young_extras": 1
       },
-      "kept": 5604,
-      "kept_young": 617,
+      "kept": 5559,
+      "kept_young": 616,
       "kept_by_class_8": {
-        "nv": 4934,
-        "mel": 498,
-        "bkl": 170,
+        "nv": 4904,
+        "mel": 490,
+        "bkl": 163,
         "akiec_ak": 2
       }
     },
     "milk10k": {
       "candidates": 4134,
       "dropped": {
-        "hash_copy_of_earlier_added": 3
+        "hash_copy_of_earlier_added": 3,
+        "near_copy_of_corpus": 2,
+        "centre_copy_of_corpus": 1
       },
-      "kept": 4131,
-      "kept_young": 181,
+      "kept": 4128,
+      "kept_young": 180,
       "kept_by_class_8": {
-        "bcc": 2409,
+        "bcc": 2408,
         "scc": 650,
         "bkl": 422,
-        "nv": 290,
+        "nv": 288,
         "mel": 184,
         "akiec_ak": 115,
         "vasc": 31,
@@ -63,43 +70,48 @@
     "derm12345": {
       "candidates": 12298,
       "dropped": {
-        "hash_copy_of_earlier_added": 130
+        "same_patient_id_as_a_hash_copy": 191,
+        "hash_copy_of_earlier_added": 130,
+        "near_copy_of_corpus": 40,
+        "near_copy_of_hiba": 4,
+        "centre_copy_of_corpus": 3,
+        "centre_copy_of_hiba": 2
       },
-      "kept": 12168,
+      "kept": 11928,
       "kept_young": 0,
       "kept_by_class_8": {
-        "nv": 9906,
+        "nv": 9669,
         "bkl": 667,
-        "bcc": 408,
+        "bcc": 406,
         "mel": 387,
         "scc": 296,
-        "vasc": 276,
+        "vasc": 275,
         "df": 176,
         "akiec_ak": 52
       }
     }
   },
-  "added_rows": 25776,
-  "added_young": 1010,
-  "added_no_age": 12212,
+  "added_rows": 25471,
+  "added_young": 1005,
+  "added_no_age": 11972,
   "kept_by_class_8": {
-    "nv": 16282,
-    "bcc": 3648,
-    "mel": 2033,
-    "bkl": 1648,
-    "scc": 1069,
+    "nv": 16005,
+    "bcc": 3639,
+    "mel": 2023,
+    "bkl": 1641,
+    "scc": 1068,
     "akiec_ak": 513,
-    "vasc": 337,
+    "vasc": 336,
     "df": 246
   },
-  "cache_gb": 2.31,
+  "cache_gb": 2.28,
   "cache_mean_kb": 89.5,
   "full_gb_read": 3.69,
   "short_side": 512,
   "jpeg_quality": 95,
   "young_share": {
     "v5_pool": 0.27624913654156114,
-    "expanded_pool": 0.13462964679707054
+    "expanded_pool": 0.1354713722194991
   },
   "added_train": "results/v6/added_pool/added_train.csv"
 }

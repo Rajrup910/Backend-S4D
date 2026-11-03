@@ -71,7 +71,10 @@ function Parse-Line([string]$line) {
     $tag  = Get-Arg $t "--run-tag"
     if ($module -eq "research.v6.train_v6") {
         $member = Get-Arg $t "--member"; $fold = Get-Arg $t "--fold"
-        $id = "{0}_f{1}_s{2}" -f $member, $fold, $seed
+        $label = $member
+        if ((Get-Arg $t "--image-size") -eq "384") { $label = "${label}384" }
+        if ((Get-Arg $t "--head") -eq "7") { $label = "${label}_h7" }
+        $id = "{0}_f{1}_s{2}" -f $label, $fold, $seed
         if ($member -eq "anchor") { $id = "${id}_in22k" }
         if ($tag) { $id = "${id}_$tag" }
         $json = Join-Path $repo ("results\v6\runs\{0}.json" -f $id)

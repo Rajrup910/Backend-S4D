@@ -9,7 +9,7 @@ transform defect. PanDerm's ImageNet statistics come from its fine-tuning script
 
 Recipe rule, fixed before any member runs, with no tuning on S71 folds:
   * a value the member's cited source states is that value;
-  * a source LR is converted to batch 32 by the source's own linear rule;
+  * a source LR is converted to batch 32 linearly: the source's own rule for SigLIP 2, our assumption for PanDerm-B, whose code does not rescale;
   * anything the source does not state takes the anchor's value (`ANCHOR_*`, asserted against `research/v4/train_v4.py`).
 Augmentation, label smoothing and the step budget are the V6 recipe's for every member, so the sources' Mixup, CutMix, EMA and
 RandAugment settings do not apply.
@@ -211,7 +211,8 @@ def param_groups(model: nn.Module, spec: MemberSpec) -> list[dict]:
         groups = [{"params": backbone, "lr": spec.backbone_lr, "weight_decay": spec.weight_decay, "lr_scale": 1.0}]
     else:
         groups = []
-        for group in param_groups_layer_decay(model, weight_decay=spec.weight_decay, layer_decay=spec.layer_decay):
+        no_decay = tuple(getattr(model, "no_weight_decay", tuple)())
+        for group in param_groups_layer_decay(model, weight_decay=spec.weight_decay, no_weight_decay_list=no_decay, layer_decay=spec.layer_decay):
             params = [p for p in group["params"] if id(p) not in head]
             if params:
                 groups.append({"params": params, "lr": spec.backbone_lr * group["lr_scale"],

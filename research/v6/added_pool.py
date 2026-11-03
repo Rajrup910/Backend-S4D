@@ -19,8 +19,9 @@ counted, so no row enters by a guess.
 **Links, section 0.3.** Dropped: any link by image, lesion or patient id to a manifest row or to HIBA; MILK10k's D6 lesions; an image
 already in the young extras. Kept: a lesion or patient shared with the young extras only, since both sides train. Manifest lesion ids are
 not ISIC ids, so manifest rows are compared through their archive records, as `data_audit.py` does. **Hashes:** dHash AND pHash within
-radius 3 (the S49 rule, `research/v4/dedupe.py`) against the 27,629 corpus images, the young extras, HIBA and earlier added rows. A copy of a
-corpus or HIBA image also removes the other added images of its lesion and patient.
+radius 3 (the S49 rule, `research/v4/dedupe.py`) against the 27,629 corpus images, the young extras, HIBA and earlier added rows. **Near copies:** hash
+neighbours within radius 8 of a manifest or HIBA image are compared on the central half of the image: correlation >= 0.90 drops that image, and >= 0.95 is a true
+copy. A true copy of a corpus or HIBA image, by hash or by centre, also removes the other added images of its lesion and patient.
 
 **HIBA is hashed and thrown away:** the confirmation cohort's pixels are never stored and its diagnoses are never used here, so its one
 receipted read (V6-6) is untouched. **Cache:** shorter side 512 px, which covers the 384 px member's 439 px eval resize and its training
@@ -31,6 +32,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import io
 import json
 import shutil
@@ -59,6 +61,9 @@ HASHES = OUT_DIR / "hashes.csv"
 HIBA_HASHES = OUT_DIR / "hiba_hashes.csv"
 ADDED_TRAIN = OUT_DIR / "added_train.csv"
 AUDIT = OUT_DIR / "audit.json"
+NEAR_PAIRS = OUT_DIR / "near_pairs.csv"
+CACHE_SHA = OUT_DIR / "cache_sha256.csv"
+CORPUS_IMAGES = REPO / "data" / "external" / "isic2019_images" / "ISIC_2019_Training_Input"
 CACHE = REPO / "data" / "external" / "v6_added"
 MILK_ZIP = REPO / "data" / "external" / "milk10k" / "milk10k.zip"
 FULL_URL = "https://isic-archive.s3.amazonaws.com/images/{}.jpg"
@@ -67,6 +72,13 @@ HIBA = ("hiba_175", "hiba_176", "hiba_251")
 SHORT_SIDE = 512
 JPEG_QUALITY = 95
 DUP_RADIUS = dedupe.CLUSTER_RADIUS
+#: The hash rule misses re-encoded copies, such as ISIC 2020 images of MSKCC's `_downsampled` files. So hash neighbours out to this radius are compared on the
+#: lesion centre, which the black dermoscopy border cannot inflate. Random pairs reach 0.886 at most (800 pairs, 3 Nov); no outcome informed the limit.
+NEAR_RADIUS, NEAR_NCC = 8, 0.90
+#: At 0.90 a pair can be a look-alike (same class in 79% of pairs), so only that image goes. From 0.95 every pair was the same class, so it is treated as a true copy.
+CENTRE_COPY_NCC = 0.95
+#: True copies of these put their lesion and patient in a guarded cohort, so they spread by id. Look-alikes and copies of training-only rows do not.
+GUARDED_REASONS = ("hash_copy_of_corpus", "hash_copy_of_hiba", "centre_copy_of_corpus", "centre_copy_of_hiba")
 MIN_FREE_GB = 10.0
 ESCALATING_8 = {"akiec_ak", "bcc", "mel", "scc"}
 META_FIELDS = ("isic_id", "image_type", "attribution", "license", "lesion_id", "patient_id", "age_approx", "sex", "anatom_site_general",
@@ -338,11 +350,83 @@ def hash_audit(rows: pd.DataFrame, targets: dict[str, tuple[np.ndarray, np.ndarr
     return pd.Series(reasons, index=rows.index, dtype=object)
 
 
+def centre_gray(source: str | Path | bytes) -> np.ndarray:
+    """The central half of the image, 96 x 96 grey. The border and vignette are outside it."""
+    with Image.open(io.BytesIO(source) if isinstance(source, bytes) else source) as image:
+        width, height = image.size
+        side = min(width, height)
+        left, top = (width - side) // 2 + side // 4, (height - side) // 2 + side // 4
+        crop = image.convert("L").crop((left, top, left + side // 2, top + side // 2))
+        return np.asarray(crop.resize((96, 96), Image.BILINEAR), dtype=float).ravel()
+
+
+def correlation(x: np.ndarray, y: np.ndarray) -> float:
+    x, y = x - x.mean(), y - y.mean()
+    return float((x * y).sum() / (np.sqrt((x * x).sum() * (y * y).sum()) + 1e-9))
+
+
+def hash_neighbours(dhash: int, phash: int, d: np.ndarray, p: np.ndarray, radius: int = NEAR_RADIUS) -> np.ndarray:
+    return np.where((dedupe._popcount64(d ^ np.uint64(dhash)) <= radius) & (dedupe._popcount64(p ^ np.uint64(phash)) <= radius))[0]
+
+
+def near_copies(rows: pd.DataFrame, cohorts: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]], workers: int = 6) -> pd.DataFrame:
+    """Every (added row, target) pair within the hash radius, with its centre correlation. `cohorts` maps a name to (ids, dhash, phash). HIBA is read from
+    the archive for these pairs and never stored."""
+    pairs = []
+    for row in rows.itertuples():
+        for name, (ids, d, p) in cohorts.items():
+            pairs += [(row.image_id, row.source, name, str(ids[i])) for i in hash_neighbours(int(row.dhash), int(row.phash), d, p)]
+
+    def score(pair: tuple[str, str, str, str]) -> dict:
+        image_id, source, cohort, target = pair
+        other = fetch(FULL_URL.format(target)) if cohort == "hiba" else CORPUS_IMAGES / f"{target}.jpg"
+        return {"added": image_id, "source": source, "cohort": cohort, "target": target,
+                "centre_correlation": correlation(centre_gray(cache_path(source, image_id)), centre_gray(other))}
+
+    with ThreadPoolExecutor(workers) as pool:
+        table = list(pool.map(score, pairs))
+    return pd.DataFrame(table, columns=["added", "source", "cohort", "target", "centre_correlation"])
+
+
+def near_reasons(rows: pd.DataFrame, pairs: pd.DataFrame, limit: float = NEAR_NCC, copy_limit: float = CENTRE_COPY_NCC) -> pd.Series:
+    """`hash_reason` extended from each row's closest pair. A row already dropped keeps its first reason."""
+    out = rows["hash_reason"].copy()
+    hits = pairs[pairs["centre_correlation"] >= limit].sort_values("centre_correlation", ascending=False).drop_duplicates("added").set_index("added")
+    for i, image_id in zip(rows.index, rows["image_id"]):
+        if pd.isna(out[i]) and image_id in hits.index:
+            kind = "centre_copy_of_" if hits.loc[image_id, "centre_correlation"] >= copy_limit else "near_copy_of_"
+            out[i] = kind + hits.loc[image_id, "cohort"]
+    return out
+
+
+def write_cache_hashes(kept: pd.DataFrame, path: Path = CACHE_SHA) -> None:
+    """The pixels are gitignored, so the freeze holds their hashes: a changed cache file is then visible (`--verify-cache`)."""
+    def digest(row: tuple[str, str]) -> dict:
+        return {"image_id": row[0], "sha256": hashlib.sha256(cache_path(row[1], row[0]).read_bytes()).hexdigest()}
+
+    with ThreadPoolExecutor(6) as pool:
+        table = list(pool.map(digest, zip(kept["isic_id"].astype(str), kept["source"])))
+    pd.DataFrame(table).sort_values("image_id").to_csv(path, index=False)
+
+
+def verify_cache() -> int:
+    wanted = pd.read_csv(CACHE_SHA, dtype=str).set_index("image_id")["sha256"]
+    added = pd.read_csv(ADDED_TRAIN, usecols=["image_id", "image_path"], dtype=str)
+
+    def same(row: tuple[str, str]) -> bool:
+        return hashlib.sha256((REPO / row[1]).read_bytes()).hexdigest() == wanted[row[0]]
+
+    with ThreadPoolExecutor(6) as pool:
+        results = list(pool.map(same, zip(added["image_id"], added["image_path"])))
+    print(f"{sum(results):,} of {len(results):,} cached images match")
+    return 0 if all(results) else 1
+
+
 def linked_to_copies(rows: pd.DataFrame) -> pd.Series:
     """`hash_reason` extended by id: a copy of a corpus or HIBA image puts its lesion and patient in that cohort, so their other
     added images go too (section 0.3). Copies of the young extras or of other added rows are double counting only, so they do not spread."""
     out = rows["hash_reason"].copy()
-    hit = rows["hash_reason"].isin(["hash_copy_of_corpus", "hash_copy_of_hiba"])
+    hit = rows["hash_reason"].isin(GUARDED_REASONS)
     for column in ("lesion_id", "patient_id"):
         values = rows[column].fillna("").astype(str)
         linked = set(values[hit]) - {""}
@@ -393,10 +477,19 @@ def finalize() -> int:
                "young_extras": (arrays([h[0] for h in extras_hashes]), arrays([h[1] for h in extras_hashes]))}
     rows = candidates.assign(isic_id=candidates["isic_id"].astype(str)).merge(hashes, left_on="isic_id", right_on="image_id", validate="one_to_one",
                                                                               suffixes=("", "_hash"))
-    rows["hash_reason"] = linked_to_copies(rows.assign(hash_reason=hash_audit(rows, targets)))
+    rows["hash_reason"] = hash_audit(rows, targets)
+    manifest_ids = {r["image_id"] for r in data_audit.read(data_audit.MANIFEST)}
+    in_manifest = corpus["image_id"].astype(str).isin(manifest_ids).to_numpy()
+    cohorts = {"corpus": (corpus["image_id"].astype(str).to_numpy()[in_manifest], corpus["dhash"].to_numpy(np.uint64)[in_manifest], corpus["phash"].to_numpy(np.uint64)[in_manifest]),
+               "hiba": (hiba["image_id"].astype(str).to_numpy(), arrays(hiba["dhash"].tolist()), arrays(hiba["phash"].tolist()))}
+    pairs = near_copies(rows[rows["hash_reason"].isna()], cohorts)
+    pairs.to_csv(NEAR_PAIRS, index=False)
+    rows["hash_reason"] = near_reasons(rows, pairs)
+    rows["hash_reason"] = linked_to_copies(rows)
     kept = rows[rows["hash_reason"].isna()].reset_index(drop=True)
     out = build_rows(kept)
     out.to_csv(ADDED_TRAIN, index=False)
+    write_cache_hashes(kept)
     per_source = {s: {"candidates": int((rows["source"] == s).sum()), "dropped": rows.loc[(rows["source"] == s) & rows["hash_reason"].notna(), "hash_reason"].value_counts().to_dict(),
                       "kept": int((out["archive"] == s).sum()), "kept_young": int(((out["archive"] == s) & (out["age_band"] == "<40")).sum()),
                       "kept_by_class_8": out.loc[out["archive"] == s, "class_8"].value_counts().to_dict()} for s in SOURCES}
@@ -405,7 +498,7 @@ def finalize() -> int:
     dev_young = sum(r["split"] == "train" and r["age_band"] == "<40" for r in pool_rows)
     n_extras = len(data_audit.read(data_audit.EXTRAS))
     young_v5, rows_v5 = dev_young + n_extras, dev + n_extras
-    report = {"rule": f"dHash AND pHash within radius {DUP_RADIUS}", "corpus_images": len(corpus), "extras_images": len(extras_files), "hiba_images_hashed": len(hiba),
+    report = {"rule": f"dHash AND pHash within radius {DUP_RADIUS}; near copies: within radius {NEAR_RADIUS} and centre correlation >= {NEAR_NCC}", "near_pairs_compared": len(pairs), "corpus_images": len(corpus), "extras_images": len(extras_files), "hiba_images_hashed": len(hiba),
               "hiba_pixels_stored": False, "sources": per_source, "added_rows": len(out), "added_young": int((out["age_band"] == "<40").sum()),
               "added_no_age": int((out["age_band"] == "unknown").sum()), "kept_by_class_8": out["class_8"].value_counts().to_dict(),
               "cache_gb": round(float(kept["cache_bytes"].sum()) / 1e9, 2), "cache_mean_kb": round(float(kept["cache_bytes"].mean()) / 1e3, 1),
@@ -423,7 +516,7 @@ def finalize() -> int:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     action = parser.add_mutually_exclusive_group(required=True)
-    for flag in ("--pull", "--select", "--download", "--finalize"):
+    for flag in ("--pull", "--select", "--download", "--finalize", "--verify-cache"):
         action.add_argument(flag, action="store_true")
     parser.add_argument("--workers", type=int, default=6)
     args = parser.parse_args(argv)
@@ -433,6 +526,8 @@ def main(argv: list[str] | None = None) -> int:
         return select()
     if args.download:
         return download(args.workers)
+    if args.verify_cache:
+        return verify_cache()
     return finalize()
 
 

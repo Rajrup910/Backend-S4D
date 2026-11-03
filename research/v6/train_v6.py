@@ -79,7 +79,7 @@ from research.v5.train_v5 import (
     write_ledger,
     write_predictions,
 )
-from research.v6 import averaging, head8, members, plan_freeze
+from research.v6 import averaging, head8, members, plan_freeze, young_labels
 
 ANCHOR = "anchor"
 TRUNK = "in22k"
@@ -321,10 +321,15 @@ def evaluate(model: nn.Module, loader, device, head: int, max_batches: int | Non
 
 
 # ------------------------------------------------------------------ outputs
-def run_id_for(member: str, fold: int, seed: int, tag: str) -> str:
+def member_label(member: str, image_size: int = 224, head: int = 8) -> str:
+    """The name a run is read under. Size and head are part of it, so two forms of one member can never share a run id."""
+    return member + ("384" if image_size == 384 else "") + ("_h7" if head == 7 else "")
+
+
+def run_id_for(member: str, fold: int, seed: int, tag: str, image_size: int = 224, head: int = 8) -> str:
     """`scripts/run_v6_queue.ps1` builds the same id; the anchor keeps its trunk, as `gate.pred_path` reads it."""
     trunk = f"_{TRUNK}" if member == ANCHOR else ""
-    return f"{member}_f{fold}_s{seed}{trunk}" + (f"_{tag}" if tag else "")
+    return f"{member_label(member, image_size, head)}_f{fold}_s{seed}{trunk}" + (f"_{tag}" if tag else "")
 
 
 def scores_and_metrics(result: dict[str, np.ndarray]) -> dict[str, Any]:
@@ -356,7 +361,8 @@ def check_args(args: argparse.Namespace) -> None:
 def run(args: argparse.Namespace) -> int:
     testguard.block_test_reads("V6 training: development rows and train-only extras, no test / reserved / external")
     check_args(args)
-    run_id = run_id_for(args.member, args.fold, args.seed, args.run_tag)
+    run_id = run_id_for(args.member, args.fold, args.seed, args.run_tag, args.image_size, args.head)
+    label = member_label(args.member, args.image_size, args.head)
     out_dir = SMOKE_DIR if args.smoke else RUN_DIR
     out = out_dir / f"{run_id}.json"
     freeze_sha = None
@@ -377,7 +383,7 @@ def run(args: argparse.Namespace) -> int:
     # ------ rows: the fold's V5 pool sets the budget and the young share, before anything is added
     manifest = pd.read_csv(MANIFEST, low_memory=False)
     train_frame, val_frame = fold_frames(manifest, args.fold)
-    young = load_extra_train(YOUNG_EXTRAS, train_frame, val_frame)
+    young = young_labels.apply(load_extra_train(YOUNG_EXTRAS, train_frame, val_frame))
     train_frame["image_path"] = [str(IMAGE_DIR / f"{i}.jpg") for i in train_frame["image_id"].astype(str)]
     young["image_path"] = [str(EXTRA_IMAGE_DIR / f"{i}.jpg") for i in young["image_id"].astype(str)]
     pool = pd.concat([train_frame, young], ignore_index=True)
@@ -401,6 +407,8 @@ def run(args: argparse.Namespace) -> int:
             parts.append(train_full.tail(args.batch_size))
         train_full = pd.concat(parts, ignore_index=True)
         val_frame = val_frame.head(args.batch_size * 2)
+    if not np.array_equal(head8.collapse_labels(train_full["class_index_8"].to_numpy()), train_full["class_index_7"].to_numpy()):
+        raise AssertionError("a training row's 8-class label does not collapse to its 7-class label")
     absent = [p for p in train_full["image_path"] if not os.path.isfile(p)]
     if absent:
         raise SystemExit(f"{len(absent)} training images are missing, e.g. {absent[0]}")
@@ -475,7 +483,7 @@ def run(args: argparse.Namespace) -> int:
     ckpt_dir = SMOKE_DIR if args.smoke else CHECKPOINT_DIR
     pred_dir = (SMOKE_DIR / "preds") if args.smoke else PRED_DIR
     ckpt_dir.mkdir(parents=True, exist_ok=True)
-    meta = {"arm": args.member, "fold": args.fold, "loao_holdout": "", "seed": args.seed, "run_id": run_id}
+    meta = {"arm": label, "fold": args.fold, "loao_holdout": "", "seed": args.seed, "run_id": run_id}
     payload = {"run_id": run_id, "member": args.member, "seed": args.seed, "fold": args.fold, "image_size": args.image_size,
                "head": args.head, "mean": list(spec.mean) if spec else None, "std": list(spec.std) if spec else None}
     last_ckpt = ckpt_dir / f"{args.member}-v6_{run_id}_last.pt"
@@ -493,7 +501,7 @@ def run(args: argparse.Namespace) -> int:
 
     final = history[-1]
     summary: dict[str, Any] = {
-        "run_id": run_id, "arm": args.member, "member": args.member, "session": f"v6_{args.run_tag}" if args.run_tag else "v6_run",
+        "run_id": run_id, "arm": label, "member": args.member, "session": f"v6_{args.run_tag}" if args.run_tag else "v6_run",
         "split": f"f{args.fold}", "seed": args.seed, "fold": args.fold, "head": args.head, "image_size": args.image_size,
         "trunk": TRUNK if spec is None else spec.timm_name, "recipe": dataclasses.asdict(spec) if spec else "anchor (V5 youngdata)",
         "epochs": epochs, "epochs_run": len(history), "step_budget": schedule.budget, "optimizer_steps": progress.steps,
@@ -505,7 +513,7 @@ def run(args: argparse.Namespace) -> int:
         "plan_freeze_sha256": freeze_sha, "final_val_macro_f1": final["val_macro_f1"],
         "final_val_balanced_accuracy": final["val_balanced_accuracy"],
         "final_val_escalation_sensitivity": final["val_escalation_sensitivity"], "train_images": len(train_set),
-        "val_images": len(val_set), "train_time_seconds": round(elapsed, 1), "device": str(device), "smoke": args.smoke,
+        "train_class_counts": counts, "val_images": len(val_set), "train_time_seconds": round(elapsed, 1), "device": str(device), "smoke": args.smoke,
         "test_read": False, "reserved_read": False,
         **({"vram_peak_gb": torch.cuda.max_memory_allocated(device) / 1e9,
             "vram_total_gb": torch.cuda.get_device_properties(device).total_memory / 1e9} if device.type == "cuda" else {}),

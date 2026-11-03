@@ -1,0 +1,35 @@
+# Data audit output from scripts/v6_data_audit_final.py, run on the pool BEFORE the near-copy rule (25,776 rows). The class map, age and link checks do not depend on that rule.
+DECODE 25,776 cached images in 0.3 min: bad 0 [] modes {'RGB': 25776} short side min/median 113/512.0 long max 1428
+corpus rows 27629 dev rows among them 15294
+HASH wider radius, kept added rows near any corpus image / a development row: {3: {'any': 0, 'dev': 0}, 4: {'any': 37, 'dev': 22}, 5: {'any': 62, 'dev': 39}, 6: {'any': 223, 'dev': 157}, 8: {'any': 922, 'dev': 714}}
+ radius 5 dev hits by source {'isic2019_test': 30, 'isic2020': 8, 'derm12345': 1}
+ radius 6 dev hits by source {'isic2019_test': 111, 'isic2020': 22, 'derm12345': 21, 'milk10k': 3}
+ radius 8 dev hits by source {'isic2019_test': 372, 'derm12345': 168, 'isic2020': 157, 'milk10k': 17}
+MANIFEST rows 25,331, with a fresh ISIC 2019 record 25,331; without: {}
+CLASS MAP vs manifest class_8 (rows):
+mapped    (excluded)  akiec_ak   bcc   bkl   df   mel     nv  scc  vasc
+class_8                                                                
+akiec_ak           0       867     0     0    0     0      0    0     0
+bcc                0         0  3323     0    0     0      0    0     0
+bkl                0         0     0  2624    0     0      0    0     0
+df                 0         0     0     0  239     0      0    0     0
+mel                0         0     0     0    0  4522      0    0     0
+nv                 4         0     0     0    0     0  12871    0     0
+scc                0         0     0     0    0     0      0  628     0
+vasc               0         0     0     0    0     0      0    0   253
+disagreements 0 of 25327
+Series([], )
+excluded by map though the manifest labels them: 4
+class_8  diagnosis_3                  
+nv                                        2
+         Atypical melanocytic neoplasm    1
+         Epidermal nevus                  1
+AGE BAND disagreements with manifest: 45 of 25331
+LEAK fresh metadata, kept added rows: shared lesions with ISIC 2019 Training records 0 shared patients 0 rows 25776 unmatched 0
+ MILK rows in D6 0
+ HIBA shared images 0 lesions 0 patients 0
+ manifest image ids in added 0 | extras in added 0
+ same lesion across added sources: 0
+EXPANDED class counts {'nv': 25816, 'bcc': 5630, 'mel': 4991, 'bkl': 3354, 'scc': 1434, 'akiec_ak': 1022, 'vasc': 516, 'df': 362, 'akiec': 23}
+
+[exited with code 0]
