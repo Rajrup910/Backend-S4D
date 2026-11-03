@@ -9336,7 +9336,7 @@ No training, no test or reserved read, no edit to the infographic or the flow sc
   (`results/session9/conformal_test.csv`); Dirichlet ODIR λ 0.1 (`research/calibration/methods.py`); ECE 15 bins.
 - **Flagged, not changed:** card #37 status label (still "384PX RESOLUTION LOCKED"); card #12 says five cohorts,
   lists four; simulator 2's first button reads "Marginal LAC" while the default values are bipartite RAPS; the
-  current Fitzpatrick I–IV spread is 0.102 (`fitzpatrick_slice.csv`), so the 0.093 in CLAUDE.md is stale.
+  current Fitzpatrick I–IV spread is 0.102 (`fitzpatrick_slice.csv`), so the 0.093 in the project notes is stale.
 
 ### Review-2 readiness audit and morning fixes (2026-10-09; owner request)
 No training, no test or reserved read, no edit to `presentations/MOCK_REVIEW_FLOW.md` (the team's script);
@@ -9383,7 +9383,7 @@ Tables and §4.5 (novelty and the response to the two Review 1 comments).
 - **Screenshots** of `review2_infographic.html` (served locally) and of the S60 service (`research/v4/s60_api.py`,
   Swagger UI). A live `/predict` call used the six-member 24-view TTA soft vote of **validation** image ISIC_0024310
   (mel, age 60): predicted mel (calibrated 0.7088), conformal set {mel}, no abstention (0.291 < 0.344), NNB@3% 7.99.
-  `.claude/launch.json` gained an `s60-service` entry for this.
+  `launch.json` gained an `s60-service` entry for this.
 - **Not invented, left for the team:** the viva-voce date stays blank; the Program Chair, Dean and acknowledgement
   wording are kept from the department sample; MOCK's "+0.0297" for S50 (identical to R1's value) was not used.
 - **Revision (same day, owner request): no infographic screenshots.** The infographic is now used only as a text
@@ -9941,3 +9941,11 @@ No training run of record, no test, reserved or HIBA label read. Part 0 is **sti
 The owner approved the hash after reviewing the four judgement calls in `docs/V6_RUNSHEET.md` 0.8g, which all stay: the 0.95 limit, either-vote continuation, no fallback models, T only if Macro-F1 does not drop. `results/v6/v6_plan_freeze.json` holds Part 0 and every frozen file. No V6 run existed before the hash.
 - **An external review of those four choices was checked first.** Its verdicts agree, and nothing changed because of it. Rejected: its 25,166 rows (the pool is 25,471), its citation (arXiv 2106.05237 is about knowledge distillation), its description of V5 on fold 0, and its "zero cost" reading of T. At the V6-1 noise, a T that truly lowers Macro-F1 by 0.005 is still adopted about 27% of the time, 0.010 about 11%, from `results/v6/anchor_noise_floor.json`'s pair SD.
 - **Added before the hash, so frozen with it:** `results/v5/queue_V62T.txt`, `queue_V62H.txt` and `scripts/run_v6_overnight.ps1`, which runs V6-1, applies `stage_rules v61`, runs the V6-2 queue that decision selects, then `stage_rules v62`. It stops before V6-2 on a missing or incomplete run or a last-epoch Macro-F1 below 0.60, an operational sanity floor (banked anchor seeds 0.6507-0.6777), not a scientific gate. All six branches tested with sample inputs; all three queues dry-run.
+
+### Pre-push clean-up: dataset notice, README icons, name mentions (2026-11-04; owner request)
+
+- **Dataset notice.** `results/v6/archive_meta/README.md` lists each collection, its DOI and its licence counts, read from the ISIC Archive API on 4 Nov. The repo is public and these files carry CC-BY and CC-BY-NC terms, which need credit when shared.
+- **README icons.** The two badge rows are replaced by ten tool logos in `docs/assets/readme/icons/` (Devicon v2.16.0, MIT), each on a light tile because the pandas and LaTeX logos cannot be seen on a dark page. The badge facts and version links stay as two text lines. README status now reads V6 frozen.
+- **Name mentions removed from unfrozen files:** this changelog, `results/v2/final_verdict.json` and `results/v4/s61/drift_report.json` (path strings only, no numbers), `tests/test_v5_s84.py`, `research/v5/s84_milk10k.py` (comments) and `scripts/readme_media/audit_readme.py` (same check, pattern rewritten). `docs/V5_RUNSHEET.md`, `docs/v5_record/V5_PLAN_AMENDMENT_01.md` and `results/v5/v5_plan_freeze.json` still carry them, left alone because they are part of the V5 frozen record.
+- **Contributors sidebar.** No commit on any branch of this repo carries an AI trailer or author, yet GitHub's sidebar listing still shows one. That is GitHub's own stored data, not repo content.
+- Checks: README audit passes, freeze intact, `tests/test_v5_s84.py` passes. No run of record has started.

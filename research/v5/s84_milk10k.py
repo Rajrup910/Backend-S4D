@@ -36,7 +36,7 @@ Section 9 items implemented (A01 A9):
                  required by `--execute`, reported whatever it is; "underpowered" is stated when < 0.80.
   single read    the receipt guard above.
   allocation     MILK10k is V5 confirmation only; nothing here fits anything on it (every parameter is loaded frozen).
-Interpretation choices to check against section 9 (flagged for the Opus review): (a) matched referral is measured over ALL eligible lesions (label-free; decisions are fixed before the labels are read); the
+Interpretation choices to check against section 9 (flagged for review): (a) matched referral is measured over ALL eligible lesions (label-free; decisions are fixed before the labels are read); the
 S70 contract is scored at V5 own deployed band-0.20 policy, not at the matched point; (b) global Macro-F1 is
 full-coverage argmax of each system's calibrated probabilities (abstention changes no class prediction); (c) V5 uses the
 mean over all available checkpoints of the 15, the set recorded in the report.

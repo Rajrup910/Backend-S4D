@@ -7,20 +7,21 @@
 <img src="docs/assets/readme/hero.gif" width="100%" alt="Animated intro: accuracy is misleading on HAM10000; the best system reaches Macro-F1 0.8047 but catches 3 of 21 serious under-40 cases; five versions narrowed the cause to a ranking limit.">
 
 <p>
-  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.12">
-  <img src="https://img.shields.io/badge/PyTorch-2.11_(CUDA_12.8)-EE4C2C?style=flat-square&logo=pytorch&logoColor=white" alt="PyTorch 2.11">
-  <img src="https://img.shields.io/badge/Splits-lesion--grouped-2EA44F?style=flat-square" alt="Lesion-grouped splits">
-  <img src="https://img.shields.io/badge/HAM10000_test-locked-B60205?style=flat-square" alt="HAM10000 test split locked">
-  <img src="https://img.shields.io/badge/Plans-SHA--256_pre--registered-6F42C1?style=flat-square" alt="SHA-256 pre-registered plans">
-  <img src="https://img.shields.io/badge/Status-V5_final_·_V6_not_frozen-0969DA?style=flat-square" alt="Status: V5 final, V6 not frozen">
+  <img src="docs/assets/readme/icons/python.svg" width="56" height="56" alt="Python" title="Python">&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/readme/icons/pytorch.svg" width="56" height="56" alt="PyTorch" title="PyTorch">&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/readme/icons/numpy.svg" width="56" height="56" alt="NumPy" title="NumPy">&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/readme/icons/pandas.svg" width="56" height="56" alt="pandas" title="pandas">&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/readme/icons/scikitlearn.svg" width="56" height="56" alt="scikit-learn" title="scikit-learn">&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/readme/icons/matplotlib.svg" width="56" height="56" alt="Matplotlib" title="Matplotlib">&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/readme/icons/opencv.svg" width="56" height="56" alt="OpenCV" title="OpenCV">&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/readme/icons/powershell.svg" width="56" height="56" alt="PowerShell" title="PowerShell">&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/readme/icons/git.svg" width="56" height="56" alt="Git" title="Git">&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/readme/icons/latex.svg" width="56" height="56" alt="LaTeX" title="LaTeX">
 </p>
 
-<a href="#v1"><img src="https://img.shields.io/badge/V1-Baseline-38bdf8?style=for-the-badge" alt="V1 Baseline"></a>
-<a href="#v2"><img src="https://img.shields.io/badge/V2-Rigour-34d399?style=for-the-badge" alt="V2 Rigour"></a>
-<a href="#v3"><img src="https://img.shields.io/badge/V3-Validity-fb7185?style=for-the-badge" alt="V3 Validity"></a>
-<a href="#v4"><img src="https://img.shields.io/badge/V4-Measurement-fbbf24?style=for-the-badge" alt="V4 Measurement"></a>
-<a href="#v5"><img src="https://img.shields.io/badge/V5-Mechanism-a78bfa?style=for-the-badge" alt="V5 Mechanism"></a>
-<a href="#v6"><img src="https://img.shields.io/badge/V6-Not_frozen-22d3ee?style=for-the-badge" alt="V6 not frozen"></a>
+**Lesion-grouped splits · HAM10000 test locked · SHA-256 pre-registered plans · V5 final · V6 frozen**
+
+[V1 Baseline](#v1) · [V2 Rigour](#v2) · [V3 Validity](#v3) · [V4 Measurement](#v4) · [V5 Mechanism](#v5) · [V6 Frozen](#v6)
 
 **Team 193 · Project Exhibition · School of Computing Science and Engineering, VIT Bhopal University**
 
@@ -275,9 +276,9 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 
 <a id="v6"></a>
 
-## V6 · Not frozen, no results
+## V6 · Frozen, no results
 
-The current plan is a **leak-audited, data-maximal ensemble across pretraining families, image-only**, and it has no results yet: every stage is still to run. The anchor is ConvNeXt-Tiny (IN-22k); the candidate members to screen are the same trunk at 384 px, PanDerm-B, DINOv2 ViT-B/14 and SigLIP 2 B/16. A single receipted read of HIBA is the planned confirmation. The plan records in advance that the under-40 gate is unlikely to pass. Plan: [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md), Part 0.
+The current plan is a **leak-audited, data-maximal ensemble across pretraining families, image-only**, frozen on 4 Nov 2026, and it has no results yet: every stage is still to run. The anchor is ConvNeXt-Tiny (IN-22k); the candidate members to screen are the same trunk at 384 px, PanDerm-B, DINOv2 ViT-B/14 and SigLIP 2 B/16. A single receipted read of HIBA is the planned confirmation. The plan records in advance that the under-40 gate is unlikely to pass. Plan: [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md), Part 0.
 
 ---
 

@@ -1,7 +1,7 @@
 {
   "session": "S39",
   "generated_at": "2026-09-13T10:08:27.646071+00:00",
-  "blueprint_source": "~/.claude/plans/master-polymorphic-gadget.md (V2 blueprint rev.2) section 13",
+  "blueprint_source": "master-polymorphic-gadget.md (V2 blueprint rev.2) section 13",
   "test_split_lock": "results/test_pass_receipt.json:n_executions == 2 (verified before this run)",
   "structure_note": "Section 13 assigns a verdict PER HYPOTHESIS and defines no single program-level verdict; none is invented here. The synthesis section 13 does require is the contribution type.",
   "per_hypothesis": {

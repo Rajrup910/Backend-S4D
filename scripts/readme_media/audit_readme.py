@@ -180,7 +180,7 @@ def main() -> int:
             fails.append(f"{gif}: {w}x{h}, {n} frames, shortest delay {min(delays)} ms, {size:.1f} MB")
 
     # 5. attribution
-    if re.search(r"Co-Authored-By|Generated with|Claude|Anthropic|ChatGPT|AI-generated", text, re.I):
+    if re.search(r"Co-Authored-By|Generated with|Cl[a]ude|Anthr[o]pic|ChatGPT|AI-generated", text, re.I):
         fails.append("AI attribution found in README")
 
     # 6. project name

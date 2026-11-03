@@ -90,7 +90,7 @@ def test_mcnemar_exact_matches_binomial_and_handles_ties():
 def test_clopper_pearson_edges_and_known_value():
     assert s84.clopper_pearson(0, 10)[0] == 0.0 and s84.clopper_pearson(10, 10)[1] == 1.0
     lo, hi = s84.clopper_pearson(3, 21)
-    assert (lo, hi) == pytest.approx((0.0300, 0.3631), abs=1e-3)  # CLAUDE.md S7: exact 3/21 interval
+    assert (lo, hi) == pytest.approx((0.0300, 0.3631), abs=1e-3)  # S7: exact 3/21 interval
 
 
 def test_critical_value_and_power_are_consistent():
