@@ -42,6 +42,7 @@ BATCH_SIZE = 32
 ANCHOR_FINETUNE_LR = 1e-4
 ANCHOR_WEIGHT_DECAY = 1e-4
 ANCHOR_DROP_PATH = 0.1  # torchvision's ConvNeXt-T default, which the anchor uses
+ANCHOR_HEAD_DROPOUT = 0.3  # `build_arm` -> `build_model(dropout=0.3)`
 REPO = Path(__file__).resolve().parents[2]
 #: Gitignored: the weights are CC-BY-NC-ND and are never committed or shared.
 PANDERM_PATH = REPO / "ml" / "checkpoints" / "pretrained" / "panderm_b" / "panderm_bb_data6_checkpoint-499.pth"
@@ -63,6 +64,9 @@ class MemberSpec:
     drop_path: float
     warmup_fraction: float  # of the fine-tune steps
     source: str
+    #: Dropout on the head. PanDerm's script states 0 (`--drop` default) and FT-CLIP has no dropout option; DINOv2's source states
+    #: none, so it takes the anchor's 0.3 under the recipe rule.
+    head_dropout: float = 0.0
     checkpoint_sha256: str | None = None
     #: False when `timm_name` is only a compute proxy, so its `pretrained_cfg` says nothing about the real weights.
     timm_weights: bool = True
@@ -77,7 +81,7 @@ ROSTER: dict[str, MemberSpec] = {spec.name: spec for spec in (
                checkpoint_sha256="be1e0fb108b3bc58721cb5195f136c948160799438f222acf1fd142230ac1ff1", timm_weights=False),
     MemberSpec("dinov2_b", "vit_base_patch14_dinov2.lvd142m", 224, IMAGENET_MEAN, IMAGENET_STD,
                backbone_lr=1e-5, layer_decay=None, head_lr=ANCHOR_FINETUNE_LR,
-               weight_decay=ANCHOR_WEIGHT_DECAY, drop_path=ANCHOR_DROP_PATH, warmup_fraction=0.0,
+               weight_decay=ANCHOR_WEIGHT_DECAY, drop_path=ANCHOR_DROP_PATH, warmup_fraction=0.0, head_dropout=ANCHOR_HEAD_DROPOUT,
                source="arXiv 2501.14685 sec. 3.2.1: encoder LR 1e-5 best for ViTs in most cases, no layer decay; rest anchor",
                checkpoint_sha256="55cbb5d887b336d430e649c277b85a1429e724871f9d02ac16203235886d8c7b"),
     MemberSpec("siglip2_b", "vit_base_patch16_siglip_224.v2_webli", 224, HALF, HALF,
@@ -190,7 +194,7 @@ def build_member(spec: MemberSpec, num_classes: int = 8, pretrained: bool = True
 
         check_pin(Path(hf_hub_download(f"timm/{spec.timm_name}", "model.safetensors")), spec)
     model = timm.create_model(spec.timm_name, pretrained=pretrained, num_classes=num_classes,
-                              drop_path_rate=spec.drop_path, img_size=spec.image_size)
+                              drop_path_rate=spec.drop_path, drop_rate=spec.head_dropout, img_size=spec.image_size)
     assert_normalisation(model, spec)
     return model
 

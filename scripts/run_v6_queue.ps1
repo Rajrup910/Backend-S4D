@@ -8,7 +8,11 @@
 # Changed rule: a run is COMPLETE when its run JSON exists with smoke=false and epochs_run equals the run's OWN configured
 # `epochs` (and `--epochs N` on the queue line, if given, equals both). V5's fixed `epochs_run == 30` would never mark a
 # shortened V6 run complete (section 0.4 holds optimiser steps constant, so a larger pool means fewer epochs), and the queue
-# would rerun it forever. The process guard also recognises a future research.v6.train_v6.
+# would rerun it forever. The process guard also recognises research.v6.train_v6.
+#
+# Added rule: a line starting `v6 ` runs research.v6.train_v6, with its JSON at results\v6\runs\<id>.json, the id built as
+# `train_v6.run_id_for` builds it. train_v6 derives its own epochs from the step budget and has no early stopping, so it gets
+# no --epochs or --patience.
 
 param([Parameter(Mandatory = $true)][string]$Queue, [switch]$DryRun, [switch]$SkipC2)
 
@@ -61,10 +65,17 @@ function Get-Arg([string[]]$tokens, [string]$name) {
 function Parse-Line([string]$line) {
     $module = "research.v5.train_v5"
     if ($line -match '^\s*v4\s+') { $module = "research.v4.train_v4"; $line = $line -replace '^\s*v4\s+', '' }
+    if ($line -match '^\s*v6\s+') { $module = "research.v6.train_v6"; $line = $line -replace '^\s*v6\s+', '' }
     $t = @($line -split '\s+' | Where-Object { $_ })
     $seed = Get-Arg $t "--seed"; if (-not $seed) { $seed = "42" }
     $tag  = Get-Arg $t "--run-tag"
-    if ($module -eq "research.v5.train_v5") {
+    if ($module -eq "research.v6.train_v6") {
+        $member = Get-Arg $t "--member"; $fold = Get-Arg $t "--fold"
+        $id = "{0}_f{1}_s{2}" -f $member, $fold, $seed
+        if ($member -eq "anchor") { $id = "${id}_in22k" }
+        if ($tag) { $id = "${id}_$tag" }
+        $json = Join-Path $repo ("results\v6\runs\{0}.json" -f $id)
+    } elseif ($module -eq "research.v5.train_v5") {
         $arm = Get-Arg $t "--arm"; $fold = Get-Arg $t "--fold"; $loao = Get-Arg $t "--loao-holdout"
         $split = if ($loao) { "loao-$loao" } else { "f$fold" }
         $id = "{0}_{1}_s{2}" -f $arm, $split, $seed
@@ -80,7 +91,7 @@ function Parse-Line([string]$line) {
     }
     $extra = @()
     if ($t -notcontains "--num-workers") { $extra += @("--num-workers", "2") }
-    if ($t -notcontains "--patience")    { $extra += @("--patience", "0") }
+    if ($module -ne "research.v6.train_v6" -and $t -notcontains "--patience") { $extra += @("--patience", "0") }
     if ($t -notcontains "--device")      { $extra += @("--device", "cuda") }
     $want = Get-Arg $t "--epochs"
     return @{ module = $module; tokens = ($t + $extra); id = $id; json = $json; epochs = $(if ($want) { [int]$want } else { 0 }) }

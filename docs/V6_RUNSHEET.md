@@ -355,9 +355,9 @@ supersedes the status column of 0.8b.
 | 6 | C4 parity | **Done (0.8e):** `research/v6/members.py` asserts DINOv2's and SigLIP 2's mean/std against timm and keeps the repo's eval geometry (tests). PanDerm's ImageNet statistics are confirmed from its script, and the real file passes the wiring check |
 | 7 | Statistical families | **Done** |
 | 8 | Gate A power statement | **Done** |
-| 9 | Unit tests | **Partly done:** `tests/test_v6_engineering.py` covers the gate, averager (scaled window, BN re-estimation), TTA size/normalisation, 8-class collapse and member builder, including the real PanDerm file. Still to test: the trainer |
+| 9 | Unit tests | **Partly done:** `tests/test_v6_engineering.py` covers the gate, averager (scaled window, BN re-estimation), TTA size/normalisation, 8-class collapse and member builder, including the real PanDerm file. `tests/test_v6_trainer.py` covers the trainer, the plan freeze and the gate's V6 paths |
 | 10 | Exact recipe values | **Done (0.8e, adopted).** All three members pass `members.require_exact`. The photometric recipe is no longer needed |
-| 11 | Owner approval, then hash | Waits for 3 (image hashes, class maps) and 9, which needs `research/v6/train_v6.py`, the last code still to write |
+| 11 | Owner approval, then hash | Waits for 3 (image hashes, class maps). All V6-1 code is written; `research/v6/plan_freeze.py --approve` writes the hash, and the trainer refuses a run of record without it |
 
 **Engineering status, 3 Nov afternoon** (new files only, so the stage-0 lock still verifies; tests in `tests/test_v6_engineering.py`):
 - **Done:** `research/v6/gate.py` (screen gate read against the six anchor seeds; the V5 gate still reads the in1k control and is
@@ -365,9 +365,8 @@ supersedes the status column of 0.8b.
   last two thirds, 30 epochs → 11..30; BatchNorm re-estimation); `tta.py` (views at the member's size and normalisation,
   value-identical to the repo's at 224 px with ImageNet statistics); `head8.py` (AK + SCC summed to the 7-class read-out);
   `members.py` (timm builder, layer-wise LR decay through timm's `param_groups_layer_decay`, normalisation assertion).
-- **Not done:** a V6 trainer. `train_v5.py` builds ConvNeXt arms only and is locked, so the non-ConvNeXt members, the 8-class head,
-  the averager, the head-stage scaling (`HEAD_EPOCHS`) and arm Y's sampler all need a new `research/v6/train_v6.py`
-  and its `v6 ` route in the runner. Class maps and the image-hash audit are also open (0.8e).
+- **Done later the same day:** `research/v6/train_v6.py` and its `v6 ` route in the runner (0.8e). `train_v5.py` builds ConvNeXt arms only and is locked, so all of this is new files.
+- **Not done:** class maps and the image-hash audit (0.8e).
 
 ## 0.8d Stage-0 lock (3 Nov, owner request; this is NOT the plan freeze)
 **Why two steps:** the plan freeze (0.8 item 11) cannot happen yet, because the member builder, exact recipe values and class
@@ -449,6 +448,8 @@ Mixup, CutMix, EMA and RandAugment do not apply. Every member keeps the frozen h
 - **DINOv2 has no layer decay, a change from "LP-FT, layer decay".** The 1e-5 evidence has none, and 1e-5 × 0.65^13 ≈ 4e-8 would leave the
   early blocks effectively frozen, and frozen DINOv2 already lost (S51). **Known risk:** an unreviewed dermoscopy repo with the closest protocol
   chose 5e-5 for ViT-L, at the edge of its grid, so 1e-5 may under-fit. If it does, the member fails V6-3's gate; the LR is not re-tuned on fold 0.
+- **Head dropout, a gap in the table above, filled by the same rule when the trainer was written:** PanDerm-B 0 (its script's `--drop` default), SigLIP 2 0 (FT-CLIP has
+  no dropout option), DINOv2 0.3 (its source states none, so it takes the anchor's value). This is the only change to the member recipes since adoption. No result informed it.
 - **Pins:** DINOv2 `55cbb5d8…8c7b` (cached, verified) and SigLIP 2 `9106b0d8…9494` (372 MB, downloaded, verified against Hugging Face's
   published hash). `research/v6/members.py` refuses a hub file that does not match.
 
@@ -474,9 +475,22 @@ Mixup, CutMix, EMA and RandAugment do not apply. Every member keeps the frozen h
 5.8–7.3 h, assuming the resized cache keeps added rows near the anchor's per-batch cost (unmeasured); V6-3 4.6–6.2 h; V6-4 19.7–24.8 h at the worst
 roster (anchor, 384 px, DINOv2, SigLIP 2); V6-5 2.8–4.2 h; V6-6 ≤ 1 h.
 
-**What remains before the freeze:** `research/v6/train_v6.py` (ViT members, 8-class head, averaging, warm-up, head-stage
-scaling, expanded pool, arm Y sampler) and its runner route; downloads, image-hash audit and class maps; the size of the resized cache; then the
-owner approves the hash.
+**Trainer, written 3 Nov evening** (`research/v6/train_v6.py`, `tests/test_v6_trainer.py`; no training run, Part 0 not frozen):
+- **One LR curve for every pool.** The LR is a function of the optimiser step, in ticks of one V5-pool epoch (fold 0: 447 steps; budget 13,410; head stage 1,341). On the V5 pool a tick is an
+  epoch, so this is V5's per-epoch cosine (unit-tested against V5's own `CosineAnnealingLR` sequence). On a larger pool the curve is unchanged and the head stage may end mid-epoch, so V6-2 differs
+  from the V5 pool by data only. The last epoch is cut at the budget, and a run that misses the budget writes no run JSON.
+- **The sampler's target is each fold's own share:** 29.6-29.9% across folds 0-4, not 27.6%, which is the whole development pool. Young extras stay in training while a fifth of the development rows
+  is held out, so a fold's training share is higher. Section 0.4 already says "own fold share"; this states the number.
+- **Anchor parity, checked:** with `--head 7` on the V5 pool, on CPU in deterministic mode, its two smoke steps match `train_v5 --arm youngdata --trunk in22k` to the last digit (1.912126898765564,
+  1.1387059688568115), with the same validation Macro-F1. A smoke is fine-tune only, so the frozen stage rests on the shared `set_stage` and the unit tests, and GPU parity is not checked.
+- **GPU smoke of every form, two fine-tune batches each (measured, but a 2-batch peak):** anchor 2.20 GB; anchor 384 px 3.27 GB at batch 16; PanDerm-B 3.01 GB; DINOv2-B 3.72 GB; SigLIP 2 2.80 GB; added rows with
+  the young sampler 2.20 GB. These replace no cost figure: real members' run times are still unmeasured.
+- **Enforced by code:** `research/v6/plan_freeze.py` makes the trainer refuse a run of record until the owner's hash exists and holds (checked: it refuses now). A non-finite loss writes no run JSON, so the
+  queue's retry reruns it. Added rows are re-checked against every manifest split. `gate.py --averaging-read` computes V6-1's `_swad` - `_last` rule. The runner's `v6 ` route was dry-run on a shortened run: `epochs_run` 14 of 14
+  is complete and 13 of 14 is not.
+
+**What remains before the freeze:** downloads, image-hash audit and class maps, which give the added-rows CSV the trainer already accepts; the size of the resized cache; then the owner approves the hash
+(`python -m research.v6.plan_freeze --approve`).
 
 ## 0.9 What the older sections become
 - **§A0 CG-DM, §A0.12 R1, §A0.13 R2:** CG-DM Stage 0 survives as a **CPU-only diagnostic** run after V6-5 on the finalists'

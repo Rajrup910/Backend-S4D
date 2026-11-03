@@ -9895,3 +9895,14 @@ The owner adopted `docs/V6_RUNSHEET.md` section 0.8e. No training run, no test o
 - **Ledger:** `research/experiments.csv` gained one `v6_0` row for the `m7` read. A first attempt through `ml.training.common.log_experiment` wrote a misaligned row and a stray `experiments.jsonl`,
   because that helper's columns differ from the current header; both were repaired before this commit.
 - **Runsheet:** 0.8 rows 3, 6, 9, 10, 11 updated. Still before the freeze: `research/v6/train_v6.py` and its runner route, downloads, image-hash audit, class maps, the resized-cache size, then owner approval of the hash.
+
+### V6 trainer written (2026-11-03, evening; owner go)
+`research/v6/train_v6.py` is the last V6 code the freeze was waiting on. No training run of record, no test or reserved read, no ledger row. Part 0 is **still not frozen**. Design and checks: `docs/V6_RUNSHEET.md` 0.8e.
+- **New:** `research/v6/train_v6.py`; `research/v6/plan_freeze.py` (the owner's hash, which the trainer now requires for any run of record); `tests/test_v6_trainer.py`.
+- **Changed:** `research/v6/gate.py` (finds V6 predictions, `--averaging-read` for V6-1's within-run rule, `--arm-checkpoint`); `scripts/run_v6_queue.ps1` (`v6 ` route); `research/v6/members.py` (head dropout).
+- **Recipe gap filled by the adopted rule:** head dropout was never stated for the members. PanDerm-B 0 (`--drop` default in its `run_class_finetuning.py`), SigLIP 2 0 (FT-CLIP's `main_finetune.py` has no dropout option), DINOv2 0.3 (source silent, so the anchor's value). No result informed it.
+- **Schedule:** the LR is a function of the optimiser step, in ticks of one V5-pool epoch, so a larger pool has the same steps and the same curve. On the V5 pool this is V5's per-epoch cosine, unit-tested against its own scheduler sequence.
+- **Parity, checked once by hand (outputs disposable, deleted):** `train_v6 --member anchor --head 7` and `train_v5 --arm youngdata --trunk in22k`, both `--smoke --deterministic --log-steps --device cpu --num-workers 0`, fold 0, seed 42: step losses identical (1.912126898765564, 1.1387059688568115), validation Macro-F1 identical (0.10754578754578754). Two fine-tune steps only; the frozen stage and GPU are not compared.
+- **GPU smokes (two fine-tune batches, disposable):** anchor 2.20 GB, anchor 384 px at batch 16 3.27 GB, PanDerm-B 3.01 GB, DINOv2-B 3.72 GB, SigLIP 2 2.80 GB, added rows with the young sampler 2.20 GB. Printed by each run; not retained. Real members' run times remain unmeasured.
+- **Fold shares for arm Y:** 0.2964, 0.2969, 0.2987, 0.2968, 0.2975 for folds 0-4, computed from `ml/data/manifest_v4.csv`, `results/v4/kfold/fold_assignments.csv` and `results/v5/young_data/extra_train.csv`. The runsheet's 27.6% is the whole development pool.
+- **Still before the freeze:** downloads, image-hash audit, class maps, the resized-cache size, then owner approval of the hash.
