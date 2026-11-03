@@ -1,0 +1,28 @@
+{
+  "file": "panderm_bb_data6_checkpoint-499.pth",
+  "sha256": "be1e0fb108b3bc58721cb5195f136c948160799438f222acf1fd142230ac1ff1",
+  "n_tensors": 186,
+  "missing_after_load": [
+    "bias",
+    "relative_position_bias_table",
+    "weight"
+  ],
+  "unexpected_after_load": [],
+  "pos_embed_matches_sincos": true,
+  "layer_scale_gamma1_mean": 2.7567858695983887,
+  "layer_scale_gamma1_init": 0.1,
+  "n_images": 800,
+  "real_weights": {
+    "macro_f1": 0.5075121611705532,
+    "balanced_accuracy": 0.5006594004174405,
+    "escalation_auroc": 0.8021458823529413
+  },
+  "random_weights": {
+    "macro_f1": 0.2548388327889058,
+    "balanced_accuracy": 0.2762001922456759,
+    "escalation_auroc": 0.6302494117647058
+  },
+  "fold_0_read": false,
+  "test_read": false,
+  "reserved_read": false
+}

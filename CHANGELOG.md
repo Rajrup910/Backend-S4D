@@ -9836,3 +9836,62 @@ environment unchanged. Part 0 is **still not frozen**.
 - **New gap:** `research/v5/screen_gate.py:null_model` still reads the in1k control seeds and nothing reads the anchor bars, so a V6
   gate must be wired to them. Not yet on the §0.8c engineering list.
 - **Ledger:** the run appended 6 `v5_v6nf` rows and rewrote two old `q11` rows at about the 16th digit; pandas reads them as equal.
+
+### V6-0 engineering, first batch (2026-11-03, ~16:30; no GPU run, no result read)
+New files only, so `research.v6.lock_stage0 --verify` still passes (52 files). 29 CPU tests in `tests/test_v6_engineering.py`, plus the
+existing lock and screen-gate tests, pass. Part 0 is **still not frozen**.
+- **Gate wired to the anchor bars** (`research/v6/gate.py`): the V5 gate form with bars from the six `youngdata` seeds
+  (`bar_k3` 0.0048 on all-age pAUC, retention floor -0.0136 at k=3). `screen_gate.null_model` still reads the in1k control and is locked,
+  so it is not edited. Refuses a broken lock or fewer than six seeds.
+- **Runner rule** (`scripts/run_v6_queue.ps1`): complete when `epochs_run` equals the run's own `epochs`, and `--epochs N` on the queue
+  line, if given, equals it too. Dry-run on the 12 real `v6nf` files and a made-up queue: 30-epoch runs complete, a mismatching
+  `--epochs` and a missing file not. A shortened run (the case it exists for) was not exercised. Same mutex name as the V5 runner.
+- **Averaging** (`averaging.py`): window = last two thirds (30 epochs → 11..30); BatchNorm re-estimation, tested against the data
+  statistics. **TTA** (`tta.py`): views at the member's size and mean/std, tensor-identical to the repo's at 224 px.
+  **8-class head** (`head8.py`): AK + SCC summed to the 7-class order; the label collapse matches `class_index_7` for all 25,331 rows.
+- **Member builder** (`members.py`): timm backbones, layer-wise LR decay via timm's `param_groups_layer_decay` (ViT-B at 0.65: embeddings
+  0.65^13, last block 0.65, head 1.0), per-member normalisation asserted against `pretrained_cfg`. DINOv2, SigLIP 2 and PanDerm
+  recipes are refused until their approximate values are replaced (0.8 item 10).
+- **Found while testing:** the architecture used as PanDerm's compute proxy is pretrained with 0.5/0.5, while the runsheet says PanDerm
+  uses ImageNet statistics. The check is skipped for the proxy and PanDerm's normalisation stays unverified until its checkpoint is pinned.
+- **Shades-of-grey as a gain table** (`sog_gains.py`) instead of an image cache: bit-identical to `research.v4.colour.shades_of_grey`
+  (tested), no disk, no re-encode. Scratch timing: applying a stored gain takes 1.5 ms per manifest image and 10.5 ms per young extra,
+  against 43.6 and 370 ms computing shades-of-grey (40 and 20 images; the runsheet's 18.8 ms was measured on 600x450 images). The full
+  table has not been built.
+- **Open:** a V6 trainer (members, 8-class head, averager, gain table, head-stage scaling, arm Y sampler); the photometric
+  augmentation recipe (undefined in the runsheet); exact DINOv2/SigLIP 2/PanDerm values; class maps; image-hash audit; PanDerm pin.
+  Runsheet 0.8c rows 4, 5, 6, 9, 10 and an engineering-status block updated.
+
+### V6 open items closed: photometric paper read, member recipes final, PanDerm checked (2026-11-03, evening; proposed, owner's yes pending)
+No GPU run, no test or reserved read. Part 0 is **not frozen**. Full reasoning in `docs/V6_RUNSHEET.md` section 0.8e.
+- **arXiv 2607.26765 read in full, including its Table 16 `mix` recipe.** In-domain gain +0.003, held-out ISIC + HAM +0.047 over four seeds per arm. The
+  authors state the policy was selected on the sources it is reported on, against a flips-only baseline. Melanoma recall fell 0.436 → 0.402; the gain is
+  mainly benign-keratosis specificity. Amendment 02's "separate policy selection" is wrong and is corrected in 0.8e.
+- **New read of V5's `m7` on the paper's kind of endpoint** (`research/v6/m7_loao_binary.py`, `results/v6/m7_loao_binary.json`; existing predictions, one seed
+  per arm, 2,000 lesion-grouped resamples): AUROC HAM **+0.0227** [+0.0100, +0.0354], BCN **−0.0635** [−0.0807, −0.0469], MSKCC −0.0166 [−0.0469, +0.0143];
+  pAUC@0.20 HAM +0.0043, BCN −0.0078, MSKCC **−0.0415** [−0.0653, −0.0173]. Under 40 on BCN, AUROC −0.0775 [−0.1448, −0.0119]. `m7` is a sibling of `mix`, not `mix`.
+- **Proposed: photometric and shades-of-grey leave V6-1, which becomes arm T only** (3 runs instead of 6). A LOAO replication of `mix` itself is deferred, off the
+  critical path, with its recipe recorded. Averaging stays and is read inside every run. On the owner's yes, `research/v6/sog_gains.py` and its tests are removed.
+- **Member recipes final** (`research/v6/members.py`): PanDerm-B LR 1.25e-4, layer decay 0.65, drop path 0.2; DINOv2-B LR 1e-5, no layer decay; SigLIP 2 LR 3.75e-5,
+  layer decay 0.6, drop path 0. The rule and every source are in 0.8e. ConvNeXt entries removed from the roster: they keep `train_v5`'s path, and my first
+  roster had given them the wrong weight decay and head LR.
+- **Pins:** DINOv2 `55cbb5d8…` (cached, verified), SigLIP 2 `9106b0d8…` (372 MB, Hugging Face's published hash, not downloaded). PanDerm-B
+  `panderm_bb_data6_checkpoint-499.pth`, 343,298,382 bytes, still to download and hash.
+- **PanDerm corrections:** ImageNet normalisation confirmed from its script. It is a CAE-style ViT, not "architecture-identical" to `vit_base_patch16_224`, so the
+  builder uses timm's `Beit`; the mapping is tested on a synthetic checkpoint only. S51's frozen "PanDerm" probe used DermLIP-aligned weights, so PanDerm-B has never
+  run here.
+- **Re-quote:** core ≈ 37–47 GPU h, extrapolated, inside the 80 h cap (breakdown in 0.8e). 36 CPU tests in `tests/test_v6_engineering.py` pass; the stage-0 lock verifies.
+
+### V6 plan revision adopted; PanDerm-B and SigLIP 2 pinned (2026-11-03, evening; owner decision)
+The owner adopted `docs/V6_RUNSHEET.md` section 0.8e. No training run, no test or reserved read. Part 0 is **still not frozen**.
+- **Adopted:** photometric augmentation and shades-of-grey leave V6-1, which becomes arm T only (3 runs); weight averaging is read inside every run; the member recipes
+  in 0.8e are final; a LOAO replication of `mix` itself stays deferred. `research/v6/sog_gains.py` and its tests were removed, never committed.
+- **Downloaded (owner approved):** `panderm_bb_data6_checkpoint-499.pth`, 343,298,382 bytes, SHA-256 `be1e0fb108b3bc58721cb5195f136c948160799438f222acf1fd142230ac1ff1`, gitignored at
+  `ml/checkpoints/pretrained/panderm_b/`; SigLIP 2 `model.safetensors`, 371,551,936 bytes, matching Hugging Face's published hash `9106b0d8…`. Both DINOv2 and SigLIP 2 built with pretrained
+  weights through their pin checks.
+- **PanDerm wiring confirmed on the real file** (`research/v6/panderm_load_check.py`, `results/v6/panderm_load_check.json`): 186 tensors, encoder only, none unexpected; only the new head and
+  the relative position tables stay at init, as in the repo's fine-tuning script; stored position embedding equals the builder's sin-cos table; layer scale mean 2.76 against its 0.1 init.
+  Linear probe on 800 fold 1-4 training images: real Macro-F1 0.508, escalation AUROC 0.802; random weights 0.255, 0.630. A wiring check, not a result; fold 0 not read; rel-pos tables were random in both arms.
+- **Ledger:** `research/experiments.csv` gained one `v6_0` row for the `m7` read. A first attempt through `ml.training.common.log_experiment` wrote a misaligned row and a stray `experiments.jsonl`,
+  because that helper's columns differ from the current header; both were repaired before this commit.
+- **Runsheet:** 0.8 rows 3, 6, 9, 10, 11 updated. Still before the freeze: `research/v6/train_v6.py` and its runner route, downloads, image-hash audit, class maps, the resized-cache size, then owner approval of the hash.

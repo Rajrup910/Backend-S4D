@@ -96,7 +96,7 @@ audit). Part B is the earlier execution (ordered, gated phases, costs, stop rule
   BCN20000 or ISIC 2019** (VERIFIED, Nat Med text; its only ISIC source is ISIC-2024 TBP tiles) and it was never
   fine-tuned here (S51 was a frozen probe). Licence CC-BY-NC-ND: research use, no release of fine-tuned weights.
   DermLIP/Derm1M contains ISIC MSKCC and DermINO contains the ISIC 2016–2020 union → excluded. Photometric augmentation
-  +0.047 OOD AUROC (lesion-grouped) and SWAD +7.4 on a 7-archive skin DG benchmark. Our single-model BACC 0.64–0.67 sits
+  +0.047 OOD AUROC (lesion-grouped; selected on its own OOD sources against a flips-only baseline, and not reproduced on our hold-outs, 0.8e) and SWAD +7.4 on a 7-archive skin DG benchmark. Our single-model BACC 0.64–0.67 sits
   at Gessert's honest lesion-grouped single-model level (65.8–68.8).
 - *Other fields* (`research_transfer_techniques.md`). Controlled benchmarks (MEDFAIR; Yang et al., Nat Med 2024)
   find no fairness/robustness algorithm significantly beats ERM; in dermatology an age gap is not shortcut learning
@@ -197,20 +197,20 @@ budget, otherwise at about 10 epochs it would eat 30% of the steps and V6-2 woul
 
 | Stage | Work | Runs / GPU h | Gate → consequence |
 |---|---|---|---|
-| **V6-0** (mostly CPU) | V5 finished and §A5 filled; the S84 lesion-level fix declared first. `scripts/run_v6_benchmarks.ps1` plus PanDerm-B. Engineering in `research/v6/`: a timm/PanDerm member builder with layer-wise LR decay, epoch-level weight averaging for every run. This reuses `SwadAverager` (`research/v5/m7.py`), unlocked from LOAO-only. It averages one snapshot per epoch, so it is SWA, **not** iteration-dense SWAD. Its window is the last two-thirds of the epochs, so it scales when the step budget shortens epochs. BatchNorm members (only EfficientNetV2-S, if it enters as SigLIP 2's fallback) get a running-statistics re-estimation pass on training images, because averaging BN statistics as if they were weights is wrong, a photometric-augmentation option, an offline shades-of-grey image cache (removes its measured 18.8 ms/image cost), 8-class head with 7-class read-out by summing AK + SCC. Lesion/patient/hash audit of every source → `data_allocation.json`. IN-22k noise-floor seeds 45/46/47 on the **anchor recipe** (`youngdata`), plus the §A0.9 control seeds for the recipe comparison (`results/v5/queue_V6N0.txt`, 0.8c). **Gate A power statement** (CPU): for true effects of +0.035 and +0.050, from V5's hierarchical bootstrap SD on the same 65 lesions, three probabilities reported separately: the point estimate reaches +0.050; the CI lower bound is > 0; both (Gate A itself); recorded before any V6 run. **PanDerm checkpoint pin:** the original PanDerm-B weights, SHA-256 recorded; the repo's newer "PanDerm-2" (DermFM-Zero) is excluded, because its training data include BCN20000, MSKCC and HIBA (model card, checked 2 Nov). **Hash Part 0.** | 6 runs + benchmarks ≈ 5.1–5.6 h (benchmarks ≈ 5–10 min for 25 configurations, from two measured at 12 s each; `youngdata` 58.5–58.7 min and control 40.5–49.9 min, both measured). Tag `v6nf`, so V5's `v5scr` record stays closed | Any member whose benchmarked run exceeds 2.5× the anchor is dropped before screening |
-| **V6-1** Recipe | Fold 0, seeds 42/43/44, ConvNeXt-T IN-22k on the V5 pool. Arm **R** = weight averaging + photometric augmentation + shades-of-grey (the averaged `_swad` checkpoint is the arm's read-out; `_last` reported beside it, so the averaging's own contribution is visible); arm **T** = 8-class head. Control = the banked V5 `youngdata` fold-0 runs (same pool, trunk, recipe; no retraining) | 6 runs ≈ 6 h (58.6 min measured for `youngdata`) | V5 screen gate, IN-22k bars. R passes → carried. T is adopted if Macro-F1 retention ≥ the bar (non-inferiority: it exists for comparability, not gain) |
+| **V6-0** (mostly CPU) | V5 finished and §A5 filled; the S84 lesion-level fix declared first. `scripts/run_v6_benchmarks.ps1` plus PanDerm-B. Engineering in `research/v6/`: a timm/PanDerm member builder with layer-wise LR decay, epoch-level weight averaging for every run. This reuses `SwadAverager` (`research/v5/m7.py`), unlocked from LOAO-only. It averages one snapshot per epoch, so it is SWA, **not** iteration-dense SWAD. Its window is the last two-thirds of the epochs, so it scales when the step budget shortens epochs. BatchNorm members (only EfficientNetV2-S, if it enters as SigLIP 2's fallback) get a running-statistics re-estimation pass on training images, because averaging BN statistics as if they were weights is wrong, 8-class head with 7-class read-out by summing AK + SCC. Lesion/patient/hash audit of every source → `data_allocation.json`. IN-22k noise-floor seeds 45/46/47 on the **anchor recipe** (`youngdata`), plus the §A0.9 control seeds for the recipe comparison (`results/v5/queue_V6N0.txt`, 0.8c). **Gate A power statement** (CPU): for true effects of +0.035 and +0.050, from V5's hierarchical bootstrap SD on the same 65 lesions, three probabilities reported separately: the point estimate reaches +0.050; the CI lower bound is > 0; both (Gate A itself); recorded before any V6 run. **PanDerm checkpoint pin:** the original PanDerm-B weights, SHA-256 recorded; the repo's newer "PanDerm-2" (DermFM-Zero) is excluded, because its training data include BCN20000, MSKCC and HIBA (model card, checked 2 Nov). **Hash Part 0.** | 6 runs + benchmarks ≈ 5.1–5.6 h (benchmarks ≈ 5–10 min for 25 configurations, from two measured at 12 s each; `youngdata` 58.5–58.7 min and control 40.5–49.9 min, both measured). Tag `v6nf`, so V5's `v5scr` record stays closed | Any member whose benchmarked run exceeds 2.5× the anchor is dropped before screening |
+| **V6-1** Recipe | Fold 0, seeds 42/43/44, ConvNeXt-T IN-22k on the V5 pool. **Arm T only** = 8-class head (revised 3 Nov, 0.8e: arm R removed). The run keeps the epoch average, so `_swad` − `_last` on the same run reads averaging with no seed noise. Control = the banked V5 `youngdata` fold-0 runs (same pool, trunk, recipe; no retraining) | 3 runs ≈ 2.9–3.7 h (58–73 min measured for `youngdata`) | T is adopted if Macro-F1 retention ≥ the bar (non-inferiority: it exists for comparability, not gain). Averaging is the read-out of every later run if the mean paired `_swad` − `_last` over the three seeds is > 0 on all-age or histology pAUC and Macro-F1 ≥ −0.010 (seed-noise bars do not apply to within-run pairs); otherwise `_last` |
 | **V6-2** Pool | Fold 0, 3 seeds, matched steps, carried recipe. Arm **P** = expanded pool (0.3), plain sampling. Arm **Y** = the same pool with a sampler that holds the expected under-40 share of each batch at the V5 pool's own fold share (27.6% on the whole development pool, against 13.1% if the pool is left to dilute; `results/v6/data_allocation.json`, `young_share`). Rows with no age count as not young. Both are compared with the same recipe on the V5 pool. Y adds no data and changes no loss weight; it only prevents dilution | 6 runs ≈ 6 h (extrapolated from 58.6 min) | Gate as V6-1 against the V5 pool, plus BCN-row Macro-F1 Δ reported. **Y is carried only if** it passes that gate **and** beats P on under-40 pAUC by more than `bar_k3` on `pauc_u40`, with Macro-F1 no worse than P's by more than the retention bar. Otherwise P if it passes; otherwise V6 continues on the V5 pool |
-| **V6-3** Members | Fold 0, seed 42, carried recipe and pool: **PanDerm-B** (LP-FT; layer decay 0.65 from its repo), **DINOv2 ViT-B/14** (`vit_base_patch14_dinov2.lvd142m`, Apache-2.0; self-distillation; LP-FT, layer decay, backbone LR ≈ 1e-5, positional embedding interpolated to 224 px; DINOv2 ViT-S/14 if B exceeds the 2.5× cost rule), **SigLIP 2 B/16** (`vit_base_patch16_siglip_224.v2_webli`, Apache-2.0; image–text contrastive; FT-CLIP recipe: layer decay ≈ 0.6, no Mixup/CutMix; **EfficientNetV2-S** is its fallback if SigLIP 2 fails the cost rule or diverges). Members are chosen by **training objective**, not architecture: error inconsistency with a supervised ResNet-50 rises from 0.085 (another seed) and 0.103–0.147 (another architecture) to 0.169–0.230 (another objective and data, CLIP/ALIGN) (Gontijo-Lopes et al., ICLR 2022), and our own architecture-only additions (SwinV2-T, MaxViT-T) were a wash. EVA02-S is dropped: like PanDerm it is masked-image modelling against CLIP-feature targets, the same objective family twice. The DINO-family risk is the LR: frozen DINOv2 lost under 40 (S51) and DINOv3-ConvNeXt without layer decay collapsed, so the recipe above is the test, not the backbone. Augmentation and step budget are the V6 recipe's for every member. Also **ConvNeXt-T IN-22k at 384 px** with its 384-pretrained weights. The 384 px member has the best in-repo record of any candidate: V4 S53r +0.0297 Macro-F1 in 3/3 seeds, and V5 S01 HAM rows gained in 3/3 seeds. Its known costs are read on its gate: 1.5× run time (measured), the BCN-row null, and S01's under-40 −0.0192 as a single model. MaxViT-T and SwinV2-T are **not planned**: on HAM val they trailed the anchor (0.7176 and 0.7412 vs 0.7482, `results/review2/v1_member_metrics.csv`), and added to the 6-CNN vote they were a wash (0.7981 vs 0.7986) | 4 runs, cost from V6-0 benchmarks (unmeasured until then) | Promote ≤ 3: single-model all-age pAUC within the anchor's noise floor (`bar_k1`, one seed: z80 × the pair SD of the six anchor seeds) **or** fold-0 soft-vote all-age pAUC above it with Macro-F1 retained. Fold 0 is the selection fold. **Report only, never a gate** (CPU): each candidate's marginal contribution when added to the anchor, on all-age Macro-F1, all-age pAUC, under-40 pAUC and the under-40 high-melanin tercile, plus disagreement, double-fault and **error inconsistency** (the share of rows only one of the two gets right) with the anchor, overall and on the under-40 escalating misses. Fold-0 under-40 counts are small, so these are descriptive |
-| **V6-4** Finalists | Anchor + ≤ 3 members × folds 1–4, seed 42 (fold 0 exists from V6-1/2/3) | ≤ 16 runs; ≈ 16–35 h (anchor 58.6 min measured; members from benchmarks) | OOF complete for every member before any ensemble is formed |
+| **V6-3** Members | Fold 0, seed 42, carried recipe and pool: **PanDerm-B** (LP-FT; backbone LR 1.25e-4, layer decay 0.65, drop path 0.2, 0.8e), **DINOv2 ViT-B/14** (`vit_base_patch14_dinov2.lvd142m`, Apache-2.0; self-distillation; LP-FT, flat backbone LR 1e-5 with no layer decay, 0.8e; positional embedding interpolated to 224 px; DINOv2 ViT-S/14 if B exceeds the 2.5× cost rule), **SigLIP 2 B/16** (`vit_base_patch16_siglip_224.v2_webli`, Apache-2.0; image–text contrastive; FT-CLIP recipe: backbone LR 3.75e-5, layer decay 0.6, drop path 0, no Mixup/CutMix, 0.8e; **EfficientNetV2-S** is its fallback if SigLIP 2 fails the cost rule or diverges). Members are chosen by **training objective**, not architecture: error inconsistency with a supervised ResNet-50 rises from 0.085 (another seed) and 0.103–0.147 (another architecture) to 0.169–0.230 (another objective and data, CLIP/ALIGN) (Gontijo-Lopes et al., ICLR 2022), and our own architecture-only additions (SwinV2-T, MaxViT-T) were a wash. EVA02-S is dropped: like PanDerm it is masked-image modelling against CLIP-feature targets, the same objective family twice. The DINO-family risk is the LR: frozen DINOv2 lost under 40 (S51) and DINOv3-ConvNeXt without layer decay collapsed, so the recipe above is the test, not the backbone. Augmentation and step budget are the V6 recipe's for every member. Also **ConvNeXt-T IN-22k at 384 px** with its 384-pretrained weights. The 384 px member has the best in-repo record of any candidate: V4 S53r +0.0297 Macro-F1 in 3/3 seeds, and V5 S01 HAM rows gained in 3/3 seeds. Its known costs are read on its gate: 1.5× run time (measured), the BCN-row null, and S01's under-40 −0.0192 as a single model. MaxViT-T and SwinV2-T are **not planned**: on HAM val they trailed the anchor (0.7176 and 0.7412 vs 0.7482, `results/review2/v1_member_metrics.csv`), and added to the 6-CNN vote they were a wash (0.7981 vs 0.7986) | 4 runs, cost from V6-0 benchmarks (unmeasured until then) | Promote ≤ 3: single-model all-age pAUC within the anchor's noise floor (`bar_k1`, one seed: z80 × the pair SD of the six anchor seeds) **or** fold-0 soft-vote all-age pAUC above it with Macro-F1 retained. Fold 0 is the selection fold. **Report only, never a gate** (CPU): each candidate's marginal contribution when added to the anchor, on all-age Macro-F1, all-age pAUC, under-40 pAUC and the under-40 high-melanin tercile, plus disagreement, double-fault and **error inconsistency** (the share of rows only one of the two gets right) with the anchor, overall and on the under-40 escalating misses. Fold-0 under-40 counts are small, so these are descriptive |
+| **V6-4** Finalists | Anchor + ≤ 3 members × folds 1–4, seed 42 (fold 0 exists from V6-1/2/3) | ≤ 16 runs; ≈ 19.7–24.8 h at the worst roster (anchor 58–73 min measured; member ratios from benchmarks, extrapolated) | OOF complete for every member before any ensemble is formed |
 | **V6-5** Ensemble (CPU + TTA inference) | **E-primary = uniform soft vote** of the finalists vs the V5 15-model system **with its own 24-view TTA** (`results/v5/preds_tta/`, Macro-F1 0.7005 on folds 1–4), folds 1–4 OOF, so TTA is never credited to V6 alone. **24-view TTA always applied** to every member before combining (owner decision 2 Nov; supersedes the §A5 TTA row's condition). The E-primary system is reported **with and without TTA** on the same rows, each against V5 in the same state (V5 without TTA: 0.6911), so TTA's contribution is measured, not assumed. Each member's views are built at **its own input size** (the 384 px member gets 384 px views). The repo's `build_tta_views(224)` call sites are parameterised in V6-0, and the 384 member's TTA costs ≈ 2.9× per image (pixel ratio; unmeasured). Dirichlet fitted after combining (cross-fitted), S56 refit, C1 conformal as an output field, C3 per-band calibration arm, C5 drift baseline (§A9.1). **Secondary:** nested subgroup-aware selection (0.5). Claim 3 contrast | TTA ≈ 2.8–4.2 h (extrapolated: 8.49 min per 224 px model on one fold, `results/v5/benchmarks/tta_benchmark.json`; the 384 px member's ≈ 2.9× is unmeasured) | E-primary and Gate A as in 0.2; claim 3 under its own Holm family |
 | **V6-6** Confirmation | Single receipted HIBA read: V6 vs V5 vs V1 systems with S56 at matched referral (C2 label-free budget lock, C6 S48 endpoint). Optional SCP2/MIDAS pooled young-band read, Clopper–Pearson | ≤ 1 h | One read, enforced by receipt |
 
-**Core total, 3 Nov: ≈ 42–48 GPU h (extrapolated), inside the 80 h cap; re-quoted after V6-0's full benchmarks.** Inputs: the anchor's measured 58.6 min (≈ 262 ms/batch end to end), the 384 member's measured 1.5×, and two step-time benchmarks measured 3 Nov on synthetic batches: the PanDerm-B proxy 224 ms/batch (3.45 GB VRAM), so data-bound at ≈ 1× the anchor, and DINOv2-B 302 ms/batch (4.41 GB), ≈ 1.3×. SigLIP 2 is unmeasured and assumed 1–1.3×. Real runs of each member confirm these.
+**Core total, re-quoted 3 Nov evening: ≈ 37–47 GPU h (extrapolated), inside the 80 h cap; breakdown in 0.8e.** The earlier ≈ 42–48 h had arm R's three runs and a 58.6 min anchor; the overnight seeds measured 73 min. Earlier inputs: the anchor's measured 58.6 min (≈ 262 ms/batch end to end), the 384 member's measured 1.5×, and two step-time benchmarks measured 3 Nov on synthetic batches: the PanDerm-B proxy 224 ms/batch (3.45 GB VRAM), so data-bound at ≈ 1× the anchor, and DINOv2-B 302 ms/batch (4.41 GB), ≈ 1.3×. SigLIP 2 is unmeasured and assumed 1–1.3×. Real runs of each member confirm these.
 - The earlier "≈ 35–55 GPU h" was set when EVA02-S and EfficientNetV2-S (≈ 20M parameters each) were members.
 - The roster now holds three ViT-B members (PanDerm-B, DINOv2-B, SigLIP 2, ≈ 86M each) and the 384 px member, so the
   total is **likely above 55 h**. That is unmeasured, so no figure is quoted.
 - The anchor's 58.6 min (measured) and the 384 member's 1.5× (measured) are the only anchors.
-- PanDerm-B is not a timm model: its cost is benchmarked through the architecture-identical `vit_base_patch16_224` as a
+- PanDerm-B is not a timm model: its cost is benchmarked through the same-sized `vit_base_patch16_224` (not identical, 0.8e) as a
   compute proxy (declared), then confirmed on its first real run. **Hard cap 80 h:** if a re-quote exceeds it, the cut order is
 SigLIP 2 (weakest dermoscopy evidence), then the 384 px member, then DINOv2-B → DINOv2-S, then V6-4 drops to folds 1–2 for all members (declared now).
 **Every stage ends reportable:** a failure at V6-1, V6-2 or V6-3 still leaves a complete, gated V6 on the V5 recipe,
@@ -240,7 +240,7 @@ data), including DermFM-Zero / PanDerm-2 (trained on ISIC, BCN20000, MSKCC and t
 | E-primary all-age pAUC | Uncertain | V5's heads moved all-age pAUC only on their own readout |
 | Gate A under-40 | Unlikely | Best measured +0.035; the misses are hard mimics no lever here targets directly; 15 new young melanoma lesions (0.8c) |
 | V6-2 arm Y (young-share sampler) | Unlikely to be carried | Hard-case reweighting moved under-40 by −0.000 (S67). It is a safeguard against dilution, not a fix |
-| Claim 3 (PanDerm, under-40) | Open | No prior data; the frozen probe lost, a fine-tune was never run |
+| Claim 3 (PanDerm, under-40) | Open | No prior data: PanDerm-B itself has never run here. The frozen probe that lost used DermLIP-aligned weights (0.8e) |
 | Best pooled Macro-F1 of the programme (Review 3) | Plausible | The full stack (ensemble + TTA + Dirichlet + data) is the first system to combine every measured lever on the pooled ruler. It is compared with V5 on identical rows, never with V1's HAM-test 0.805. **Corrected 3 Nov:** ≈ 0.676 was a single seed; the V5 *system* scores **0.6911, and 0.7005 with TTA** (`results/v5/v5_oof_common_matrix.json`), so the bar is higher and V5 already holds the seed-vote and TTA gains, which is a different ruler. Escalation sensitivity is reported beside it, because Dirichlet cost 0.786 → 0.731 on HAM |
 | 8-class BA vs 71.7 | Likely short | 4–5 members at 224/384 px vs 16 configurations up to 528 px plus external data |
 
@@ -349,15 +349,25 @@ supersedes the status column of 0.8b.
 |---|---|---|
 | 1 | V5 final, §A5 filled | **Done** (S84 receipt completed; §A5 final status added) |
 | 2 | S84 lesion-level exclusion | **Done** (D6 applied) |
-| 3 | `data_allocation.json` | **Identifier links done for all sources and all 25,331 manifest rows** (`research/v6/data_audit.py`): 0 links to HIBA; 0 to the manifest except MILK10k's 859 lesions (D6). Image hashes, class maps, PanDerm hash to do |
-| 4 | Benchmarks, 80 h cap | Queued tonight |
-| 5 | Six-seed bars | Queued tonight (`results/v5/queue_V6N0.txt`) |
-| 6 | C4 parity | Waits for the member builder |
+| 3 | `data_allocation.json` | **Identifier links done for all sources and all 25,331 manifest rows** (`research/v6/data_audit.py`): 0 links to HIBA; 0 to the manifest except MILK10k's 859 lesions (D6). PanDerm hash done (0.8e). Image hashes and class maps to do |
+| 4 | Benchmarks, 80 h cap | **Done 3 Nov** (`results/v6/benchmarks/`, 25 configurations). Core total re-quoted in 0.8e: ≈ 37–47 GPU h, extrapolated, under the cap |
+| 5 | Six-seed bars | **Done 3 Nov** (`results/v6/anchor_noise_floor.json`, both arms final; commit `74518df`) |
+| 6 | C4 parity | **Done (0.8e):** `research/v6/members.py` asserts DINOv2's and SigLIP 2's mean/std against timm and keeps the repo's eval geometry (tests). PanDerm's ImageNet statistics are confirmed from its script, and the real file passes the wiring check |
 | 7 | Statistical families | **Done** |
 | 8 | Gate A power statement | **Done** |
-| 9 | Unit tests | Waits for the member builder |
-| 10 | Exact recipe values | To do with the member builder |
-| 11 | Owner approval, then hash | Waits for 3, 4, 5, 6, 9, 10 |
+| 9 | Unit tests | **Partly done:** `tests/test_v6_engineering.py` covers the gate, averager (scaled window, BN re-estimation), TTA size/normalisation, 8-class collapse and member builder, including the real PanDerm file. Still to test: the trainer |
+| 10 | Exact recipe values | **Done (0.8e, adopted).** All three members pass `members.require_exact`. The photometric recipe is no longer needed |
+| 11 | Owner approval, then hash | Waits for 3 (image hashes, class maps) and 9, which needs `research/v6/train_v6.py`, the last code still to write |
+
+**Engineering status, 3 Nov afternoon** (new files only, so the stage-0 lock still verifies; tests in `tests/test_v6_engineering.py`):
+- **Done:** `research/v6/gate.py` (screen gate read against the six anchor seeds; the V5 gate still reads the in1k control and is
+  locked); `scripts/run_v6_queue.ps1` (a run is complete when `epochs_run` equals the run's own `epochs`); `averaging.py` (window =
+  last two thirds, 30 epochs → 11..30; BatchNorm re-estimation); `tta.py` (views at the member's size and normalisation,
+  value-identical to the repo's at 224 px with ImageNet statistics); `head8.py` (AK + SCC summed to the 7-class read-out);
+  `members.py` (timm builder, layer-wise LR decay through timm's `param_groups_layer_decay`, normalisation assertion).
+- **Not done:** a V6 trainer. `train_v5.py` builds ConvNeXt arms only and is locked, so the non-ConvNeXt members, the 8-class head,
+  the averager, the head-stage scaling (`HEAD_EPOCHS`) and arm Y's sampler all need a new `research/v6/train_v6.py`
+  and its `v6 ` route in the runner. Class maps and the image-hash audit are also open (0.8e).
 
 ## 0.8d Stage-0 lock (3 Nov, owner request; this is NOT the plan freeze)
 **Why two steps:** the plan freeze (0.8 item 11) cannot happen yet, because the member builder, exact recipe values and class
@@ -375,6 +385,98 @@ a locked file needs a dated amendment and a new, separately named lock; this one
 
 **Not locked:** V6-1 onward, the member builder and recipes, class maps, downloads and the image-hash audit. Part 0 is recorded
 only as a snapshot hash, because it may still change by dated revision until the plan freeze.
+
+## 0.8e Open items closed (3 Nov evening; adopted by the owner the same evening; Part 0 NOT frozen)
+**Photometric augmentation leaves the core path.** The paper (arXiv 2607.26765, Kozachok et al., preprint, 29 Jul 2026) was read in
+full, including its Table 16 recipe. On ConvNeXt-L at 224 px, binary malignant vs non-malignant, its `mix` policy moves held-out
+ISIC + HAM AUROC 0.770 → 0.817 (four seeds per arm) and in-domain only 0.938 → 0.941. Five reasons not to adopt it:
+1. **The source-disjoint test the paper asks for has already been run here, and it does not generalise.** V5's `m7` took the paper's
+   physically plausible components, and leave-one-archive-out read on the paper's kind of endpoint gives
+   (`results/v6/m7_loao_binary.json`, `research/v6/m7_loao_binary.py`; one seed per arm, lesion-grouped bootstrap, so the intervals
+   exclude seed noise; train rows of the held-out archive only):
+
+   | Held out | AUROC, control → m7 | Δ AUROC [95% CI] | Δ pAUC@0.20 [95% CI] | Macro-F1, control → m7 | Escalation sensitivity, control → m7 |
+   |---|---:|---:|---:|---:|---:|
+   | HAM | 0.8265 → 0.8492 | **+0.0227** [+0.0100, +0.0354] | +0.0043 [−0.0097, +0.0183] | 0.5472 → 0.4764 | 0.606 → 0.579 |
+   | BCN | 0.8144 → 0.7510 | **−0.0635** [−0.0807, −0.0469] | −0.0078 [−0.0257, +0.0095] | 0.3922 → 0.3913 | 0.649 → 0.493 |
+   | MSKCC | 0.7356 → 0.7190 | −0.0166 [−0.0469, +0.0143] | **−0.0415** [−0.0653, −0.0173] | 0.2714 → 0.2595 | 0.449 → 0.382 |
+
+   The HAM gain agrees with the paper, whose held-out set is mostly HAM and ISIC. BCN, the hardest archive, loses clearly, and under
+   40 on BCN it loses too (AUROC −0.0775 [−0.1448, −0.0119]). Mean Δ AUROC −0.0191, mean Δ pAUC −0.0150. This is a sibling, not `mix`:
+   the plan's HSV ban kept out ColorJitter hue, HSV, HEStain and gamma, so `mix` itself is untested here.
+2. **V6-1's gate cannot see the effect.** Its gate is in-domain fold 0. At the paper's in-domain +0.003 and `bar_k3` 0.0048, the all-age
+   pass rate is about 38%, against 20% with no effect at all.
+3. **The headline gain is optimistic for us.** The authors state the policy was selected on the same held-out sources it is reported on,
+   and their baseline has only flips, resize and normalisation. Our anchor already has crops, rotation and ColorJitter. Their one
+   independent set (Melanoscope, 22 malignant) goes from +0.026 on one checkpoint to −0.004 over seeds.
+4. **It does not touch our failure.** The gain comes mainly from benign-keratosis specificity (0.545 → 0.818), while melanoma recall
+   fell (0.436 → 0.402). Our misses are melanomas called nevi.
+5. **Cost and risk.** `m7` cost +27–37% per run (`results/v5/runs/*_loao-*`), and the paper applies the policy before resizing, which is
+   worst on our 8 Mpx extras. `mix` needs albumentations 2.0.8, which is not installed here.
+
+**Correction:** Amendment 02 describes this paper as using "separate policy selection and evaluation" (0.787 → 0.826). The v1 text
+says the opposite. Section 0.1's +0.047 needs the caveats above.
+
+**Deferred, off the critical path, recipe kept so nothing is lost:** a LOAO replication of `mix` itself, three hold-outs, read by
+`research/v6/m7_loao_binary.py` against the banked LOAO controls. About 3–5 h (unmeasured guess from `m7`'s 42–66 min). Run it only after
+V6-5, within the 80 h cap, and only by a stated owner decision. Table 16, in order: Transpose, VerticalFlip, HorizontalFlip p 0.5 each;
+Affine p 0.4 (translate ±10%, scale 0.85–1.15, rotate ±360°); Rotate p 0.8 (±360°, crop border); CLAHE p 0.4 (clip 4, 8×8); OneOf p 0.7
+blur (motion, median, Gaussian, limit 5) or GaussNoise (std 0.02–0.11); OneOf p 0.7 distortion (optical ±1.0, grid 5 steps ±1.0, elastic
+α 3); OneOf p 0.7 photometric (ColorJitter 0.9–1.1, hue ±0.1; PlanckianJitter 3000–11000 K; HSV ±5/±30/±30; HEStain Macenko preset,
+scale 0.9–1.1, shift ±0.1; ToGray; pairs of these); ChromaticAberration p 0.5 (±0.1); RandomGamma p 0.5 (40–160); Resize 224. The table
+does not say which of a pair's two probabilities applies to which operator, so the authors must be asked before any such run.
+
+**Shades-of-grey leaves too.** With the colour bug fixed, our own read is null (R2 −0.0045, S53r), and the runsheet kept it only because
+it was "free once cached". Free is not neutral: it adds a chance of a false carry (an A/A split of the anchor seeds passes the gate 5 of 20
+times) and a preprocessing step every member, TTA view and deployed path would have to reproduce.
+`research/v6/sog_gains.py` was written and removed the same day, and was never committed.
+
+**Weight averaging stays, at no GPU cost.** Every V6 run keeps it, so `_swad − _last` is a paired read on the same run with no seed noise.
+
+**So V6-1 is arm T only**, three runs instead of six. A failed bundle would have dropped averaging with the rest, and a passed one could
+not have been attributed to any of its three parts.
+
+**Member recipes, final.** Fixed rule: a value the source states is that value; a source LR is converted to batch 32 by the source's own
+linear rule; anything unstated is the anchor's. No tuning on S71 folds. All other training settings are the V6 recipe's, so the sources'
+Mixup, CutMix, EMA and RandAugment do not apply. Every member keeps the frozen head stage (one tenth of the steps, 1e-3).
+
+| Member | Backbone LR | Layer decay | Fine-tune head LR | Weight decay | Drop path | Warm-up (of fine-tune steps) | Source |
+|---|---:|---:|---:|---:|---:|---:|---|
+| PanDerm-B | **1.25e-4** (5e-4 × 32/128) | 0.65 | 1.25e-4 | 0.05 | 0.2 | 20% (10/50) | Repo `finetune_train.sh`; the code does not rescale `--lr` |
+| DINOv2 ViT-B/14 | **1e-5** | **none** | 1e-4 (anchor) | 1e-4 (anchor) | 0.1 (anchor) | 0 (anchor) | arXiv 2501.14685 §3.2.1 |
+| SigLIP 2 B/16 | **3.75e-5** (6e-4 × 32/512) | 0.6 | 3.75e-5 | 0.05 | 0 | 20% (10/50) | FT-CLIP Table 10 B; `main_finetune.py` scales by batch/512. Measured on CLIP, applied to SigLIP 2 by analogy |
+
+- **DINOv2 has no layer decay, a change from "LP-FT, layer decay".** The 1e-5 evidence has none, and 1e-5 × 0.65^13 ≈ 4e-8 would leave the
+  early blocks effectively frozen, and frozen DINOv2 already lost (S51). **Known risk:** an unreviewed dermoscopy repo with the closest protocol
+  chose 5e-5 for ViT-L, at the edge of its grid, so 1e-5 may under-fit. If it does, the member fails V6-3's gate; the LR is not re-tuned on fold 0.
+- **Pins:** DINOv2 `55cbb5d8…8c7b` (cached, verified) and SigLIP 2 `9106b0d8…9494` (372 MB, downloaded, verified against Hugging Face's
+  published hash). `research/v6/members.py` refuses a hub file that does not match.
+
+**PanDerm-B, checked in its repo:**
+- **Checkpoint:** `panderm_bb_data6_checkpoint-499.pth`, 343,298,382 bytes, the README's `PanDerm_Base` Google Drive link. Not the Large model
+  and not PanDerm-2, which lives in a separate repo. SHA-256 `be1e0fb108b3bc58721cb5195f136c948160799438f222acf1fd142230ac1ff1`. Stored gitignored under
+  `ml/checkpoints/pretrained/panderm_b/`; never committed or shared (CC-BY-NC-ND).
+- **Normalisation settled:** the fine-tuning script passes `--imagenet_default_mean_and_std`, and the dataset code then uses timm's ImageNet
+  defaults. Its eval geometry is Resize 256, CenterCrop 224, the same as ours.
+- **It is not a plain ViT, so "architecture-identical" was wrong.** It has fixed sin-cos position embeddings, layer scale, per-block relative
+  position bias (on by default in the fine-tuning script), q/v attention biases and mean pooling. `vit_base_patch16_224` stays a fair compute
+  proxy but cannot load the weights. The builder uses timm's `Beit`, which has the same structure and parameter names, without copying the repo's
+  CC-BY-NC-ND code. **Confirmed on the real file** (`results/v6/panderm_load_check.json`, `research/v6/panderm_load_check.py`): 186 tensors, encoder only, nothing
+  unexpected; the stored position embedding equals the builder's sin-cos table; layer scale has moved from its 0.1 init (mean 2.76). A linear probe on 800
+  fold 1-4 training images gives real weights Macro-F1 0.508, escalation AUROC 0.802, against random weights 0.255, 0.630. **This is a wiring check, not a
+  result.** The file has no relative position tables, so they start at init and train, as in the repo's script. One small difference: the repo applies
+  weight decay to those tables and timm's `Beit` does not.
+- **The earlier frozen "PanDerm" probe was not this model.** S51 used `redlessone/DermLIP_PanDerm-base-w-PubMed-256`
+  (`research/v4/features/panderm_vitb16_reserved.meta.json`), DermLIP-aligned weights from a family this plan excludes. So PanDerm-B itself has
+  never been run here, frozen or fine-tuned, and "PanDerm −0.036" is not evidence about it.
+
+**Re-quote, ≈ 37–47 GPU h (extrapolated from the measured 58–73 min anchor and benchmark ratios), inside the 80 h cap:** V6-1 2.9–3.7 h; V6-2
+5.8–7.3 h, assuming the resized cache keeps added rows near the anchor's per-batch cost (unmeasured); V6-3 4.6–6.2 h; V6-4 19.7–24.8 h at the worst
+roster (anchor, 384 px, DINOv2, SigLIP 2); V6-5 2.8–4.2 h; V6-6 ≤ 1 h.
+
+**What remains before the freeze:** `research/v6/train_v6.py` (ViT members, 8-class head, averaging, warm-up, head-stage
+scaling, expanded pool, arm Y sampler) and its runner route; downloads, image-hash audit and class maps; the size of the resized cache; then the
+owner approves the hash.
 
 ## 0.9 What the older sections become
 - **§A0 CG-DM, §A0.12 R1, §A0.13 R2:** CG-DM Stage 0 survives as a **CPU-only diagnostic** run after V6-5 on the finalists'
@@ -433,7 +535,7 @@ was checked against our record and the four reviews before anything changed.
     paper).
   - The MILK10k link count is **985** (859 Training + 126 Test), not 859; it is already excluded by D6.
   - Its colour-constancy evidence (Perez 2018, 0.814 → 0.842) conflicts with our review, which found no external-test
-    gain. Shades-of-grey stays in arm R only because it is free once cached; arm R's gate decides.
+    gain. Shades-of-grey stays in arm R only because it is free once cached; arm R's gate decides. (Superseded 3 Nov, 0.8e: arm R removed.)
 
 **2 Nov, ChatGPT** (same prompt; scored 8.1/10). It scored an intermediate Part 0 in which MaxViT-T replaced the 384 px
 member as core; that swap was reverted the same day (above), so its roster comments are read against the current
