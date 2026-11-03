@@ -6,7 +6,7 @@
 
 <img src="docs/assets/readme/hero.gif" width="100%" alt="Animated intro: accuracy is misleading on HAM10000; the best system reaches Macro-F1 0.8047 but catches 3 of 21 serious under-40 cases; five versions narrowed the cause to a ranking limit.">
 
-<br>
+<p>&nbsp;</p>
 
 <p>
   <img src="docs/assets/readme/icons/python.svg" width="56" height="56" alt="Python" title="Python">&nbsp;&nbsp;&nbsp;
