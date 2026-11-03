@@ -1,0 +1,7 @@
+# V6-2 if T was rejected: 7-class head. Otherwise the same as queue_V62T.
+v6 --member anchor --head 7 --fold 0 --seed 42 --run-tag v62p --added-train results/v6/added_pool/added_train.csv
+v6 --member anchor --head 7 --fold 0 --seed 42 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member anchor --head 7 --fold 0 --seed 43 --run-tag v62p --added-train results/v6/added_pool/added_train.csv
+v6 --member anchor --head 7 --fold 0 --seed 43 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member anchor --head 7 --fold 0 --seed 44 --run-tag v62p --added-train results/v6/added_pool/added_train.csv
+v6 --member anchor --head 7 --fold 0 --seed 44 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young

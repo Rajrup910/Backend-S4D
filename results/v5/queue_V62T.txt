@@ -1,0 +1,7 @@
+# V6-2 if T was adopted: 8-class head. Arm P, expanded pool, plain sampling; arm Y, the same pool holding the young share. Fold 0, seeds 42 43 44.
+v6 --member anchor --fold 0 --seed 42 --run-tag v62p --added-train results/v6/added_pool/added_train.csv
+v6 --member anchor --fold 0 --seed 42 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member anchor --fold 0 --seed 43 --run-tag v62p --added-train results/v6/added_pool/added_train.csv
+v6 --member anchor --fold 0 --seed 43 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member anchor --fold 0 --seed 44 --run-tag v62p --added-train results/v6/added_pool/added_train.csv
+v6 --member anchor --fold 0 --seed 44 --run-tag v62y --added-train results/v6/added_pool/added_train.csv --sampler young

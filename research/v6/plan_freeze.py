@@ -28,7 +28,8 @@ EXTRA_FILES = ("scripts/run_v6_queue.ps1", "research/stats/families.py", "result
                "results/v6/e_primary_power.json", "results/v6/added_pool/added_train.csv", "results/v6/added_pool/audit.json",
                "results/v6/added_pool/selection.json", "results/v6/data_allocation.json", "results/v5/v5_oof_common_matrix.csv",
                "results/v5/v5_oof_common_matrix.json", "results/v5/refit/dirichlet_state.json", "results/v5/refit/s56_policies_v5.json",
-               "results/v6/added_pool/young_labels_8.csv", "results/v6/added_pool/near_pairs.csv", "results/v6/added_pool/cache_sha256.csv", "results/v5/queue_V61.txt")
+               "results/v6/added_pool/young_labels_8.csv", "results/v6/added_pool/near_pairs.csv", "results/v6/added_pool/cache_sha256.csv", "results/v5/queue_V61.txt",
+               "results/v5/queue_V62T.txt", "results/v5/queue_V62H.txt", "scripts/run_v6_overnight.ps1")
 
 
 def frozen_paths() -> list[str]:

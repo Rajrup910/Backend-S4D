@@ -1,7 +1,7 @@
 # V6 Runsheet — the single V6 plan and execution document
 
 **Date:** 2026-09-29
-**Status (3 Nov 2026):** Part 0 is the plan. Every freeze item is done except the owner's approval of the hash (`results/v6/v6_plan_freeze.json`), and until then the trainer refuses a run of record. Revisions below are in date order.
+**Status (4 Nov 2026):** **FROZEN.** The owner approved the hash on 4 Nov (`results/v6/v6_plan_freeze.json`). Part 0 is the plan, and it describes the state before the freeze; any change to it or to a frozen file now needs a dated amendment (`research/v6/plan_freeze.py --amendment`). Revisions below are in date order.
 
 **Revision 30 Sep (owner request, pre-freeze, before any V6 result):** the six V1 architectures
 enter V6 as a portability test of the V5 features and as heterogeneous-ensemble members (§A3b,
