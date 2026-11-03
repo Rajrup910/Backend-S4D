@@ -9812,3 +9812,27 @@ depends on is locked instead (`docs/V6_RUNSHEET.md` §0.8d): `results/v6/v6_stag
 `research/v6/lock_stage0.py` (tests in `tests/test_v6_lock.py`). It hashes the queue and scripts, the trainer and bar script with
 their import closure, the partition, labels and extras, the banked predictions, package versions, and the rules literally. The
 launch command and the bar script both refuse a broken lock. Part 0 is **still not frozen**.
+
+### V6-0 noise-floor read: six-seed bars final (2026-11-03, ~15:45; read-only review plus the declared bar computation)
+Queue V6N0 finished at 10:04, 6 of 6 runs, none failed (`results/v5/logs/queue_V6N0.log`). All 30 epochs, no non-finite training
+loss, test and reserved not read (`results/v5/runs/*_v6nf.json`). `research.v6.lock_stage0 --verify` passed: 52 files,
+environment unchanged. Part 0 is **still not frozen**.
+- **Bars (`results/v6/anchor_noise_floor.json`, both arms final, 15 pairs each), `youngdata` anchor:** all-age pAUC pair SD 0.0098,
+  `bar_k3` 0.0048, `bar_k1` 0.0082; histology pAUC 0.0127, 0.0062, 0.0107; under-40 pAUC 0.0200, 0.0097, 0.0168; Macro-F1 0.0143,
+  0.0070, 0.0121. Control pair SDs, for comparison only: 0.0113, 0.0146, 0.0314, 0.0243.
+- **Three seeds were not enough:** the anchor's all-age pair SD moved 0.0071 to 0.0098 and control's 0.0153 to 0.0113. The
+  IN-22k over in1k ratio on all-age pAUC falls from 2.15× (`results/v6/noise_floor_in22k_check.json`) to 1.59×.
+- **Scratch computations from that JSON, not saved to `results/`:** six seeds give 5 degrees of freedom, so the all-age pair SD
+  has a chi-square 95% interval of about 0.0061–0.0240. Recipe noise does not differ measurably (variance ratio 1.3–2.9, F-test
+  p ≥ 0.27). `youngdata` minus control, paired by seed: all-age +0.0068, under-40 +0.0193 (5 of 6 seeds positive), Macro-F1
+  +0.0018, all p ≥ 0.20. An A/A check of the V5 gate form on all 20 three-versus-three splits of the six anchor seeds passes 5 (25%),
+  including new seeds versus banked; the splits overlap and share the seeds that set the bars, so this is rough.
+- **Cost:** `youngdata` took 72.7–73.1 min against 58.0–58.3 banked, control 45.5–46.4 against 40.3–49.7 (`results/v5/runs/`). Extras
+  are full size: 8.2 Mpx and about 49 ms per image to decode and resize, against 0.7 Mpx and about 8 ms for manifest images
+  (150 images each, scratch timing). That explains why extras are expensive, **not** why they cost more than in October, which
+  is unexplained. The 42–48 h core total, scaled by 73/58.6, becomes about 52–60 GPU h at most (extrapolated), inside the 80 h cap.
+- **Benchmarks (`results/v6/benchmarks/`, synthetic):** roster fits VRAM: PanDerm proxy 214 ms/3.45 GB, DINOv2-B 287/4.41, SigLIP 2
+  237/3.55, ConvNeXt-T 384 296/6.36. They project ConvNeXt-T 224 at 27 min against 46–73 min real, so they undercount data-bound runs.
+- **New gap:** `research/v5/screen_gate.py:null_model` still reads the in1k control seeds and nothing reads the anchor bars, so a V6
+  gate must be wired to them. Not yet on the §0.8c engineering list.
+- **Ledger:** the run appended 6 `v5_v6nf` rows and rewrote two old `q11` rows at about the 16th digit; pandas reads them as equal.
