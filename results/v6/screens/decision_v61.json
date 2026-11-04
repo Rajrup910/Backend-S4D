@@ -1,0 +1,61 @@
+{
+  "t_adopted": false,
+  "head_for_later_runs": 7,
+  "rule": "mean Macro-F1 change >= 0",
+  "gate_descriptive": {
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "k": 3,
+    "z": 0.8416212335729143,
+    "thresholds": {
+      "pauc_all": 0.004755485254790397,
+      "pauc_histo": 0.006158000915448225
+    },
+    "retention_bar": -0.013606457576258207,
+    "mean_delta": {
+      "pauc_all": -0.010548881329350612,
+      "pauc_histo": -0.007103872171984864,
+      "pauc_u40": -0.017079202902957724,
+      "pauc_band_mean": -0.010166294399141037,
+      "macro_f1": -0.01072062570379817,
+      "ece": 0.005095490260433676,
+      "signed_gap": -0.008261533939195856
+    },
+    "endpoint_pass": {
+      "pauc_all": false,
+      "pauc_histo": false
+    },
+    "macro_f1_retention_ok": true,
+    "gate_pass": false,
+    "descriptive_only": [
+      "pauc_u40",
+      "ece",
+      "signed_gap",
+      "per-band ECE"
+    ]
+  },
+  "averaging": {
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "mean_delta": {
+      "pauc_all": 0.004543427040618349,
+      "pauc_histo": 0.00782096826881673,
+      "pauc_u40": 0.001267003182712001,
+      "pauc_band_mean": 0.004553153845767673,
+      "macro_f1": -0.006372140284599796,
+      "ece": 0.006533547635392806,
+      "signed_gap": -0.004703454833823728
+    },
+    "macro_f1_floor": -0.01,
+    "averaging_is_the_read_out": true
+  },
+  "test_read": false,
+  "reserved_read": false,
+  "fold_1_4_read": false
+}

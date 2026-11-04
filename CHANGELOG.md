@@ -9949,3 +9949,24 @@ The owner approved the hash after reviewing the four judgement calls in `docs/V6
 - **Name mentions removed from unfrozen files:** this changelog, `results/v2/final_verdict.json` and `results/v4/s61/drift_report.json` (path strings only, no numbers), `tests/test_v5_s84.py`, `research/v5/s84_milk10k.py` (comments) and `scripts/readme_media/audit_readme.py` (same check, pattern rewritten). `docs/V5_RUNSHEET.md`, `docs/v5_record/V5_PLAN_AMENDMENT_01.md` and `results/v5/v5_plan_freeze.json` still carry them, left alone because they are part of the V5 frozen record.
 - **Contributors sidebar.** No commit on any branch of this repo carries an AI trailer or author, yet GitHub's sidebar listing still shows one. That is GitHub's own stored data, not repo content.
 - Checks: README audit passes, freeze intact, `tests/test_v5_s84.py` passes. No run of record has started.
+
+### V6-1 and V6-2 finished: T rejected, pool Y carried (2026-11-05; owner request)
+
+The overnight chain (`scripts/run_v6_overnight.ps1`) ran from 04:04 to 16:15 on 4 Nov (`results/v5/logs/overnight_v6.log`). All 9 runs completed their 13,410 steps with no errors (`results/v6/runs/`). Everything below is fold 0 validation. The decision files record no test, reserved or fold 1-4 read, and the 18 prediction files hold only MSKCC, HAM and BCN20000 rows from fold 0, with no HIBA row.
+
+- **V6-1: T rejected, so later runs use the 7-class head.** The three-seed mean Macro-F1 change is -0.0107 and the rule needs at least 0. Seeds 42, 43 and 44 ended at 0.6551, 0.6514 and 0.6528. **Averaging becomes the read-out from V6-3:** mean `_swad` minus `_last` is +0.0045 on all-age pAUC and +0.0078 on histology pAUC, with Macro-F1 -0.0064 against the -0.010 floor (`results/v6/screens/decision_v61.json`).
+- **V6-2: pool Y carried.** Both arms pass the gate against the V5 pool (`results/v6/screens/decision_v62.json`):
+
+| Mean change vs V5 pool | P | Y | Bar |
+|---|---:|---:|---:|
+| All-age pAUC | +0.0250 | +0.0236 | +0.0048 |
+| Histology pAUC | +0.0410 | +0.0389 | +0.0062 |
+| Macro-F1 | +0.0140 | +0.0093 | at least -0.0136 |
+| Under-40 pAUC (descriptive against the V5 pool) | +0.0429 | +0.0562 | none |
+
+- **Why Y over P.** Y beats P on under-40 pAUC by +0.0133 against a bar of +0.0097, and gives up 0.0047 Macro-F1 against a retention limit of 0.0136. P stays ahead on overall Macro-F1 and on BCN rows (0.5942 and 0.5692, V5 pool 0.5450), so Y's advantage is specific to under-40 ranking. Last-epoch Macro-F1: P 0.6802, 0.6897, 0.6635; Y 0.6772, 0.6686, 0.6736.
+- **Measured run times** (`results/v5/logs/queue_V61.log`, `queue_V62H.log`): the anchor on the V5 pool took 73.9 min, Y about 56 min and P about 46 min. Quote those, not the wall times of the two disturbed runs below.
+- **Power loss during the night, which affected time only.** Mains dropped at 07:10 (cause unknown). Seed 44 of V6-1 slowed from 145 s to 260 s per epoch and took 86.4 min. At 2% battery the laptop hibernated from 08:06 to 11:12, during `anchor_h7_f0_s42_in22k_v62p`, whose logged 235.1 min and first-epoch 11,565 s include that 3 h 06 min gap (Windows System log, Kernel-Power and Power-Troubleshooter). It resumed by itself with no errors. There is no evidence of damage, but resuming was not separately tested against an undisturbed run.
+- **C: free dips about 7.5 GB during a run and returns between runs**, with a net cost of about 0.25 GB per run (33.4 GB at 05:18, 25.86 at 06:07, 32.9 at 08:00, 25.56 at 11:35, 31.1 at 15:19). The cause was not identified.
+- **Ledger.** `research/experiments.csv` gains the 9 rows. Rewriting the file also shortened the last digits of one earlier row, `m7_loao_binary` (-0.01912318204109864 to -0.0191231820410986), which came from the ledger's own write, not a hand edit.
+- **Checks:** freeze intact (`research.v6.plan_freeze --verify`); checkpoints stay gitignored. **Not changed:** the README's "Frozen, no results" heading and the runsheet status. **Next:** V6-3, whose queue file is not written yet.
