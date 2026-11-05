@@ -1,0 +1,6 @@
+# V6-3 Members (docs/V6_RUNSHEET.md section 0.4): fold 0, seed 42, on what V6-1 and V6-2 carried: 7-class head (decision_v61.json) and pool Y (decision_v62.json).
+# The anchor for this stage is the finished run anchor_h7_f0_s42_in22k_v62y, so it is not repeated. Cheapest member first, so a stopped night still leaves the most runs.
+v6 --member panderm_b --head 7 --fold 0 --seed 42 --run-tag v63 --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member siglip2_b --head 7 --fold 0 --seed 42 --run-tag v63 --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member dinov2_b --head 7 --fold 0 --seed 42 --run-tag v63 --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member anchor --image-size 384 --batch-size 16 --grad-accum 2 --head 7 --fold 0 --seed 42 --run-tag v63 --added-train results/v6/added_pool/added_train.csv --sampler young

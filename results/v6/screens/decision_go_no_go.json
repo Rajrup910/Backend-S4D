@@ -1,0 +1,30 @@
+{
+  "v6": {
+    "macro_f1": 0.7128801269735262,
+    "pauc_all": 0.8838635021067294
+  },
+  "combined": {
+    "macro_f1": 0.7249119268822218,
+    "pauc_all": 0.8803222536129351
+  },
+  "v5_fold0": {
+    "macro_f1": 0.6866296106043344,
+    "pauc_all": 0.8555844391900256
+  },
+  "v6_beats_v5": true,
+  "combined_beats_v5": true,
+  "delta_macro_f1": 0.026250516369191845,
+  "delta_pauc_all": 0.02827906291670379,
+  "combined_delta_macro_f1": 0.038282316277887474,
+  "combined_delta_pauc_all": 0.024737814422909565,
+  "continue_to_v6_4": true,
+  "members": [
+    "anchor_h7",
+    "panderm_b_h7",
+    "dinov2_b_h7",
+    "anchor384_h7"
+  ],
+  "test_read": false,
+  "reserved_read": false,
+  "fold_1_4_read": false
+}
