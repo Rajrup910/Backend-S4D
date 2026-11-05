@@ -1,0 +1,5 @@
+# V6-4 Finalists, fold 1 (docs/V6_RUNSHEET.md section 0.4): anchor and the three members promoted in decision_v63.json, seed 42, on what V6-1 and V6-2 carried. One queue per fold so the chain can check each fold before the next.
+v6 --member anchor --head 7 --fold 1 --seed 42 --run-tag v64 --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member panderm_b --head 7 --fold 1 --seed 42 --run-tag v64 --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member dinov2_b --head 7 --fold 1 --seed 42 --run-tag v64 --added-train results/v6/added_pool/added_train.csv --sampler young
+v6 --member anchor --image-size 384 --batch-size 16 --grad-accum 2 --head 7 --fold 1 --seed 42 --run-tag v64 --added-train results/v6/added_pool/added_train.csv --sampler young

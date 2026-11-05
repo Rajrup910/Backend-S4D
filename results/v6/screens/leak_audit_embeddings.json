@@ -1,0 +1,478 @@
+{
+  "model": "vit_base_patch14_dinov2.lvd142m",
+  "rows": {
+    "added": 25471,
+    "dev": 15294,
+    "young_extra": 2078
+  },
+  "same_lesion_pairs_rows": 9576,
+  "bars": {
+    "same_lesion_p50": 0.9000126123428345,
+    "same_lesion_p25": 0.840598464012146,
+    "same_lesion_p10": 0.7667907476425171
+  },
+  "same_lesion_percentiles": {
+    "5": 0.7120501399040222,
+    "10": 0.7667907476425171,
+    "25": 0.840598464012146,
+    "50": 0.9000126123428345,
+    "75": 0.9426109194755554,
+    "90": 0.9669361114501953
+  },
+  "share_of_dev_rows_above_bar": {
+    "same_lesion_p50": {
+      "added_any_fold": 0.32489865306656207,
+      "extras_any_fold": 0.16450895776121355,
+      "other_dev_folds": 0.373741336471819,
+      "added_per_fold": {
+        "0": 0.3242889833278849,
+        "1": 0.3393265773128473,
+        "2": 0.32167374959136974,
+        "3": 0.3213468453743053,
+        "4": 0.31785480706344016
+      },
+      "added_rows": 4969
+    },
+    "same_lesion_p25": {
+      "added_any_fold": 0.7472211324702498,
+      "extras_any_fold": 0.5742121093239179,
+      "other_dev_folds": 0.7887406826206356,
+      "added_per_fold": {
+        "0": 0.7473030402092187,
+        "1": 0.754168028767571,
+        "2": 0.7378228179143511,
+        "3": 0.7450147106897679,
+        "4": 0.7517985611510791
+      },
+      "added_rows": 11428
+    },
+    "same_lesion_p10": {
+      "added_any_fold": 0.951157316594743,
+      "extras_any_fold": 0.8654374264417418,
+      "other_dev_folds": 0.9611612397018439,
+      "added_per_fold": {
+        "0": 0.9473684210526315,
+        "1": 0.9568486433474992,
+        "2": 0.95096436744034,
+        "3": 0.9503105590062112,
+        "4": 0.9502943100065402
+      },
+      "added_rows": 14547
+    }
+  },
+  "similarity_quantiles": {
+    "sim_dev": {
+      "50": 0.8848276436328888,
+      "90": 0.932893431186676,
+      "99": 0.9532620906829834,
+      "99.9": 0.9616171717643738
+    },
+    "sim_extra": {
+      "50": 0.8523176908493042,
+      "90": 0.9109765291213989,
+      "99": 0.9374513626098633,
+      "99.9": 0.9972671866416931
+    },
+    "sim_added": {
+      "50": 0.8780548572540283,
+      "90": 0.9315321445465088,
+      "99": 0.9535496234893799,
+      "99.9": 0.9698814749717712
+    }
+  },
+  "label_agreement_with_nearest_added": {
+    "top_5pct_similarity": 0.9083769633507853,
+    "all_rows": 0.5698313063946646,
+    "above_same_lesion_p25": 0.6151557577878894
+  },
+  "nearest_added_archive_when_above_p25": {
+    "isic2020": 4486,
+    "isic2019_test": 3873,
+    "derm12345": 1854,
+    "milk10k": 1215
+  },
+  "fold0_sensitivity": {
+    "all_rows": {
+      "rows": 3059,
+      "u40_escalating_rows": 35,
+      "v5": {
+        "macro_f1": 0.6866296106043344,
+        "pauc_all": 0.8555844391900256,
+        "pauc_u40": 0.807942589551785
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.026250516369191845,
+        "pauc_all": 0.02827906291670379,
+        "pauc_u40": 0.05820105820105814
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.038282316277887474,
+        "pauc_all": 0.024737814422909565,
+        "pauc_u40": 0.04558170650124682
+      }
+    },
+    "without_above_same_lesion_p50_to_added": {
+      "rows": 2067,
+      "u40_escalating_rows": 30,
+      "v5": {
+        "macro_f1": 0.6879634001526078,
+        "pauc_all": 0.8366140218042929,
+        "pauc_u40": 0.8148148148148149
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.020957114906618224,
+        "pauc_all": 0.030787380066747416,
+        "pauc_u40": 0.07210532791928137
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.03094147416348758,
+        "pauc_all": 0.02755786792015802,
+        "pauc_u40": 0.05580164882490468
+      }
+    },
+    "without_above_same_lesion_p50_to_any_training_row": {
+      "rows": 1771,
+      "u40_escalating_rows": 25,
+      "v5": {
+        "macro_f1": 0.6881696398347652,
+        "pauc_all": 0.8324054683929191,
+        "pauc_u40": 0.8287812041116007
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.016812003931390707,
+        "pauc_all": 0.031718270210183586,
+        "pauc_u40": 0.06412139011257945
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.027698193140285987,
+        "pauc_all": 0.029437960551716102,
+        "pauc_u40": 0.053352912383749285
+      }
+    },
+    "without_above_same_lesion_p25_to_added": {
+      "rows": 773,
+      "u40_escalating_rows": 11,
+      "v5": {
+        "macro_f1": 0.6615428784787775,
+        "pauc_all": 0.8300619380202204,
+        "pauc_u40": 0.793979397939794
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.06381116110970342,
+        "pauc_all": 0.05339227363092813,
+        "pauc_u40": 0.07300730073007311
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.039548474662900235,
+        "pauc_all": 0.04717311773592903,
+        "pauc_u40": 0.058005800580058
+      }
+    },
+    "without_above_same_lesion_p25_to_any_training_row": {
+      "rows": 534,
+      "u40_escalating_rows": 7,
+      "v5": {
+        "macro_f1": 0.5758891650966572,
+        "pauc_all": 0.813892008235074,
+        "pauc_u40": 0.7583511016346838
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.07122489829604861,
+        "pauc_all": 0.07301609582631485,
+        "pauc_u40": 0.043828476664297567
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.05318483947694164,
+        "pauc_all": 0.059025828186412,
+        "pauc_u40": 0.011845534233593913
+      }
+    },
+    "without_above_same_lesion_p10_to_added": {
+      "rows": 161,
+      "u40_escalating_rows": 2,
+      "v5": {
+        "macro_f1": 0.459452801857552,
+        "pauc_all": 0.8458266879319511,
+        "pauc_u40": 0.9603174603174602
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.14029905330723247,
+        "pauc_all": 0.03721424774056359,
+        "pauc_u40": -0.03968253968253965
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.08071416563481659,
+        "pauc_all": 0.03455608718766601,
+        "pauc_u40": -0.03968253968253965
+      }
+    },
+    "without_above_same_lesion_p10_to_any_training_row": {
+      "rows": 99,
+      "u40_escalating_rows": 1,
+      "v5": {
+        "macro_f1": 0.3874127708277035,
+        "pauc_all": 0.821563088512241,
+        "pauc_u40": 1.0
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.07638067904169576,
+        "pauc_all": 0.038606403013182744,
+        "pauc_u40": -0.12077294685990325
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.048533974780649636,
+        "pauc_all": 0.03272128060263657,
+        "pauc_u40": -0.12077294685990325
+      }
+    },
+    "only_the_50pct_most_exposed_to_added": {
+      "rows": 1530,
+      "u40_escalating_rows": 13,
+      "v5": {
+        "macro_f1": 0.6595551693771069,
+        "pauc_all": 0.862908783169562,
+        "pauc_u40": 0.731028644766664
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.046844087195949125,
+        "pauc_all": 0.02734147352957883,
+        "pauc_u40": 0.07277245296414625
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.04194852344163991,
+        "pauc_all": 0.022844213512476785,
+        "pauc_u40": 0.05980175309248803
+      }
+    },
+    "only_the_50pct_least_exposed_to_added": {
+      "rows": 1529,
+      "u40_escalating_rows": 22,
+      "v5": {
+        "macro_f1": 0.6963265298462326,
+        "pauc_all": 0.832675627548969,
+        "pauc_u40": 0.8298777246145668
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.011329852270772323,
+        "pauc_all": 0.031027054971566437,
+        "pauc_u40": 0.05920448504180564
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.032151567876847476,
+        "pauc_all": 0.02936220728741834,
+        "pauc_u40": 0.0465178096757044
+      }
+    },
+    "only_the_25pct_most_exposed_to_added": {
+      "rows": 765,
+      "u40_escalating_rows": 3,
+      "v5": {
+        "macro_f1": 0.6170857002594853,
+        "pauc_all": 0.876870170482562,
+        "pauc_u40": 0.4444444444444444
+      },
+      "v6_minus_v5": {
+        "macro_f1": -0.02475245772233281,
+        "pauc_all": 0.027963084910432312,
+        "pauc_u40": 0.030864197530864224
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.12365224443660316,
+        "pauc_all": 0.02430466083227556,
+        "pauc_u40": 0.020221370796083438
+      }
+    },
+    "only_the_75pct_least_exposed_to_added": {
+      "rows": 2294,
+      "u40_escalating_rows": 32,
+      "v5": {
+        "macro_f1": 0.6892103145523116,
+        "pauc_all": 0.8403202489091113,
+        "pauc_u40": 0.8179078863346105
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.025073352593892984,
+        "pauc_all": 0.02959011777013365,
+        "pauc_u40": 0.07388449872286085
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.031214076562012916,
+        "pauc_all": 0.02609663831053588,
+        "pauc_u40": 0.05467752234993617
+      }
+    },
+    "only_the_10pct_most_exposed_to_added": {
+      "rows": 306,
+      "u40_escalating_rows": 2,
+      "v5": {
+        "macro_f1": 0.6698744400024107,
+        "pauc_all": 0.9251064476885644,
+        "pauc_u40": 0.4444444444444444
+      },
+      "v6_minus_v5": {
+        "macro_f1": -0.013983164915523094,
+        "pauc_all": 0.04004460665044607,
+        "pauc_u40": 0.31746031746031744
+      },
+      "combined_minus_v5": {
+        "macro_f1": -0.004729624136756039,
+        "pauc_all": 0.03655971208434705,
+        "pauc_u40": 0.3571428571428572
+      }
+    },
+    "only_the_90pct_least_exposed_to_added": {
+      "rows": 2753,
+      "u40_escalating_rows": 33,
+      "v5": {
+        "macro_f1": 0.6832023641070845,
+        "pauc_all": 0.8465710688468645,
+        "pauc_u40": 0.8192842883108371
+      },
+      "v6_minus_v5": {
+        "macro_f1": 0.026032479715480727,
+        "pauc_all": 0.027831288679890376,
+        "pauc_u40": 0.0660737165161942
+      },
+      "combined_minus_v5": {
+        "macro_f1": 0.036737695146467964,
+        "pauc_all": 0.024643112878406925,
+        "pauc_u40": 0.05061678734245101
+      }
+    }
+  },
+  "fold0_u40_escalating_exposure": {
+    "rows": 35,
+    "above_p25_to_added": 24,
+    "above_p10_to_added": 33
+  },
+  "fold0_by_archive": {
+    "bcn20000": {
+      "rows": 1331,
+      "macro_f1_v5": 0.5541354638310907,
+      "macro_f1_v6": 0.6483791894204597,
+      "mean_similarity_to_added": 0.8561669588088989
+    },
+    "ham": {
+      "rows": 1419,
+      "macro_f1_v5": 0.8047230137099074,
+      "macro_f1_v6": 0.7754516127462617,
+      "mean_similarity_to_added": 0.8884207606315613
+    },
+    "mskcc": {
+      "rows": 309,
+      "macro_f1_v5": 0.3236750577389694,
+      "macro_f1_v6": 0.3386347642505278,
+      "mean_similarity_to_added": 0.839625358581543
+    }
+  },
+  "closest_fold0_added_pairs": [
+    {
+      "fold0": "ISIC_0029630",
+      "added": "ISIC_9276896",
+      "similarity": 0.966626763343811,
+      "added_archive": "milk10k",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0029796",
+      "added": "ISIC_3520709",
+      "similarity": 0.9664327502250671,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0032245",
+      "added": "ISIC_6931277",
+      "similarity": 0.9654045104980469,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0027701",
+      "added": "ISIC_4057256",
+      "similarity": 0.964113712310791,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0028383",
+      "added": "ISIC_1511661",
+      "similarity": 0.9634325504302979,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0025721",
+      "added": "ISIC_6093041",
+      "similarity": 0.9629305601119995,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0028485",
+      "added": "ISIC_3553089",
+      "similarity": 0.9623573422431946,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0025787",
+      "added": "ISIC_4057256",
+      "similarity": 0.9618045687675476,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0027740",
+      "added": "ISIC_2869310",
+      "similarity": 0.9615434408187866,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0032293",
+      "added": "ISIC_4075697",
+      "similarity": 0.9603092074394226,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0029184",
+      "added": "ISIC_4075697",
+      "similarity": 0.9599370360374451,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0031767",
+      "added": "ISIC_0297595",
+      "similarity": 0.9595645666122437,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0032121",
+      "added": "ISIC_7207977",
+      "similarity": 0.9594771265983582,
+      "added_archive": "isic2020",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0028950",
+      "added": "ISIC_3442730",
+      "similarity": 0.9593624472618103,
+      "added_archive": "derm12345",
+      "same_class": true
+    },
+    {
+      "fold0": "ISIC_0034254",
+      "added": "ISIC_9683086",
+      "similarity": 0.9587939381599426,
+      "added_archive": "milk10k",
+      "same_class": true
+    }
+  ],
+  "test_read": false,
+  "reserved_read": false,
+  "fold_1_4_v6_read": false
+}

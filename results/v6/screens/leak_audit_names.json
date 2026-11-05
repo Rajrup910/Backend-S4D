@@ -1,0 +1,123 @@
+{
+  "dev_rows": 15294,
+  "dev_names_changed_by_normalising": 1168,
+  "dev_rows_by_suffix_and_archive": {
+    "mskcc": 1168
+  },
+  "duplicate_base_names_inside_dev": 0,
+  "young_extras": {
+    "source_rows": 2078,
+    "rows": 35,
+    "by_fold": {
+      "0": 9,
+      "1": 4,
+      "2": 8,
+      "3": 4,
+      "4": 10
+    },
+    "by_archive": {
+      "mskcc": 35
+    },
+    "by_band": {
+      "<40": 35
+    },
+    "by_class": {
+      "nv": 33,
+      "mel": 2
+    },
+    "same_class": 1.0,
+    "under40_escalating_rows": 2,
+    "under40_escalating_groups": 2,
+    "same_lesion_id": 0,
+    "image_ids": [
+      "ISIC_0012233_downsampled",
+      "ISIC_0012529_downsampled",
+      "ISIC_0012659_downsampled",
+      "ISIC_0013132_downsampled",
+      "ISIC_0013257_downsampled",
+      "ISIC_0013737_downsampled",
+      "ISIC_0013836_downsampled",
+      "ISIC_0014755_downsampled",
+      "ISIC_0016069_downsampled",
+      "ISIC_0012281_downsampled",
+      "ISIC_0012551_downsampled",
+      "ISIC_0013212_downsampled",
+      "ISIC_0015942_downsampled",
+      "ISIC_0000054_downsampled",
+      "ISIC_0012503_downsampled",
+      "ISIC_0013592_downsampled",
+      "ISIC_0014498_downsampled",
+      "ISIC_0014786_downsampled",
+      "ISIC_0015201_downsampled",
+      "ISIC_0015212_downsampled",
+      "ISIC_0015999_downsampled",
+      "ISIC_0012232_downsampled",
+      "ISIC_0012261_downsampled",
+      "ISIC_0014158_downsampled",
+      "ISIC_0014941_downsampled",
+      "ISIC_0000026_downsampled",
+      "ISIC_0012303_downsampled",
+      "ISIC_0012804_downsampled",
+      "ISIC_0012891_downsampled",
+      "ISIC_0013026_downsampled",
+      "ISIC_0013346_downsampled",
+      "ISIC_0013738_downsampled",
+      "ISIC_0014490_downsampled",
+      "ISIC_0015627_downsampled",
+      "ISIC_0015948_downsampled"
+    ]
+  },
+  "added_pool": {
+    "source_rows": 25471,
+    "rows": 0,
+    "by_fold": {},
+    "by_archive": {},
+    "by_band": {},
+    "by_class": {},
+    "same_class": null,
+    "under40_escalating_rows": 0,
+    "under40_escalating_groups": 0,
+    "same_lesion_id": 0,
+    "image_ids": []
+  },
+  "effect": {
+    "v5_composite_minus_control_folds_1_4_no_tta": {
+      "as_read": {
+        "rows": 12235,
+        "u40_rows": 2164,
+        "u40_escalating_rows": 158,
+        "u40_escalating_groups": 65,
+        "pauc_u40": 0.033822582884258656,
+        "pauc_all": 0.005400422619184497,
+        "macro_f1": 0.004342902424602446
+      },
+      "without_the_copies": {
+        "rows": 12209,
+        "u40_rows": 2138,
+        "u40_escalating_rows": 156,
+        "u40_escalating_groups": 63,
+        "pauc_u40": 0.026730963284949172,
+        "pauc_all": 0.005068333135323844,
+        "macro_f1": 0.0041951358915648385
+      },
+      "copies_in_folds_1_4": 26,
+      "copies_escalating_in_folds_1_4": 2
+    },
+    "v6_vote_minus_v5_fold_0_tta": {
+      "as_read": {
+        "rows": 3059,
+        "u40_escalating_rows": 35,
+        "macro_f1": 0.026250516369191845,
+        "pauc_all": 0.02827906291670379,
+        "pauc_u40": 0.05820105820105814
+      },
+      "without_the_copies": {
+        "rows": 3050,
+        "u40_escalating_rows": 35,
+        "macro_f1": 0.026264784996434476,
+        "pauc_all": 0.028301291329054123,
+        "pauc_u40": 0.0586651814721989
+      }
+    }
+  }
+}

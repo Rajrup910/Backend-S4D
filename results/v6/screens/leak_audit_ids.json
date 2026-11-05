@@ -1,0 +1,50 @@
+{
+  "dev_rows": 15294,
+  "dev_rows_with_patient_id": 242,
+  "dev_patient_id_share_by_archive": {
+    "bcn20000": 0.0,
+    "ham": 0.0,
+    "mskcc": 0.15040397762585456
+  },
+  "patients_with_id": 223,
+  "patients_in_more_than_one_fold": 11,
+  "fold0_rows_whose_patient_is_also_in_training_folds": 4,
+  "fold0_rows": 3059,
+  "rows_whose_patient_spans_folds_share": 0.1115702479338843,
+  "lesions_in_more_than_one_fold": 0,
+  "added_rows": 25471,
+  "added_rows_with_patient_id": 17487,
+  "added_patient_id_share_by_archive": {
+    "derm12345": 1.0,
+    "isic2019_test": 0.0,
+    "isic2020": 1.0,
+    "milk10k": 0.0
+  },
+  "added_vs_dev": {
+    "shared_images": 0,
+    "shared_patients": 0,
+    "shared_lesions": 0
+  },
+  "added_vs_guarded_manifest": {
+    "shared_patients": 0,
+    "shared_lesions": 0
+  },
+  "added_vs_hiba": {
+    "shared_images": 0,
+    "shared_patients": 0,
+    "shared_lesions": 0
+  },
+  "extras_vs_hiba": {
+    "shared_images": 0,
+    "shared_patients": 0
+  },
+  "extras_vs_dev": {
+    "shared_images": 0,
+    "shared_patients": 0
+  },
+  "dev_vs_hiba": {
+    "shared_images": 0,
+    "shared_patients": 0,
+    "shared_lesions": 0
+  }
+}
