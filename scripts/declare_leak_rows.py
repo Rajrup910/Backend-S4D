@@ -6,6 +6,7 @@ The training rows stay as frozen, because changing them would split V6's runs ac
 pass on both row sets (`scripts/read_leak_sensitivity.py`, owner decision 5 Nov 2026). Declared rule: a row's lesion group is at risk if any of its images (a) is a young extra under another name (`leak_audit_names.json`), or
 (b) has at least 30 RANSAC inliers to a training image (`leak_audit_keypoint_pairs.csv`). The bar comes from the controls and by eye: all 35 known copies score 87 or more, the median random pair 0 and its 99th percentile 9, and the pairs sampled
 from 30-45 inliers were almost all one lesion. The detector compares only each row's 5 nearest neighbours by DINOv2, so this is not proof that nothing else exists.
+Amended 5 Nov 2026 by owner decision, before any fold 1-4 prediction: (c) rows a second audit flagged by lesion-id or patient links or by a second pixel detector (`results/v6/leak_sensitivity_side_audit_rows.csv`).
 Writes results/v6/leak_sensitivity_rows.csv and results/v6/leak_sensitivity_declaration.json.
 """
 
@@ -28,6 +29,8 @@ INLIERS = 30
 SCREENS = REPO / "results/v6/screens"
 ROWS = REPO / "results/v6/leak_sensitivity_rows.csv"
 DECLARATION = REPO / "results/v6/leak_sensitivity_declaration.json"
+SIDE_AUDIT = REPO / "results/v6/leak_sensitivity_side_audit_rows.csv"
+PREVIOUS = {"rows": 380, "groups": 244, "rows_sha256": "7feaeadde15136dc3362fb0792a7e01b55eb0b4a3707f2b49a639864a7c6e483"}
 
 
 def fold0_read(at_risk: set[str]) -> dict:
@@ -68,6 +71,9 @@ def main() -> int:
         reasons.setdefault(image, set()).add("name_copy_of_young_extra")
     for row in pairs.itertuples():
         reasons.setdefault(row.a_id, set()).add(f"keypoints_{row.against}")
+    side = pd.read_csv(SIDE_AUDIT, dtype={"image_id": str, "group_id": str})
+    for row in side.itertuples():
+        reasons.setdefault(row.image_id, set()).add(row.reason)
     flagged_groups = set(folds.loc[folds["image_id"].isin(reasons), "group_id"])
     at_risk = folds[folds["group_id"].isin(flagged_groups)].copy()
     at_risk["reason"] = [";".join(sorted(reasons.get(i, {"same_lesion_group_as_a_flagged_row"}))) for i in at_risk["image_id"]]
@@ -76,6 +82,8 @@ def main() -> int:
                    "role": "binding at V6-5: a system must pass E-primary and no-harm with and without these rows; no training row changes", "rows": len(at_risk), "groups": len(flagged_groups), "share_of_development": len(at_risk) / len(folds),
                    "by_fold": at_risk["fold"].value_counts().sort_index().to_dict(), "by_archive": at_risk["archive"].value_counts().to_dict(), "by_band": at_risk["age_band"].value_counts().to_dict(), "by_class": at_risk["class_7"].value_counts().to_dict(),
                    "limit": "checks only the 5 nearest neighbours by DINOv2 at 256 px, and test, reserved and HIBA pixels were not compared here", "rows_sha256": hashlib.sha256(ROWS.read_bytes()).hexdigest()}
+    declaration["rule"] = f"name copy of a young extra; or >= {INLIERS} RANSAC inliers to a training image; or listed by the second audit for lesion-id or patient links or a second pixel detector ({SIDE_AUDIT.name}); whole lesion groups"
+    declaration["amended"] = {"date": "2026-11-05, owner decision, before any V6 prediction on folds 1-4", "added_rows": len(side), "added_groups": int(side["group_id"].nunique()), "previous": PREVIOUS}
     declaration["fold0_v6_vote_minus_v5"] = fold0_read(set(at_risk["image_id"]))
     DECLARATION.write_text(json.dumps(declaration, indent=2, default=str), encoding="utf-8")
     print(json.dumps(declaration, indent=1, default=str))
