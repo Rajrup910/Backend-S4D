@@ -1,0 +1,784 @@
+{
+ "question": "Do hand-measured biology features add ranking the model does not already have, in the young?",
+ "status": "descriptive; no decision, no gate",
+ "limits": "about 28 melanoma lesions, one archive, six features uncorrected; interval holds the fitted score fixed; hand-built features, so a null does not test a small model learning from expert structure labels",
+ "models": {
+  "v4_control_oof": {
+   "images": 691,
+   "melanoma_images": 51,
+   "nevus_images": 640,
+   "melanoma_lesions": 28,
+   "nevus_lesions": 352,
+   "threshold": 0.045813485200000004,
+   "model_auc": {
+    "n_pos_images": 51,
+    "n_neg_images": 640,
+    "n_pos_lesions": 28,
+    "n_neg_lesions": 352,
+    "auc": 0.777359068627451,
+    "ci_lo": 0.6757269330342306,
+    "ci_hi": 0.8630929317502718,
+    "n_boot_valid": 2000
+   },
+   "model_pauc": 0.7027335239651415,
+   "features": {
+    "colour_count": {
+     "beyond_auc": {
+      "point": -0.02199754901960793,
+      "ci95": [
+       -0.07976036684753102,
+       0.02562594217625512
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.008169934640522958,
+      "ci95": [
+       -0.02232136308939997,
+       0.0026388595808117714
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.5025428921568628,
+      "ci_lo": 0.4010883378109698,
+      "ci_hi": 0.6099960562833053,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 24,
+      "n_neg_images": 563,
+      "n_pos_lesions": 15,
+      "n_neg_lesions": 322,
+      "auc": 0.5823712255772646,
+      "ci_lo": 0.44246605679848744,
+      "ci_hi": 0.719482187066393,
+      "n_boot_valid": 2000
+     }
+    },
+    "colour_asym_max": {
+     "beyond_auc": {
+      "point": 0.049142156862745034,
+      "ci95": [
+       -0.047778472281629104,
+       0.15071674020023754
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.0015318627450980893,
+      "ci95": [
+       -0.0284655059129645,
+       0.02201922983920414
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.636764705882353,
+      "ci_lo": 0.5176861439148496,
+      "ci_hi": 0.7400626688937437,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 24,
+      "n_neg_images": 563,
+      "n_pos_lesions": 15,
+      "n_neg_lesions": 322,
+      "auc": 0.5828892835997632,
+      "ci_lo": 0.46208612993999965,
+      "ci_hi": 0.6957856203548239,
+      "n_boot_valid": 2000
+     }
+    },
+    "colour_asym_min": {
+     "beyond_auc": {
+      "point": 0.049816176470588225,
+      "ci95": [
+       -0.03480730648795631,
+       0.1346150396380862
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.001702069716775667,
+      "ci95": [
+       -0.030061708948252053,
+       0.021100272536756202
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.6417585784313724,
+      "ci_lo": 0.5351336763421429,
+      "ci_hi": 0.7428781614336343,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 24,
+      "n_neg_images": 563,
+      "n_pos_lesions": 15,
+      "n_neg_lesions": 322,
+      "auc": 0.5793368857312019,
+      "ci_lo": 0.4914418135120241,
+      "ci_hi": 0.6638114897151042,
+      "n_boot_valid": 2000
+     }
+    },
+    "chrom_asym_max": {
+     "beyond_auc": {
+      "point": -0.02438725490196092,
+      "ci95": [
+       -0.04916645554851019,
+       -0.001332260856999159
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.01089324618736387,
+      "ci95": [
+       -0.025819068330013496,
+       -0.0012405292130915453
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.562438725490196,
+      "ci_lo": 0.43528288134833304,
+      "ci_hi": 0.6831706246212966,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 24,
+      "n_neg_images": 563,
+      "n_pos_lesions": 15,
+      "n_neg_lesions": 322,
+      "auc": 0.4181468324452339,
+      "ci_lo": 0.27031070995350087,
+      "ci_hi": 0.5599153715745934,
+      "n_boot_valid": 2000
+     }
+    },
+    "chrom_asym_min": {
+     "beyond_auc": {
+      "point": -0.023008578431372606,
+      "ci95": [
+       -0.06028926962633728,
+       0.013909384497619732
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.014722903050109037,
+      "ci95": [
+       -0.03322861003991788,
+       -0.0017094951494197536
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.5698835784313725,
+      "ci_lo": 0.44222734355446236,
+      "ci_hi": 0.6942617163078623,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 24,
+      "n_neg_images": 563,
+      "n_pos_lesions": 15,
+      "n_neg_lesions": 322,
+      "auc": 0.41955298993487267,
+      "ci_lo": 0.267277950310559,
+      "ci_hi": 0.5710832751022917,
+      "n_boot_valid": 2000
+     }
+    },
+    "segmental_index": {
+     "beyond_auc": {
+      "point": -0.007352941176470673,
+      "ci95": [
+       -0.020535494622297576,
+       0.0025506824850472292
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.003574346405228801,
+      "ci95": [
+       -0.009043281354536548,
+       0.0005578848327604047
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.529748774509804,
+      "ci_lo": 0.4126821633546573,
+      "ci_hi": 0.6493639970526435,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 24,
+      "n_neg_images": 563,
+      "n_pos_lesions": 15,
+      "n_neg_lesions": 322,
+      "auc": 0.42954410894020134,
+      "ci_lo": 0.30614650053050574,
+      "ci_hi": 0.575194046819296,
+      "n_boot_valid": 2000
+     }
+    },
+    "all_six": {
+     "beyond_auc": {
+      "point": 0.024387254901960698,
+      "ci95": [
+       -0.06885072498399823,
+       0.1198831917851053
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.016850490196078538,
+      "ci95": [
+       -0.042057729364828045,
+       0.0020684659469250243
+      ]
+     }
+    }
+   },
+   "in_misses_rows": {
+    "melanoma_images": 24,
+    "nevus_images": 563,
+    "melanoma_lesions": 15,
+    "nevus_lesions": 322
+   }
+  },
+  "v5_control_folds_in_matrix": {
+   "images": 691,
+   "melanoma_images": 51,
+   "nevus_images": 640,
+   "melanoma_lesions": 28,
+   "nevus_lesions": 352,
+   "threshold": 0.06890107556666654,
+   "model_auc": {
+    "n_pos_images": 51,
+    "n_neg_images": 640,
+    "n_pos_lesions": 28,
+    "n_neg_lesions": 352,
+    "auc": 0.8245404411764705,
+    "ci_lo": 0.7339922827134219,
+    "ci_hi": 0.899287123221606,
+    "n_boot_valid": 2000
+   },
+   "model_pauc": 0.7416258169934641,
+   "features": {
+    "colour_count": {
+     "beyond_auc": {
+      "point": -0.009221813725490247,
+      "ci95": [
+       -0.05589431879623186,
+       0.023398403749783945
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.006212554466230924,
+      "ci95": [
+       -0.015650250994099994,
+       0.00046096834533432165
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.5025428921568628,
+      "ci_lo": 0.4010883378109698,
+      "ci_hi": 0.6099960562833053,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 19,
+      "n_neg_images": 546,
+      "n_pos_lesions": 12,
+      "n_neg_lesions": 314,
+      "auc": 0.5777906304222094,
+      "ci_lo": 0.4147086508223832,
+      "ci_hi": 0.7585375505974219,
+      "n_boot_valid": 2000
+     }
+    },
+    "colour_asym_max": {
+     "beyond_auc": {
+      "point": 0.06593137254901948,
+      "ci95": [
+       -0.0033721613652308823,
+       0.14038936783949715
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.001957380174291923,
+      "ci95": [
+       -0.019563928375150412,
+       0.013208248325345518
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.636764705882353,
+      "ci_lo": 0.5176861439148496,
+      "ci_hi": 0.7400626688937437,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 19,
+      "n_neg_images": 546,
+      "n_pos_lesions": 12,
+      "n_neg_lesions": 314,
+      "auc": 0.6391941391941391,
+      "ci_lo": 0.5127704913275628,
+      "ci_hi": 0.7563097454996897,
+      "n_boot_valid": 2000
+     }
+    },
+    "colour_asym_min": {
+     "beyond_auc": {
+      "point": 0.06050857843137247,
+      "ci95": [
+       -0.0002188165140744101,
+       0.12336615958367776
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.001702069716775667,
+      "ci95": [
+       -0.0192925501513394,
+       0.012768052701386416
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.6417585784313724,
+      "ci_lo": 0.5351336763421429,
+      "ci_hi": 0.7428781614336343,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 19,
+      "n_neg_images": 546,
+      "n_pos_lesions": 12,
+      "n_neg_lesions": 314,
+      "auc": 0.6131675342201657,
+      "ci_lo": 0.521905543115823,
+      "ci_hi": 0.7054833296955145,
+      "n_boot_valid": 2000
+     }
+    },
+    "chrom_asym_max": {
+     "beyond_auc": {
+      "point": -0.014001225490196112,
+      "ci95": [
+       -0.03363715841450222,
+       0.001513381379764822
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.006042347494553346,
+      "ci95": [
+       -0.013809736643730447,
+       -0.0008193392546861086
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.562438725490196,
+      "ci_lo": 0.43528288134833304,
+      "ci_hi": 0.6831706246212966,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 19,
+      "n_neg_images": 546,
+      "n_pos_lesions": 12,
+      "n_neg_lesions": 314,
+      "auc": 0.448332369385001,
+      "ci_lo": 0.29445971258725445,
+      "ci_hi": 0.6233701753542705,
+      "n_boot_valid": 2000
+     }
+    },
+    "chrom_asym_min": {
+     "beyond_auc": {
+      "point": -0.011825980392156876,
+      "ci95": [
+       -0.037135445830046146,
+       0.009119511659217278
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.006127450980392135,
+      "ci95": [
+       -0.015202253925846346,
+       0.00034679885525037095
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.5698835784313725,
+      "ci_lo": 0.44222734355446236,
+      "ci_hi": 0.6942617163078623,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 19,
+      "n_neg_images": 546,
+      "n_pos_lesions": 12,
+      "n_neg_lesions": 314,
+      "auc": 0.4365721997300944,
+      "ci_lo": 0.2745013804444579,
+      "ci_hi": 0.6084158861359749,
+      "n_boot_valid": 2000
+     }
+    },
+    "segmental_index": {
+     "beyond_auc": {
+      "point": 0.009068627450980249,
+      "ci95": [
+       -0.003766259239989941,
+       0.023461716989598876
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.005872140522875768,
+      "ci95": [
+       -0.012845090172403333,
+       -0.0013677123549292187
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.529748774509804,
+      "ci_lo": 0.4126821633546573,
+      "ci_hi": 0.6493639970526435,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 19,
+      "n_neg_images": 546,
+      "n_pos_lesions": 12,
+      "n_neg_lesions": 314,
+      "auc": 0.3846153846153846,
+      "ci_lo": 0.26620267459789854,
+      "ci_hi": 0.5424932424404443,
+      "n_boot_valid": 2000
+     }
+    },
+    "all_six": {
+     "beyond_auc": {
+      "point": 0.03918504901960784,
+      "ci95": [
+       -0.0390130927127225,
+       0.12825659379427765
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.014297385620914982,
+      "ci95": [
+       -0.03501144845091199,
+       0.0016190582650017103
+      ]
+     }
+    }
+   },
+   "in_misses_rows": {
+    "melanoma_images": 19,
+    "nevus_images": 546,
+    "melanoma_lesions": 12,
+    "nevus_lesions": 314
+   }
+  },
+  "v5_composite_folds_in_matrix": {
+   "images": 691,
+   "melanoma_images": 51,
+   "nevus_images": 640,
+   "melanoma_lesions": 28,
+   "nevus_lesions": 352,
+   "threshold": 0.09716356438733321,
+   "model_auc": {
+    "n_pos_images": 51,
+    "n_neg_images": 640,
+    "n_pos_lesions": 28,
+    "n_neg_lesions": 352,
+    "auc": 0.8377757352941174,
+    "ci_lo": 0.7433542696642378,
+    "ci_hi": 0.913007105080552,
+    "n_boot_valid": 2000
+   },
+   "model_pauc": 0.7647739651416121,
+   "features": {
+    "colour_count": {
+     "beyond_auc": {
+      "point": -0.015471813725490224,
+      "ci95": [
+       -0.030343942220607125,
+       -0.004032106277387672
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.0048508986928105235,
+      "ci95": [
+       -0.010904320092862097,
+       -0.0007708105067300811
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.5025428921568628,
+      "ci_lo": 0.4010883378109698,
+      "ci_hi": 0.6099960562833053,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 16,
+      "n_neg_images": 544,
+      "n_pos_lesions": 13,
+      "n_neg_lesions": 313,
+      "auc": 0.6038602941176471,
+      "ci_lo": 0.4470020582612556,
+      "ci_hi": 0.739938029872478,
+      "n_boot_valid": 2000
+     }
+    },
+    "colour_asym_max": {
+     "beyond_auc": {
+      "point": 0.00955882352941173,
+      "ci95": [
+       -0.029801673592143984,
+       0.04400839993132339
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.0048508986928104125,
+      "ci95": [
+       -0.017138882490046296,
+       0.0035847833674029325
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.636764705882353,
+      "ci_lo": 0.5176861439148496,
+      "ci_hi": 0.7400626688937437,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 16,
+      "n_neg_images": 544,
+      "n_pos_lesions": 13,
+      "n_neg_lesions": 313,
+      "auc": 0.5649126838235294,
+      "ci_lo": 0.4313971048129457,
+      "ci_hi": 0.7065104797009605,
+      "n_boot_valid": 2000
+     }
+    },
+    "colour_asym_min": {
+     "beyond_auc": {
+      "point": 0.017401960784313775,
+      "ci95": [
+       -0.02501410891420215,
+       0.057338643791820035
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.00799972766884538,
+      "ci95": [
+       -0.026469923850646226,
+       0.004246026911414371
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.6417585784313724,
+      "ci_lo": 0.5351336763421429,
+      "ci_hi": 0.7428781614336343,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 16,
+      "n_neg_images": 544,
+      "n_pos_lesions": 13,
+      "n_neg_lesions": 313,
+      "auc": 0.5575597426470589,
+      "ci_lo": 0.44278966443510587,
+      "ci_hi": 0.6774631007108499,
+      "n_boot_valid": 2000
+     }
+    },
+    "chrom_asym_max": {
+     "beyond_auc": {
+      "point": -0.007567401960784204,
+      "ci95": [
+       -0.019569120261413143,
+       0.0011303981410691053
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.0033190359477124343,
+      "ci95": [
+       -0.006331460651794277,
+       -0.001091449755305082
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.562438725490196,
+      "ci_lo": 0.43528288134833304,
+      "ci_hi": 0.6831706246212966,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 16,
+      "n_neg_images": 544,
+      "n_pos_lesions": 13,
+      "n_neg_lesions": 313,
+      "auc": 0.444967830882353,
+      "ci_lo": 0.2650088390981089,
+      "ci_hi": 0.6321177911103186,
+      "n_boot_valid": 2000
+     }
+    },
+    "chrom_asym_min": {
+     "beyond_auc": {
+      "point": -0.007689950980392157,
+      "ci95": [
+       -0.021307820845985665,
+       0.004710370653416988
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.00365944989106759,
+      "ci95": [
+       -0.007313409429676024,
+       -0.0010319289654396185
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.5698835784313725,
+      "ci_lo": 0.44222734355446236,
+      "ci_hi": 0.6942617163078623,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 16,
+      "n_neg_images": 544,
+      "n_pos_lesions": 13,
+      "n_neg_lesions": 313,
+      "auc": 0.42176011029411764,
+      "ci_lo": 0.2552233208892476,
+      "ci_hi": 0.5996001335113484,
+      "n_boot_valid": 2000
+     }
+    },
+    "segmental_index": {
+     "beyond_auc": {
+      "point": 0.012867647058823484,
+      "ci95": [
+       0.0011901341620702555,
+       0.02711603202875228
+      ]
+     },
+     "beyond_pauc": {
+      "point": 0.0,
+      "ci95": [
+       -0.005091002404802447,
+       0.00428199651728376
+      ]
+     },
+     "alone": {
+      "n_pos_images": 51,
+      "n_neg_images": 640,
+      "n_pos_lesions": 28,
+      "n_neg_lesions": 352,
+      "auc": 0.529748774509804,
+      "ci_lo": 0.4126821633546573,
+      "ci_hi": 0.6493639970526435,
+      "n_boot_valid": 2000
+     },
+     "in_misses": {
+      "n_pos_images": 16,
+      "n_neg_images": 544,
+      "n_pos_lesions": 13,
+      "n_neg_lesions": 313,
+      "auc": 0.46875,
+      "ci_lo": 0.32405271037521693,
+      "ci_hi": 0.6368129180444589,
+      "n_boot_valid": 2000
+     }
+    },
+    "all_six": {
+     "beyond_auc": {
+      "point": 0.002910539215686292,
+      "ci95": [
+       -0.03553109260531138,
+       0.04076719316921272
+      ]
+     },
+     "beyond_pauc": {
+      "point": -0.011233660130718914,
+      "ci95": [
+       -0.02716399989466602,
+       0.0006810845056703332
+      ]
+     }
+    }
+   },
+   "in_misses_rows": {
+    "melanoma_images": 16,
+    "nevus_images": 544,
+    "melanoma_lesions": 13,
+    "nevus_lesions": 313
+   }
+  }
+ }
+}

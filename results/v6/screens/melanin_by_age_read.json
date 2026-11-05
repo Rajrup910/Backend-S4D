@@ -1,0 +1,967 @@
+{
+ "question": "Are missed melanomas the dark ones, and is that specific to the young?",
+ "status": "descriptive; no decision, no gate",
+ "source": "results/v4/kfold/oof_predictions.csv: 224 px ConvNeXt-Tiny control, seed 42, cross-fitted, predates the young extras",
+ "threshold_escalation_mass_at_fpr20": 0.045813485200000004,
+ "rows_with_melanin": 15294,
+ "rows_total": 15294,
+ "caveat": "Melanin is an image measure on fold 0's basis. Terciles are within band. Copies across folds remain in the all-rows read, so a without-at-risk read is given too.",
+ "all_rows": {
+  "<40": {
+   "images_in_band": 2721,
+   "images_with_melanin": 2721,
+   "images": 2721,
+   "cuts": [
+    0.23477490246295926,
+    0.4950158894062042
+   ],
+   "by_tercile": {
+    "low": {
+     "images": 907,
+     "escalating_lesions": 42,
+     "pauc_escalating_vs_rest": {
+      "point": 0.8034646647857048,
+      "ci95": [
+       0.7390192751788768,
+       0.8648167203812605
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7605489852533216,
+      "ci95": [
+       0.6615088931960179,
+       0.8482707433060288
+      ]
+     },
+     "melanoma_lesions": 15,
+     "melanoma_missed": 5,
+     "melanoma_miss_rate": 0.3333333333333333,
+     "miss_rate_ci95": [
+      0.11824110336688091,
+      0.6161962674588458
+     ],
+     "nevus_images": 761,
+     "nevus_flagged_rate": 0.15243101182654403
+    },
+    "mid": {
+     "images": 907,
+     "escalating_lesions": 37,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7180403693008736,
+      "ci95": [
+       0.6159750641978601,
+       0.8032914654459288
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.6937022405354252,
+      "ci95": [
+       0.5746077778628337,
+       0.7915590022470775
+      ]
+     },
+     "melanoma_lesions": 25,
+     "melanoma_missed": 13,
+     "melanoma_miss_rate": 0.52,
+     "miss_rate_ci95": [
+      0.3130570444570323,
+      0.7220319903300534
+     ],
+     "nevus_images": 798,
+     "nevus_flagged_rate": 0.14411027568922305
+    },
+    "high": {
+     "images": 907,
+     "escalating_lesions": 22,
+     "pauc_escalating_vs_rest": {
+      "point": 0.6117741279031602,
+      "ci95": [
+       0.5064792920580886,
+       0.7289481421136775
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.6138860264155772,
+      "ci95": [
+       0.5088699442262834,
+       0.7287671002159707
+      ]
+     },
+     "melanoma_lesions": 18,
+     "melanoma_missed": 14,
+     "melanoma_miss_rate": 0.7777777777777778,
+     "miss_rate_ci95": [
+      0.5236272342635198,
+      0.9359079522823335
+     ],
+     "nevus_images": 846,
+     "nevus_flagged_rate": 0.1099290780141844
+    }
+   },
+   "high_vs_rest_missed": {
+    "table_missed_caught": [
+     [
+      14,
+      4
+     ],
+     [
+      18,
+      22
+     ]
+    ],
+    "odds_ratio": 4.277777777777778,
+    "fisher_p": 0.024917444769923334
+   },
+   "within_archive": {
+    "n": 58,
+    "n_missed": 32,
+    "rank_difference_missed_minus_caught": 0.22087721306471297,
+    "p_two_sided": 0.0013499325033748313,
+    "archives_used": [
+     "bcn20000",
+     "ham",
+     "mskcc"
+    ]
+   },
+   "by_archive_tercile": {
+    "bcn20000|high": {
+     "melanoma_lesions": 8,
+     "missed": 4
+    },
+    "bcn20000|low": {
+     "melanoma_lesions": 1,
+     "missed": 0
+    },
+    "bcn20000|mid": {
+     "melanoma_lesions": 9,
+     "missed": 3
+    },
+    "ham|high": {
+     "melanoma_lesions": 4,
+     "missed": 4
+    },
+    "ham|low": {
+     "melanoma_lesions": 12,
+     "missed": 3
+    },
+    "ham|mid": {
+     "melanoma_lesions": 12,
+     "missed": 7
+    },
+    "mskcc|high": {
+     "melanoma_lesions": 6,
+     "missed": 6
+    },
+    "mskcc|low": {
+     "melanoma_lesions": 2,
+     "missed": 2
+    },
+    "mskcc|mid": {
+     "melanoma_lesions": 4,
+     "missed": 3
+    }
+   },
+   "score_melanin_spearman_nevus": 0.01755282569998947,
+   "melanin_median": {
+    "melanoma": 0.3603768050670624,
+    "nevus": 0.3620828092098236
+   }
+  },
+  "40-59": {
+   "images_in_band": 5825,
+   "images_with_melanin": 5825,
+   "images": 5825,
+   "cuts": [
+    0.17715644339720404,
+    0.3869344095389048
+   ],
+   "by_tercile": {
+    "low": {
+     "images": 1942,
+     "escalating_lesions": 256,
+     "pauc_escalating_vs_rest": {
+      "point": 0.8581745838182319,
+      "ci95": [
+       0.8245630957918355,
+       0.8899291744063138
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.8478858995523433,
+      "ci95": [
+       0.8030430228520103,
+       0.8905271311572783
+      ]
+     },
+     "melanoma_lesions": 51,
+     "melanoma_missed": 14,
+     "melanoma_miss_rate": 0.27450980392156865,
+     "miss_rate_ci95": [
+      0.15892726538641447,
+      0.41744752304919674
+     ],
+     "nevus_images": 1205,
+     "nevus_flagged_rate": 0.08298755186721991
+    },
+    "mid": {
+     "images": 1941,
+     "escalating_lesions": 253,
+     "pauc_escalating_vs_rest": {
+      "point": 0.8239095940245366,
+      "ci95": [
+       0.788441127623267,
+       0.8589042744454285
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7791993499113878,
+      "ci95": [
+       0.7293048676643513,
+       0.8285170673218492
+      ]
+     },
+     "melanoma_lesions": 112,
+     "melanoma_missed": 23,
+     "melanoma_miss_rate": 0.20535714285714285,
+     "miss_rate_ci95": [
+      0.13485700900578687,
+      0.29203016004266735
+     ],
+     "nevus_images": 1271,
+     "nevus_flagged_rate": 0.13611329661683713
+    },
+    "high": {
+     "images": 1942,
+     "escalating_lesions": 202,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7339868291022348,
+      "ci95": [
+       0.689389190485272,
+       0.7769995796022852
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7406156708716624,
+      "ci95": [
+       0.6914101536698531,
+       0.7864082199240968
+      ]
+     },
+     "melanoma_lesions": 144,
+     "melanoma_missed": 47,
+     "melanoma_miss_rate": 0.3263888888888889,
+     "miss_rate_ci95": [
+      0.2506513939762902,
+      0.40943876667662893
+     ],
+     "nevus_images": 1324,
+     "nevus_flagged_rate": 0.14803625377643503
+    }
+   },
+   "high_vs_rest_missed": {
+    "table_missed_caught": [
+     [
+      47,
+      97
+     ],
+     [
+      37,
+      126
+     ]
+    ],
+    "odds_ratio": 1.6500417943716912,
+    "fisher_p": 0.05529277031224339
+   },
+   "within_archive": {
+    "n": 307,
+    "n_missed": 84,
+    "rank_difference_missed_minus_caught": 0.05629693905854655,
+    "p_two_sided": 0.12094395280235988,
+    "archives_used": [
+     "bcn20000",
+     "ham",
+     "mskcc"
+    ]
+   },
+   "by_archive_tercile": {
+    "bcn20000|high": {
+     "melanoma_lesions": 48,
+     "missed": 10
+    },
+    "bcn20000|low": {
+     "melanoma_lesions": 11,
+     "missed": 0
+    },
+    "bcn20000|mid": {
+     "melanoma_lesions": 32,
+     "missed": 5
+    },
+    "ham|high": {
+     "melanoma_lesions": 59,
+     "missed": 19
+    },
+    "ham|low": {
+     "melanoma_lesions": 31,
+     "missed": 12
+    },
+    "ham|mid": {
+     "melanoma_lesions": 55,
+     "missed": 10
+    },
+    "mskcc|high": {
+     "melanoma_lesions": 37,
+     "missed": 18
+    },
+    "mskcc|low": {
+     "melanoma_lesions": 9,
+     "missed": 2
+    },
+    "mskcc|mid": {
+     "melanoma_lesions": 25,
+     "missed": 8
+    }
+   },
+   "score_melanin_spearman_nevus": 0.1852239570346754,
+   "melanin_median": {
+    "melanoma": 0.3954678773880005,
+    "nevus": 0.27716559171676636
+   }
+  },
+  "60+": {
+   "images_in_band": 6497,
+   "images_with_melanin": 6497,
+   "images": 6497,
+   "cuts": [
+    0.1491841226816177,
+    0.33166391650835664
+   ],
+   "by_tercile": {
+    "low": {
+     "images": 2166,
+     "escalating_lesions": 680,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7972638624017925,
+      "ci95": [
+       0.7512299017441052,
+       0.8431249281848512
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.8267448013640908,
+      "ci95": [
+       0.7535091549365575,
+       0.8961806008690714
+      ]
+     },
+     "melanoma_lesions": 74,
+     "melanoma_missed": 8,
+     "melanoma_miss_rate": 0.10810810810810811,
+     "miss_rate_ci95": [
+      0.04784399039492812,
+      0.201950136231846
+     ],
+     "nevus_images": 394,
+     "nevus_flagged_rate": 0.1700507614213198
+    },
+    "mid": {
+     "images": 2165,
+     "escalating_lesions": 668,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7412153782159105,
+      "ci95": [
+       0.7004323654507996,
+       0.7823840573184165
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7900297635750713,
+      "ci95": [
+       0.7332857236709586,
+       0.8436065272097748
+      ]
+     },
+     "melanoma_lesions": 198,
+     "melanoma_missed": 23,
+     "melanoma_miss_rate": 0.11616161616161616,
+     "miss_rate_ci95": [
+      0.07507910275825978,
+      0.1691877259589421
+     ],
+     "nevus_images": 521,
+     "nevus_flagged_rate": 0.2072936660268714
+    },
+    "high": {
+     "images": 2166,
+     "escalating_lesions": 493,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7191398554081992,
+      "ci95": [
+       0.6824616700958475,
+       0.7576269131500634
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7472726939189691,
+      "ci95": [
+       0.7012072701294623,
+       0.7952844342786748
+      ]
+     },
+     "melanoma_lesions": 308,
+     "melanoma_missed": 49,
+     "melanoma_miss_rate": 0.1590909090909091,
+     "miss_rate_ci95": [
+      0.12007322503663993,
+      0.20481342016705034
+     ],
+     "nevus_images": 733,
+     "nevus_flagged_rate": 0.2728512960436562
+    }
+   },
+   "high_vs_rest_missed": {
+    "table_missed_caught": [
+     [
+      49,
+      259
+     ],
+     [
+      31,
+      241
+     ]
+    ],
+    "odds_ratio": 1.4707933740191805,
+    "fisher_p": 0.11889436214052188
+   },
+   "within_archive": {
+    "n": 580,
+    "n_missed": 80,
+    "rank_difference_missed_minus_caught": 0.07039924838769451,
+    "p_two_sided": 0.04149792510374481,
+    "archives_used": [
+     "bcn20000",
+     "ham",
+     "mskcc"
+    ]
+   },
+   "by_archive_tercile": {
+    "bcn20000|high": {
+     "melanoma_lesions": 89,
+     "missed": 7
+    },
+    "bcn20000|low": {
+     "melanoma_lesions": 19,
+     "missed": 0
+    },
+    "bcn20000|mid": {
+     "melanoma_lesions": 47,
+     "missed": 2
+    },
+    "ham|high": {
+     "melanoma_lesions": 132,
+     "missed": 29
+    },
+    "ham|low": {
+     "melanoma_lesions": 39,
+     "missed": 5
+    },
+    "ham|mid": {
+     "melanoma_lesions": 86,
+     "missed": 9
+    },
+    "mskcc|high": {
+     "melanoma_lesions": 87,
+     "missed": 13
+    },
+    "mskcc|low": {
+     "melanoma_lesions": 16,
+     "missed": 3
+    },
+    "mskcc|mid": {
+     "melanoma_lesions": 65,
+     "missed": 12
+    }
+   },
+   "score_melanin_spearman_nevus": 0.19981222626700243,
+   "melanin_median": {
+    "melanoma": 0.339942142367363,
+    "nevus": 0.304727241396904
+   }
+  }
+ },
+ "without_at_risk_rows": {
+  "<40": {
+   "images": 2558,
+   "cuts": [
+    0.2312795321146647,
+    0.4861467480659484
+   ],
+   "by_tercile": {
+    "low": {
+     "images": 853,
+     "escalating_lesions": 42,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7990782664941786,
+      "ci95": [
+       0.7279243244112066,
+       0.8640319936770279
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.75711164615659,
+      "ci95": [
+       0.6637394911070009,
+       0.8411656503439683
+      ]
+     },
+     "melanoma_lesions": 15,
+     "melanoma_missed": 5,
+     "melanoma_miss_rate": 0.3333333333333333,
+     "miss_rate_ci95": [
+      0.11824110336688091,
+      0.6161962674588458
+     ],
+     "nevus_images": 712,
+     "nevus_flagged_rate": 0.1544943820224719
+    },
+    "mid": {
+     "images": 852,
+     "escalating_lesions": 33,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7322798684691267,
+      "ci95": [
+       0.6262714752231086,
+       0.8210299591976766
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7104016031629973,
+      "ci95": [
+       0.5805405519342487,
+       0.8101376317468484
+      ]
+     },
+     "melanoma_lesions": 21,
+     "melanoma_missed": 9,
+     "melanoma_miss_rate": 0.42857142857142855,
+     "miss_rate_ci95": [
+      0.2181968568851302,
+      0.6597936907197254
+     ],
+     "nevus_images": 746,
+     "nevus_flagged_rate": 0.1447721179624665
+    },
+    "high": {
+     "images": 853,
+     "escalating_lesions": 18,
+     "pauc_escalating_vs_rest": {
+      "point": 0.6410240617557691,
+      "ci95": [
+       0.5165954987048669,
+       0.7631886974098415
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.6438908719610474,
+      "ci95": [
+       0.5225766649732954,
+       0.7680001039446708
+      ]
+     },
+     "melanoma_lesions": 15,
+     "melanoma_missed": 11,
+     "melanoma_miss_rate": 0.7333333333333333,
+     "miss_rate_ci95": [
+      0.4489967589630295,
+      0.9221284537089564
+     ],
+     "nevus_images": 798,
+     "nevus_flagged_rate": 0.11278195488721804
+    }
+   },
+   "high_vs_rest_missed": {
+    "table_missed_caught": [
+     [
+      11,
+      4
+     ],
+     [
+      14,
+      22
+     ]
+    ],
+    "odds_ratio": 4.321428571428571,
+    "fisher_p": 0.03372881197189377
+   },
+   "within_archive": {
+    "n": 51,
+    "n_missed": 25,
+    "rank_difference_missed_minus_caught": 0.22603021978021975,
+    "p_two_sided": 0.002999850007499625,
+    "archives_used": [
+     "bcn20000",
+     "ham",
+     "mskcc"
+    ]
+   },
+   "by_archive_tercile": {
+    "bcn20000|high": {
+     "melanoma_lesions": 7,
+     "missed": 3
+    },
+    "bcn20000|low": {
+     "melanoma_lesions": 1,
+     "missed": 0
+    },
+    "bcn20000|mid": {
+     "melanoma_lesions": 8,
+     "missed": 2
+    },
+    "ham|high": {
+     "melanoma_lesions": 5,
+     "missed": 5
+    },
+    "ham|low": {
+     "melanoma_lesions": 12,
+     "missed": 3
+    },
+    "ham|mid": {
+     "melanoma_lesions": 11,
+     "missed": 6
+    },
+    "mskcc|high": {
+     "melanoma_lesions": 3,
+     "missed": 3
+    },
+    "mskcc|low": {
+     "melanoma_lesions": 2,
+     "missed": 2
+    },
+    "mskcc|mid": {
+     "melanoma_lesions": 2,
+     "missed": 1
+    }
+   },
+   "score_melanin_spearman_nevus": 0.006915036801378062,
+   "melanin_median": {
+    "melanoma": 0.3440023362636566,
+    "nevus": 0.3590863347053528
+   }
+  },
+  "40-59": {
+   "images": 5748,
+   "cuts": [
+    0.17673176030317939,
+    0.38783656557401014
+   ],
+   "by_tercile": {
+    "low": {
+     "images": 1916,
+     "escalating_lesions": 248,
+     "pauc_escalating_vs_rest": {
+      "point": 0.8592778335932918,
+      "ci95": [
+       0.8243341712774155,
+       0.8911920723341573
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.8545961436625861,
+      "ci95": [
+       0.8090387990345755,
+       0.8950161156568367
+      ]
+     },
+     "melanoma_lesions": 50,
+     "melanoma_missed": 13,
+     "melanoma_miss_rate": 0.26,
+     "miss_rate_ci95": [
+      0.14630058439655444,
+      0.40344767872806564
+     ],
+     "nevus_images": 1189,
+     "nevus_flagged_rate": 0.0815811606391926
+    },
+    "mid": {
+     "images": 1916,
+     "escalating_lesions": 249,
+     "pauc_escalating_vs_rest": {
+      "point": 0.8255762018365385,
+      "ci95": [
+       0.7892464536164326,
+       0.8599666659752465
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7819168311622641,
+      "ci95": [
+       0.7319378118073607,
+       0.8322170544621315
+      ]
+     },
+     "melanoma_lesions": 109,
+     "melanoma_missed": 22,
+     "melanoma_miss_rate": 0.2018348623853211,
+     "miss_rate_ci95": [
+      0.1310239761844153,
+      0.2894790204299348
+     ],
+     "nevus_images": 1259,
+     "nevus_flagged_rate": 0.1358220810166799
+    },
+    "high": {
+     "images": 1916,
+     "escalating_lesions": 199,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7306079864219399,
+      "ci95": [
+       0.6868985261357525,
+       0.7732307931574062
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7380007714444421,
+      "ci95": [
+       0.6913450238652727,
+       0.7843880678320453
+      ]
+     },
+     "melanoma_lesions": 142,
+     "melanoma_missed": 47,
+     "melanoma_miss_rate": 0.33098591549295775,
+     "miss_rate_ci95": [
+      0.25435926176840623,
+      0.414831882873312
+     ],
+     "nevus_images": 1303,
+     "nevus_flagged_rate": 0.1488871834228703
+    }
+   },
+   "high_vs_rest_missed": {
+    "table_missed_caught": [
+     [
+      47,
+      95
+     ],
+     [
+      35,
+      124
+     ]
+    ],
+    "odds_ratio": 1.752781954887218,
+    "fisher_p": 0.037878933668893076
+   },
+   "within_archive": {
+    "n": 301,
+    "n_missed": 82,
+    "rank_difference_missed_minus_caught": 0.06888756815353259,
+    "p_two_sided": 0.06134693265336733,
+    "archives_used": [
+     "bcn20000",
+     "ham",
+     "mskcc"
+    ]
+   },
+   "by_archive_tercile": {
+    "bcn20000|high": {
+     "melanoma_lesions": 48,
+     "missed": 10
+    },
+    "bcn20000|low": {
+     "melanoma_lesions": 11,
+     "missed": 0
+    },
+    "bcn20000|mid": {
+     "melanoma_lesions": 31,
+     "missed": 5
+    },
+    "ham|high": {
+     "melanoma_lesions": 59,
+     "missed": 19
+    },
+    "ham|low": {
+     "melanoma_lesions": 30,
+     "missed": 11
+    },
+    "ham|mid": {
+     "melanoma_lesions": 53,
+     "missed": 9
+    },
+    "mskcc|high": {
+     "melanoma_lesions": 35,
+     "missed": 18
+    },
+    "mskcc|low": {
+     "melanoma_lesions": 9,
+     "missed": 2
+    },
+    "mskcc|mid": {
+     "melanoma_lesions": 25,
+     "missed": 8
+    }
+   },
+   "score_melanin_spearman_nevus": 0.19040572584711768,
+   "melanin_median": {
+    "melanoma": 0.398806095123291,
+    "nevus": 0.2768562734127044
+   }
+  },
+  "60+": {
+   "images": 6368,
+   "cuts": [
+    0.14925492306550342,
+    0.331573317448298
+   ],
+   "by_tercile": {
+    "low": {
+     "images": 2123,
+     "escalating_lesions": 670,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7916128775458391,
+      "ci95": [
+       0.7462316624094326,
+       0.836527952978667
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.830871887552971,
+      "ci95": [
+       0.749221666877798,
+       0.902888847434928
+      ]
+     },
+     "melanoma_lesions": 73,
+     "melanoma_missed": 8,
+     "melanoma_miss_rate": 0.1095890410958904,
+     "miss_rate_ci95": [
+      0.04851642372111005,
+      0.2045643208486062
+     ],
+     "nevus_images": 382,
+     "nevus_flagged_rate": 0.1649214659685864
+    },
+    "mid": {
+     "images": 2122,
+     "escalating_lesions": 655,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7478926948616575,
+      "ci95": [
+       0.7050952003345562,
+       0.791310465214344
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7923632641194593,
+      "ci95": [
+       0.7321498713948312,
+       0.8474363837994111
+      ]
+     },
+     "melanoma_lesions": 192,
+     "melanoma_missed": 22,
+     "melanoma_miss_rate": 0.11458333333333333,
+     "miss_rate_ci95": [
+      0.07321841379641107,
+      0.16832991541393097
+     ],
+     "nevus_images": 511,
+     "nevus_flagged_rate": 0.21135029354207435
+    },
+    "high": {
+     "images": 2123,
+     "escalating_lesions": 482,
+     "pauc_escalating_vs_rest": {
+      "point": 0.7197549611632093,
+      "ci95": [
+       0.6819854541149238,
+       0.7555492948601135
+      ]
+     },
+     "pauc_melanoma_vs_nevus": {
+      "point": 0.7464980905625789,
+      "ci95": [
+       0.6992074085918565,
+       0.7919733243885513
+      ]
+     },
+     "melanoma_lesions": 299,
+     "melanoma_missed": 47,
+     "melanoma_miss_rate": 0.15719063545150502,
+     "miss_rate_ci95": [
+      0.11784140489854919,
+      0.20349056532798332
+     ],
+     "nevus_images": 721,
+     "nevus_flagged_rate": 0.27600554785020803
+    }
+   },
+   "high_vs_rest_missed": {
+    "table_missed_caught": [
+     [
+      47,
+      252
+     ],
+     [
+      30,
+      235
+     ]
+    ],
+    "odds_ratio": 1.460978835978836,
+    "fisher_p": 0.14129173159348557
+   },
+   "within_archive": {
+    "n": 564,
+    "n_missed": 77,
+    "rank_difference_missed_minus_caught": 0.0688882774495087,
+    "p_two_sided": 0.04864756762161892,
+    "archives_used": [
+     "bcn20000",
+     "ham",
+     "mskcc"
+    ]
+   },
+   "by_archive_tercile": {
+    "bcn20000|high": {
+     "melanoma_lesions": 88,
+     "missed": 7
+    },
+    "bcn20000|low": {
+     "melanoma_lesions": 19,
+     "missed": 0
+    },
+    "bcn20000|mid": {
+     "melanoma_lesions": 46,
+     "missed": 2
+    },
+    "ham|high": {
+     "melanoma_lesions": 126,
+     "missed": 27
+    },
+    "ham|low": {
+     "melanoma_lesions": 38,
+     "missed": 5
+    },
+    "ham|mid": {
+     "melanoma_lesions": 83,
+     "missed": 8
+    },
+    "mskcc|high": {
+     "melanoma_lesions": 85,
+     "missed": 13
+    },
+    "mskcc|low": {
+     "melanoma_lesions": 16,
+     "missed": 3
+    },
+    "mskcc|mid": {
+     "melanoma_lesions": 63,
+     "missed": 12
+    }
+   },
+   "score_melanin_spearman_nevus": 0.2017312801857533,
+   "melanin_median": {
+    "melanoma": 0.3402568399906158,
+    "nevus": 0.30551671981811523
+   }
+  }
+ }
+}

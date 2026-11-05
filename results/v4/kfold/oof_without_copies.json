@@ -1,0 +1,75 @@
+{
+ "question": "How much did copies across folds move V4's cross-fitted scores?",
+ "source": "results/v4/kfold/oof_predictions.csv",
+ "rule": ">= 30 RANSAC inliers to a row in another fold; whole lesions",
+ "limit": "the keypoint search compares each row with its 5 nearest neighbours and catches only just over half of known same-lesion pairs: a lower bound",
+ "rows_named": 52,
+ "rows_removed": 84,
+ "u40_rows_removed": 24,
+ "u40_escalating_rows_removed": 0,
+ "by_archive": {
+  "bcn20000": 43,
+  "mskcc": 24,
+  "ham": 17
+ },
+ "by_fold": {
+  "0": 20,
+  "1": 18,
+  "2": 16,
+  "3": 10,
+  "4": 20
+ },
+ "all_rows": {
+  "rows": 15294,
+  "lesions": 8748,
+  "escalating_rows": 5327,
+  "macro_f1": 0.6710302296061476,
+  "pauc_all": 0.8173286291082246,
+  "pauc_u40": 0.738631415651895,
+  "escalation_sensitivity_argmax": 0.7905012201989863,
+  "accuracy": 0.7773636720282464
+ },
+ "without_copies": {
+  "rows": 15210,
+  "lesions": 8700,
+  "escalating_rows": 5308,
+  "macro_f1": 0.6721344383842911,
+  "pauc_all": 0.8176924691331153,
+  "pauc_u40": 0.7385380857524908,
+  "escalation_sensitivity_argmax": 0.7906932931424265,
+  "accuracy": 0.7777777777777778
+ },
+ "the_removed_rows": {
+  "rows": 84,
+  "lesions": 48,
+  "escalating_rows": 19,
+  "macro_f1": 0.41546310832025124,
+  "pauc_all": 0.721097615834458,
+  "pauc_u40": null,
+  "escalation_sensitivity_argmax": 0.7368421052631579,
+  "accuracy": 0.7023809523809523
+ },
+ "all_minus_without": {
+  "macro_f1": {
+   "point": -0.001104208778143545,
+   "ci95": [
+    -0.0033541839177412243,
+    0.0003165936491702546
+   ]
+  },
+  "pauc_all": {
+   "point": -0.0003638400248907603,
+   "ci95": [
+    -0.0015495574898505614,
+    0.0005526414291974808
+   ]
+  },
+  "pauc_u40": {
+   "point": 9.332989940424863e-05,
+   "ci95": [
+    -0.0017192177716298107,
+    0.0012280301211060828
+   ]
+  }
+ }
+}
