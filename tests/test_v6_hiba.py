@@ -70,10 +70,27 @@ def test_infer_stage_refuses_outside_a_started_read(tmp_path, monkeypatch) -> No
         hr.main(["--stage-infer"])
 
 
+def test_a_system_must_pass_with_and_without_the_at_risk_rows() -> None:
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    from read_leak_sensitivity import after_check
+
+    assert after_check("combined_vote", {"combined_vote": True, "v6_vote": True}) == "combined_vote"
+    assert after_check("combined_vote", {"combined_vote": False, "v6_vote": True}) == "v6_vote"
+    assert after_check("v6_vote", {"combined_vote": False, "v6_vote": False}) == "v5_system"
+    assert after_check("v5_system", {"combined_vote": True, "v6_vote": True}) == "v5_system"
+
+
+def test_pixel_audit_is_required_before_the_read() -> None:
+    assert hr.frozen_inputs()["pixel_copies"] == hr.PIXEL_COPIES
+
+
 def test_execute_refuses_when_v5_stays_deployed(tmp_path, monkeypatch) -> None:
     path = tmp_path / "e.json"
-    path.write_text(json.dumps({"deployed_system": "v5_system"}), encoding="utf-8")
-    monkeypatch.setattr(hr, "E_PRIMARY", path)
+    path.write_text(json.dumps({"deployed_after_leak_check": "v5_system"}), encoding="utf-8")
+    monkeypatch.setattr(hr, "LEAK_READ", path)
     monkeypatch.setattr(hr, "RECEIPT", tmp_path / "receipt.json")
     with pytest.raises(SystemExit):
         hr.execute(False, "cpu", 0)

@@ -1,0 +1,706 @@
+{
+  "question": "S84 with and without MILK10k lesions that are copies of images V5 or V1 trained on",
+  "bar": ">= 30 RANSAC inliers to one of the 5 nearest development rows or young extras",
+  "not_a_new_read": "the stored decisions; receipt untouched; labels re-read by the owner's decision",
+  "analysed_lesions": 4255,
+  "copies": 89,
+  "copies_share": 0.0209165687426557,
+  "copies_in_scope": 89,
+  "copies_escalating": 25,
+  "copies_u40_escalating": 0,
+  "copies_by_target_archive": {
+    "ham": 86,
+    "isic_young": 3
+  },
+  "copies_by_target_source": {
+    "dev": 86,
+    "young_extra": 3
+  },
+  "inlier_percentiles": {
+    "50": 2.0,
+    "90": 4.0,
+    "99": 203.6800000000003,
+    "99.9": 443.95200000000114,
+    "100": 499.0
+  },
+  "as_read": {
+    "in_scope_lesions": 4148,
+    "u40_escalating_lesions": 50,
+    "u40_sens_v5": 0.98,
+    "u40_sens_v1": 0.94,
+    "delta_sensitivity": 0.04,
+    "discordant_v5_only": 3,
+    "discordant_v1_only": 1,
+    "mcnemar_p": 0.3125,
+    "reject": false,
+    "macro_f1_v5": 0.47436001330348176,
+    "macro_f1_v1": 0.37424988387994584,
+    "macro_f1_delta": 0.10011012942353592,
+    "macro_f1_ci95": [
+      0.07391797614899706,
+      0.12714252469388507
+    ],
+    "non_inferior": true,
+    "v5_deployed_u40_sens": 0.96,
+    "v5_deployed_u40_ci95": [
+      0.8628623743960326,
+      0.9951185665738356
+    ],
+    "v5_deployed_referral": 0.4627497062279671,
+    "contract_point_estimate_meets": false
+  },
+  "without_copies": {
+    "in_scope_lesions": 4059,
+    "u40_escalating_lesions": 50,
+    "u40_sens_v5": 0.98,
+    "u40_sens_v1": 0.94,
+    "delta_sensitivity": 0.04,
+    "discordant_v5_only": 3,
+    "discordant_v1_only": 1,
+    "mcnemar_p": 0.3125,
+    "reject": false,
+    "macro_f1_v5": 0.449540950799014,
+    "macro_f1_v1": 0.34385390429878837,
+    "macro_f1_delta": 0.10568704650022565,
+    "macro_f1_ci95": [
+      0.07836907737293276,
+      0.1335732856091102
+    ],
+    "non_inferior": true,
+    "v5_deployed_u40_sens": 0.96,
+    "v5_deployed_u40_ci95": [
+      0.8628623743960326,
+      0.9951185665738356
+    ],
+    "v5_deployed_referral": 0.4668746999519923,
+    "contract_point_estimate_meets": false
+  },
+  "reproduces_stored_report": true,
+  "copy_rows": [
+    {
+      "isic_id": "ISIC_9815182",
+      "inliers": 499,
+      "target": "ISIC_0029161",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0896718",
+      "inliers": 469,
+      "target": "ISIC_0029425",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9276896",
+      "inliers": 465,
+      "target": "ISIC_0029630",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_8626277",
+      "inliers": 461,
+      "target": "ISIC_0033147",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_3356573",
+      "inliers": 447,
+      "target": "ISIC_0031996",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_1468332",
+      "inliers": 435,
+      "target": "ISIC_0031748",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_6930203",
+      "inliers": 434,
+      "target": "ISIC_0030956",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_2779297",
+      "inliers": 430,
+      "target": "ISIC_0025140",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9737054",
+      "inliers": 423,
+      "target": "ISIC_0029558",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9683086",
+      "inliers": 420,
+      "target": "ISIC_0034254",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_3665449",
+      "inliers": 406,
+      "target": "ISIC_0026622",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_8054499",
+      "inliers": 392,
+      "target": "ISIC_0031326",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_4308587",
+      "inliers": 385,
+      "target": "ISIC_0028190",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0887284",
+      "inliers": 382,
+      "target": "ISIC_0033082",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_1430231",
+      "inliers": 381,
+      "target": "ISIC_0027960",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_8837131",
+      "inliers": 359,
+      "target": "ISIC_0033794",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_3094215",
+      "inliers": 355,
+      "target": "ISIC_0030546",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9222540",
+      "inliers": 351,
+      "target": "ISIC_0032725",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_2683683",
+      "inliers": 342,
+      "target": "ISIC_0032592",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0119243",
+      "inliers": 342,
+      "target": "ISIC_0033316",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9392092",
+      "inliers": 340,
+      "target": "ISIC_0028591",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9814156",
+      "inliers": 340,
+      "target": "ISIC_0031245",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_1479765",
+      "inliers": 334,
+      "target": "ISIC_0024891",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_6287939",
+      "inliers": 323,
+      "target": "ISIC_0024799",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_4548708",
+      "inliers": 309,
+      "target": "ISIC_0033714",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_8318126",
+      "inliers": 306,
+      "target": "ISIC_0031380",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_2036689",
+      "inliers": 302,
+      "target": "ISIC_0033669",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_7074302",
+      "inliers": 296,
+      "target": "ISIC_0033328",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_4416373",
+      "inliers": 291,
+      "target": "ISIC_0032551",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_8544988",
+      "inliers": 290,
+      "target": "ISIC_0031660",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_1029957",
+      "inliers": 290,
+      "target": "ISIC_0032748",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_7231732",
+      "inliers": 286,
+      "target": "ISIC_0028658",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_5509679",
+      "inliers": 283,
+      "target": "ISIC_0026115",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_2128019",
+      "inliers": 279,
+      "target": "ISIC_0026279",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_8191999",
+      "inliers": 248,
+      "target": "ISIC_0031284",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_5253746",
+      "inliers": 245,
+      "target": "ISIC_0031557",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0489440",
+      "inliers": 245,
+      "target": "ISIC_0034067",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_2324920",
+      "inliers": 241,
+      "target": "ISIC_0024573",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_6940478",
+      "inliers": 234,
+      "target": "ISIC_0026318",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_5173718",
+      "inliers": 229,
+      "target": "ISIC_0035939",
+      "target_source": "young_extra",
+      "target_archive": "isic_young"
+    },
+    {
+      "isic_id": "ISIC_0962054",
+      "inliers": 224,
+      "target": "ISIC_0032258",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0552734",
+      "inliers": 211,
+      "target": "ISIC_0035724",
+      "target_source": "young_extra",
+      "target_archive": "isic_young"
+    },
+    {
+      "isic_id": "ISIC_5017355",
+      "inliers": 208,
+      "target": "ISIC_0033823",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_1408695",
+      "inliers": 200,
+      "target": "ISIC_0034090",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_2205902",
+      "inliers": 195,
+      "target": "ISIC_0024789",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_7243195",
+      "inliers": 194,
+      "target": "ISIC_0028401",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0866932",
+      "inliers": 191,
+      "target": "ISIC_0033650",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_4080973",
+      "inliers": 190,
+      "target": "ISIC_0029020",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_7805699",
+      "inliers": 187,
+      "target": "ISIC_0028453",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0811514",
+      "inliers": 187,
+      "target": "ISIC_0026421",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0361189",
+      "inliers": 183,
+      "target": "ISIC_0028670",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_6748152",
+      "inliers": 176,
+      "target": "ISIC_0030177",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_4606877",
+      "inliers": 173,
+      "target": "ISIC_0029093",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_4051514",
+      "inliers": 163,
+      "target": "ISIC_0032896",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_7134919",
+      "inliers": 162,
+      "target": "ISIC_0032076",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_6693050",
+      "inliers": 161,
+      "target": "ISIC_0033202",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_4300672",
+      "inliers": 160,
+      "target": "ISIC_0029453",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_1191996",
+      "inliers": 158,
+      "target": "ISIC_0026230",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_1473683",
+      "inliers": 143,
+      "target": "ISIC_0026743",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_2100961",
+      "inliers": 139,
+      "target": "ISIC_0029608",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_3570541",
+      "inliers": 137,
+      "target": "ISIC_0027256",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_5686692",
+      "inliers": 127,
+      "target": "ISIC_0032959",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_2062505",
+      "inliers": 127,
+      "target": "ISIC_0025959",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0597607",
+      "inliers": 125,
+      "target": "ISIC_0033462",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9973379",
+      "inliers": 125,
+      "target": "ISIC_0033580",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_3626191",
+      "inliers": 123,
+      "target": "ISIC_0028969",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_1724838",
+      "inliers": 123,
+      "target": "ISIC_0026417",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_4473773",
+      "inliers": 122,
+      "target": "ISIC_0029553",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_6252730",
+      "inliers": 119,
+      "target": "ISIC_0030377",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_8714957",
+      "inliers": 116,
+      "target": "ISIC_0028971",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9685758",
+      "inliers": 112,
+      "target": "ISIC_0033108",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_6192197",
+      "inliers": 109,
+      "target": "ISIC_0032240",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_3762126",
+      "inliers": 105,
+      "target": "ISIC_0030485",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_0467778",
+      "inliers": 104,
+      "target": "ISIC_0030408",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_5562336",
+      "inliers": 89,
+      "target": "ISIC_0034190",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9115886",
+      "inliers": 88,
+      "target": "ISIC_0034263",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_5993743",
+      "inliers": 85,
+      "target": "ISIC_0025049",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_4573337",
+      "inliers": 81,
+      "target": "ISIC_0034093",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_2031349",
+      "inliers": 80,
+      "target": "ISIC_0032824",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_5194644",
+      "inliers": 80,
+      "target": "ISIC_0034503",
+      "target_source": "young_extra",
+      "target_archive": "isic_young"
+    },
+    {
+      "isic_id": "ISIC_8790878",
+      "inliers": 79,
+      "target": "ISIC_0028980",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9966733",
+      "inliers": 76,
+      "target": "ISIC_0030355",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_9030826",
+      "inliers": 71,
+      "target": "ISIC_0033827",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_7302180",
+      "inliers": 53,
+      "target": "ISIC_0030464",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_3540482",
+      "inliers": 52,
+      "target": "ISIC_0032362",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_1121888",
+      "inliers": 49,
+      "target": "ISIC_0032526",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_5763228",
+      "inliers": 49,
+      "target": "ISIC_0028029",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_8377707",
+      "inliers": 39,
+      "target": "ISIC_0033737",
+      "target_source": "dev",
+      "target_archive": "ham"
+    },
+    {
+      "isic_id": "ISIC_3211851",
+      "inliers": 38,
+      "target": "ISIC_0034257",
+      "target_source": "dev",
+      "target_archive": "ham"
+    }
+  ],
+  "test_read": false,
+  "reserved_read": false
+}

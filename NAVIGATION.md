@@ -86,9 +86,10 @@ tests/       unit and contract tests
 | "3 of 21" is 10 lesions; lesions needed | 104 single-arm, 81 paired | [`results/v4/power_audit.json`](results/v4/power_audit.json) |
 | Per-age-band abstention, under-40 gain (20% budget) | +0.154 [+0.104, +0.216] | [`results/v4/s56/contrasts_reserved.csv`](results/v4/s56/contrasts_reserved.csv) |
 | V5 held-out evidence (folds 1–4, 3 seeds) | 12,235 images, 7,002 lesions, 65 under-40 escalating lesions | [`results/v5/confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json) |
-| V5 under-40 ranking gain (3 seeds) | +0.0351 [+0.0125, +0.0596], p = 0.003; below the +0.050 MCID, so Gate A fails | [`results/v5/confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json) (`gates.A`) |
+| V5 under-40 ranking gain (3 seeds), corrected for copies | +0.0136 [−0.0084, +0.0357], p = 0.228; Gate A fails | [`results/v5/confirm_s42_s43_s44_without_copies.json`](results/v5/confirm_s42_s43_s44_without_copies.json) (`extras_copies`) |
+| The same, as first read, with 90 rows that had a copy in the composite's training data | +0.0351 [+0.0125, +0.0596], p = 0.003; below the +0.050 MCID | [`results/v5/confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json) (`gates.A`) |
 | V5 all-age ranking change | +0.0020 [−0.0056, +0.0093] (null) | [`results/v5/confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json) |
-| Share from modules + young data vs the bigger trunk | +0.0270 (77%) vs +0.0081 (23%) | [`results/v5/q11_decomposition.json`](results/v5/q11_decomposition.json) |
+| Modules + young data vs the bigger trunk, corrected: +0.0068, p = 0.612 vs +0.0068, p = 0.576 (`q11_on_extras_copies` in the same file). As first read | +0.0270 (77%) vs +0.0081 (23%) | [`results/v5/q11_decomposition.json`](results/v5/q11_decomposition.json) |
 | HAM test split reads | 2 (one plan, 4 Sep) | [`results/test_pass_receipt.json`](results/test_pass_receipt.json) |
 
 ---
@@ -131,7 +132,7 @@ Read the summary files beside them instead. Checkpoints and image datasets are n
 | **OOF** | Out-of-fold: predictions on training images from models that never saw them |
 | **MCID** | Minimum clinically important difference, set before each read |
 | **Gate / falsifier** | A pass/fail rule, and a test that could prove an idea wrong, both written before the result |
-| **V5 Gates A–D** | A: under-40 pAUC gain ≥ +0.050 with CI above 0 (failed: +0.0351). B: Macro-F1 kept (passed). C: older-band sensitivity kept (passed). D: all-age gain in every seed (failed) |
+| **V5 Gates A–D** | A: under-40 pAUC gain ≥ +0.050 with CI above 0 (failed: +0.0351 as read, +0.0136 without copies). B: Macro-F1 kept (passed). C: older-band sensitivity kept (passed). D: all-age gain in every seed (failed) |
 | **Q11 decomposition** | Splits the V5 gain into the modules + young data part and the bigger pre-trained trunk part |
 | **HAM / BCN / MSKCC / PAD** | HAM10000, BCN20000, MSKCC (ISIC Archive) dermoscopy; PAD-UFES-20 smartphone photos |
 | **Reserved cohort** | 4,733 BCN + MSKCC images held out in V4 for one-time reads |

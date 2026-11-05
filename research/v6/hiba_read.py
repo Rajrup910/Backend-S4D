@@ -54,6 +54,7 @@ REPORT = HIBA_DIR / "hiba_report.json"
 DECISIONS = HIBA_DIR / "decisions.csv"
 IMAGES = REPO / "data" / "external" / "hiba"
 E_PRIMARY = REPO / "results" / "v6" / "e_primary.json"
+LEAK_READ = REPO / "results" / "v6" / "leak_sensitivity_read.json"
 REFIT = REPO / "results" / "v6" / "refit"
 PIXEL_COPIES = REPO / "results" / "v6" / "screens" / "leak_audit_hiba_pixels.json"
 CHECKPOINTS = REPO / "ml" / "checkpoints"
@@ -71,12 +72,12 @@ SYSTEMS = ("v6_vote", "combined_vote", "v5", "v1")
 
 # =================================================================== the single-read receipt
 def frozen_inputs() -> dict[str, Path]:
-    inputs = {"e_primary": E_PRIMARY, "reader": Path(__file__), "cohort": COHORT, "v5_dirichlet": s84.DIRICHLET_STATE, "v5_s56": s84.S56_POLICIES_V5, "v1_s56": s84.S56_POLICIES_V1}
+    """The pixel audit is among them: hashes missed recoloured copies (results/v6/screens/leak_audit_keypoints.json), so the read refuses without it."""
+    inputs = {"e_primary": E_PRIMARY, "leak_read": LEAK_READ, "reader": Path(__file__), "cohort": COHORT, "v5_dirichlet": s84.DIRICHLET_STATE, "v5_s56": s84.S56_POLICIES_V5, "v1_s56": s84.S56_POLICIES_V1}
     for system in ("v6_vote", "combined_vote"):
         for name in ("dirichlet_state.json", "s56_policies_v6.json", "conformal_state.json"):
             inputs[f"{system}_{name}"] = REFIT / system / name
-    if PIXEL_COPIES.is_file():
-        inputs["pixel_copies"] = PIXEL_COPIES
+    inputs["pixel_copies"] = PIXEL_COPIES
     return inputs
 
 
@@ -470,7 +471,7 @@ def read_labels(cohort: pd.DataFrame, receipt: dict | None) -> pd.DataFrame:
 def stage_analyse(receipt: dict | None) -> int:
     cohort = pd.read_csv(COHORT, dtype=str)
     cohort = cohort[cohort["excluded"].fillna("") == ""].reset_index(drop=True)
-    deployed = json.loads(E_PRIMARY.read_text(encoding="utf-8"))["deployed_system"]
+    deployed = json.loads(LEAK_READ.read_text(encoding="utf-8"))["deployed_after_leak_check"]
     bands = cohort["age_band"].astype(str).to_numpy()
     # Every decision is fixed here, from probabilities and age bands alone, before any label is read.
     systems = decide(system_probabilities(), bands)
@@ -491,9 +492,9 @@ def execute(resume: bool, device: str, workers: int) -> int:
     from research import testguard
 
     testguard.block_test_reads("V6-6: HIBA only; HAM test, reserved and development labels untouched")
-    deployed = json.loads(E_PRIMARY.read_text(encoding="utf-8"))["deployed_system"] if E_PRIMARY.is_file() else None
+    deployed = json.loads(LEAK_READ.read_text(encoding="utf-8"))["deployed_after_leak_check"] if LEAK_READ.is_file() else None
     if deployed is None or deployed == "v5_system":
-        raise SystemExit(f"e_primary.json deploys {deployed}: V6-6 reads a system that passed V6-5, so HIBA stays unread")
+        raise SystemExit(f"after the leak check the deployed system is {deployed}: V6-6 reads a system that passed V6-5 with and without the at-risk rows, so HIBA stays unread")
     if dry_run() != 0:
         raise SystemExit("preconditions fail; see above. Nothing was started.")
     receipt = begin_execution(resume)

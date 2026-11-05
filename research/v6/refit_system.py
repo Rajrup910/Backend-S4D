@@ -4,7 +4,7 @@
            --fold0-tags anchor_h7=v62y panderm_b_h7=v63 dinov2_b_h7=v63 anchor384_h7=v63 --checkpoint swad
     python -m research.v6.refit_system --selftest          # the whole path on V5's OOF, writes only under results/v6/refit/selftest/
 
-V6-6 compares both votes, so both are refit. Which one is deployed comes from `results/v6/e_primary.json`, never from an argument. If V5 stays deployed, nothing is refit
+V6-6 compares both votes, so both are refit. Which one is deployed comes from `results/v6/leak_sensitivity_read.json`, never from an argument. If V5 stays deployed, nothing is refit
 and V5's frozen files stand. Hard Rule 5: every fit uses the cross-fitted five-fold OOF; no test, reserved or HIBA row is read. Fold 0 is included, as in
 `research.v5.refit_dirichlet`, and the state file says so. Everything here is reused unchanged from the V5 templates and from the frozen modules:
 
@@ -56,11 +56,13 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def deployed_from_read(path: Path = sr.E_PRIMARY) -> tuple[str, dict]:
+def deployed_from_read(path: Path = sr.E_PRIMARY, leak_read: Path = sr.OUT_DIR / "leak_sensitivity_read.json") -> tuple[str, dict]:
+    """The system must pass with and without the at-risk rows (`scripts/read_leak_sensitivity.py`, owner decision 5 Nov 2026), so that file decides."""
     if not path.is_file():
-        raise SystemExit(f"{path.name} is missing: run research.v6.system_reads first; it decides which system is deployed")
-    report = json.loads(path.read_text(encoding="utf-8"))
-    return report["deployed_system"], report
+        raise SystemExit(f"{path.name} is missing: run research.v6.system_reads first")
+    if not leak_read.is_file():
+        raise SystemExit(f"{leak_read.name} is missing: run scripts/read_leak_sensitivity.py after system_reads; it decides which system is deployed")
+    return json.loads(leak_read.read_text(encoding="utf-8"))["deployed_after_leak_check"], json.loads(path.read_text(encoding="utf-8"))
 
 
 def raps_hyper() -> tuple[int, float]:
@@ -225,7 +227,7 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit("pass --finalists and --tag, or --selftest")
     system, report = deployed_from_read()
     if system == "v5_system":
-        print("e_primary.json keeps V5 deployed: nothing is refit, and V5's frozen files stand.")
+        print("V5 stays deployed after the leak check: nothing is refit, and V5's frozen files stand.")
         return 0
     if report["checkpoint"] != (args.checkpoint or "last"):
         raise SystemExit(f"the read used checkpoint {report['checkpoint']}, this refit {args.checkpoint or 'last'}")

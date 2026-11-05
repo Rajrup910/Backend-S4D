@@ -6,6 +6,20 @@ section (Hard Rule 4); nothing is hand-entered. Sources, abbreviated:
 `CONF` = `results/v5/confirm_s42_s43_s44.json`, `Q11` = `results/v5/q11_decomposition.json`,
 `DEV` = `results/v5/protocol_deviations.json`, `TAB` = `results/v5/review2_tables.md`.
 
+## Correction, 5 Nov 2026
+
+A leak audit found 90 rows in folds 1–4 with a copy, or another photo of the same lesion, in the young extras: 26 by name (`ISIC_x_downsampled` in the manifest, `ISIC_x` in the extras), the rest by keypoint matching (`results/v6/screens/leak_audit_keypoints.json`). The composite trained on the extras and the control did not. The same read without them, same predictions and same bootstrap (`results/v5/confirm_s42_s43_s44_without_copies.json`, which first reproduces every interval below):
+
+| Endpoint | Δ composite − control | 95% CI | p | Gate |
+|---|---|---|---|---|
+| all-age escalation pAUC | +0.0012 | [−0.0061, +0.0082] | 0.790 | D: FAIL |
+| under-40 escalation pAUC | +0.0136 | [−0.0084, +0.0357] | 0.228 | A: FAIL |
+| Macro-F1 | +0.0107 | [−0.0012, +0.0233] | 0.070 | B: pass |
+| sensitivity @ spec 0.80, 40–59 | +0.0062 | [−0.0112, +0.0222] | 0.536 | C: pass |
+| sensitivity @ spec 0.80, 60+ | −0.0014 | [−0.0106, +0.0088] | 0.907 | C: pass |
+
+Q11 on the same rows: module effect +0.0068 [−0.0183, +0.0290], p = 0.612; trunk effect +0.0068 [−0.0161, +0.0313], p = 0.576. **The under-40 gain as first read, and the claim that modules and young data carry 77% of it, do not survive the correction.** Sections 1–4 below are the record of the read as made.
+
 ## 1. Confirmation (folds 1–4, seeds 42/43/44)
 
 Design (`CONF`: `question`, `lock`, `bootstrap`): locked V5 composite versus the in1k control, on

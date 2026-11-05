@@ -188,9 +188,11 @@ Best condition 0.7869: the 0.80 ceiling was not broken.
 
 Each module turned a bedside heuristic into code and had to pass a screen and a falsifier written before its result existed. Three survived: **two-step triage heads, melanoma-vs-look-alike ranking, and young biopsy-proven data**, on an ImageNet-22k trunk.
 
-- **A real under-40 gain, below the clinical bar:** +0.0351 [+0.0125, +0.0596], p = 0.003, on all three seeds, against a +0.050 MCID.
-- **Most of it came from the modules and young data:** +0.0270 [+0.0045, +0.0488], p = 0.023. The trunk swap alone: +0.0081, p = 0.432.
-- **All-age ranking did not move:** +0.0020, 1 of 3 seeds positive.
+> **Correction, 5 Nov 2026.** A leak audit found that V5's young extras contained images, or other photos, of lesions in the rows it was scored on: 90 rows, including 26 that are the same image under another name, such as `ISIC_0012503_downsampled` and `ISIC_0012503`. V5 trained on the extras and its control did not, so this favoured V5. The numbers below are corrected, with the original read beside them. The reels show the original read. Sources: [`confirm_s42_s43_s44_without_copies.json`](results/v5/confirm_s42_s43_s44_without_copies.json), [`leak_audit_keypoints.json`](results/v6/screens/leak_audit_keypoints.json).
+
+- **No established under-40 gain:** +0.0136 [−0.0084, +0.0357], p = 0.228, on 58 under-40 escalating lesions, against a +0.050 MCID. The original read was +0.0351 [+0.0125, +0.0596], p = 0.003. Gate A fails either way.
+- **The modules and young data no longer stand out:** +0.0068 [−0.0183, +0.0290], p = 0.612 (originally +0.0270 [+0.0045, +0.0488], p = 0.023). The trunk swap alone: +0.0068, p = 0.576 (originally +0.0081, p = 0.432).
+- **All-age ranking did not move:** +0.0012, 1 of 3 seeds positive (originally +0.0020).
 
 ### How the 12,235 was earned
 
@@ -206,6 +208,7 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 
 - **V5 classifies better than V1 on the outside cohort:** Macro-F1 0.474 vs V1's 0.374, Δ +0.100 [+0.074, +0.127], non-inferior at the −0.02 margin. The gain is relative: absolute Macro-F1 is lower than the 0.7005 measured on development folds.
 - **The under-40 primary was not met:** 49/50 vs 47/50 at a matched 0.52 referral, McNemar p = 0.3125. Both systems sit at the ceiling, and only 50 of the planned 71 lesions remained after D6. This is a lack of resolution, not evidence that the systems are equal.
+- **Copies in MILK10k (checked 5 Nov 2026):** 89 of the 4,255 analysed lesions match images V5 or V1 trained on, 86 of them in HAM10000. None is an under-40 escalating lesion, so the primary is unchanged. Without them Macro-F1 is 0.450 vs 0.344, Δ +0.106 [+0.078, +0.134]. The labels were re-read for this, by owner decision; every decision is the stored one ([`s84_without_copies.json`](results/v5/s84/s84_without_copies.json)).
 - **The safety contract fails on referral:** sensitivity 0.960 clears the floor (lower bound 0.863), but referral is 0.463 against a 0.25 cap. MILK10k is 81.4% escalating, against 34.8% in the development pool.
 - **How MILK10k is used now:** it is spent as a test set. It becomes V6 training data without the 985 linked lesions, and HIBA stays untouched as V6's confirmation cohort.
 
@@ -213,7 +216,16 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 <summary><b>V5 numbers</b>: confirmation, decomposition, screens, MILK10k</summary>
 <br>
 
-**Three-seed confirmation** (locked composite vs control, held-out folds 1–4): 12,235 images, 7,002 lesions, 65 under-40 escalating lesions, 2,000 hierarchical bootstrap resamples.
+**Three-seed confirmation, corrected** (locked composite vs control, held-out folds 1–4, without the 90 rows): 12,145 images, 6,921 lesions, 58 under-40 escalating lesions, 2,000 hierarchical bootstrap resamples.
+
+| Gate | Δ (composite − control) | 95% CI | p | Result |
+|---|:---:|:---:|:---:|:---:|
+| **A** · under-40 escalation pAUC | **+0.0136** | [−0.0084, +0.0357] | 0.228 | Not met (MCID +0.050) |
+| **B** · Macro-F1 retention | +0.0107 | [−0.0012, +0.0233] | 0.070 | Pass |
+| **C** · older-band sensitivity at spec 0.80 | +0.0062 (40–59), −0.0014 (60+) | [−0.0112, +0.0222], [−0.0106, +0.0088] | 0.536, 0.907 | Pass |
+| **D** · all-age escalation pAUC | +0.0012 | [−0.0061, +0.0082] | 0.790 | Not met |
+
+**The original read** (12,235 images, 7,002 lesions, 65 under-40 escalating lesions, 2,000 hierarchical bootstrap resamples; frozen in [`confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json)):
 
 | Gate | Δ (composite − control) | 95% CI | p | Result |
 |---|:---:|:---:|:---:|:---:|
@@ -222,7 +234,7 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 | **C** · older-band sensitivity at spec 0.80 | +0.0071 (40–59), −0.0007 (60+) | [−0.0127, +0.0234], [−0.0101, +0.0083] | 0.522, 0.872 | Pass |
 | **D** · all-age escalation pAUC | +0.0020 | [−0.0056, +0.0093] | 0.596 | Not met |
 
-**Decomposition** (Q11, deviation D4):
+**Decomposition** (Q11, deviation D4), original read. Corrected: modules + young data +0.0068 [−0.0183, +0.0290], p = 0.612; trunk +0.0068 [−0.0161, +0.0313], p = 0.576.
 
 | Contrast | Under-40 pAUC | p | Macro-F1 | p |
 |---|:---:|:---:|:---:|:---:|
@@ -236,6 +248,7 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 | Primary: under-40 sensitivity at matched referral | 0.980 (49 / 50) | 0.940 (47 / 50) | Not met, p = 0.3125 |
 | Key secondary: sensitivity ≥ 0.855 and referral ≤ 0.25 | 0.960, referral 0.463 | | Not met |
 | Global Macro-F1 | 0.474 | 0.374 | Non-inferior, Δ +0.100 [+0.074, +0.127] |
+| Global Macro-F1 without the 89 copies | 0.450 | 0.344 | Non-inferior, Δ +0.106 [+0.078, +0.134] |
 | Escalation AUROC, all ages | 0.831 | 0.782 | Descriptive |
 | Under-40 escalation pAUC | 0.747 | 0.767 | Descriptive, V1 leads |
 
@@ -252,7 +265,6 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 |---|---|---|
 | Training in domain | Macro-F1 0.411 → 0.603 on the same reserved rows (confounded by corpus) | V4 |
 | Ensembling | 0.7459 → 0.7718, McNemar p = 3.4 × 10⁻⁵ | V1 |
-| Young data + V5 modules | under-40 pAUC +0.0270 [+0.0045, +0.0488] on the same trunk | V5 |
 | Per-band abstention | under-40 system sensitivity +0.154 [+0.104, +0.216], paid for with referral | V4 |
 
 | Ruled out | Evidence | Source |
@@ -278,9 +290,11 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 
 <a id="v6"></a>
 
-## V6 · Frozen, no results
+## V6 · In progress: fold 0 done, no claim yet
 
-The current plan is a **leak-audited, data-maximal ensemble across pretraining families, image-only**, frozen on 4 Nov 2026, and it has no results yet: every stage is still to run. The anchor is ConvNeXt-Tiny (IN-22k); the candidate members to screen are the same trunk at 384 px, PanDerm-B, DINOv2 ViT-B/14 and SigLIP 2 B/16. A single receipted read of HIBA is the planned confirmation. The plan records in advance that the under-40 gate is unlikely to pass. Plan: [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md), Part 0.
+The current plan is a **data-maximal ensemble across pretraining families, image-only**, frozen on 4 Nov 2026. The anchor is ConvNeXt-Tiny (IN-22k). Fold 0 chose PanDerm-B, DINOv2 ViT-B/14 and the same ConvNeXt at 384 px as members; SigLIP 2 went first on the frozen cut order. On fold 0 the V6 vote scores Macro-F1 0.7129 and all-age pAUC 0.8839 against V5's 0.6866 and 0.8556. Fold 0 is a compute filter, not a result. Folds 1–4 are the first read that can support a claim, and a single receipted read of HIBA is the planned confirmation. The plan records in advance that the under-40 gate is unlikely to pass.
+
+**Leak audit, 5 Nov 2026.** 380 development rows (2.5%) have a copy or another photo of the same lesion in training data, found by name and by keypoint matching. The frozen training rows stay as they are, because V5 trained on the same extras. Instead, a system must pass with and without those rows, declared before any V6 prediction on folds 1–4 existed ([`leak_sensitivity_declaration.json`](results/v6/leak_sensitivity_declaration.json)). Every fold-0 decision comes out the same without them ([`decisions_without_at_risk_rows.json`](results/v6/screens/decisions_without_at_risk_rows.json)). Plan: [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md), Part 0.
 
 ---
 

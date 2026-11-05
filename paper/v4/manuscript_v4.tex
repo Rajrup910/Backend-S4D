@@ -25,7 +25,7 @@
 
 \begin{document}
 
-\title{Resolving the Under-40 Melanoma Blind Spot in Dermoscopy Triage: Pre-Registered Decision Limits, Clinical Inductive Biases, and Multi-Seed Held-Out Confirmation}
+\title{Testing the Under-40 Melanoma Blind Spot in Dermoscopy Triage: Pre-Registered Decision Limits, Clinical Inductive Biases, and a Multi-Seed Held-Out Confirmation Corrected for Data Leakage}
 
 \author{Prateek~Chhabra,
         Rajrup~Roy~Chowdhury,
@@ -42,13 +42,13 @@ and cryptographic read receipts are available at
 \url{https://github.com/Rajrup910/Backend-S4D-}.}}
 
 \markboth{IEEE Transactions on Medical Imaging, Vol.~XX, No.~X, Month~2026}%
-{Chhabra \MakeLowercase{\textit{et al.}}: Resolving the Under-40 Melanoma Blind Spot in Dermoscopy Triage}
+{Chhabra \MakeLowercase{\textit{et al.}}: Testing the Under-40 Melanoma Blind Spot in Dermoscopy Triage}
 
 \maketitle
 
 % =====================================================================
 \begin{abstract}
-While aggregate discrimination metrics on public dermoscopy benchmarks have saturated, deep learning ensembles exhibit severe demographic disparities. On the benchmark HAM10000 test set, a well-performing six-network convolutional ensemble correctly flags only 3 of 21 escalating malignancy images in patients younger than 40. Those 21 images originate from only 10 independent lesions, rendering raw test metrics unpowered. To establish statistical power, we unified ISIC-2019 (HAM10000, BCN20000, and MSKCC) under a strict dual-hash deduplication protocol (enrichment 1005 over chance) and reserved a cohort of 4,733 non-HAM images containing 104 \uforty{} escalating lesions. Under pre-registered frozen plans with receipted reads, we show that this disparity is fundamentally an image representation and ranking failure: development \uforty{} escalating lesions exhibit an escalation-mass AUC of only 0.878 [95\% CI: 0.811, 0.942] compared to 0.948 and 0.929 in older cohorts. General representation interventions---including a dermatology foundation backbone (PanDerm ViT-B/16: $\Delta = -0.036$), self-supervised features (DINOv2: $\Delta = -0.073$), high-resolution retraining, and metadata fusion---all failed to move \uforty{} ranking. Post-hoc decision layers (age-specific thresholds, multicalibration, and abstention) increased \uforty{} sensitivity only by disproportionately inflating young-patient referral rates to 0.454 while degrading sensitivity in older cohorts by 0.100. To break this representational ceiling, we designed domain-specific clinical inductive biases: a hierarchical two-step head separating melanoma escalation prior to 7-class triage, border mass ($m_4$) morphology quantifying clinical ABCD contour irregularity, and curated young-patient dermoscopy data (2,078 images, ages 5--35) on an ImageNet-22k trunk. In a multi-seed, 4-fold held-out confirmation across 12,235 images (7,002 lesions, 65 \uforty{} escalating lesions) and 3 seeds, the locked composite system achieved a statistically significant \uforty{} partial AUC gain of $+0.0351$ [95\% CI: $+0.0125, +0.0596$], $p = 0.003$ (reaching 0.7819 absolute), with archive fixed-effects under-40 pAUC gaining $+0.0567$ [$+0.0301, +0.0821$] and melanoma-vs-nevus AUC gaining $+0.0491$ [$+0.0116, +0.0907$]. An orthogonal decomposition reveals that the clinical modules and young data account for 77\% ($+0.0270, p = 0.023$) of the confirmed gain, whereas trunk scaling contributed only $+0.0081$ ($p = 0.432$). Combined with uniform soft-vote ensembling (Macro-F1 0.7718, McNemar $p = 3.4 \times 10^{-5}$), test-time augmentation (0.7859), Dirichlet calibration (slashing ECE from 0.1575 to 0.0206), and selective abstention (Macro-F1 0.8407 at 20\% budget), these findings demonstrate that clinical inductive biases resolve representation failures where foundation scale alone cannot.
+While aggregate discrimination metrics on public dermoscopy benchmarks have saturated, deep learning ensembles exhibit severe demographic disparities. On the benchmark HAM10000 test set, a well-performing six-network convolutional ensemble correctly flags only 3 of 21 escalating malignancy images in patients younger than 40. Those 21 images originate from only 10 independent lesions, rendering raw test metrics unpowered. To establish statistical power, we unified ISIC-2019 (HAM10000, BCN20000, and MSKCC) under a strict dual-hash deduplication protocol (enrichment 1005 over chance) and reserved a cohort of 4,733 non-HAM images containing 104 \uforty{} escalating lesions. Under pre-registered frozen plans with receipted reads, we show that this disparity is fundamentally an image representation and ranking failure: development \uforty{} escalating lesions exhibit an escalation-mass AUC of only 0.878 [95\% CI: 0.811, 0.942] compared to 0.948 and 0.929 in older cohorts. General representation interventions---including a dermatology foundation backbone (PanDerm ViT-B/16: $\Delta = -0.036$), self-supervised features (DINOv2: $\Delta = -0.073$), high-resolution retraining, and metadata fusion---all failed to move \uforty{} ranking. Post-hoc decision layers (age-specific thresholds, multicalibration, and abstention) increased \uforty{} sensitivity only by disproportionately inflating young-patient referral rates to 0.454 while degrading sensitivity in older cohorts by 0.100. To test whether this representational ceiling could be moved, we designed domain-specific clinical inductive biases: a hierarchical two-step head separating melanoma escalation prior to 7-class triage, border mass ($m_4$) morphology quantifying clinical ABCD contour irregularity, and curated young-patient dermoscopy data (2,078 images, ages 5--35) on an ImageNet-22k trunk. In a multi-seed, 4-fold held-out confirmation across 12,235 images (7,002 lesions, 65 \uforty{} escalating lesions) and 3 seeds, the locked composite system first read as an \uforty{} partial AUC gain of $+0.0351$ [95\% CI: $+0.0125, +0.0596$], $p = 0.003$. A later leak audit found 90 of those rows had a copy, or another photo of the same lesion, in the young-patient training data, which the composite saw and the control did not. Without them the gain is $+0.0136$ [$-0.0084, +0.0357$], $p = 0.228$, on 58 lesions; archive fixed-effects under-40 pAUC is $+0.0207$ [$-0.0051, +0.0467$] and melanoma-vs-nevus AUC $+0.0220$ [$-0.0166, +0.0657$]. The decomposition no longer separates its parts: clinical modules and young data $+0.0068$ ($p = 0.612$), trunk scaling $+0.0068$ ($p = 0.576$). Combined with uniform soft-vote ensembling (Macro-F1 0.7718, McNemar $p = 3.4 \times 10^{-5}$), test-time augmentation (0.7859), Dirichlet calibration (slashing ECE from 0.1575 to 0.0206), and selective abstention (Macro-F1 0.8407 at 20\% budget), these findings show what ensembling, calibration and abstention can deliver, and that near-duplicate leakage across data sources can manufacture an apparent subgroup gain that lesion identifiers and perceptual hashes do not catch. The under-40 ranking gap remains open.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -75,13 +75,13 @@ Two competing hypotheses explain this failure mode:
 \label{fig:ceiling}
 \end{figure}
 
-This paper provides a rigorous, pre-registered experimental investigation of this question across five successive research phases (V1 through V5), progressing from negative results on decision layers to a confirmed architectural solution. The core contributions are:
+This paper provides a rigorous, pre-registered experimental investigation of this question across five successive research phases (V1 through V5), progressing from negative results on decision layers to a composite whose apparent under-40 gain did not survive a leak correction. The core contributions are:
 \begin{enumerate}
 \item \textbf{A Powered, Zero-Leakage Multi-Cohort Architecture:} We show that the original test estimate rested on only 10 independent lesions, rendering single-split conclusions statistically unpowered. We assembled a 25,331-image multi-cohort corpus (HAM10000, BCN20000, MSKCC) under an audited dual-hash deduplication protocol and isolated a reserved holdout of 4,733 images containing 104 \uforty{} escalating lesions (Sec.~\ref{sec:data}).
 \item \textbf{Pre-Registered Bounds on Decision Layers and General Scale:} We prove that \uforty{} escalation ranking is intrinsically impaired across all standard backbones (AUC 0.878 vs 0.948 and 0.929). Through pre-registered, receipted reads, we demonstrate that neither dermatology foundation backbones (PanDerm), self-supervised vision models (DINOv2), generic 384\,px retraining, nor post-hoc decision layers (per-band calibration, abstention, cost-sensitive thresholding) close this gap without unsustainable clinical workload shifts (Sec.~\ref{sec:decision_limits}).
-\item \textbf{Clinical Inductive Biases as the Solution:} Hypothesizing that representation recovery requires domain-specific biological constraints, we introduce dermatologist-grounded modules: a hierarchical two-step classification head separating melanoma escalation prior to fine-grained categorization, border mass ($m_4$) morphology quantifying clinical ABCD contour irregularity, and targeted young-data curation on an ImageNet-22k pretrained ConvNeXt-Tiny trunk (Sec.~\ref{sec:v5_modules}).
-\item \textbf{Multi-Seed 4-Fold Held-Out Confirmation:} Across 12,235 held-out images (7,002 lesions, 65 \uforty{} escalating lesions) evaluated across folds 1--4 and three random seeds, the composite model achieves a confirmed under-40 pAUC gain of $+0.0351$ [95\% CI: $+0.0125, +0.0596$], $p = 0.003$ (reaching 0.7819 absolute). An archive fixed-effects model certifies a $+0.0567$ gain [$+0.0301, +0.0821$], and melanoma-vs-nevus AUC gains $+0.0491$ [$+0.0116, +0.0907$] (Sec.~\ref{sec:confirmation}).
-\item \textbf{Mechanistic Decomposition:} An orthogonal ablation proves that 77\% of the confirmed improvement ($+0.0270, p = 0.023$) is driven specifically by the clinical modules and young data, demonstrating that domain-specific clinical modeling succeeds where generic scaling fails (Sec.~\ref{sec:decomposition}).
+\item \textbf{Clinical Inductive Biases as a Tested Hypothesis:} Hypothesizing that representation recovery requires domain-specific biological constraints, we introduce dermatologist-grounded modules: a hierarchical two-step classification head separating melanoma escalation prior to fine-grained categorization, border mass ($m_4$) morphology quantifying clinical ABCD contour irregularity, and targeted young-data curation on an ImageNet-22k pretrained ConvNeXt-Tiny trunk (Sec.~\ref{sec:v5_modules}).
+\item \textbf{Multi-Seed 4-Fold Held-Out Confirmation:} Across 12,235 held-out images (7,002 lesions, 65 \uforty{} escalating lesions) evaluated across folds 1--4 and three random seeds, the composite model first read as an under-40 pAUC gain of $+0.0351$ [95\% CI: $+0.0125, +0.0596$], $p = 0.003$. Without 90 rows that had a copy in its training data, the gain is $+0.0136$ [$-0.0084, +0.0357$], $p = 0.228$ (Sec.~\ref{sec:confirmation}).
+\item \textbf{Mechanistic Decomposition:} As first read, clinical modules and young data carried $+0.0270$ ($p = 0.023$) of the gain. After the leak correction they carry $+0.0068$ ($p = 0.612$), no different from trunk scaling at $+0.0068$ ($p = 0.576$) (Sec.~\ref{sec:decomposition}).
 \end{enumerate}
 
 % =====================================================================
@@ -246,19 +246,21 @@ Because generic scaling and decision rules failed, Phase V5 hypothesized that cl
 \item \textbf{ImageNet-22k Trunk Upgrade:} The ConvNeXt-Tiny backbone was initialized from ImageNet-22k pretraining rather than ImageNet-1k, expanding feature diversity.
 \end{enumerate}
 
-In exploratory screening on Fold 0 (\texttt{review2\_tables.md}), the hierarchical two-step head yielded $+0.0276$ \uforty{} pAUC, young data curation added $+0.0225$, and border mass $m_4$ added $+0.0132$ in histopathology rows, all passing their pre-registered gates. These components were locked into the V5 locked composite model.
+In exploratory screening on Fold 0 (\texttt{review2\_tables.md}), the hierarchical two-step head yielded $+0.0276$ \uforty{} pAUC, young data curation added $+0.0225$, and border mass $m_4$ added $+0.0132$ in histopathology rows, all passing their pre-registered gates. These components were locked into the V5 locked composite model. These fold-0 screens were not corrected for the leakage described in Sec.~\ref{sec:confirmation}.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{fig_confirmation_forest.png}
-\caption{Forest plot of primary and secondary endpoints for the V5 locked composite model across folds 1--4 ($N=12,235$ images, 3 seeds). Error bars show 95\% lesion-grouped bootstrap confidence intervals.}
+\caption{Forest plot of primary and secondary endpoints for the V5 locked composite model across folds 1--4 ($N=12,235$ images, 3 seeds). Error bars show 95\% lesion-grouped bootstrap confidence intervals. The plot shows the read as first made, before the leak correction in Table~\ref{tab:v5_confirmation}.}
 \label{fig:forest}
 \end{figure}
 
 \subsection{Multi-Seed Held-Out Confirmation}\label{sec:confirmation}
 Confirmatory evaluation was conducted on held-out folds 1--4 ($N = 12,235$ images, 7,002 lesions, 65 \uforty{} escalating lesions) across three random seeds [42, 43, 44] without hyperparameter tuning (\texttt{confirm\_s42\_s43\_s44.json}).
 
-As presented in Table~\ref{tab:v5_confirmation} and Fig.~\ref{fig:forest}, the V5 composite achieved a highly statistically significant improvement in \uforty{} escalation ranking:
+\textbf{Leak correction.} After this read, an audit using normalised file names and keypoint matching found 90 rows in these folds with a copy, or another photo of the same lesion, in the young-patient training data: 26 by name alone (the same image listed as \texttt{ISIC\_x\_downsampled} and \texttt{ISIC\_x}). Lesion identifiers and dHash/pHash had not caught them. The composite trained on those images and the control did not, so we report both reads (\texttt{confirm\_s42\_s43\_s44\_without\_copies.json}). Table~\ref{tab:v5_confirmation} gives both. Without these rows the \uforty{} gain is not distinguishable from zero.
+
+The read as first made was:
 \begin{itemize}
 \item \textbf{Primary Endpoint (\uforty{} pAUC@0.20):} Point estimate gain $\mathbf{\Delta = +0.0351}$ [95\% CI: $+0.0125, +0.0596$], two-sided bootstrap $p = 0.003$.
 \item \textbf{Archive-Fixed-Effects Under-40 pAUC:} Adjusting for multi-center hospital origin yielded $\mathbf{\Delta = +0.0567}$ [95\% CI: $+0.0301, +0.0821$].
@@ -267,23 +269,24 @@ As presented in Table~\ref{tab:v5_confirmation} and Fig.~\ref{fig:forest}, the V
 \item \textbf{Macro-F1 Retention:} Maintained across all classes ($\Delta = +0.0107$ [$-0.0015, +0.0225$], $0.6758 \pm 0.0011$ vs $0.6651$).
 \item \textbf{Older-Cohort Safety:} Older-cohort sensitivity at 80\% specificity was preserved (40--59: $+0.0071$; 60+: $-0.0007$).
 \end{itemize}
+Without the 90 rows (12,145 images, 6,921 lesions, 58 \uforty{} escalating lesions) Macro-F1 retention and older-cohort safety still hold, the \uforty{} endpoints lose significance, and argmax escalation sensitivity remains $+0.0151$ [$+0.0059, +0.0235$].
 
 \begin{table}[t]
-\caption{Multi-Seed Held-Out Confirmation on Folds 1--4 ($N=12,235$ Images, Seeds 42, 43, 44).}
+\caption{Multi-Seed Held-Out Confirmation on Folds 1--4, Seeds 42, 43, 44: as first read ($N=12,235$) and without rows that had a copy in the composite's training data ($N=12,145$).}
 \label{tab:v5_confirmation}
 \centering
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
-Confirmed Endpoint & $\Delta$ Composite vs Control & 95\% CI & $p$-value \\
+Endpoint & As first read & Without copies (95\% CI) & $p$ \\
 \midrule
-\uforty{} Escalation pAUC@0.20 & $+0.0351$ & [$+0.0125$, $+0.0596$] & $0.003$ \\
-Archive Fixed-Effects \uforty{} pAUC & $+0.0567$ & [$+0.0301$, $+0.0821$] & $<0.001$ \\
-\uforty{} Melanoma-vs-Nevus AUC & $+0.0491$ & [$+0.0116$, $+0.0907$] & $0.012$ \\
-Escalation Sensitivity (argmax) & $+0.0167$ & [$+0.0074$, $+0.0252$] & $<0.001$ \\
-Overall Macro-F1 Retention & $+0.0107$ & [$-0.0015$, $+0.0225$] & $0.095$ \\
-Balanced Accuracy & $+0.0042$ & [$-0.0085$, $+0.0147$] & $0.598$ \\
-All-Age Escalation pAUC & $+0.0020$ & [$-0.0056$, $+0.0093$] & $0.596$ \\
+\uforty{} Escalation pAUC@0.20 & $+0.0351$ ($p=0.003$) & $+0.0136$ [$-0.0084$, $+0.0357$] & $0.228$ \\
+Archive Fixed-Effects \uforty{} pAUC & $+0.0567$ ($p<0.001$) & $+0.0207$ [$-0.0051$, $+0.0467$] & $0.124$ \\
+\uforty{} Melanoma-vs-Nevus AUC & $+0.0491$ ($p=0.012$) & $+0.0220$ [$-0.0166$, $+0.0657$] & $0.303$ \\
+Escalation Sensitivity (argmax) & $+0.0167$ ($p<0.001$) & $+0.0151$ [$+0.0059$, $+0.0235$] & $<0.001$ \\
+Overall Macro-F1 Retention & $+0.0107$ ($p=0.095$) & $+0.0107$ [$-0.0012$, $+0.0233$] & $0.070$ \\
+Balanced Accuracy & $+0.0042$ ($p=0.550$) & $+0.0042$ [$-0.0080$, $+0.0163$] & $0.515$ \\
+All-Age Escalation pAUC & $+0.0020$ ($p=0.596$) & $+0.0012$ [$-0.0061$, $+0.0082$] & $0.790$ \\
 \bottomrule
 \end{tabular}%
 }
@@ -296,26 +299,26 @@ All-Age Escalation pAUC & $+0.0020$ & [$-0.0056$, $+0.0093$] & $0.596$ \\
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
-Contrast Dimension & $\Delta$ \uforty{} pAUC [95\% CI] & $p$ & Share \\
+Contrast & As first read [95\% CI], $p$ & Without copies [95\% CI] & $p$ \\
 \midrule
-\textbf{Module Effect} (Composite vs Q11 Control) & $\mathbf{+0.0270}$ [$+0.0045$, $+0.0488$] & $0.023$ & \textbf{77\%} \\
-\textbf{Trunk Effect} (Q11 Control vs IN-1k Control) & $+0.0081$ [$-0.0127$, $+0.0301$] & $0.432$ & 23\% \\
+\textbf{Module Effect} (Composite vs Q11 Control) & $+0.0270$ [$+0.0045$, $+0.0488$], $0.023$ & $+0.0068$ [$-0.0183$, $+0.0290$] & $0.612$ \\
+\textbf{Trunk Effect} (Q11 Control vs IN-1k Control) & $+0.0081$ [$-0.0127$, $+0.0301$], $0.432$ & $+0.0068$ [$-0.0161$, $+0.0313$] & $0.576$ \\
 \midrule
-Total Confirmed Primary Delta & $+0.0351$ [$+0.0125$, $+0.0596$] & $0.003$ & 100\% \\
+Total Primary Delta & $+0.0351$ [$+0.0125$, $+0.0596$], $0.003$ & $+0.0136$ [$-0.0084$, $+0.0357$] & $0.228$ \\
 \bottomrule
 \end{tabular}%
 }
 \end{table}
 
 \subsection{Q11 Mechanistic Decomposition}\label{sec:decomposition}
-To rigorously determine whether the confirmed breakthrough was driven by the domain-specific clinical modules or simply by the larger ImageNet-22k trunk, we executed the pre-registered Q11 orthogonal decomposition (\texttt{q11\_decomposition.json}). 
+To determine whether the gain as first read was driven by the domain-specific clinical modules or simply by the larger ImageNet-22k trunk, we executed the pre-registered Q11 orthogonal decomposition (\texttt{q11\_decomposition.json}). 
 
 We trained an intermediate Q11 control baseline possessing the identical ImageNet-22k ConvNeXt-Tiny trunk but lacking the hierarchical head, border mass, and young data modules. As detailed in Table~\ref{tab:q11_decomp}:
 \begin{itemize}
-\item The \textbf{Module Effect} contributed $+0.0270$ [$+0.0045, +0.0488$], $p = 0.023$, representing $\mathbf{76.9\%}$ of the total confirmed improvement.
-\item The \textbf{Trunk Effect} contributed only $+0.0081$ [$-0.0127, +0.0301$], $p = 0.432$, which failed significance.
+\item The \textbf{Module Effect} first read as $+0.0270$ [$+0.0045, +0.0488$], $p = 0.023$; without the copies it is $+0.0068$ [$-0.0183, +0.0290$], $p = 0.612$.
+\item The \textbf{Trunk Effect} first read as $+0.0081$ [$-0.0127, +0.0301$], $p = 0.432$; without the copies it is $+0.0068$ [$-0.0161, +0.0313$], $p = 0.576$.
 \end{itemize}
-This decomposition demonstrates that clinical inductive biases and targeted demographic data curation resolved the representation ceiling that general model scaling could not move.
+After the correction, this decomposition gives no evidence that clinical inductive biases or targeted data curation moved the representation ceiling. Most of the apparent module effect came from rows whose images the composite had seen.
 
 % =====================================================================
 \section{Discussion and Clinical Deployment Synthesis}
@@ -323,9 +326,9 @@ This decomposition demonstrates that clinical inductive biases and targeted demo
 \subsection{Clinical Inductive Biases vs Foundation Scale}
 Our trajectory across Phases V1 to V5 provides an important empirical lesson for medical computer vision. In standard benchmarks, scaling vision models and adopting general foundation representations (e.g., PanDerm, DINOv2) often yields incremental aggregate gains. However, when evaluating high-risk sub-populations characterized by severe class imbalance, generic models inherit or amplify the statistical prior of the majority population. 
 
-Dermatologists overcome demographic priors by actively seeking pathognomonic structural features (ABCD border asymmetry, pigment network disruption) and structuring their differential diagnosis hierarchically. By directly embedding these clinical priors into neural network training, we broke through a representation ceiling that had resisted foundation backbones, high-resolution retraining, and post-hoc threshold shifting.
+Dermatologists overcome demographic priors by actively seeking pathognomonic structural features (ABCD border asymmetry, pigment network disruption) and structuring their differential diagnosis hierarchically. We embedded these clinical priors into neural network training to test whether they move a representation ceiling that had resisted foundation backbones, high-resolution retraining, and post-hoc threshold shifting. After correcting for leakage, the evidence does not show that they do.
 
-\subsection{The Final Certified Deployment Stack}
+\subsection{The Deployment Stack}
 To synthesize our best results across all phases into an actionable triage pipeline:
 \begin{enumerate}
 \item \textbf{Feature Extraction \& Hierarchical Routing:} Frontline dermoscopy images are routed through the V5 composite architecture (ConvNeXt-Tiny IN-22k + two-step hierarchical head + border mass morphology).
@@ -339,12 +342,13 @@ To synthesize our best results across all phases into an actionable triage pipel
 
 \subsection{Limitations}
 \begin{itemize}
+\item \textbf{Data Leakage Across Sources:} 2.5\% of development rows have a copy, or another photo of the same lesion, in some training source, found only by normalised names and keypoint matching. Only 242 of 15,294 development rows carry a patient identifier, so same-patient overlap is largely unobservable. The check compares each row with its nearest neighbours only, and it did not compare test or reserved pixels.
 \item \textbf{Skin Tone Representation:} While the multi-cohort corpus incorporates diverse European archives (HAM10000, BCN20000), verified Fitzpatrick skin type data are restricted to types I--IV. Validating safety across types V and VI remains an urgent clinical imperative requiring targeted prospective cohorts.
 \item \textbf{Clinical Modality:} The core improvements were evaluated on contact dermoscopy. While initial cross-domain probes onto smartphone photography (PAD-UFES-20) proved informative, direct deployment on non-dermoscopic smartphone images requires dedicated fine-tuning.
 \end{itemize}
 
 \subsection{Conclusion}
-The under-40 melanoma blind spot in automated dermoscopy triage is fundamentally an image representation and ranking failure that cannot be solved by post-hoc threshold adjustment or generic model scaling. By introducing dermatologist-grounded hierarchical classification, morphological border mass features, and targeted demographic data curation, we achieved a statistically confirmed $+0.0351$ gain in under-40 ranking ($p = 0.003$) on 12,235 held-out multi-cohort images. Combining clinical inductive biases with calibrated selective ensembling establishes a robust foundation for equitable, safety-certified clinical triage.
+The under-40 melanoma blind spot in automated dermoscopy triage is fundamentally an image representation and ranking failure that cannot be solved by post-hoc threshold adjustment or generic model scaling. Dermatologist-grounded hierarchical classification, morphological border mass features, and targeted demographic data curation first read as a $+0.0351$ gain in under-40 ranking ($p = 0.003$) on 12,235 held-out images. Without rows that had a copy in the composite's training data, the gain is $+0.0136$ ($p = 0.228$) and the gap remains open. Calibrated selective ensembling remains useful, and the correction itself is a practical lesson: subgroup gains from added data need a leak audit by pixels, not only by identifiers and hashes.
 
 % =====================================================================
 \begin{thebibliography}{99}

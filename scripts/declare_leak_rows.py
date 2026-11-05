@@ -2,10 +2,10 @@
 
     python scripts/declare_leak_rows.py
 
-Not a gate, and E-primary is unchanged: the training rows stay as frozen, because changing them would split V6's runs across two pools and across V5's. The read beside E-primary drops these
-lesion groups from both sides. Declared rule: a row's lesion group is at risk if any of its images (a) is a young extra under another name (`leak_audit_names.json`), or (b) has at least 20 RANSAC
-inliers to a training image (`leak_audit_keypoint_pairs.csv`). 20 is above the random-pair 99th percentile (10) and below the 99.9th (30); it was fixed from the controls, and the fold-0 gain did not
-move across 10, 20 and 40. The detector is known to miss copies, so this list is a lower bound.
+The training rows stay as frozen, because changing them would split V6's runs across two pools and across V5's; V5 itself trained on the same extras. The read drops these lesion groups from both sides, and a system must
+pass on both row sets (`scripts/read_leak_sensitivity.py`, owner decision 5 Nov 2026). Declared rule: a row's lesion group is at risk if any of its images (a) is a young extra under another name (`leak_audit_names.json`), or
+(b) has at least 30 RANSAC inliers to a training image (`leak_audit_keypoint_pairs.csv`). The bar comes from the controls and by eye: all 35 known copies score 87 or more, the median random pair 0 and its 99th percentile 9, and the pairs sampled
+from 30-45 inliers were almost all one lesion. The detector compares only each row's 5 nearest neighbours by DINOv2, so this is not proof that nothing else exists.
 Writes results/v6/leak_sensitivity_rows.csv and results/v6/leak_sensitivity_declaration.json.
 """
 
@@ -24,10 +24,36 @@ sys.path.insert(0, str(REPO))
 from research import testguard  # noqa: E402
 from research.v4.s71_kfold import load_assignments  # noqa: E402
 
-INLIERS = 20
+INLIERS = 30
 SCREENS = REPO / "results/v6/screens"
 ROWS = REPO / "results/v6/leak_sensitivity_rows.csv"
 DECLARATION = REPO / "results/v6/leak_sensitivity_declaration.json"
+
+
+def fold0_read(at_risk: set[str]) -> dict:
+    """Descriptive: the go/no-go's own votes, with and without the at-risk rows. Fold 0 only."""
+    import numpy as np
+
+    from research.v6 import gate, stage_rules as st, system_reads as sr
+
+    reads = [st.fold0_read(gate.pred_path(n, 42, t, sr.V6_TTA_DIR, checkpoint="swad_tta")) for n, t in {"anchor_h7": "v62y", "panderm_b_h7": "v63", "dinov2_b_h7": "v63", "anchor384_h7": "v63"}.items()]
+    first = reads[0]
+    rows, models = sr.load_matrix((sr.V5_SYSTEM, *sr.V5_TTA_SEEDS))
+    position = {image: i for i, image in enumerate(rows.image_id)}
+    where = np.array([position[i] for i in first["image_id"]])
+    v6 = np.mean([r["p"] for r in reads], axis=0)
+    combined = np.mean([*(r["p"] for r in reads), *(models[m][where] for m in sr.V5_TTA_SEEDS)], axis=0)
+    v5 = models[sr.V5_SYSTEM][where]
+    out = {}
+    for name, keep in (("all_rows", np.ones(len(v6), bool)), ("without_at_risk_rows", ~np.isin(first["image_id"], list(at_risk)))):
+        young = keep & first["young"]
+
+        def ends(p):
+            return {"macro_f1": sr._mf1(first["y"][keep], p[keep]), "pauc_all": sr._pauc(first["esc"][keep], p[keep]), "pauc_u40": sr._pauc(first["esc"][young], p[young])}
+
+        base = ends(v5)
+        out[name] = {"rows": int(keep.sum()), "u40_escalating_rows": int((young & first["esc"]).sum()), "v5": base, "v6_minus_v5": {m: v - base[m] for m, v in ends(v6).items()}, "combined_minus_v5": {m: v - base[m] for m, v in ends(combined).items()}}
+    return out
 
 
 def main() -> int:
@@ -47,9 +73,10 @@ def main() -> int:
     at_risk["reason"] = [";".join(sorted(reasons.get(i, {"same_lesion_group_as_a_flagged_row"}))) for i in at_risk["image_id"]]
     at_risk.sort_values("image_id").to_csv(ROWS, index=False)
     declaration = {"declared": "2026-11-05, before any V6 prediction on folds 1-4", "rule": f"name copy of a young extra, or >= {INLIERS} RANSAC inliers to a training image; whole lesion groups",
-                   "role": "a read beside E-primary, on both sides; not a gate, and no training row changes", "rows": len(at_risk), "groups": len(flagged_groups), "share_of_development": len(at_risk) / len(folds),
+                   "role": "binding at V6-5: a system must pass E-primary and no-harm with and without these rows; no training row changes", "rows": len(at_risk), "groups": len(flagged_groups), "share_of_development": len(at_risk) / len(folds),
                    "by_fold": at_risk["fold"].value_counts().sort_index().to_dict(), "by_archive": at_risk["archive"].value_counts().to_dict(), "by_band": at_risk["age_band"].value_counts().to_dict(), "by_class": at_risk["class_7"].value_counts().to_dict(),
-                   "limit": "the detector misses copies: at 256 px it scores some known copies below the bar, so this list is a lower bound", "rows_sha256": hashlib.sha256(ROWS.read_bytes()).hexdigest()}
+                   "limit": "checks only the 5 nearest neighbours by DINOv2 at 256 px, and test, reserved and HIBA pixels were not compared here", "rows_sha256": hashlib.sha256(ROWS.read_bytes()).hexdigest()}
+    declaration["fold0_v6_vote_minus_v5"] = fold0_read(set(at_risk["image_id"]))
     DECLARATION.write_text(json.dumps(declaration, indent=2, default=str), encoding="utf-8")
     print(json.dumps(declaration, indent=1, default=str))
     return 0

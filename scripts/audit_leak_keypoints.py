@@ -2,7 +2,7 @@
 
     python scripts/audit_leak_keypoints.py --features <file.npz> --thumbs <file.npy>      # from audit_leak_embeddings.py and audit_leak_copies.py; CPU, several minutes
 
-SIFT with a ratio test, then a RANSAC similarity transform: the count of geometrically consistent matches. Colour does not enter, and shared lesion shape, rims or sensor noise do not give
+SIFT on contrast-equalised greyscale with a ratio test, then a RANSAC similarity transform: the count of geometrically consistent matches. Colour does not enter, and shared lesion shape, rims or sensor noise do not give
 consistent local matches. Each development row is compared with its nearest neighbours by DINOv2 in the added pool, the young extras and the other folds. Controls: random pairs (should be near zero), the 35 known copies
 from audit_leak_names.py, and known photos of one lesion. Writes results/v6/screens/leak_audit_keypoints.json, leak_audit_keypoint_pairs.csv and one montage per band.
 """
@@ -30,15 +30,16 @@ from audit_leak_embeddings import MEMBERS, corpus  # noqa: E402
 from research import testguard  # noqa: E402
 from research.v6 import gate, stage_rules as st, system_reads as sr  # noqa: E402
 
-TOP_K, FEATURES, RATIO, RANSAC_PX = 3, 400, 0.75, 4.0
-BANDS = ((6, 10), (10, 20), (20, 40), (40, 10000))
-THRESHOLDS = (10, 20, 40)
+TOP_K, FEATURES, CONTRAST, RATIO, RANSAC_PX = 5, 800, 0.02, 0.75, 3.0
+BANDS = ((30, 45), (45, 60), (60, 100), (100, 100000))
+THRESHOLDS = (45, 60, 100)  # 30 is the declared bar (scripts/declare_leak_rows.py); the pair file keeps everything from 30 up
+CLAHE = dict(clipLimit=2.0, tileGridSize=(8, 8))
 SCREENS = REPO / "results/v6/screens"
 
 
 def describe(image: np.ndarray):
-    sift = cv2.SIFT_create(nfeatures=FEATURES)
-    points, descriptors = sift.detectAndCompute(image, None)
+    sift = cv2.SIFT_create(nfeatures=FEATURES, contrastThreshold=CONTRAST)
+    points, descriptors = sift.detectAndCompute(cv2.createCLAHE(**CLAHE).apply(image), None)
     if descriptors is None or len(points) < 4:
         return None
     return np.array([p.pt for p in points], dtype=np.float32), descriptors.astype(np.uint8)
@@ -53,7 +54,7 @@ def inliers(a, b) -> int:
         return 0
     source = a[0][[m[0].queryIdx for m in good]]
     target = b[0][[m[0].trainIdx for m in good]]
-    _, mask = cv2.estimateAffinePartial2D(source, target, method=cv2.RANSAC, ransacReprojThreshold=RANSAC_PX, maxIters=500)
+    _, mask = cv2.estimateAffinePartial2D(source, target, method=cv2.RANSAC, ransacReprojThreshold=RANSAC_PX, maxIters=800)
     return 0 if mask is None else int(mask.sum())
 
 
@@ -86,7 +87,7 @@ def main() -> int:
         rows.append(pd.DataFrame({"a": np.repeat(query, TOP_K), "b": near.ravel(), "against": "other_fold"}))
     pairs = pd.concat(rows, ignore_index=True)
 
-    random_a, random_b = rng.choice(dev, 5000), rng.choice(np.where(source != "dev")[0], 5000)
+    random_a, random_b = rng.choice(dev, 20000), rng.choice(np.where(source != "dev")[0], 20000)
     position = {i: n for n, i in enumerate(ids)}
     named = [(n, position[ids[n].removesuffix("_downsampled")]) for n in dev if ids[n].endswith("_downsampled") and ids[n].removesuffix("_downsampled") in position]
     same_a, same_b = [], []
@@ -106,7 +107,7 @@ def main() -> int:
         random_scores = score(random_a, random_b)
         named_scores = score([a for a, _ in named], [b for _, b in named])
         same_scores = score(same_a, same_b)
-        controls = {"random_pairs": {str(q): float(np.percentile(random_scores, q)) for q in (50, 99, 99.9, 100)},
+        controls = {"random_pairs": {str(q): float(np.percentile(random_scores, q)) for q in (50, 99, 99.9, 99.99, 100)},
                     "known_name_copies": {"pairs": len(named_scores), **{str(q): float(np.percentile(named_scores, q)) for q in (0, 5, 50)}},
                     "known_same_lesion_pairs": {"pairs": len(same_scores), **{str(q): float(np.percentile(same_scores, q)) for q in (25, 50, 75, 95)}}}
         print(json.dumps(controls), flush=True)
@@ -154,7 +155,7 @@ def main() -> int:
             bad = np.isin(groups, list(set(group[hit["a"].to_numpy()])))
             sensitivity[f"without_{name}_at_{threshold}"] = read(~bad)
     report["fold0_sensitivity"] = sensitivity
-    pairs[pairs["inliers"] >= 6].sort_values("inliers", ascending=False)[["a_id", "b_id", "against", "inliers", "fold", "a_archive", "b_archive", "same_class"]].to_csv(SCREENS / "leak_audit_keypoint_pairs.csv", index=False)
+    pairs[pairs["inliers"] >= 30].sort_values("inliers", ascending=False)[["a_id", "b_id", "against", "inliers", "fold", "a_archive", "b_archive", "same_class"]].to_csv(SCREENS / "leak_audit_keypoint_pairs.csv", index=False)
     (SCREENS / "leak_audit_keypoints.json").write_text(json.dumps({**report, "test_read": False, "reserved_read": False, "fold_1_4_v6_read": False}, indent=2, default=float), encoding="utf-8")
     print("wrote leak_audit_keypoints.json")
     return 0

@@ -4,7 +4,7 @@
     python scripts/audit_leak_hiba_pixels.py --features <training features .npz>   # from audit_leak_embeddings.py; GPU about 1 min, then CPU
     python -m research.v6.hiba_read --prepare                                      # rebuilds the cohort without them
 
-Each HIBA image against its nearest training images by DINOv2, scored by RANSAC inliers, with the declared bar of 20. Writes results/v6/screens/leak_audit_hiba_pixels.json, which the reader excludes and its receipt pins.
+Each HIBA image against its nearest training images by DINOv2, scored by RANSAC inliers, with the declared bar of 30. Writes results/v6/screens/leak_audit_hiba_pixels.json, which the reader excludes and its receipt pins.
 """
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ from audit_leak_keypoints import describe, inliers  # noqa: E402
 from research import testguard  # noqa: E402
 from research.v6 import hiba_read as hr  # noqa: E402
 
-INLIERS, TOP_K = 20, 5
+INLIERS, TOP_K = 30, 5  # the bar from declare_leak_rows.py
 
 
 def main() -> int:

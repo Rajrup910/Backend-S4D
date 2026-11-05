@@ -1,5 +1,7 @@
 # Internal evidence ledger V1–V5 (for the V6 redesign; every number with its source)
 
+**Correction, 5 Nov 2026:** the under-40 figures for modules, young data and the composite below are as first read, with 90 rows that had a copy in the composite's training data. Without them: composite vs control +0.0136 [−0.0084, +0.0357], p = 0.228; modules + young data +0.0068, p = 0.612; trunk +0.0068, p = 0.576 (`results/v5/confirm_s42_s43_s44_without_copies.json`).
+
 ## Levers that moved numbers
 | Lever | Effect | Protocol | Source |
 |---|---|---|---|

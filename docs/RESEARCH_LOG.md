@@ -597,6 +597,7 @@ Findings section.
   - ⚠️ The frozen S62 index says `reserved_reads: 7`; the true receipted count is **8** (S57a's audit).
   - ⚠️ S48's declared primary endpoint (sensitivity at V1-matched budget, lesion unit) was never read in
     that exact form; S54 used pAUC. Say so in any write-up.
+- **Correction, 5 Nov 2026:** the under-40 figures in this entry are as first read. Without the 90 rows that had a copy in the composite's training data: +0.0136 [−0.0084, +0.0357], p = 0.228 (`results/v5/confirm_s42_s43_s44_without_copies.json`).
 - **V5 addendum draft (2026-11-01)** (CHANGELOG §"V5 addendum draft"). `paper/v5/v5_addendum_draft.md`: confirmation (folds 1–4, s42/43/44: Gates A and D fail, B and C pass; under-40 pAUC +0.0351 [+0.0125, +0.0596] vs the +0.050 bar), Q11 (module +0.0270, trunk +0.0081, module ≈ 77% of the under-40 gain, derived), m4 secondary (seed 42, composite sub-additive vs m4 on all-age/histo), deviations D1/G1/D2/D3/D4. Sources `results/v5/confirm_s42_s43_s44.json`, `q11_decomposition.json`, `protocol_deviations.json`, `review2_tables.md`.
   - ⚠️ **S84 section is a placeholder**; S84 has not run, MILK10k unread.
   - ⚠️ D5 (S84 power method: non-HAM OOF folds 1–4, 6,672 rows / 2,838 lesions / 37 under-40 escalating; runsheet §9 McNemar governs, spec binomial unused) now included in the addendum §4.
