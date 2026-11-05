@@ -1,49 +1,39 @@
 {
   "declared": "2026-11-05, before any V6 prediction on folds 1-4",
-  "rule": "name copy of a young extra; or >= 30 RANSAC inliers to a training image; or listed by the second audit for lesion-id or patient links or a second pixel detector (leak_sensitivity_side_audit_rows.csv); whole lesion groups",
+  "rule": "name copy of a young extra, or >= 30 RANSAC inliers to a training image; whole lesion groups",
   "role": "binding at V6-5: a system must pass E-primary and no-harm with and without these rows; no training row changes",
-  "rows": 426,
-  "groups": 278,
-  "share_of_development": 0.02785406041584935,
+  "rows": 380,
+  "groups": 244,
+  "share_of_development": 0.0248463449718844,
   "by_fold": {
-    "0": 96,
-    "1": 77,
-    "2": 91,
-    "3": 71,
-    "4": 91
+    "0": 89,
+    "1": 72,
+    "2": 82,
+    "3": 63,
+    "4": 74
   },
   "by_archive": {
-    "ham": 199,
-    "mskcc": 145,
-    "bcn20000": 82
+    "ham": 192,
+    "mskcc": 117,
+    "bcn20000": 71
   },
   "by_band": {
-    "<40": 175,
-    "60+": 147,
-    "40-59": 89,
-    "unknown": 15
+    "<40": 163,
+    "60+": 129,
+    "40-59": 77,
+    "unknown": 11
   },
   "by_class": {
-    "nv": 266,
-    "mel": 69,
-    "bkl": 40,
-    "bcc": 34,
+    "nv": 241,
+    "mel": 59,
+    "bkl": 37,
+    "bcc": 26,
     "vasc": 13,
     "df": 2,
     "akiec": 2
   },
   "limit": "checks only the 5 nearest neighbours by DINOv2 at 256 px, and test, reserved and HIBA pixels were not compared here",
-  "rows_sha256": "7e02becb02d6ee3d5facb667c39694d3faa2614651210ca7c9a54625a4cd671e",
-  "amended": {
-    "date": "2026-11-05, owner decision, before any V6 prediction on folds 1-4",
-    "added_rows": 46,
-    "added_groups": 34,
-    "previous": {
-      "rows": 380,
-      "groups": 244,
-      "rows_sha256": "7feaeadde15136dc3362fb0792a7e01b55eb0b4a3707f2b49a639864a7c6e483"
-    }
-  },
+  "rows_sha256": "7feaeadde15136dc3362fb0792a7e01b55eb0b4a3707f2b49a639864a7c6e483",
   "fold0_v6_vote_minus_v5": {
     "all_rows": {
       "rows": 3059,
@@ -65,21 +55,21 @@
       }
     },
     "without_at_risk_rows": {
-      "rows": 2963,
+      "rows": 2970,
       "u40_escalating_rows": 35,
       "v5": {
-        "macro_f1": 0.6858582079176668,
-        "pauc_all": 0.8562337395357678,
+        "macro_f1": 0.6857595321714157,
+        "pauc_all": 0.8561427506978504,
         "pauc_u40": 0.804806527698094
       },
       "v6_minus_v5": {
-        "macro_f1": 0.02546141013543246,
-        "pauc_all": 0.02658120748997217,
+        "macro_f1": 0.025434976224585903,
+        "pauc_all": 0.026586427785006528,
         "pauc_u40": 0.05963536686428261
       },
       "combined_minus_v5": {
-        "macro_f1": 0.03825929635830572,
-        "pauc_all": 0.023878923378743866,
+        "macro_f1": 0.03823401321011832,
+        "pauc_all": 0.023857582935753352,
         "pauc_u40": 0.046248486007522294
       }
     }

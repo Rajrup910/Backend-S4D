@@ -177,3 +177,68 @@ def test_refit_selftest_products_match_v5s_stored_map(tmp_path) -> None:
     assert {"oof_crossfit_probs.csv", "dirichlet_state.json", "s56_policies_v6.json", "conformal_state.json", "per_band_report.json", "drift_baseline_v6.json"} <= products
     conformal = json.loads((tmp_path / "conformal_state.json").read_text(encoding="utf-8"))
     assert 0.9 < conformal["read_on_other_half"]["0.05"]["coverage"] <= 1.0
+
+
+def _leak_lists(tmp_path, first_rows, extended_rows):
+    import hashlib
+    import json
+
+    paths = {name: tmp_path / name for name in ("first.json", "first.csv", "extended.json", "extended.csv")}
+    paths["first.csv"].write_text("image_id\n" + "".join(f"{i}\n" for i in first_rows), encoding="utf-8")
+    paths["extended.csv"].write_text("image_id\n" + "".join(f"{i}\n" for i in extended_rows), encoding="utf-8")
+    first_hash = hashlib.sha256(paths["first.csv"].read_bytes()).hexdigest()
+    paths["first.json"].write_text(json.dumps({"rows_sha256": first_hash}), encoding="utf-8")
+    paths["extended.json"].write_text(json.dumps({"base_rows_sha256": first_hash, "rows_sha256": hashlib.sha256(paths["extended.csv"].read_bytes()).hexdigest()}), encoding="utf-8")
+    return paths
+
+
+def test_leak_check_reads_both_declared_lists(tmp_path):
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    from read_leak_sensitivity import declared_lists
+
+    p = _leak_lists(tmp_path, ["a", "b"], ["a", "b", "c"])
+    lists = declared_lists(p["first.json"], p["first.csv"], p["extended.json"], p["extended.csv"])
+    assert lists == {"without_380_rows": {"a", "b"}, "without_426_rows": {"a", "b", "c"}}
+
+
+def test_leak_check_refuses_changed_or_narrower_lists(tmp_path):
+    import sys
+    from pathlib import Path
+
+    import pytest
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    from read_leak_sensitivity import declared_lists
+
+    narrower = _leak_lists(tmp_path, ["a", "b"], ["a", "c"])
+    with pytest.raises(SystemExit):
+        declared_lists(narrower["first.json"], narrower["first.csv"], narrower["extended.json"], narrower["extended.csv"])
+    changed = _leak_lists(tmp_path, ["a", "b"], ["a", "b", "c"])
+    changed["first.csv"].write_text("image_id\na\n", encoding="utf-8")
+    with pytest.raises(SystemExit):
+        declared_lists(changed["first.json"], changed["first.csv"], changed["extended.json"], changed["extended.csv"])
+    changed = _leak_lists(tmp_path, ["a", "b"], ["a", "b", "c"])
+    changed["extended.csv"].write_text("image_id\na\nb\nd\n", encoding="utf-8")
+    with pytest.raises(SystemExit):
+        declared_lists(changed["first.json"], changed["first.csv"], changed["extended.json"], changed["extended.csv"])
+
+
+def test_a_system_must_pass_all_three_row_sets():
+    import sys
+    from pathlib import Path
+
+    import pytest
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    from read_leak_sensitivity import passes_every_row_set
+
+    good = {"e_primary": {"passed": True}, "no_harm": {"passed": True}}
+    bad = {"e_primary": {"passed": True}, "no_harm": {"passed": False}}
+    assert passes_every_row_set({"all_rows": good, "without_380_rows": good, "without_426_rows": good})
+    assert not passes_every_row_set({"all_rows": good, "without_380_rows": good, "without_426_rows": bad})
+    assert not passes_every_row_set({"all_rows": good, "without_380_rows": bad, "without_426_rows": good})
+    with pytest.raises(SystemExit):
+        passes_every_row_set({"all_rows": good, "without_380_rows": good})
