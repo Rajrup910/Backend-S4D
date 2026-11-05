@@ -34,7 +34,7 @@ SOURCES = [
     "results/v3/final_verdict.json", "results/v3/oos_probe_report.json", "results/v3/s44_control_and_multiplicity.json", "results/v3/d2_strong_evaluation.json",
     "results/v4/power_audit.json", "results/v4/s54/s54_gate.json", "results/v4/s54/s54_contrasts.csv", "results/v4/s54/s54_marginals.csv", "results/v4/backbone_probe_deltas.csv",
     "results/v4/s59/s59_report.json", "results/v4/s65/contrasts_reserved.csv", "results/v4/s56/contrasts_reserved.csv", "results/v4/s56/frontier_reserved.csv", "results/v4/s64/ceiling.json",
-    "results/v5/confirm_s42_s43_s44.json", "results/v5/q11_decomposition.json", "results/v5/review2_tables.md", "results/v5/same_footing.md", "results/v5/s84/s84_report.json", "results/v5/v5_oof_common_matrix.json",
+    "results/v5/confirm_s42_s43_s44.json", "results/v6/screens/decision_go_no_go.json", "results/v5/q11_decomposition.json", "results/v5/review2_tables.md", "results/v5/same_footing.md", "results/v5/s84/s84_report.json", "results/v5/v5_oof_common_matrix.json",
 ]
 
 

@@ -9949,3 +9949,72 @@ The owner approved the hash after reviewing the four judgement calls in `docs/V6
 - **Name mentions removed from unfrozen files:** this changelog, `results/v2/final_verdict.json` and `results/v4/s61/drift_report.json` (path strings only, no numbers), `tests/test_v5_s84.py`, `research/v5/s84_milk10k.py` (comments) and `scripts/readme_media/audit_readme.py` (same check, pattern rewritten). `docs/V5_RUNSHEET.md`, `docs/v5_record/V5_PLAN_AMENDMENT_01.md` and `results/v5/v5_plan_freeze.json` still carry them, left alone because they are part of the V5 frozen record.
 - **Contributors sidebar.** No commit on any branch of this repo carries an AI trailer or author, yet GitHub's sidebar listing still shows one. That is GitHub's own stored data, not repo content.
 - Checks: README audit passes, freeze intact, `tests/test_v5_s84.py` passes. No run of record has started.
+
+### V6-1 and V6-2 finished: T rejected, pool Y carried (2026-11-05; owner request)
+
+The overnight chain (`scripts/run_v6_overnight.ps1`) ran from 04:04 to 16:15 on 4 Nov (`results/v5/logs/overnight_v6.log`). All 9 runs completed their 13,410 steps with no errors (`results/v6/runs/`). Everything below is fold 0 validation. The decision files record no test, reserved or fold 1-4 read, and the 18 prediction files hold only MSKCC, HAM and BCN20000 rows from fold 0, with no HIBA row.
+
+- **V6-1: T rejected, so later runs use the 7-class head.** The three-seed mean Macro-F1 change is -0.0107 and the rule needs at least 0. Seeds 42, 43 and 44 ended at 0.6551, 0.6514 and 0.6528. **Averaging becomes the read-out from V6-3:** mean `_swad` minus `_last` is +0.0045 on all-age pAUC and +0.0078 on histology pAUC, with Macro-F1 -0.0064 against the -0.010 floor (`results/v6/screens/decision_v61.json`).
+- **V6-2: pool Y carried.** Both arms pass the gate against the V5 pool (`results/v6/screens/decision_v62.json`):
+
+| Mean change vs V5 pool | P | Y | Bar |
+|---|---:|---:|---:|
+| All-age pAUC | +0.0250 | +0.0236 | +0.0048 |
+| Histology pAUC | +0.0410 | +0.0389 | +0.0062 |
+| Macro-F1 | +0.0140 | +0.0093 | at least -0.0136 |
+| Under-40 pAUC (descriptive against the V5 pool) | +0.0429 | +0.0562 | none |
+
+- **Why Y over P.** Y beats P on under-40 pAUC by +0.0133 against a bar of +0.0097, and gives up 0.0047 Macro-F1 against a retention limit of 0.0136. P stays ahead on overall Macro-F1 and on BCN rows (0.5942 and 0.5692, V5 pool 0.5450), so Y's advantage is specific to under-40 ranking. Last-epoch Macro-F1: P 0.6802, 0.6897, 0.6635; Y 0.6772, 0.6686, 0.6736.
+- **Measured run times** (`results/v5/logs/queue_V61.log`, `queue_V62H.log`): the anchor on the V5 pool took 73.9 min, Y about 56 min and P about 46 min. Quote those, not the wall times of the two disturbed runs below.
+- **Power loss during the night, which affected time only.** Mains dropped at 07:10 (cause unknown). Seed 44 of V6-1 slowed from 145 s to 260 s per epoch and took 86.4 min. At 2% battery the laptop hibernated from 08:06 to 11:12, during `anchor_h7_f0_s42_in22k_v62p`, whose logged 235.1 min and first-epoch 11,565 s include that 3 h 06 min gap (Windows System log, Kernel-Power and Power-Troubleshooter). It resumed by itself with no errors. There is no evidence of damage, but resuming was not separately tested against an undisturbed run.
+- **C: free dips about 7.5 GB during a run and returns between runs**, with a net cost of about 0.25 GB per run (33.4 GB at 05:18, 25.86 at 06:07, 32.9 at 08:00, 25.56 at 11:35, 31.1 at 15:19). The cause was not identified.
+- **Ledger.** `research/experiments.csv` gains the 9 rows. Rewriting the file also shortened the last digits of one earlier row, `m7_loao_binary` (-0.01912318204109864 to -0.0191231820410986), which came from the ledger's own write, not a hand edit.
+- **Checks:** freeze intact (`research.v6.plan_freeze --verify`); checkpoints stay gitignored. **Not changed:** the README's "Frozen, no results" heading and the runsheet status. **Next:** V6-3, whose queue file is not written yet.
+
+### V6-3 prepared and its plumbing tested; resolution question moved to V7 (2026-11-05; owner request)
+
+No run of record has started and no frozen file changed; the freeze still holds. The owner kept the frozen roster.
+
+- **Added:** `results/v5/queue_V63.txt` (PanDerm-B, SigLIP 2, DINOv2, ConvNeXt-T 384 px; fold 0, seed 42, head 7, pool Y) and `scripts/run_v6_3_overnight.ps1`, which runs the queue, `stage_rules v63`, TTA on the anchor and promoted members, then `go-no-go`. It never starts V6-4. It refuses to start on battery or below the disk floor, drops a member that did not finish, as 0.8g says, and stops before TTA if a member is over the cost limit on a night the machine slept or changed power source, because `train_time_seconds` includes that gap (the 4 Nov failure). It runs with `HF_HUB_OFFLINE=1`, so a network failure cannot stop a build; every weight was confirmed to load offline.
+- **Weights and tests:** the three pinned ViT files match their hashes, and all four members load with a 7-class head. `tests/test_v6_engineering.py` and `tests/test_v6_trainer.py`: 76 passed. `anchor384`'s weights have no pinned hash, unlike the ViTs; that stays as frozen.
+- **GPU smoke of the exact V6-3 form,** two fine-tune batches each, peak VRAM of 8.55 GB: PanDerm-B 3.01, SigLIP 2 2.80, DINOv2 3.72, 384 px at batch 16 3.27.
+- **Rehearsal of what a smoke cannot reach,** with disposable outputs since deleted and no ledger row. These numbers are plumbing checks, not results.
+  - The trainer's real non-smoke path on about 180 rows and 90 steps: head stage then fine-tune, 12 averaged epochs, the budget check, run JSON and checkpoints. PanDerm's position embedding stayed fixed. Peak VRAM: PanDerm-B 3.70, SigLIP 2 3.55, DINOv2 4.43, 384 px 3.49 GB.
+  - TTA with its default batch size: the self-check passed for `_last` and `_swad` on all four and on the real `anchor_h7_f0_s42_in22k_v62y` checkpoint (worst difference 0.0020, limit 0.03). Files read back the way the check reads them. Peak VRAM 2.33 GB at most. Small-sample cost is about 9-11 min per ViT and 13-18 min for 384 px on fold 0's 3,059 images, against the plan's unmeasured 2.9x for 384 px.
+  - `stage_rules v63` and `go-no-go` on stand-in files copied from finished anchor runs, with their outcomes not read: the 2.5x cost limit dropped a stand-in at 3.0x, the melanin report ran, a mixed pool was refused, and V5's fold-0 values came out as the plan states, 0.6866 / 0.8556.
+- **Fixed in the new script before use:** an empty promoted list could have produced a run name with no member. It now means the anchor alone, tested along with a missing run.
+- **Not proven:** a full-length run of any member, whether the ViT recipes stay stable over 13,410 steps on real data, and real member run times. Member times remain extrapolated.
+- **Resolution, owner decision.** No model except ConvNeXt-T has been trained at 384 px here, so keeping the ViTs at 224 px rests on budget and limited evidence, not on a result against them. That question goes to V7 and does not change V6.
+
+### V6-3 started overnight; the routine before any overnight run is now permanent (2026-11-05, 01:17; owner request)
+
+The owner asked for the chain to be started this time, as they were away from the laptop. It started outside the app's container (`results/v5/logs/overnight_v63.log`). No result exists yet.
+
+- **Added:** `scripts/preflight_overnight.ps1` and `scripts/check_v63_inputs.py`, both called by `scripts/run_v6_3_overnight.ps1`, so the checks cannot be skipped. Preflight stops the chain on battery, idle sleep on mains, a pending restart, disk, commit headroom, GPU memory or heat, CUDA, a running job or the PAUSE file. It was tested against impossible floors: it failed and its exit code reached the calling script.
+- **What it stopped:** NVIDIA Overlay, Task Manager and Nearby Share. It could not stop SQL Server or MySQL without administrator rights, so they keep running; they hold about 1.7 GB of commit and were idle. Headroom was 12.2 GB against a floor of 6, so nothing was blocking the run (`results/v5/logs/preflight_20261105-011652.log`).
+- **Left to the owner:** Windows updates are not paused and no restart is pending. Closing the lid hibernates the laptop.
+- **The chain ends at the go/no-go check.** V6-4 is not started from it.
+
+### V6-3 finished: three members promoted, and the check continues to V6-4 (2026-11-05, 06:44; owner request)
+
+The chain ran from 01:17 to 06:44 with no failure and no sleep or power event (`results/v5/logs/overnight_v63.log`, `queue_V63.log`). V6-4 has not started; it needs the owner's word.
+
+- **Run times, measured:** PanDerm-B 69.1 min, SigLIP 2 66.2, DINOv2 84.1, ConvNeXt-T 384 87.8, at 1.19-1.59x the anchor against the 2.5x limit (`results/v6/screens/decision_v63.json`). TTA on four models took 19.5 min for fold 0 (`results/v5/logs/v63_tta.20261105-062449.out.log`), against about 1 h extrapolated in the runsheet. Four folds of this roster extrapolate to about 19.7 h of training.
+- **Decision by rule:** all four qualified. PanDerm-B, DINOv2 and ConvNeXt-T 384 are promoted, and SigLIP 2 went first on the frozen cut order (`decision_v63.json`).
+- **Go/no-go on fold 0, TTA:** V6 vote 0.7129 / 0.8839 and combined vote 0.7249 / 0.8803 (Macro-F1 / all-age pAUC), against V5 0.6866 / 0.8556, so `continue_to_v6_4` is true (`results/v6/screens/decision_go_no_go.json`). Both sides were selected on fold 0, so this is a compute filter and not an unbiased comparison (runsheet 0.4). No test, reserved or fold 1-4 row was read.
+- **Descriptive read, not a gate (`scripts/read_v63_fold0.py`, `results/v6/screens/v63_fold0_descriptive.json`):** lesion-grouped bootstrap, 500 draws, one fold. It covers sampling only, not seed noise. V6 vote minus V5: Macro-F1 +0.0263 [-0.0159, +0.0614], pAUC +0.0283 [+0.0111, +0.0424], under-40 pAUC +0.0582 [+0.0180, +0.1108]. Combined minus V5: +0.0383 [+0.0180, +0.0569], +0.0247 [+0.0154, +0.0336], +0.0456 [+0.0163, +0.0792]. The under-40 read rests on 35 escalating rows from 16 lesion groups.
+- **Where the gain comes from, same file:** the anchor alone with TTA is already above V5 at 0.6977 / 0.8639, before any other pretraining family is added. ConvNeXt-T 384 alone with TTA has a higher Macro-F1 (0.7187) than the V6 vote (0.7129); the vote's advantage is on pAUC.
+- **Not proven:** every number here is fold 0, and each V6 member has one seed. Folds 1-4 are the first read that can support a claim. V6-5's calibration and safety steps and the V6-6 HIBA reader are still not written.
+
+### V6-3 audited before V6-4 (2026-11-05; owner request)
+
+`scripts/check_v63_consistency.py` found no problem, `research.v6.plan_freeze --verify` says the freeze is intact, and the five `tests/test_v6_*.py` files pass.
+
+- **Checked:** one freeze hash, recipe and step budget across the five runs; every prediction file (3,059 rows, same images, probabilities sum to 1); both decisions recomputed from predictions and matching their files; V5's side equal to the plan's 0.6866 / 0.8556; no image, group or lesion shared between fold 0 and the added pool or young extras; ledger, run JSON and last-epoch predictions agree.
+- **Averaged weights, a correction to how they were described during the night:** pAUC rose on four of five runs (+0.0061 to +0.0123; DINOv2 -0.0006). Macro-F1 was mixed: DINOv2 +0.0183 is the outlier, anchor +0.0019, SigLIP 2 +0.0002, PanDerm-B -0.0053, ConvNeXt-T 384 -0.0051. The frozen read-out stays averaged weights.
+- **Easy to misread:** `primary_checkpoint` in the run JSON and the ledger rows are last-epoch, while the V6-3 decision and the check read averaged weights. So V6-5 must pass `--checkpoint swad`; its read happens once. `young_share_trained_on` (0.132) is the pool's share, not what the sampler delivers; the sampler targets `young_share_v5_pool` (0.296).
+- **Stale, not yet changed:** the README's V6 heading says "Frozen, no results".
+
+### V6-4 made ready (2026-11-05; owner request)
+
+`results/v5/queue_V64f1.txt` to `queue_V64f4.txt` and `scripts/run_v6_4.ps1`: the anchor and the three promoted members on folds 1-4, seed 42, one night at a time. The chain resumes from finished runs, stops after a fold on a missing, incomplete or broken run, and never starts V6-5. Smokes of all four forms passed on folds 1 and 2: fine-tune VRAM 2.20, 3.01, 3.72 and 3.27 GB (`train_v6 --smoke`, outputs disposable). V6-4 has not started. No test, reserved or HIBA row was read. `scripts/read_biology_features_beyond_model.py` adds an exploratory read of hand-built colour asymmetry under 40, which found no gain at low false-positive rates (`results/v6/screens/biology_features_beyond_model.json`).

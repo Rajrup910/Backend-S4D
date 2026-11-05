@@ -1,0 +1,87 @@
+{
+  "carried": "Y",
+  "p_vs_v5_pool": {
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "k": 3,
+    "z": 0.8416212335729143,
+    "thresholds": {
+      "pauc_all": 0.004755485254790397,
+      "pauc_histo": 0.006158000915448225
+    },
+    "retention_bar": -0.013606457576258207,
+    "mean_delta": {
+      "pauc_all": 0.024963712649099284,
+      "pauc_histo": 0.0410140686172609,
+      "pauc_u40": 0.042936203855744114,
+      "pauc_band_mean": 0.03375039231382807,
+      "macro_f1": 0.01397860399486106,
+      "ece": 0.017517805560640722,
+      "signed_gap": 0.02123201792851696
+    },
+    "endpoint_pass": {
+      "pauc_all": true,
+      "pauc_histo": true
+    },
+    "macro_f1_retention_ok": true,
+    "gate_pass": true,
+    "descriptive_only": [
+      "pauc_u40",
+      "ece",
+      "signed_gap",
+      "per-band ECE"
+    ]
+  },
+  "y_vs_v5_pool": {
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "k": 3,
+    "z": 0.8416212335729143,
+    "thresholds": {
+      "pauc_all": 0.004755485254790397,
+      "pauc_histo": 0.006158000915448225
+    },
+    "retention_bar": -0.013606457576258207,
+    "mean_delta": {
+      "pauc_all": 0.023563927108779487,
+      "pauc_histo": 0.038851759976935386,
+      "pauc_u40": 0.056194125159642394,
+      "pauc_band_mean": 0.03813984713110189,
+      "macro_f1": 0.009313690350466178,
+      "ece": 0.017887174399041045,
+      "signed_gap": 0.02281117936580579
+    },
+    "endpoint_pass": {
+      "pauc_all": true,
+      "pauc_histo": true
+    },
+    "macro_f1_retention_ok": true,
+    "gate_pass": true,
+    "descriptive_only": [
+      "pauc_u40",
+      "ece",
+      "signed_gap",
+      "per-band ECE"
+    ]
+  },
+  "y_vs_p": {
+    "pauc_u40": 0.013257921303898282,
+    "bar": 0.009723082330657403,
+    "macro_f1": -0.004664913644394882,
+    "retention": -0.013606457576258207
+  },
+  "bcn_macro_f1": {
+    "p": 0.5942126649255389,
+    "y": 0.5691844589231725,
+    "v5_pool": 0.5450492733311699
+  },
+  "test_read": false,
+  "reserved_read": false,
+  "fold_1_4_read": false
+}

@@ -278,9 +278,9 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 
 <a id="v6"></a>
 
-## V6 · Frozen, no results
+## V6 · In progress: fold 0 done, no claim yet
 
-The current plan is a **leak-audited, data-maximal ensemble across pretraining families, image-only**, frozen on 4 Nov 2026, and it has no results yet: every stage is still to run. The anchor is ConvNeXt-Tiny (IN-22k); the candidate members to screen are the same trunk at 384 px, PanDerm-B, DINOv2 ViT-B/14 and SigLIP 2 B/16. A single receipted read of HIBA is the planned confirmation. The plan records in advance that the under-40 gate is unlikely to pass. Plan: [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md), Part 0.
+The current plan is a **data-maximal ensemble across pretraining families, image-only**, frozen on 4 Nov 2026. The anchor is ConvNeXt-Tiny (IN-22k). Fold 0 chose PanDerm-B, DINOv2 ViT-B/14 and the same ConvNeXt at 384 px as members; SigLIP 2 went first on the frozen cut order. On fold 0 the V6 vote scores Macro-F1 0.7129 and all-age pAUC 0.8839 against V5's 0.6866 and 0.8556. Fold 0 is a compute filter, not a result. Folds 1–4 are the first read that can support a claim, and a single receipted read of HIBA is the planned confirmation. The plan records in advance that the under-40 gate is unlikely to pass.
 
 ---
 
