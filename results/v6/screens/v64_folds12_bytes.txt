@@ -1,0 +1,3 @@
+v64 run ids unique in ledger: True
+fold 1: 39,784 train files, 3,059 held-out files, 0 missing, 111 same-size candidates, 0 byte-identical pairs
+fold 2: 39,784 train files, 3,059 held-out files, 0 missing, 128 same-size candidates, 0 byte-identical pairs
