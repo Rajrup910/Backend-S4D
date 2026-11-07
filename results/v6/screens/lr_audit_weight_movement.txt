@@ -1,0 +1,12 @@
+
+anchor_h7: 182/182 keys shared
+  feat0 2.88%  feat1 5.22%  feat2 9.78%  feat3 6.53%  feat4 11.09%  feat5 7.78%  feat6 10.65%  feat7 8.41%
+
+anchor384_h7: 182/182 keys shared
+  feat0 2.85%  feat1 5.05%  feat2 9.41%  feat3 6.33%  feat4 10.97%  feat5 7.68%  feat6 10.50%  feat7 8.40%
+
+dinov2_b_h7: 176/176 keys shared
+  block00 4.14%  block01 4.16%  block02 4.58%  block03 4.42%  block04 4.64%  block05 4.77%  block06 4.67%  block07 4.60%  block08 4.55%  block09 4.46%  block10 4.16%  block11 3.93%  embed 5.52%
+
+panderm_b_h7: 200/200 keys shared
+  block00 0.17%  block01 0.25%  block02 0.39%  block03 0.62%  block04 0.95%  block05 1.40%  block06 2.05%  block07 2.91%  block08 4.11%  block09 5.76%  block10 7.80%  block11 11.31%  embed 0.01%
