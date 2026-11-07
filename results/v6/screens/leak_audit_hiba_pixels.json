@@ -1,0 +1,14 @@
+{
+  "rule": ">= 30 RANSAC inliers to one of the 5 nearest training images",
+  "images": 1201,
+  "copies": [
+    "ISIC_6043099",
+    "ISIC_9989778"
+  ],
+  "score_percentiles": {
+    "50": 2.0,
+    "99": 14.0,
+    "100": 46.0
+  },
+  "labels_read": 0
+}
