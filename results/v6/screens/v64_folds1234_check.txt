@@ -1,0 +1,307 @@
+[freeze]
+  ok   anchor384_h7_f1_s42_in22k_v64 trained under the current freeze
+  ok   anchor384_h7_f2_s42_in22k_v64 trained under the current freeze
+  ok   anchor384_h7_f3_s42_in22k_v64 trained under the current freeze
+  ok   anchor384_h7_f4_s42_in22k_v64 trained under the current freeze
+  ok   anchor_h7_f1_s42_in22k_v64 trained under the current freeze
+  ok   anchor_h7_f2_s42_in22k_v64 trained under the current freeze
+  ok   anchor_h7_f3_s42_in22k_v64 trained under the current freeze
+  ok   anchor_h7_f4_s42_in22k_v64 trained under the current freeze
+  ok   dinov2_b_h7_f1_s42_v64 trained under the current freeze
+  ok   dinov2_b_h7_f2_s42_v64 trained under the current freeze
+  ok   dinov2_b_h7_f3_s42_v64 trained under the current freeze
+  ok   dinov2_b_h7_f4_s42_v64 trained under the current freeze
+  ok   panderm_b_h7_f1_s42_v64 trained under the current freeze
+  ok   panderm_b_h7_f2_s42_v64 trained under the current freeze
+  ok   panderm_b_h7_f3_s42_v64 trained under the current freeze
+  ok   panderm_b_h7_f4_s42_v64 trained under the current freeze
+[ledger]
+  ok   16 v6_v64 rows, one per run record (16)
+  ok   no v64 run id appears twice in the ledger
+  ok   no fully identical ledger rows
+  ok   anchor_h7_f1_s42_in22k_v64 ledger Macro-F1 = run record
+  ok   panderm_b_h7_f1_s42_v64 ledger Macro-F1 = run record
+  ok   dinov2_b_h7_f1_s42_v64 ledger Macro-F1 = run record
+  ok   anchor384_h7_f1_s42_in22k_v64 ledger Macro-F1 = run record
+  ok   anchor_h7_f2_s42_in22k_v64 ledger Macro-F1 = run record
+  ok   panderm_b_h7_f2_s42_v64 ledger Macro-F1 = run record
+  ok   dinov2_b_h7_f2_s42_v64 ledger Macro-F1 = run record
+  ok   anchor384_h7_f2_s42_in22k_v64 ledger Macro-F1 = run record
+  ok   anchor_h7_f3_s42_in22k_v64 ledger Macro-F1 = run record
+  ok   panderm_b_h7_f3_s42_v64 ledger Macro-F1 = run record
+  ok   dinov2_b_h7_f3_s42_v64 ledger Macro-F1 = run record
+  ok   anchor384_h7_f3_s42_in22k_v64 ledger Macro-F1 = run record
+  ok   anchor_h7_f4_s42_in22k_v64 ledger Macro-F1 = run record
+  ok   panderm_b_h7_f4_s42_v64 ledger Macro-F1 = run record
+  ok   dinov2_b_h7_f4_s42_v64 ledger Macro-F1 = run record
+  ok   anchor384_h7_f4_s42_in22k_v64 ledger Macro-F1 = run record
+manifest columns with split info: ['ham_split', 'split']
+  list 380: 380 rows, sha256 7feaeadd
+  list 426: 426 rows, sha256 7e02becb
+[fold 1]
+  train 39,784 (dev 12,235, young 2,078, added 25,471); val 3,059
+  ok   train/val share no image_id (0)
+  ok   train/val share no group_id (0)
+  ok   train/val share no effective_lesion_id (0)
+  ok   train/val share no lesion_id (0)
+  ok   no image twice in training (0)
+  ok   fold 1: 8 plain/SWAD files and 4 TTA files
+  ok   anchor384_h7_f1_s42_in22k_v64: 3059 rows, no duplicate image
+  ok   anchor384_h7_f1_s42_in22k_v64: rows are exactly fold 1's held-out rows
+  ok   anchor384_h7_f1_s42_in22k_v64: one fold, one run id
+  ok   anchor384_h7_f1_s42_in22k_v64: same rows as the fold's other files
+  ok   anchor384_h7_f1_s42_in22k_v64_swad: 3059 rows, no duplicate image
+  ok   anchor384_h7_f1_s42_in22k_v64_swad: rows are exactly fold 1's held-out rows
+  ok   anchor384_h7_f1_s42_in22k_v64_swad: one fold, one run id
+  ok   anchor384_h7_f1_s42_in22k_v64_swad: same rows as the fold's other files
+  ok   anchor_h7_f1_s42_in22k_v64: 3059 rows, no duplicate image
+  ok   anchor_h7_f1_s42_in22k_v64: rows are exactly fold 1's held-out rows
+  ok   anchor_h7_f1_s42_in22k_v64: one fold, one run id
+  ok   anchor_h7_f1_s42_in22k_v64: same rows as the fold's other files
+  ok   anchor_h7_f1_s42_in22k_v64_swad: 3059 rows, no duplicate image
+  ok   anchor_h7_f1_s42_in22k_v64_swad: rows are exactly fold 1's held-out rows
+  ok   anchor_h7_f1_s42_in22k_v64_swad: one fold, one run id
+  ok   anchor_h7_f1_s42_in22k_v64_swad: same rows as the fold's other files
+  ok   dinov2_b_h7_f1_s42_v64: 3059 rows, no duplicate image
+  ok   dinov2_b_h7_f1_s42_v64: rows are exactly fold 1's held-out rows
+  ok   dinov2_b_h7_f1_s42_v64: one fold, one run id
+  ok   dinov2_b_h7_f1_s42_v64: same rows as the fold's other files
+  ok   dinov2_b_h7_f1_s42_v64_swad: 3059 rows, no duplicate image
+  ok   dinov2_b_h7_f1_s42_v64_swad: rows are exactly fold 1's held-out rows
+  ok   dinov2_b_h7_f1_s42_v64_swad: one fold, one run id
+  ok   dinov2_b_h7_f1_s42_v64_swad: same rows as the fold's other files
+  ok   panderm_b_h7_f1_s42_v64: 3059 rows, no duplicate image
+  ok   panderm_b_h7_f1_s42_v64: rows are exactly fold 1's held-out rows
+  ok   panderm_b_h7_f1_s42_v64: one fold, one run id
+  ok   panderm_b_h7_f1_s42_v64: same rows as the fold's other files
+  ok   panderm_b_h7_f1_s42_v64_swad: 3059 rows, no duplicate image
+  ok   panderm_b_h7_f1_s42_v64_swad: rows are exactly fold 1's held-out rows
+  ok   panderm_b_h7_f1_s42_v64_swad: one fold, one run id
+  ok   panderm_b_h7_f1_s42_v64_swad: same rows as the fold's other files
+  ok   anchor384_h7_f1_s42_in22k_v64_swad_tta: 3059 rows, no duplicate image
+  ok   anchor384_h7_f1_s42_in22k_v64_swad_tta: rows are exactly fold 1's held-out rows
+  ok   anchor384_h7_f1_s42_in22k_v64_swad_tta: one fold, one run id
+  ok   anchor384_h7_f1_s42_in22k_v64_swad_tta: same rows as the fold's other files
+  ok   anchor_h7_f1_s42_in22k_v64_swad_tta: 3059 rows, no duplicate image
+  ok   anchor_h7_f1_s42_in22k_v64_swad_tta: rows are exactly fold 1's held-out rows
+  ok   anchor_h7_f1_s42_in22k_v64_swad_tta: one fold, one run id
+  ok   anchor_h7_f1_s42_in22k_v64_swad_tta: same rows as the fold's other files
+  ok   dinov2_b_h7_f1_s42_v64_swad_tta: 3059 rows, no duplicate image
+  ok   dinov2_b_h7_f1_s42_v64_swad_tta: rows are exactly fold 1's held-out rows
+  ok   dinov2_b_h7_f1_s42_v64_swad_tta: one fold, one run id
+  ok   dinov2_b_h7_f1_s42_v64_swad_tta: same rows as the fold's other files
+  ok   panderm_b_h7_f1_s42_v64_swad_tta: 3059 rows, no duplicate image
+  ok   panderm_b_h7_f1_s42_v64_swad_tta: rows are exactly fold 1's held-out rows
+  ok   panderm_b_h7_f1_s42_v64_swad_tta: one fold, one run id
+  ok   panderm_b_h7_f1_s42_v64_swad_tta: same rows as the fold's other files
+  declared list 380: 72 of fold 1's held-out rows (handled at the V6-5 read)
+  declared list 426: 77 of fold 1's held-out rows (handled at the V6-5 read)
+[fold 2]
+  train 39,784 (dev 12,235, young 2,078, added 25,471); val 3,059
+  ok   train/val share no image_id (0)
+  ok   train/val share no group_id (0)
+  ok   train/val share no effective_lesion_id (0)
+  ok   train/val share no lesion_id (0)
+  ok   no image twice in training (0)
+  ok   fold 2: 8 plain/SWAD files and 4 TTA files
+  ok   anchor384_h7_f2_s42_in22k_v64: 3059 rows, no duplicate image
+  ok   anchor384_h7_f2_s42_in22k_v64: rows are exactly fold 2's held-out rows
+  ok   anchor384_h7_f2_s42_in22k_v64: one fold, one run id
+  ok   anchor384_h7_f2_s42_in22k_v64: same rows as the fold's other files
+  ok   anchor384_h7_f2_s42_in22k_v64_swad: 3059 rows, no duplicate image
+  ok   anchor384_h7_f2_s42_in22k_v64_swad: rows are exactly fold 2's held-out rows
+  ok   anchor384_h7_f2_s42_in22k_v64_swad: one fold, one run id
+  ok   anchor384_h7_f2_s42_in22k_v64_swad: same rows as the fold's other files
+  ok   anchor_h7_f2_s42_in22k_v64: 3059 rows, no duplicate image
+  ok   anchor_h7_f2_s42_in22k_v64: rows are exactly fold 2's held-out rows
+  ok   anchor_h7_f2_s42_in22k_v64: one fold, one run id
+  ok   anchor_h7_f2_s42_in22k_v64: same rows as the fold's other files
+  ok   anchor_h7_f2_s42_in22k_v64_swad: 3059 rows, no duplicate image
+  ok   anchor_h7_f2_s42_in22k_v64_swad: rows are exactly fold 2's held-out rows
+  ok   anchor_h7_f2_s42_in22k_v64_swad: one fold, one run id
+  ok   anchor_h7_f2_s42_in22k_v64_swad: same rows as the fold's other files
+  ok   dinov2_b_h7_f2_s42_v64: 3059 rows, no duplicate image
+  ok   dinov2_b_h7_f2_s42_v64: rows are exactly fold 2's held-out rows
+  ok   dinov2_b_h7_f2_s42_v64: one fold, one run id
+  ok   dinov2_b_h7_f2_s42_v64: same rows as the fold's other files
+  ok   dinov2_b_h7_f2_s42_v64_swad: 3059 rows, no duplicate image
+  ok   dinov2_b_h7_f2_s42_v64_swad: rows are exactly fold 2's held-out rows
+  ok   dinov2_b_h7_f2_s42_v64_swad: one fold, one run id
+  ok   dinov2_b_h7_f2_s42_v64_swad: same rows as the fold's other files
+  ok   panderm_b_h7_f2_s42_v64: 3059 rows, no duplicate image
+  ok   panderm_b_h7_f2_s42_v64: rows are exactly fold 2's held-out rows
+  ok   panderm_b_h7_f2_s42_v64: one fold, one run id
+  ok   panderm_b_h7_f2_s42_v64: same rows as the fold's other files
+  ok   panderm_b_h7_f2_s42_v64_swad: 3059 rows, no duplicate image
+  ok   panderm_b_h7_f2_s42_v64_swad: rows are exactly fold 2's held-out rows
+  ok   panderm_b_h7_f2_s42_v64_swad: one fold, one run id
+  ok   panderm_b_h7_f2_s42_v64_swad: same rows as the fold's other files
+  ok   anchor384_h7_f2_s42_in22k_v64_swad_tta: 3059 rows, no duplicate image
+  ok   anchor384_h7_f2_s42_in22k_v64_swad_tta: rows are exactly fold 2's held-out rows
+  ok   anchor384_h7_f2_s42_in22k_v64_swad_tta: one fold, one run id
+  ok   anchor384_h7_f2_s42_in22k_v64_swad_tta: same rows as the fold's other files
+  ok   anchor_h7_f2_s42_in22k_v64_swad_tta: 3059 rows, no duplicate image
+  ok   anchor_h7_f2_s42_in22k_v64_swad_tta: rows are exactly fold 2's held-out rows
+  ok   anchor_h7_f2_s42_in22k_v64_swad_tta: one fold, one run id
+  ok   anchor_h7_f2_s42_in22k_v64_swad_tta: same rows as the fold's other files
+  ok   dinov2_b_h7_f2_s42_v64_swad_tta: 3059 rows, no duplicate image
+  ok   dinov2_b_h7_f2_s42_v64_swad_tta: rows are exactly fold 2's held-out rows
+  ok   dinov2_b_h7_f2_s42_v64_swad_tta: one fold, one run id
+  ok   dinov2_b_h7_f2_s42_v64_swad_tta: same rows as the fold's other files
+  ok   panderm_b_h7_f2_s42_v64_swad_tta: 3059 rows, no duplicate image
+  ok   panderm_b_h7_f2_s42_v64_swad_tta: rows are exactly fold 2's held-out rows
+  ok   panderm_b_h7_f2_s42_v64_swad_tta: one fold, one run id
+  ok   panderm_b_h7_f2_s42_v64_swad_tta: same rows as the fold's other files
+  declared list 380: 82 of fold 2's held-out rows (handled at the V6-5 read)
+  declared list 426: 91 of fold 2's held-out rows (handled at the V6-5 read)
+[fold 3]
+  train 39,784 (dev 12,235, young 2,078, added 25,471); val 3,059
+  ok   train/val share no image_id (0)
+  ok   train/val share no group_id (0)
+  ok   train/val share no effective_lesion_id (0)
+  ok   train/val share no lesion_id (0)
+  ok   no image twice in training (0)
+  ok   fold 3: 8 plain/SWAD files and 4 TTA files
+  ok   anchor384_h7_f3_s42_in22k_v64: 3059 rows, no duplicate image
+  ok   anchor384_h7_f3_s42_in22k_v64: rows are exactly fold 3's held-out rows
+  ok   anchor384_h7_f3_s42_in22k_v64: one fold, one run id
+  ok   anchor384_h7_f3_s42_in22k_v64: same rows as the fold's other files
+  ok   anchor384_h7_f3_s42_in22k_v64_swad: 3059 rows, no duplicate image
+  ok   anchor384_h7_f3_s42_in22k_v64_swad: rows are exactly fold 3's held-out rows
+  ok   anchor384_h7_f3_s42_in22k_v64_swad: one fold, one run id
+  ok   anchor384_h7_f3_s42_in22k_v64_swad: same rows as the fold's other files
+  ok   anchor_h7_f3_s42_in22k_v64: 3059 rows, no duplicate image
+  ok   anchor_h7_f3_s42_in22k_v64: rows are exactly fold 3's held-out rows
+  ok   anchor_h7_f3_s42_in22k_v64: one fold, one run id
+  ok   anchor_h7_f3_s42_in22k_v64: same rows as the fold's other files
+  ok   anchor_h7_f3_s42_in22k_v64_swad: 3059 rows, no duplicate image
+  ok   anchor_h7_f3_s42_in22k_v64_swad: rows are exactly fold 3's held-out rows
+  ok   anchor_h7_f3_s42_in22k_v64_swad: one fold, one run id
+  ok   anchor_h7_f3_s42_in22k_v64_swad: same rows as the fold's other files
+  ok   dinov2_b_h7_f3_s42_v64: 3059 rows, no duplicate image
+  ok   dinov2_b_h7_f3_s42_v64: rows are exactly fold 3's held-out rows
+  ok   dinov2_b_h7_f3_s42_v64: one fold, one run id
+  ok   dinov2_b_h7_f3_s42_v64: same rows as the fold's other files
+  ok   dinov2_b_h7_f3_s42_v64_swad: 3059 rows, no duplicate image
+  ok   dinov2_b_h7_f3_s42_v64_swad: rows are exactly fold 3's held-out rows
+  ok   dinov2_b_h7_f3_s42_v64_swad: one fold, one run id
+  ok   dinov2_b_h7_f3_s42_v64_swad: same rows as the fold's other files
+  ok   panderm_b_h7_f3_s42_v64: 3059 rows, no duplicate image
+  ok   panderm_b_h7_f3_s42_v64: rows are exactly fold 3's held-out rows
+  ok   panderm_b_h7_f3_s42_v64: one fold, one run id
+  ok   panderm_b_h7_f3_s42_v64: same rows as the fold's other files
+  ok   panderm_b_h7_f3_s42_v64_swad: 3059 rows, no duplicate image
+  ok   panderm_b_h7_f3_s42_v64_swad: rows are exactly fold 3's held-out rows
+  ok   panderm_b_h7_f3_s42_v64_swad: one fold, one run id
+  ok   panderm_b_h7_f3_s42_v64_swad: same rows as the fold's other files
+  ok   anchor384_h7_f3_s42_in22k_v64_swad_tta: 3059 rows, no duplicate image
+  ok   anchor384_h7_f3_s42_in22k_v64_swad_tta: rows are exactly fold 3's held-out rows
+  ok   anchor384_h7_f3_s42_in22k_v64_swad_tta: one fold, one run id
+  ok   anchor384_h7_f3_s42_in22k_v64_swad_tta: same rows as the fold's other files
+  ok   anchor_h7_f3_s42_in22k_v64_swad_tta: 3059 rows, no duplicate image
+  ok   anchor_h7_f3_s42_in22k_v64_swad_tta: rows are exactly fold 3's held-out rows
+  ok   anchor_h7_f3_s42_in22k_v64_swad_tta: one fold, one run id
+  ok   anchor_h7_f3_s42_in22k_v64_swad_tta: same rows as the fold's other files
+  ok   dinov2_b_h7_f3_s42_v64_swad_tta: 3059 rows, no duplicate image
+  ok   dinov2_b_h7_f3_s42_v64_swad_tta: rows are exactly fold 3's held-out rows
+  ok   dinov2_b_h7_f3_s42_v64_swad_tta: one fold, one run id
+  ok   dinov2_b_h7_f3_s42_v64_swad_tta: same rows as the fold's other files
+  ok   panderm_b_h7_f3_s42_v64_swad_tta: 3059 rows, no duplicate image
+  ok   panderm_b_h7_f3_s42_v64_swad_tta: rows are exactly fold 3's held-out rows
+  ok   panderm_b_h7_f3_s42_v64_swad_tta: one fold, one run id
+  ok   panderm_b_h7_f3_s42_v64_swad_tta: same rows as the fold's other files
+  declared list 380: 63 of fold 3's held-out rows (handled at the V6-5 read)
+  declared list 426: 71 of fold 3's held-out rows (handled at the V6-5 read)
+[fold 4]
+  train 39,785 (dev 12,236, young 2,078, added 25,471); val 3,058
+  ok   train/val share no image_id (0)
+  ok   train/val share no group_id (0)
+  ok   train/val share no effective_lesion_id (0)
+  ok   train/val share no lesion_id (0)
+  ok   no image twice in training (0)
+  ok   fold 4: 8 plain/SWAD files and 4 TTA files
+  ok   anchor384_h7_f4_s42_in22k_v64: 3058 rows, no duplicate image
+  ok   anchor384_h7_f4_s42_in22k_v64: rows are exactly fold 4's held-out rows
+  ok   anchor384_h7_f4_s42_in22k_v64: one fold, one run id
+  ok   anchor384_h7_f4_s42_in22k_v64: same rows as the fold's other files
+  ok   anchor384_h7_f4_s42_in22k_v64_swad: 3058 rows, no duplicate image
+  ok   anchor384_h7_f4_s42_in22k_v64_swad: rows are exactly fold 4's held-out rows
+  ok   anchor384_h7_f4_s42_in22k_v64_swad: one fold, one run id
+  ok   anchor384_h7_f4_s42_in22k_v64_swad: same rows as the fold's other files
+  ok   anchor_h7_f4_s42_in22k_v64: 3058 rows, no duplicate image
+  ok   anchor_h7_f4_s42_in22k_v64: rows are exactly fold 4's held-out rows
+  ok   anchor_h7_f4_s42_in22k_v64: one fold, one run id
+  ok   anchor_h7_f4_s42_in22k_v64: same rows as the fold's other files
+  ok   anchor_h7_f4_s42_in22k_v64_swad: 3058 rows, no duplicate image
+  ok   anchor_h7_f4_s42_in22k_v64_swad: rows are exactly fold 4's held-out rows
+  ok   anchor_h7_f4_s42_in22k_v64_swad: one fold, one run id
+  ok   anchor_h7_f4_s42_in22k_v64_swad: same rows as the fold's other files
+  ok   dinov2_b_h7_f4_s42_v64: 3058 rows, no duplicate image
+  ok   dinov2_b_h7_f4_s42_v64: rows are exactly fold 4's held-out rows
+  ok   dinov2_b_h7_f4_s42_v64: one fold, one run id
+  ok   dinov2_b_h7_f4_s42_v64: same rows as the fold's other files
+  ok   dinov2_b_h7_f4_s42_v64_swad: 3058 rows, no duplicate image
+  ok   dinov2_b_h7_f4_s42_v64_swad: rows are exactly fold 4's held-out rows
+  ok   dinov2_b_h7_f4_s42_v64_swad: one fold, one run id
+  ok   dinov2_b_h7_f4_s42_v64_swad: same rows as the fold's other files
+  ok   panderm_b_h7_f4_s42_v64: 3058 rows, no duplicate image
+  ok   panderm_b_h7_f4_s42_v64: rows are exactly fold 4's held-out rows
+  ok   panderm_b_h7_f4_s42_v64: one fold, one run id
+  ok   panderm_b_h7_f4_s42_v64: same rows as the fold's other files
+  ok   panderm_b_h7_f4_s42_v64_swad: 3058 rows, no duplicate image
+  ok   panderm_b_h7_f4_s42_v64_swad: rows are exactly fold 4's held-out rows
+  ok   panderm_b_h7_f4_s42_v64_swad: one fold, one run id
+  ok   panderm_b_h7_f4_s42_v64_swad: same rows as the fold's other files
+  ok   anchor384_h7_f4_s42_in22k_v64_swad_tta: 3058 rows, no duplicate image
+  ok   anchor384_h7_f4_s42_in22k_v64_swad_tta: rows are exactly fold 4's held-out rows
+  ok   anchor384_h7_f4_s42_in22k_v64_swad_tta: one fold, one run id
+  ok   anchor384_h7_f4_s42_in22k_v64_swad_tta: same rows as the fold's other files
+  ok   anchor_h7_f4_s42_in22k_v64_swad_tta: 3058 rows, no duplicate image
+  ok   anchor_h7_f4_s42_in22k_v64_swad_tta: rows are exactly fold 4's held-out rows
+  ok   anchor_h7_f4_s42_in22k_v64_swad_tta: one fold, one run id
+  ok   anchor_h7_f4_s42_in22k_v64_swad_tta: same rows as the fold's other files
+  ok   dinov2_b_h7_f4_s42_v64_swad_tta: 3058 rows, no duplicate image
+  ok   dinov2_b_h7_f4_s42_v64_swad_tta: rows are exactly fold 4's held-out rows
+  ok   dinov2_b_h7_f4_s42_v64_swad_tta: one fold, one run id
+  ok   dinov2_b_h7_f4_s42_v64_swad_tta: same rows as the fold's other files
+  ok   panderm_b_h7_f4_s42_v64_swad_tta: 3058 rows, no duplicate image
+  ok   panderm_b_h7_f4_s42_v64_swad_tta: rows are exactly fold 4's held-out rows
+  ok   panderm_b_h7_f4_s42_v64_swad_tta: one fold, one run id
+  ok   panderm_b_h7_f4_s42_v64_swad_tta: same rows as the fold's other files
+  declared list 380: 74 of fold 4's held-out rows (handled at the V6-5 read)
+  declared list 426: 91 of fold 4's held-out rows (handled at the V6-5 read)
+[across folds]
+  ok   held-out folds 0 and 1 share no image_id (0)
+  ok   held-out folds 0 and 1 share no group_id (0)
+  ok   held-out folds 0 and 1 share no effective_lesion_id (0)
+  ok   held-out folds 0 and 2 share no image_id (0)
+  ok   held-out folds 0 and 2 share no group_id (0)
+  ok   held-out folds 0 and 2 share no effective_lesion_id (0)
+  ok   held-out folds 0 and 3 share no image_id (0)
+  ok   held-out folds 0 and 3 share no group_id (0)
+  ok   held-out folds 0 and 3 share no effective_lesion_id (0)
+  ok   held-out folds 0 and 4 share no image_id (0)
+  ok   held-out folds 0 and 4 share no group_id (0)
+  ok   held-out folds 0 and 4 share no effective_lesion_id (0)
+  ok   held-out folds 1 and 2 share no image_id (0)
+  ok   held-out folds 1 and 2 share no group_id (0)
+  ok   held-out folds 1 and 2 share no effective_lesion_id (0)
+  ok   held-out folds 1 and 3 share no image_id (0)
+  ok   held-out folds 1 and 3 share no group_id (0)
+  ok   held-out folds 1 and 3 share no effective_lesion_id (0)
+  ok   held-out folds 1 and 4 share no image_id (0)
+  ok   held-out folds 1 and 4 share no group_id (0)
+  ok   held-out folds 1 and 4 share no effective_lesion_id (0)
+  ok   held-out folds 2 and 3 share no image_id (0)
+  ok   held-out folds 2 and 3 share no group_id (0)
+  ok   held-out folds 2 and 3 share no effective_lesion_id (0)
+  ok   held-out folds 2 and 4 share no image_id (0)
+  ok   held-out folds 2 and 4 share no group_id (0)
+  ok   held-out folds 2 and 4 share no effective_lesion_id (0)
+  ok   held-out folds 3 and 4 share no image_id (0)
+  ok   held-out folds 3 and 4 share no group_id (0)
+  ok   held-out folds 3 and 4 share no effective_lesion_id (0)
+[no test / reserved / HIBA in predictions]
+  ok   all 12,235 predicted images are development rows of folds [1, 2, 3, 4]
+
+RESULT: PASS

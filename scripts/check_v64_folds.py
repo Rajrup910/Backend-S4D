@@ -1,11 +1,12 @@
-"""V6-4 pre-commit check, folds 1-2: ledger and prediction duplicates, train/held-out id overlap, fold overlap, freeze, declared copy-list counts. Structural only: no metric on any subset.
+"""V6-4 pre-commit check: ledger and prediction duplicates (plain, SWAD and TTA files), train/held-out id overlap, fold overlap, freeze, declared copy-list counts. Structural only: no metric on any subset.
 
-    python scripts/check_v64_folds.py > results/v6/screens/v64_folds12_check.txt
+    python scripts/check_v64_folds.py --folds 1,2 > results/v6/screens/v64_folds12_check.txt
+    python scripts/check_v64_folds.py --folds 1,2,3,4 > results/v6/screens/v64_folds1234_check.txt
 """
-import glob, hashlib, json, os, sys
+import argparse, glob, hashlib, json, os, sys
 from pathlib import Path
 import pandas as pd
-REPO = Path(r"C:\Users\RAJ\Downloads\Capstone review 1"); os.chdir(REPO); sys.path.insert(0, str(REPO))
+REPO = Path(__file__).resolve().parents[1]; os.chdir(REPO); sys.path.insert(0, str(REPO))
 from research import testguard
 testguard.block_test_reads("pre-commit duplicate/leak check")
 from research.v4.recipe import IMAGE_DIR, MANIFEST
@@ -13,6 +14,9 @@ from research.v5.train_v5 import fold_frames, load_extra_train
 from research.v6 import plan_freeze, young_labels
 from research.v6.train_v6 import YOUNG_EXTRAS, EXTRA_IMAGE_DIR, load_added_train
 
+ap = argparse.ArgumentParser(description="V6-4 pre-commit duplicate and leak check")
+ap.add_argument("--folds", default="1,2", help="comma-separated V6-4 folds to check")
+FOLDS = [int(x) for x in ap.parse_args().folds.split(",")]
 bad = []
 def check(cond, msg):
     print(("  ok   " if cond else "  FAIL ") + msg)
@@ -26,7 +30,8 @@ for f in glob.glob("results/v6/runs/*_v64.json"):
 print("[ledger]")
 led = pd.read_csv("research/experiments.csv", low_memory=False)
 new = led[led["session"] == "v6_v64"]
-check(len(new) == 8, f"8 v6_v64 rows ({len(new)})")
+n_runs = len(glob.glob("results/v6/runs/*_v64.json"))
+check(len(new) == n_runs, f"{n_runs} v6_v64 rows, one per run record ({len(new)})")
 check(not led.loc[led["method"].isin(new["method"]), "method"].duplicated().any(), "no v64 run id appears twice in the ledger")
 check(not led.duplicated().any(), "no fully identical ledger rows")
 for _, r in new.iterrows():
@@ -42,10 +47,10 @@ for n, p in [("380", "results/v6/leak_sensitivity_rows.csv"), ("426", "results/v
     print(f"  list {n}: {len(lists[n])} rows, sha256 {hashlib.sha256(Path(p).read_bytes()).hexdigest()[:8]}")
 
 val_sets = {}
-for fold in (0, 1, 2):
+for fold in range(5):
     tr, va = fold_frames(manifest, fold)
     val_sets[fold] = va
-    if fold == 0: continue
+    if fold not in FOLDS: continue
     print(f"[fold {fold}]")
     young = young_labels.apply(load_extra_train(YOUNG_EXTRAS, tr, va))
     pool = pd.concat([tr.assign(src="dev"), young.assign(src="young")], ignore_index=True)
@@ -60,7 +65,10 @@ for fold in (0, 1, 2):
     check(not train["image_id"].astype(str).duplicated().any(), f"no image twice in training ({int(train['image_id'].astype(str).duplicated().sum())})")
     # predictions
     ids = None
-    for f in sorted(glob.glob(f"results/v6/preds/*_f{fold}_*v64*.csv")):
+    files = sorted(glob.glob(f"results/v6/preds/*_f{fold}_*v64*.csv")) + sorted(glob.glob(f"results/v6/preds_tta/*_f{fold}_*v64*_tta.csv"))
+    n_tta = sum("preds_tta" in f for f in files)
+    check(len(files) - n_tta == 8 and n_tta in (0, 4), f"fold {fold}: 8 plain/SWAD files and {n_tta} TTA files")
+    for f in files:
         p = pd.read_csv(f, low_memory=False)
         s = set(p["image_id"].astype(str))
         check(not p["image_id"].duplicated().any(), f"{Path(f).stem}: {len(p)} rows, no duplicate image")
@@ -71,14 +79,15 @@ for fold in (0, 1, 2):
     for n, L in lists.items():
         print(f"  declared list {n}: {len(ids & L)} of fold {fold}'s held-out rows (handled at the V6-5 read)")
 print("[across folds]")
-for a in (0, 1, 2):
-    for b in (0, 1, 2):
-        if a < b:
+for a in range(5):
+    for b in range(5):
+        if a < b and (a in FOLDS or b in FOLDS):
             for col in ("image_id", "group_id", "effective_lesion_id"):
                 o = set(val_sets[a][col].astype(str)) & set(val_sets[b][col].astype(str))
                 check(not o, f"held-out folds {a} and {b} share no {col} ({len(o)})")
 print("[no test / reserved / HIBA in predictions]")
 dev = set(manifest["image_id"].astype(str))
-allp = set().union(*[set(pd.read_csv(f, usecols=["image_id"])["image_id"].astype(str)) for f in glob.glob("results/v6/preds/*v64*.csv")])
-check(allp <= set(pd.concat([val_sets[1], val_sets[2]])["image_id"].astype(str)), f"all {len(allp):,} predicted images are fold 1-2 development rows")
+pf = [f for k in FOLDS for f in glob.glob(f"results/v6/preds/*_f{k}_*v64*.csv") + glob.glob(f"results/v6/preds_tta/*_f{k}_*v64*_tta.csv")]
+allp = set().union(*[set(pd.read_csv(f, usecols=["image_id"])["image_id"].astype(str)) for f in pf])
+check(allp <= set(pd.concat([val_sets[k] for k in FOLDS])["image_id"].astype(str)), f"all {len(allp):,} predicted images are development rows of folds {FOLDS}")
 print("\nRESULT:", "PASS" if not bad else f"{len(bad)} FAIL")

@@ -1,6 +1,7 @@
 """V6-4 pre-commit check, folds 1-2: byte-identical image files between training and held-out rows (size prefilter, then SHA-256).
 
-    python scripts/check_v64_bytes_folds.py > results/v6/screens/v64_folds12_bytes.txt
+    python scripts/check_v64_bytes_folds.py 1,2 > results/v6/screens/v64_folds12_bytes.txt
+    python scripts/check_v64_bytes_folds.py 1,2,3,4 > results/v6/screens/v64_folds1234_bytes.txt
 """
 import hashlib, os, sys
 from collections import defaultdict
@@ -14,12 +15,12 @@ from research.v5.train_v5 import fold_frames, load_extra_train
 from research.v6.train_v6 import YOUNG_EXTRAS, EXTRA_IMAGE_DIR
 led = pd.read_csv("research/experiments.csv", low_memory=False)
 v = led[led["session"] == "v6_v64"]["method"]
-print("v64 run ids unique in ledger:", led["method"].isin(v).sum() == 8 == v.nunique())
+print("v64 run ids unique in ledger:", led["method"].isin(v).sum() == v.nunique() == len(v))
 manifest = pd.read_csv(MANIFEST, low_memory=False)
 added = pd.read_csv("results/v6/added_pool/added_train.csv", low_memory=False)
 added_paths = [REPO / p for p in added["image_path"]]
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-for fold in (1, 2):
+for fold in [int(x) for x in (sys.argv[1] if len(sys.argv) > 1 else "1,2").split(",")]:
     tr, va = fold_frames(manifest, fold)
     young = load_extra_train(YOUNG_EXTRAS, tr, va)
     train = [IMAGE_DIR / f"{i}.jpg" for i in tr["image_id"].astype(str)] + [EXTRA_IMAGE_DIR / f"{i}.jpg" for i in young["image_id"].astype(str)] + added_paths
