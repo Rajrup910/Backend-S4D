@@ -23,6 +23,16 @@ Young melanomas missed, by darkness (low / mid / high melanin):
 - **Small numbers:** the read rests on only 48 young melanoma lesions, so treat it as exploratory.
 - **The small dark-lesion specialist doesn't help V6.** Every variant scores flat or slightly worse.
 
+**V6-6 external confirmation read (7 Nov 2026, executed once, receipt completed):** Single receipted read of the deployed V6 uniform vote against V5, V1, and the combined vote on HIBA (ISIC collections 175, 176, 251; 1,199 lesions analysed, 251 under 40, zero image or hash links to training, 2 pixel copies excluded) (`results/v6/hiba/hiba_report.json`, `results/v6/hiba/decisions.csv`, `results/v6/hiba_receipt.json`).
+- **External Macro-F1 (full coverage):** V6 vote 0.7348 vs V5 0.5715 (+0.1633 [+0.1235, +0.2064]) and vs V1 0.4718 (+0.2629 [+0.2237, +0.3080]). Both non-inferiority margins met and strictly superior to both earlier systems.
+- **Mechanism pAUC (melanoma vs histopathology-confirmed nevus @ FPR 0.20):** V6 vote 0.8104 vs V5 0.7530 (+0.0574 [+0.0059, +0.1099]) and vs V1 0.7474 (+0.0630 [+0.0106, +0.1174]). Delta CI strictly positive.
+- **All-age pAUC (@ FPR 0.20):** V6 vote 0.9246 vs V5 0.8349 (+0.0897 [+0.0681, +0.1143]).
+- **All-age escalation sensitivity (@ matched 20% budget):** V6 vote 91.3% (463/507) vs V5 83.2% (422/507) vs V1 62.9% (319/507).
+- **S70 under-40 sensitivity (@ matched 20% budget):** 90.0% (18/20 caught, 95% Clopper–Pearson CI [0.683, 0.988]), meeting the S70 target (>= 0.855).
+- **C1 false reassurance rate (<40):** 0 of 20 missed (0.0%, 95% Clopper–Pearson [0.0%, 16.8%]) under conformal sets at alpha=0.05.
+- **C6 under-40 matched referral vs V1:** V6 caught 5 lesions missed by V1, V1 caught 0 missed by V6 (delta sensitivity +0.25, exact one-sided McNemar p = 0.03125, meeting MCID 0.10).
+- **V6 is complete.** All phases (V6-0 through V6-6) finished.
+
 **Revision 30 Sep (owner request, pre-freeze, before any V6 result):** the six V1 architectures
 enter V6 as a portability test of the V5 features and as heterogeneous-ensemble members (§A3b,
 §A4 G3, §A5, §A6, phases V6-2b / V6-3b / V6-10, §B3, §B4). This is a revision of an unfrozen draft,

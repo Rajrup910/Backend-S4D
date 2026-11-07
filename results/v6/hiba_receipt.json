@@ -1,0 +1,36 @@
+{
+  "cohort": "HIBA (ISIC collections 175, 176, 251), V6-6",
+  "n_executions": 1,
+  "label_read_count": 1,
+  "status": "completed",
+  "inputs": {
+    "e_primary": "c5597cd07e6855e13c4d695710a5627a11c247b87125e9d19562d9f499081a70",
+    "leak_read": "ced143604f21686649fe9951ca6bec171a24d39042b6dd287a66740740d44e8f",
+    "reader": "579737d75c35265f4376d2a696a66c7a6e20ca4270903dab6768b7f6d6d3fcc8",
+    "cohort": "7398192356687ae62df4a470e60c986a25cfa9fa8554f2abf29a2bccf8b745c7",
+    "v5_dirichlet": "816d5a3e5ab7c26c260b1a2451a0e355a81673c8de127c3f1b792be72e2b9c31",
+    "v5_s56": "19a928c1e86ce81bd28c014f7cc692633d8c8d81bc9f68b3f18f130f61144489",
+    "v1_s56": "42ccf450da8b193d569ce885b40ca2005e183a52378851abc51c894451875a9b",
+    "v6_vote_dirichlet_state.json": "e50cd772ceb467b218778df3e54cf0618f92cd27d626cba90c70c065ffdf960c",
+    "v6_vote_s56_policies_v6.json": "ab46630c792c0a0b8e546ab89d61e001fab0555e416813f1545225abdec5c64b",
+    "v6_vote_conformal_state.json": "67a6cb6250c71a4289d1c676dbb56fe839ddccc7b930f2d336508d60b354799f",
+    "combined_vote_dirichlet_state.json": "307b883e3e4f3d3daa6072c029fd071dfd0af8f91a618a5839e8dfb5c231bd3e",
+    "combined_vote_s56_policies_v6.json": "677b86e94a3b3a74bef7321a2b41c69462be43150cd6f5a240fe16512d2fb167",
+    "combined_vote_conformal_state.json": "5283b7f33da2a7ed7960606f64b6f44e8ed9d8c5ecb7d4389137ab3b4a138e41",
+    "pixel_copies": "104d14f68034bd80758c5024a856b8b7abc0cb416ac88e30dce9738b79c217bd"
+  },
+  "executions": [
+    {
+      "execution": 1,
+      "started_at": "2026-11-07T16:11:06+0530",
+      "git_head": "a5cfbfe503642c84c3ea9dc26eda8999e55685d4",
+      "labels_read_at": "2026-11-07T21:25:08+0530",
+      "completed_at": "2026-11-07T21:26:34+0530",
+      "outputs": {
+        "results/v6/hiba/hiba_report.json": "00ddeda2e9308d0f6d471cc415b99a2a570c930525449acdd0ffcddeb9b0fc48",
+        "results/v6/hiba/decisions.csv": "5e6b5d55842e5c879214bdcc0d527d58804bfbb56fd9357df4df9551d8ac4126",
+        "results/v6/hiba/cohort.csv": "7398192356687ae62df4a470e60c986a25cfa9fa8554f2abf29a2bccf8b745c7"
+      }
+    }
+  ]
+}

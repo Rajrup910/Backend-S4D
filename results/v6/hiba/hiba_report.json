@@ -1,0 +1,345 @@
+{
+  "deployed": "v6_vote",
+  "budget": 0.2,
+  "lesions": 1199,
+  "in_scope": 1199,
+  "mechanism_rows": 311,
+  "under40_escalating_lesions": 20,
+  "systems": {
+    "v6_vote": {
+      "mechanism_pauc": 0.8103782779800655,
+      "pauc_all": 0.9245501957818543,
+      "macro_f1": 0.7347557226246233,
+      "referral": 0.20016680567139283,
+      "budget_scalar": -0.009213606693422225,
+      "u40": {
+        "caught": 18,
+        "n_escalating": 20,
+        "sensitivity": 0.9,
+        "ci95_clopper_pearson": [
+          0.6830172859809177,
+          0.9876514728297052
+        ]
+      },
+      "all_ages": {
+        "caught": 463,
+        "n_escalating": 507,
+        "sensitivity": 0.9132149901380671,
+        "ci95_clopper_pearson": [
+          0.88524622314266,
+          0.936234620373124
+        ]
+      }
+    },
+    "combined_vote": {
+      "mechanism_pauc": 0.8090909926808636,
+      "pauc_all": 0.9087787037987126,
+      "macro_f1": 0.7221753871713832,
+      "referral": 0.20016680567139283,
+      "budget_scalar": 0.08664156219857251,
+      "u40": {
+        "caught": 19,
+        "n_escalating": 20,
+        "sensitivity": 0.95,
+        "ci95_clopper_pearson": [
+          0.7512672372279722,
+          0.9987349105020502
+        ]
+      },
+      "all_ages": {
+        "caught": 457,
+        "n_escalating": 507,
+        "sensitivity": 0.9013806706114399,
+        "ci95_clopper_pearson": [
+          0.8720523640027101,
+          0.9259144521564848
+        ]
+      }
+    },
+    "v5": {
+      "mechanism_pauc": 0.7530251204531244,
+      "pauc_all": 0.8348775460825262,
+      "macro_f1": 0.5714805479534179,
+      "referral": 0.20016680567139283,
+      "budget_scalar": 0.14239137368521212,
+      "u40": {
+        "caught": 19,
+        "n_escalating": 20,
+        "sensitivity": 0.95,
+        "ci95_clopper_pearson": [
+          0.7512672372279722,
+          0.9987349105020502
+        ]
+      },
+      "all_ages": {
+        "caught": 422,
+        "n_escalating": 507,
+        "sensitivity": 0.8323471400394478,
+        "ci95_clopper_pearson": [
+          0.7969283523660184,
+          0.8638327375844833
+        ]
+      }
+    },
+    "v1": {
+      "mechanism_pauc": 0.7473932472691163,
+      "pauc_all": 0.8290994161381,
+      "macro_f1": 0.47180805819065924,
+      "referral": 0.20016680567139283,
+      "budget_scalar": 0.10775768102574505,
+      "u40": {
+        "caught": 13,
+        "n_escalating": 20,
+        "sensitivity": 0.65,
+        "ci95_clopper_pearson": [
+          0.40781146546717184,
+          0.8460907952154588
+        ]
+      },
+      "all_ages": {
+        "caught": 319,
+        "n_escalating": 507,
+        "sensitivity": 0.6291913214990138,
+        "ci95_clopper_pearson": [
+          0.585504517270768,
+          0.671362141271798
+        ]
+      }
+    }
+  },
+  "deployed_vs": {
+    "v5": {
+      "mechanism_pauc": {
+        "delta": 0.057353157526941034,
+        "ci95": [
+          0.005898740429649849,
+          0.10990394233879305
+        ],
+        "valid_resamples": 2000
+      },
+      "pauc_all": {
+        "delta": 0.08967264969932809,
+        "ci95": [
+          0.06812157109758714,
+          0.11431076337255326
+        ],
+        "valid_resamples": 2000
+      },
+      "macro_f1": {
+        "delta": 0.16327517467120545,
+        "ci95": [
+          0.12348634440709169,
+          0.20644347427063642
+        ],
+        "valid_resamples": 2000,
+        "margin": 0.02,
+        "non_inferior": true
+      },
+      "c6_u40_matched_referral": {
+        "n_lesions": 20,
+        "deployed_only": 0,
+        "other_only": 1,
+        "delta_sensitivity": -0.05,
+        "mcid": 0.1,
+        "meets_mcid": false,
+        "mcnemar_exact_one_sided_p": 1.0,
+        "alpha": 0.05,
+        "descriptive": true
+      }
+    },
+    "v1": {
+      "mechanism_pauc": {
+        "delta": 0.06298503071094919,
+        "ci95": [
+          0.010561890399165863,
+          0.11740896132397972
+        ],
+        "valid_resamples": 2000
+      },
+      "pauc_all": {
+        "delta": 0.09545077964375426,
+        "ci95": [
+          0.0668170134445088,
+          0.1266332932550663
+        ],
+        "valid_resamples": 2000
+      },
+      "macro_f1": {
+        "delta": 0.26294766443396406,
+        "ci95": [
+          0.2236567389824437,
+          0.3079712468588764
+        ],
+        "valid_resamples": 2000,
+        "margin": 0.02,
+        "non_inferior": true
+      },
+      "c6_u40_matched_referral": {
+        "n_lesions": 20,
+        "deployed_only": 5,
+        "other_only": 0,
+        "delta_sensitivity": 0.25,
+        "mcid": 0.1,
+        "meets_mcid": true,
+        "mcnemar_exact_one_sided_p": 0.03125,
+        "alpha": 0.05,
+        "descriptive": true
+      }
+    },
+    "combined_vote": {
+      "mechanism_pauc": {
+        "delta": 0.0012872852992018569,
+        "ci95": [
+          -0.022305351304501116,
+          0.02062627624744655
+        ],
+        "valid_resamples": 2000
+      },
+      "pauc_all": {
+        "delta": 0.01577149198314165,
+        "ci95": [
+          0.00826126575707065,
+          0.024268809289512566
+        ],
+        "valid_resamples": 2000
+      },
+      "macro_f1": {
+        "delta": 0.01258033545324011,
+        "ci95": [
+          -0.0073321079487742745,
+          0.03393174534369566
+        ],
+        "valid_resamples": 2000,
+        "margin": 0.02,
+        "non_inferior": true
+      },
+      "c6_u40_matched_referral": {
+        "n_lesions": 20,
+        "deployed_only": 0,
+        "other_only": 1,
+        "delta_sensitivity": -0.05,
+        "mcid": 0.1,
+        "meets_mcid": false,
+        "mcnemar_exact_one_sided_p": 1.0,
+        "alpha": 0.05,
+        "descriptive": true
+      }
+    }
+  },
+  "s70": {
+    "target": 0.855,
+    "sensitivity": 0.9,
+    "ci95": [
+      0.6830172859809177,
+      0.9876514728297052
+    ],
+    "point_estimate_meets": true,
+    "descriptive": true
+  },
+  "c1_false_reassurance": {
+    "v6_vote": {
+      "<40": {
+        "missed": 0,
+        "n_escalating": 20,
+        "rate": 0.0,
+        "ci95_clopper_pearson": [
+          0.0,
+          0.16843347098308528
+        ]
+      },
+      "40-59": {
+        "missed": 2,
+        "n_escalating": 77,
+        "rate": 0.025974025974025976,
+        "ci95_clopper_pearson": [
+          0.0031612003000158193,
+          0.09069715510534071
+        ]
+      },
+      "60+": {
+        "missed": 9,
+        "n_escalating": 408,
+        "rate": 0.022058823529411766,
+        "ci95_clopper_pearson": [
+          0.010135150415129126,
+          0.04146026269321012
+        ]
+      },
+      "unknown": {
+        "missed": 0,
+        "n_escalating": 2,
+        "rate": 0.0,
+        "ci95_clopper_pearson": [
+          0.0,
+          0.841886116991581
+        ]
+      }
+    },
+    "combined_vote": {
+      "<40": {
+        "missed": 0,
+        "n_escalating": 20,
+        "rate": 0.0,
+        "ci95_clopper_pearson": [
+          0.0,
+          0.16843347098308528
+        ]
+      },
+      "40-59": {
+        "missed": 1,
+        "n_escalating": 77,
+        "rate": 0.012987012987012988,
+        "ci95_clopper_pearson": [
+          0.0003287486514106065,
+          0.07024706064759673
+        ]
+      },
+      "60+": {
+        "missed": 5,
+        "n_escalating": 408,
+        "rate": 0.012254901960784314,
+        "ci95_clopper_pearson": [
+          0.003990781356649765,
+          0.028365770291310356
+        ]
+      },
+      "unknown": {
+        "missed": 1,
+        "n_escalating": 2,
+        "rate": 0.5,
+        "ci95_clopper_pearson": [
+          0.01257911709342505,
+          0.9874208829065749
+        ]
+      }
+    }
+  },
+  "n_boot": 2000,
+  "rng_seed": 20261105,
+  "cohort": {
+    "lesions": 1199,
+    "patients": 589,
+    "by_collection": {
+      "175": 1199
+    }
+  },
+  "pixel_copies_excluded": true,
+  "v5_models": [
+    "convnext_tiny-v5_composite_f0_s42_in22k_v5stack_last",
+    "convnext_tiny-v5_composite_f1_s42_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f2_s42_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f3_s42_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f4_s42_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f0_s43_in22k_v5stack_last",
+    "convnext_tiny-v5_composite_f1_s43_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f2_s43_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f3_s43_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f4_s43_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f0_s44_in22k_v5stack_last",
+    "convnext_tiny-v5_composite_f1_s44_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f2_s44_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f3_s44_in22k_v5conf_last",
+    "convnext_tiny-v5_composite_f4_s44_in22k_v5conf_last"
+  ],
+  "label": "external, new population and device"
+}
