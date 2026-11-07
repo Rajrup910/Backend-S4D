@@ -1,0 +1,223 @@
+{
+  "system": "v6_vote",
+  "note": "output field, never a referral layer; no exact guarantee on OOF, so coverage is measured on the half not used to calibrate",
+  "states": {
+    "0.05": {
+      "method": "raps_bipartite",
+      "alpha": 0.05,
+      "k_reg": 1,
+      "penalty": 0.05,
+      "seed": 42,
+      "calibration_rows": 7606,
+      "read_rows": 7688,
+      "cell_quantiles": {
+        "<40|benign": 0.9261948556814347,
+        "<40|escalating": 1.0320194349179768,
+        "40-59|benign": 0.9383061812693194,
+        "40-59|escalating": 1.0290561823589188,
+        "60+|benign": 1.053144054719203,
+        "60+|escalating": 1.0356925321266615,
+        "unknown|benign": 0.9064855904954603,
+        "unknown|escalating": 1.0220346349387315
+      },
+      "cell_counts": {
+        "<40|benign": 1219,
+        "<40|escalating": 95,
+        "40-59|benign": 2178,
+        "40-59|escalating": 708,
+        "60+|benign": 1517,
+        "60+|escalating": 1759,
+        "unknown|benign": 105,
+        "unknown|escalating": 25
+      },
+      "cell_source": {
+        "<40|benign": "cell",
+        "<40|escalating": "cell",
+        "40-59|benign": "cell",
+        "40-59|escalating": "cell",
+        "60+|benign": "cell",
+        "60+|escalating": "cell",
+        "unknown|benign": "cell",
+        "unknown|escalating": "cell"
+      },
+      "fallback_quantiles": [
+        1.126452822873503,
+        1.0096165178790477,
+        1.083831634555799,
+        1.2998519018846277,
+        1.0233787719361176,
+        0.927942594958948,
+        1.2473196359824352
+      ],
+      "fallback_counts": [
+        401,
+        960,
+        884,
+        47,
+        1226,
+        4012,
+        76
+      ]
+    },
+    "0.1": {
+      "method": "raps_bipartite",
+      "alpha": 0.1,
+      "k_reg": 1,
+      "penalty": 0.05,
+      "seed": 42,
+      "calibration_rows": 7606,
+      "read_rows": 7688,
+      "cell_quantiles": {
+        "<40|benign": 0.8647627864216078,
+        "<40|escalating": 1.0276430776636967,
+        "40-59|benign": 0.8865531898155122,
+        "40-59|escalating": 0.9946804029938479,
+        "60+|benign": 0.9798001582832506,
+        "60+|escalating": 0.9743058585826232,
+        "unknown|benign": 0.8659147142291109,
+        "unknown|escalating": 1.0220346349387315
+      },
+      "cell_counts": {
+        "<40|benign": 1219,
+        "<40|escalating": 95,
+        "40-59|benign": 2178,
+        "40-59|escalating": 708,
+        "60+|benign": 1517,
+        "60+|escalating": 1759,
+        "unknown|benign": 105,
+        "unknown|escalating": 25
+      },
+      "cell_source": {
+        "<40|benign": "cell",
+        "<40|escalating": "cell",
+        "40-59|benign": "cell",
+        "40-59|escalating": "cell",
+        "60+|benign": "cell",
+        "60+|escalating": "cell",
+        "unknown|benign": "cell",
+        "unknown|escalating": "cell"
+      },
+      "fallback_quantiles": [
+        1.0374754070874048,
+        0.9037410271668735,
+        1.045556705577182,
+        1.2485286862083673,
+        0.9946804029938479,
+        0.8723516277130325,
+        1.1301117026646554
+      ],
+      "fallback_counts": [
+        401,
+        960,
+        884,
+        47,
+        1226,
+        4012,
+        76
+      ]
+    }
+  },
+  "read_on_other_half": {
+    "0.05": {
+      "coverage": 0.9457596253902185,
+      "mean_set_size": 1.9693028095733611,
+      "by_band": {
+        "<40": {
+          "n": 1407,
+          "coverage": 0.9381663113006397,
+          "n_escalating": 98,
+          "false_reassurance": 3,
+          "false_reassurance_rate": 0.030612244897959183,
+          "ci95": [
+            0.00635802571746041,
+            0.08686300887783266
+          ]
+        },
+        "40-59": {
+          "n": 2939,
+          "coverage": 0.9421571963252807,
+          "n_escalating": 755,
+          "false_reassurance": 15,
+          "false_reassurance_rate": 0.019867549668874173,
+          "ci95": [
+            0.01116130894026098,
+            0.03255705574459806
+          ]
+        },
+        "60+": {
+          "n": 3221,
+          "coverage": 0.9524992238435268,
+          "n_escalating": 1865,
+          "false_reassurance": 5,
+          "false_reassurance_rate": 0.002680965147453083,
+          "ci95": [
+            0.0008710573304514683,
+            0.006245299844155615
+          ]
+        },
+        "unknown": {
+          "n": 121,
+          "coverage": 0.9421487603305785,
+          "n_escalating": 22,
+          "false_reassurance": 1,
+          "false_reassurance_rate": 0.045454545454545456,
+          "ci95": [
+            0.0011501475265735762,
+            0.22844439766763341
+          ]
+        }
+      }
+    },
+    "0.1": {
+      "coverage": 0.8972424557752341,
+      "mean_set_size": 1.505072840790843,
+      "by_band": {
+        "<40": {
+          "n": 1407,
+          "coverage": 0.8877043354655295,
+          "n_escalating": 98,
+          "false_reassurance": 6,
+          "false_reassurance_rate": 0.061224489795918366,
+          "ci95": [
+            0.02279745260423772,
+            0.1285078442594755
+          ]
+        },
+        "40-59": {
+          "n": 2939,
+          "coverage": 0.8880571623001021,
+          "n_escalating": 755,
+          "false_reassurance": 54,
+          "false_reassurance_rate": 0.07152317880794702,
+          "ci95": [
+            0.054183853323746,
+            0.09229456953424424
+          ]
+        },
+        "60+": {
+          "n": 3221,
+          "coverage": 0.9084135361688916,
+          "n_escalating": 1865,
+          "false_reassurance": 55,
+          "false_reassurance_rate": 0.029490616621983913,
+          "ci95": [
+            0.022291965931668618,
+            0.038214645824410656
+          ]
+        },
+        "unknown": {
+          "n": 121,
+          "coverage": 0.9338842975206612,
+          "n_escalating": 22,
+          "false_reassurance": 1,
+          "false_reassurance_rate": 0.045454545454545456,
+          "ci95": [
+            0.0011501475265735762,
+            0.22844439766763341
+          ]
+        }
+      }
+    }
+  },
+  "crossfit_sha256": "e4cb283b62f0e7088640593b139f80c214f941ed44cf41b05f608f1af3143383"
+}

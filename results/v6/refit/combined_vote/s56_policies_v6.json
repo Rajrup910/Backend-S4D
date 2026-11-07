@@ -1,0 +1,387 @@
+{
+  "system": "combined_vote",
+  "score": "msp",
+  "score_note": "inherited from the V1 S56 plan (selected on HAM val); never re-selected",
+  "primary_budget": 0.2,
+  "n_rows": 15294,
+  "crossfit_sha256": "ac7e410af988aa6a3b9bc167f49daa64e0dfa58c31a2cabad98796f4f37fefcf",
+  "policies": {
+    "band_0.1": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.1,
+      "floor": 0.825,
+      "tau_band": {
+        "<40": 0.1553772610826557,
+        "40-59": 0.3218626275850437,
+        "60+": Infinity
+      },
+      "tau_global": 0.6670872452526717,
+      "fit_counts": {
+        "<40": 583,
+        "40-59": 908,
+        "60+": 0,
+        "global_topup": 38
+      }
+    },
+    "global_0.1": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.1,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.44711535555928084,
+      "fit_counts": {
+        "ALL": 1529
+      }
+    },
+    "band_0.15": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.15,
+      "floor": 0.87,
+      "tau_band": {
+        "<40": 0.10918803545677847,
+        "40-59": 0.24536999367704404,
+        "60+": 0.5766073856812601
+      },
+      "tau_global": 0.5626106273406095,
+      "fit_counts": {
+        "<40": 746,
+        "40-59": 1263,
+        "60+": 220,
+        "global_topup": 65
+      }
+    },
+    "global_0.15": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.15,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.3817382429232007,
+      "fit_counts": {
+        "ALL": 2294
+      }
+    },
+    "band_0.2": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.2,
+      "floor": 0.885,
+      "tau_band": {
+        "<40": 0.0878918483385438,
+        "40-59": 0.2098854075000387,
+        "60+": 0.49908428172721375
+      },
+      "tau_global": 0.4722981164308795,
+      "fit_counts": {
+        "<40": 863,
+        "40-59": 1423,
+        "60+": 591,
+        "global_topup": 182
+      }
+    },
+    "global_0.2": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.2,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.3215361666532176,
+      "fit_counts": {
+        "ALL": 3059
+      }
+    },
+    "band_0.25": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.25,
+      "floor": 0.905,
+      "tau_band": {
+        "<40": 0.06642093339761079,
+        "40-59": 0.17186128200145168,
+        "60+": 0.43737852700030266
+      },
+      "tau_global": 0.42211618160628783,
+      "fit_counts": {
+        "<40": 1051,
+        "40-59": 1634,
+        "60+": 997,
+        "global_topup": 142
+      }
+    },
+    "global_0.25": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.25,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.26260747885005586,
+      "fit_counts": {
+        "ALL": 3824
+      }
+    },
+    "band_0.3": {
+      "arm": "band",
+      "score": "msp",
+      "budget": 0.3,
+      "floor": 0.92,
+      "tau_band": {
+        "<40": 0.05936315709821516,
+        "40-59": 0.13770195962094423,
+        "60+": 0.3737351664377907
+      },
+      "tau_global": 0.36069894879138686,
+      "fit_counts": {
+        "<40": 1141,
+        "40-59": 1868,
+        "60+": 1451,
+        "global_topup": 128
+      }
+    },
+    "global_0.3": {
+      "arm": "global",
+      "score": "msp",
+      "budget": 0.3,
+      "floor": null,
+      "tau_band": {},
+      "tau_global": 0.20836458136773373,
+      "fit_counts": {
+        "ALL": 4588
+      }
+    }
+  },
+  "oof_in_sample_description": {
+    "band_0.1": {
+      "referral_rate": 0.09997384595266118,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8486953256992679,
+        "referral_rate": 0.09997384595266118
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.8341968911917098,
+        "referral_rate": 0.21425946343256155
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8257006151742994,
+        "referral_rate": 0.15587982832618025
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.8612030905077263,
+        "referral_rate": 0.005848853316915499
+      }
+    },
+    "global_0.1": {
+      "referral_rate": 0.09997384595266118,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8545147362492961,
+        "referral_rate": 0.09997384595266118
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.6321243523316062,
+        "referral_rate": 0.04814406468210217
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.7710184552289815,
+        "referral_rate": 0.07828326180257511
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9017660044150111,
+        "referral_rate": 0.14144989995382484
+      }
+    },
+    "band_0.15": {
+      "referral_rate": 0.14999346148816528,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.871222076215506,
+        "referral_rate": 0.14999346148816528
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.8756476683937824,
+        "referral_rate": 0.27416391032708565
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8708133971291866,
+        "referral_rate": 0.21682403433476394
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.8738962472406181,
+        "referral_rate": 0.043404648299215025
+      }
+    },
+    "global_0.15": {
+      "referral_rate": 0.14999346148816528,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8747888117139103,
+        "referral_rate": 0.14999346148816528
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.6735751295336787,
+        "referral_rate": 0.07754502021315693
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.7990430622009569,
+        "referral_rate": 0.11484978540772532
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9177704194260485,
+        "referral_rate": 0.2127135601046637
+      }
+    },
+    "band_0.2": {
+      "referral_rate": 0.2000130770236694,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8898066453914023,
+        "referral_rate": 0.2000130770236694
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.8911917098445595,
+        "referral_rate": 0.3171628077912532
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.885850991114149,
+        "referral_rate": 0.24429184549356223
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.8940397350993378,
+        "referral_rate": 0.1172849007234108
+      }
+    },
+    "global_0.2": {
+      "referral_rate": 0.2000130770236694,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.8935611038107752,
+        "referral_rate": 0.2000130770236694
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.6994818652849741,
+        "referral_rate": 0.1065784638000735
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8263841421736159,
+        "referral_rate": 0.15622317596566523
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9326710816777042,
+        "referral_rate": 0.28028320763429276
+      }
+    },
+    "band_0.25": {
+      "referral_rate": 0.25003269255917354,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.9061385395156749,
+        "referral_rate": 0.25003269255917354
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.9119170984455959,
+        "referral_rate": 0.3862550532892319
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.9056732740943267,
+        "referral_rate": 0.28051502145922746
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9083885209713024,
+        "referral_rate": 0.17100200092350315
+      }
+    },
+    "global_0.25": {
+      "referral_rate": 0.25003269255917354,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.919466866904449,
+        "referral_rate": 0.25003269255917354
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.7512953367875648,
+        "referral_rate": 0.13855200294009556
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.8619275461380724,
+        "referral_rate": 0.20103004291845494
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9528145695364238,
+        "referral_rate": 0.34308142219485915
+      }
+    },
+    "band_0.3": {
+      "referral_rate": 0.29998692297633056,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.9217195419560729,
+        "referral_rate": 0.29998692297633056
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.927461139896373,
+        "referral_rate": 0.4193311282616685
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.9207108680792891,
+        "referral_rate": 0.32068669527897
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9241169977924945,
+        "referral_rate": 0.23764814529782977
+      }
+    },
+    "global_0.3": {
+      "referral_rate": 0.29998692297633056,
+      "ALL": {
+        "n_escalating": 5327,
+        "system_sens": 0.9356110381077529,
+        "referral_rate": 0.29998692297633056
+      },
+      "<40": {
+        "n_escalating": 193,
+        "system_sens": 0.7927461139896373,
+        "referral_rate": 0.1701580301359794
+      },
+      "40-59": {
+        "n_escalating": 1463,
+        "system_sens": 0.885850991114149,
+        "referral_rate": 0.24532188841201716
+      },
+      "60+": {
+        "n_escalating": 3624,
+        "system_sens": 0.9638520971302428,
+        "referral_rate": 0.40480221640757275
+      }
+    }
+  }
+}

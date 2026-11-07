@@ -4,6 +4,25 @@
 **Correction, 5 Nov 2026 (outside Part 0, so the freeze holds):** Part 0 quotes V5's under-40 gain as +0.0351. Without the 90 rows that had a copy in V5's training data it is +0.0136 [−0.0084, +0.0357], p = 0.228 (`results/v5/confirm_s42_s43_s44_without_copies.json`). Also from 5 Nov, by owner decision and declared before any V6 prediction on folds 1–4: a system must pass E-primary and no-harm on all rows, without the 380 at-risk rows and without the extended 426 (`scripts/read_leak_sensitivity.py`, `results/v6/leak_sensitivity_declaration.json`), and `research.v6.refit_system` and `research.v6.hiba_read` follow that read. Every fold-0 decision stands without those rows (`results/v6/screens/decisions_without_at_risk_rows.json`).
 **Status (4 Nov 2026):** **FROZEN.** The owner approved the hash on 4 Nov (`results/v6/v6_plan_freeze.json`). Part 0 is the plan, and it describes the state before the freeze; any change to it or to a frozen file now needs a dated amendment (`research/v6/plan_freeze.py --amendment`). Revisions below are in date order.
 
+## V6 results and subheadlines (7 Nov 2026, outside Part 0, so the freeze holds)
+
+**Headline, V6-5 read once on 7 Nov** (`results/v6/e_primary.json`, `results/v6/leak_sensitivity_read.json`). On folds 1–4 (12,235 images), with 24-view TTA on both sides, the V6 uniform vote of four members (ConvNeXt-T 224 px, PanDerm-B, DINOv2-B, ConvNeXt-T 384 px) **replaces the V5 15-model system**. Macro-F1 is 0.7433 against 0.7005, +0.0427 [+0.0245, +0.0618]; all-age pAUC +0.0337 [+0.0263, +0.0415]. E-primary passes and no-harm passes. **The binding leak rule passes**: E-primary and no-harm hold with all rows, without the 380 rows and without the 426 rows, and the gain is slightly larger without them. **Gate A fails**: under-40 pAUC +0.038 [+0.011, +0.071], below the +0.050 MCID. Claim 3 (the PanDerm mechanism) fails.
+
+**Owner decision, 7 Nov — deployment:** the uniform vote stays deployed, as pre-registered. The nested weighted vote (`results/v6/nested_selection.json`, Macro-F1 +0.0088 [−0.00004, +0.0182] over uniform, SD 0.0047) is **reported as a secondary finding only**. Section 0.5's "replaces uniform" is not acted on, because no frozen code implements it and no deployable weights were declared.
+
+**Subheadline (owner decision, 7 Nov) — Dark-lesion rereads: the pattern has weakened.** It is to be showcased as a V6 subheadline, and its facts are the starting line for solving the under-40 problem in V7 (`scripts/read_dark_v6_oof.py` → `results/v6/screens/dark_v6_oof_read.json`, folds 1–4).
+
+Young melanomas missed, by darkness (low / mid / high melanin):
+
+| System | Low | Mid | High |
+|---|---:|---:|---:|
+| V5 control | 3/13 | 8/20 | 10/15 |
+| V6 vote | 2/13 | 7/20 | 5/15 |
+
+- **Better, not gone:** V6 misses half as many dark young melanomas as the old control. The "worse in the young than in older patients" effect is no longer visible (+0.015, interval spanning zero). But within each archive, missed melanomas are still darker than caught ones (p 0.040).
+- **Small numbers:** the read rests on only 48 young melanoma lesions, so treat it as exploratory.
+- **The small dark-lesion specialist doesn't help V6.** Every variant scores flat or slightly worse.
+
 **Revision 30 Sep (owner request, pre-freeze, before any V6 result):** the six V1 architectures
 enter V6 as a portability test of the V5 features and as heterogeneous-ensemble members (§A3b,
 §A4 G3, §A5, §A6, phases V6-2b / V6-3b / V6-10, §B3, §B4). This is a revision of an unfrozen draft,
