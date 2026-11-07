@@ -33,5 +33,16 @@
       "99": 0.9893765744642687
     }
   },
-  "referral_rate": 0.2000130770236694
+  "referral_rate": 0.2000130770236694,
+  "features": {
+    "run": "anchor_h7_f0_s42_in22k_v62y",
+    "rows": 3059,
+    "dimensions": 768,
+    "mahalanobis_in_sample": {
+      "median": 708.8725307573019,
+      "p95": 1384.5636136451176
+    },
+    "reference_file": "results/v6/refit/drift_reference_features.npz",
+    "produced_by": "scripts/refit_features_v6.py (fixed copy of refit_system.feature_baseline)"
+  }
 }
