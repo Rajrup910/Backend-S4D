@@ -1,0 +1,208 @@
+{
+ "what": "L1 xAUC read, banked V6 vote, folds 1-4, escalation pAUC at FPR 0.20; exploratory pre-test (plan 13.3)",
+ "fpr_max": 0.2,
+ "n_boot": 2000,
+ "seed": 20261111,
+ "rows": 12235,
+ "older": "40-59 and 60+ pooled",
+ "all_negatives": {
+  "young_pos_vs_young_neg": {
+   "point": 0.8329238725455139,
+   "ci95": [
+    0.7718116461840241,
+    0.8846168125519965
+   ]
+  },
+  "young_pos_vs_older_neg": {
+   "point": 0.7536905403778837,
+   "ci95": [
+    0.6823207321809733,
+    0.820899568171337
+   ]
+  },
+  "older_pos_vs_young_neg": {
+   "point": 0.9375556258055103,
+   "ci95": [
+    0.9240851969356955,
+    0.9505517808083901
+   ]
+  },
+  "older_pos_vs_older_neg": {
+   "point": 0.8807197525165671,
+   "ci95": [
+    0.8664340740335809,
+    0.8949708178371886
+   ]
+  },
+  "positive_side_deficit": {
+   "point": -0.12702921213868335,
+   "ci95": [
+    -0.19864064742323714,
+    -0.06048918252069976
+   ]
+  },
+  "negative_side_deficit": {
+   "point": 0.05683587328894324,
+   "ci95": [
+    0.04141487380592557,
+    0.07357362561823375
+   ]
+  },
+  "counts": {
+   "young_pos_groups": 65,
+   "older_pos_groups": 1618,
+   "young_neg_groups": 1229,
+   "older_neg_groups": 4082
+  }
+ },
+ "histo_negatives": {
+  "young_pos_vs_young_neg": {
+   "point": 0.8143225273944148,
+   "ci95": [
+    0.7477660977758614,
+    0.8706278096635311
+   ]
+  },
+  "young_pos_vs_older_neg": {
+   "point": 0.7147459530158977,
+   "ci95": [
+    0.6342592370161327,
+    0.7887798558947141
+   ]
+  },
+  "older_pos_vs_young_neg": {
+   "point": 0.9256844879538099,
+   "ci95": [
+    0.9053382849928183,
+    0.943788458799454
+   ]
+  },
+  "older_pos_vs_older_neg": {
+   "point": 0.8545949458724765,
+   "ci95": [
+    0.8359227191121673,
+    0.8721031263383959
+   ]
+  },
+  "positive_side_deficit": {
+   "point": -0.1398489928565788,
+   "ci95": [
+    -0.21894719407418506,
+    -0.06678433491656748
+   ]
+  },
+  "negative_side_deficit": {
+   "point": 0.07108954208133333,
+   "ci95": [
+    0.04910215669121657,
+    0.09417354201046488
+   ]
+  },
+  "counts": {
+   "young_pos_groups": 65,
+   "older_pos_groups": 1618,
+   "young_neg_groups": 476,
+   "older_neg_groups": 1242
+  }
+ },
+ "melanoma_only_all_negatives": {
+  "young_pos_vs_young_neg": {
+   "point": 0.8028755993922992,
+   "ci95": [
+    0.7240652169940852,
+    0.8706553893224671
+   ]
+  },
+  "young_pos_vs_older_neg": {
+   "point": 0.7146758273453969,
+   "ci95": [
+    0.6184841984174686,
+    0.8017261993441526
+   ]
+  },
+  "older_pos_vs_young_neg": {
+   "point": 0.9030659593546404,
+   "ci95": [
+    0.8829672368350983,
+    0.9217187335639999
+   ]
+  },
+  "older_pos_vs_older_neg": {
+   "point": 0.8309147407593882,
+   "ci95": [
+    0.8084257900936364,
+    0.8516616445837336
+   ]
+  },
+  "positive_side_deficit": {
+   "point": -0.11623891341399128,
+   "ci95": [
+    -0.21201806563207654,
+    -0.02579122977370728
+   ]
+  },
+  "negative_side_deficit": {
+   "point": 0.0721512185952522,
+   "ci95": [
+    0.05233359532069288,
+    0.09260388113594688
+   ]
+  },
+  "counts": {
+   "young_pos_groups": 48,
+   "older_pos_groups": 737,
+   "young_neg_groups": 1229,
+   "older_neg_groups": 4082
+  }
+ },
+ "melanoma_only_histo_negatives": {
+  "young_pos_vs_young_neg": {
+   "point": 0.7815610542548718,
+   "ci95": [
+    0.6948089307340823,
+    0.8556762194667408
+   ]
+  },
+  "young_pos_vs_older_neg": {
+   "point": 0.6700529711499689,
+   "ci95": [
+    0.5650910167473969,
+    0.774563310409917
+   ]
+  },
+  "older_pos_vs_young_neg": {
+   "point": 0.8869768139338134,
+   "ci95": [
+    0.8603722998764952,
+    0.9128149837427576
+   ]
+  },
+  "older_pos_vs_older_neg": {
+   "point": 0.797977179492835,
+   "ci95": [
+    0.7739798076839471,
+    0.8211939760803959
+   ]
+  },
+  "positive_side_deficit": {
+   "point": -0.1279242083428661,
+   "ci95": [
+    -0.23043116819852846,
+    -0.020348888744094136
+   ]
+  },
+  "negative_side_deficit": {
+   "point": 0.08899963444097847,
+   "ci95": [
+    0.06175365810004586,
+    0.11566120868784524
+   ]
+  },
+  "counts": {
+   "young_pos_groups": 48,
+   "older_pos_groups": 737,
+   "young_neg_groups": 476,
+   "older_neg_groups": 1242
+  }
+ }
+}
