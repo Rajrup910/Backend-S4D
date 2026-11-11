@@ -258,3 +258,6 @@ paper/manuscript_IEEE.pdf
 *.tex.bak
 # Re-pullable archive metadata for the V6 pool; candidates.csv is the kept record.
 results/v6/added_pool/meta_*.csv
+
+# MRA-MIDAS per-patient metadata (Stanford research use agreement): never published
+results/v7/external/midas_v7/cohort.csv
