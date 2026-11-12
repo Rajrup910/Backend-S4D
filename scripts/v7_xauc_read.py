@@ -108,7 +108,30 @@ def main(argv: list[str] | None = None) -> int:
         "melanoma_only_histo_negatives": read(frame, (frame["verification"] == "histo").to_numpy(), rng, args.n_boot,
                                               (frame["dx"] == "mel").to_numpy()),
     }
+    # archive control: melanoma-only positive-side deficit within each archive, pooled by inverse variance (normal
+    # approximation, SE from the percentile interval width / 3.92). Answers "is the deficit just young melanomas'
+    # archive mix?" Stratum estimates with few young melanomas are wide; the pooled one is the answer.
+    per = {}
+    for archive, sub in frame.groupby("archive"):
+        sub = sub.reset_index(drop=True)
+        if sub.loc[(sub["dx"] == "mel") & (sub["age_band"] == "<40"), "group_id"].nunique() < 8:
+            continue
+        r = read(sub, np.ones(len(sub), bool), rng, args.n_boot, (sub["dx"] == "mel").to_numpy())
+        d = r["positive_side_deficit"]
+        per[archive] = {"counts": r["counts"], "positive_side_deficit": d,
+                        "young_pos_vs_older_neg": r["young_pos_vs_older_neg"], "se": (d["ci95"][1] - d["ci95"][0]) / 3.92}
+    w = {a: 1 / v["se"] ** 2 for a, v in per.items()}
+    pooled = sum(w[a] * per[a]["positive_side_deficit"]["point"] for a in per) / sum(w.values())
+    se = sum(w.values()) ** -0.5
+    report["melanoma_only_archive_stratified"] = {"by_archive": per, "pooled_positive_side_deficit": pooled,
+                                                  "pooled_ci95_normal": [pooled - 1.96 * se, pooled + 1.96 * se]}
     OUT.write_text(json.dumps(report, indent=1), encoding="utf-8")
+    s = report["melanoma_only_archive_stratified"]
+    for a, v in s["by_archive"].items():
+        d = v["positive_side_deficit"]
+        print(f"{a:10s} young mel groups {v['counts']['young_pos_groups']:3d}: {d['point']:+.3f} [{d['ci95'][0]:+.3f}, {d['ci95'][1]:+.3f}]")
+    print(f"archive-stratified pooled {s['pooled_positive_side_deficit']:+.3f} "
+          f"[{s['pooled_ci95_normal'][0]:+.3f}, {s['pooled_ci95_normal'][1]:+.3f}]")
     for name in ("all_negatives", "histo_negatives", "melanoma_only_all_negatives", "melanoma_only_histo_negatives"):
         r = report[name]
         print(name, r["counts"])

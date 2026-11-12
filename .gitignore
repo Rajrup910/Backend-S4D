@@ -92,6 +92,9 @@ optuna_study.db
 # Massive dataset folders (HAM10000, PAD-UFES-20, ISIC, downloads, etc.)
 data/
 data/**
+# ...but research/data/ holds the V7 data gate's CODE (overlap guard, master builder, ids, grouping), no data:
+# `data/` above matched it at any depth, so the gate code was never tracked (found 12 Nov 2026).
+!research/data/
 datasets/
 datasets/**
 data_cache/
