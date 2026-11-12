@@ -61,7 +61,9 @@ def main() -> int:
     src = amend.BENCH_SOURCE
     master = pd.read_csv(src / "master_v7.csv", dtype={"fold": "Int64"}, low_memory=False)
     master["image_id"] = master["image_id"].astype(str)
+    from research.data.build_master_v7 import second_opinion_filter   # the gate drops unsupported single-detector links
     base = pd.read_csv(src / "links_v7.csv", dtype=str)[["a", "b", "tier", "evidence"]]
+    base, _ = second_opinion_filter(base, write_raw=False)
     report = {"note": __doc__.split("\n\n")[1].replace("\n", " "), "pre_m1": guard(master, base)}
     for name, path in SCANS.items():
         if not path.is_file():

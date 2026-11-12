@@ -1,86 +1,86 @@
 {
  "note": "    python -m research.v7.m1.cost      # writes results/v7/m1/training_cost.json",
  "pre_m1": {
-  "links": 122072,
+  "links": 120022,
   "confirmed": 15233,
-  "at_risk": 106839,
+  "at_risk": 104789,
   "largest_group": 31,
   "groups_over_limit": 0,
-  "global_removals": 681,
+  "global_removals": 103,
   "per_fold": {
    "0": {
     "training_rows_before_guard": 49518,
-    "removed": 703,
-    "share_removed": 0.01419685770830809
+    "removed": 175,
+    "share_removed": 0.0035340684195646027
    },
    "1": {
     "training_rows_before_guard": 49518,
-    "removed": 700,
-    "share_removed": 0.01413627367825841
+    "removed": 150,
+    "share_removed": 0.003029201502483945
    },
    "2": {
     "training_rows_before_guard": 49518,
-    "removed": 702,
-    "share_removed": 0.014176663031624863
+    "removed": 174,
+    "share_removed": 0.0035138737428813765
    },
    "3": {
     "training_rows_before_guard": 49518,
-    "removed": 700,
-    "share_removed": 0.01413627367825841
+    "removed": 174,
+    "share_removed": 0.0035138737428813765
    },
    "4": {
     "training_rows_before_guard": 49519,
-    "removed": 704,
-    "share_removed": 0.014216765282012964
+    "removed": 179,
+    "share_removed": 0.0036147741271027284
    }
   },
-  "mean_removed_per_fold": 701.8,
+  "mean_removed_per_fold": 170.4,
   "by_holdout_removed": {
-   "ham": 1475,
-   "bcn20000": 9484,
-   "mskcc": 1253
+   "ham": 1577,
+   "bcn20000": 9567,
+   "mskcc": 1379
   },
   "development_rows": 15294
  },
  "before_amendment_01": {
-  "links": 143841,
+  "links": 141803,
   "confirmed": 20370,
-  "at_risk": 123471,
+  "at_risk": 121433,
   "largest_group": 31,
   "groups_over_limit": 0,
-  "global_removals": 3424,
+  "global_removals": 1202,
   "per_fold": {
    "0": {
     "training_rows_before_guard": 49518,
-    "removed": 3637,
-    "share_removed": 0.07344803909689405
+    "removed": 2512,
+    "share_removed": 0.05072902782826447
    },
    "1": {
     "training_rows_before_guard": 49518,
-    "removed": 3672,
-    "share_removed": 0.07415485278080698
+    "removed": 2787,
+    "share_removed": 0.056282563916151704
    },
    "2": {
     "training_rows_before_guard": 49518,
-    "removed": 3680,
-    "share_removed": 0.07431641019427279
+    "removed": 2765,
+    "share_removed": 0.05583828102912072
    },
    "3": {
     "training_rows_before_guard": 49518,
-    "removed": 3687,
-    "share_removed": 0.07445777293105538
+    "removed": 2755,
+    "share_removed": 0.05563633426228846
    },
    "4": {
     "training_rows_before_guard": 49519,
-    "removed": 3641,
-    "share_removed": 0.0735273329429108
+    "removed": 2520,
+    "share_removed": 0.050889557543569136
    }
   },
-  "mean_removed_per_fold": 3663.4,
+  "mean_removed_per_fold": 2667.8,
   "by_holdout_removed": {
-   "ham": 1323,
-   "bcn20000": 8951,
-   "mskcc": 1195
+   "ham": 2634,
+   "bcn20000": 9668,
+   "mskcc": 1602
   },
   "development_rows": 15294,
   "same_lesion_where_ids_known": {
@@ -97,44 +97,44 @@
   }
  },
  "amendment_01": {
-  "links": 138492,
+  "links": 136442,
   "confirmed": 27162,
-  "at_risk": 111330,
+  "at_risk": 109280,
   "largest_group": 31,
   "groups_over_limit": 0,
-  "global_removals": 1569,
+  "global_removals": 259,
   "per_fold": {
    "0": {
     "training_rows_before_guard": 49518,
-    "removed": 1651,
-    "share_removed": 0.033341411204006625
+    "removed": 697,
+    "share_removed": 0.014075689648208732
    },
    "1": {
     "training_rows_before_guard": 49518,
-    "removed": 1630,
-    "share_removed": 0.03291732299365887
+    "removed": 630,
+    "share_removed": 0.01272264631043257
    },
    "2": {
     "training_rows_before_guard": 49518,
-    "removed": 1657,
-    "share_removed": 0.03346257926410598
+    "removed": 636,
+    "share_removed": 0.012843814370531928
    },
    "3": {
     "training_rows_before_guard": 49518,
-    "removed": 1636,
-    "share_removed": 0.03303849105375823
+    "removed": 583,
+    "share_removed": 0.011773496506320934
    },
    "4": {
     "training_rows_before_guard": 49519,
-    "removed": 1668,
-    "share_removed": 0.03368404046931481
+    "removed": 638,
+    "share_removed": 0.01288394353682425
    }
   },
-  "mean_removed_per_fold": 1648.4,
+  "mean_removed_per_fold": 636.8,
   "by_holdout_removed": {
-   "ham": 1459,
-   "bcn20000": 9320,
-   "mskcc": 1209
+   "ham": 2010,
+   "bcn20000": 9616,
+   "mskcc": 1522
   },
   "development_rows": 15294,
   "same_lesion_where_ids_known": {

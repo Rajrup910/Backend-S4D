@@ -1,0 +1,49 @@
+ M CHANGELOG.md
+ M README.md
+ M docs/LEAK_DISCLOSURE.md
+ M docs/v7_final_revision/V7_FINAL_MASTER_RESEARCH_PLAN.md
+ M research/data/build_master_v7.py
+ M research/data/overlap_guard.py
+ M research/v7/m1/cost.py
+ M research/v7/m1/headline.py
+ M research/v7/m1/tiers.py
+ M research/v7/plan_freeze.py
+ M results/v7/added_pool_v7/pool_v7_receipt.json
+ M results/v7/chromophore/fold0.json
+ M results/v7/chromophore/fold1.json
+ M results/v7/chromophore/fold2.json
+ M results/v7/chromophore/fold3.json
+ M results/v7/chromophore/fold4.json
+ M results/v7/chromophore/loao-bcn20000.json
+ M results/v7/chromophore/loao-ham.json
+ M results/v7/chromophore/loao-mskcc.json
+ M results/v7/data_gate_receipt.json
+ M results/v7/data_gate_report.json
+ M results/v7/data_roles_v7.json
+ M results/v7/m1/headline.json
+ M results/v7/m1/training_cost.json
+ M results/v7/smoke/B3_anchor384_h7_f0_s42_smoke.json
+ M results/v7/smoke/B5_anchor_h7_f0_s42_smoke.json
+ M results/v7/smoke/R1_anchor_h7_f0_s42_smoke.json
+ M results/v7/smoke/R2_dinov2_b_h7_f0_s42_smoke.json
+ M results/v7/smoke/R3_panderm_b_h7_f0_s42_smoke.json
+ M results/v7/smoke/R3b_panderm_b_h7_f0_s42_smoke.json
+ M results/v7/smoke/preds/B3_anchor384_h7_f0_s42_smoke.csv
+ M results/v7/smoke/preds/B3_anchor384_h7_f0_s42_smoke_swad.csv
+ M results/v7/smoke/preds/R3_panderm_b_h7_f0_s42_smoke.csv
+ M results/v7/smoke/preds/R3_panderm_b_h7_f0_s42_smoke_swad.csv
+ M results/v7/smoke/preds/R3b_panderm_b_h7_f0_s42_smoke.csv
+ M results/v7/smoke/preds/R3b_panderm_b_h7_f0_s42_smoke_swad.csv
+ M tests/test_v7_data_gate.py
+?? (local planning note)
+?? (local planning note)
+?? docs/v7_final_revision/_backup_2026-11-10/
+?? reports/
+?? research/v7/m1/second_opinion.py
+?? research_notes/
+?? results/v6_audit/
+?? results/v7/audit_2026-11-12/
+?? results/v7/external/
+?? results/v7/m1/_pre_amendment_01/midas_pixel_audit.json
+?? results/v7/m1/second_opinion.csv
+?? results/v7/m1/second_opinion.json

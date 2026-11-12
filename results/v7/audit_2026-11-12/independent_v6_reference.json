@@ -1,0 +1,46 @@
+{
+ "rows": 12235,
+ "groups": 6989,
+ "labels_match_manifest": true,
+ "macro_f1": 0.7432581241254821,
+ "balanced_accuracy": 0.7228630265301321,
+ "accuracy": 0.8228851655087863,
+ "pauc_all": 0.8890425258877821,
+ "pauc_u40": 0.8329238725455139,
+ "u40_rows": 2164,
+ "u40_escalating_images": 158,
+ "u40_escalating_groups": 65,
+ "u40_negative_images": 2006,
+ "escalating_images": 4258,
+ "escalation_sensitivity_argmax_all": 0.8255049318929075,
+ "escalation_sensitivity_argmax_u40": 0.5886075949367089,
+ "per_class_f1": {
+  "akiec": 0.5898203592814372,
+  "bcc": 0.8207874015748031,
+  "bkl": 0.7078464106844741,
+  "df": 0.6547619047619048,
+  "mel": 0.7042182369285173,
+  "nv": 0.9057004244996968,
+  "vasc": 0.819672131147541
+ },
+ "by_archive_macro_f1": {
+  "bcn20000": 0.6376519105259505,
+  "ham": 0.8157235229518449,
+  "mskcc": 0.34785302846676125
+ },
+ "by_band_pauc": {
+  "<40": 0.8329238725455139,
+  "40-59": 0.8765775632396725,
+  "60+": 0.8560650202775784
+ },
+ "macro_f1_ci_grouped": [
+  0.7178174533471527,
+  0.7682273412902212
+ ],
+ "pauc_u40_ci_grouped": [
+  0.7715077641888035,
+  0.8842544580428165
+ ],
+ "recorded_macro_f1": 0.7432581241254821,
+ "reproduces_recorded": true
+}

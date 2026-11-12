@@ -160,10 +160,14 @@ def test_a_cross_fold_link_removes_the_training_side_row_for_each_held_out_fold(
     assert overlap_guard.check(master, links, 14, PLANTS_OK)["passed"]
 
 
-def test_added_and_development_rows_linked_to_spent_or_evaluated_rows_leave_all_training() -> None:
+def test_rows_linked_to_spent_rows_leave_all_training_and_added_rows_leave_only_the_linked_fold() -> None:
     master = _master()
     drops = overlap_guard.removals(master, _links(("ISIC_2000001", D[3], "at_risk"), (D[4], "ISIC_3000001", "confirmed")))
-    assert set(drops["global"]) == {"ISIC_2000001", D[4]}
+    assert set(drops["global"]) == {D[4]}                                  # linked to ham_test: out of every run
+    assert drops["by_fold"][1] == ["ISIC_2000001"]                         # D3 is fold 1: out of fold 1's run only
+    assert all("ISIC_2000001" not in drops["by_fold"][f] for f in (0, 2, 3, 4))
+    assert "ISIC_2000001" in set(overlap_guard.training_rows(master, drops, fold=0)["image_id"])
+    assert "ISIC_2000001" not in set(overlap_guard.training_rows(master, drops, fold=1)["image_id"])
 
 
 def test_confirmed_chains_remove_the_whole_group_not_only_direct_neighbours() -> None:
@@ -173,6 +177,23 @@ def test_confirmed_chains_remove_the_whole_group_not_only_direct_neighbours() ->
     master["master_group"] = master["image_id"].map(groups)
     drops = overlap_guard.removals(master, links)
     assert set(drops["by_fold"][0]) == {D[2], D[4]}
+    assert overlap_guard.check(master, links, 14, PLANTS_OK)["passed"]
+
+
+def test_an_at_risk_link_to_one_image_of_a_lesion_reaches_its_other_images() -> None:
+    """Added row x looks like image D0 of lesion {D0, D2}; D2 is evaluated in fold 1. x must leave fold 1's training even
+    though its only link is to D0 (in fold 0). Before 12 Nov the guard followed the link to D0 alone."""
+    master = _master()
+    groups = grouping.components(master["image_id"], [(D[0], D[2])])
+    master["master_group"] = master["image_id"].map(groups)
+    links = _links((D[0], D[2], "confirmed"), ("ISIC_2000001", D[0], "at_risk"))
+    drops = overlap_guard.removals(master, links)
+    assert "ISIC_2000001" in drops["by_fold"][0] and "ISIC_2000001" in drops["by_fold"][1]   # D0's and D2's folds
+    assert not any("ISIC_2000001" in drops["by_fold"][f] for f in (2, 3, 4)) and "ISIC_2000001" not in drops["global"]
+    links = _links((D[0], D[2], "confirmed"), (D[4], D[0], "at_risk"))   # a development row of fold 2
+    drops = overlap_guard.removals(master, links)
+    assert D[4] in drops["by_fold"][0] and D[4] in drops["by_fold"][1]   # out when D0's fold OR D2's fold is held out
+    assert {D[0], D[2]} <= set(drops["by_fold"][2])                     # and both lesion images out when D4 is evaluated
     assert overlap_guard.check(master, links, 14, PLANTS_OK)["passed"]
 
 
@@ -349,3 +370,24 @@ def test_a_hash_only_match_stays_at_risk_and_never_merges_lesions(monkeypatch: p
     groups = grouping.components(list("abcd"), confirmed) if hasattr(grouping, "components") else None
     if groups is not None:
         assert len({groups[k] for k in "abcd"}) == 3          # a, b and {c, d}: the hash chain a-b-c did not merge
+
+
+def test_the_second_opinion_drops_only_unsupported_single_detector_links(tmp_path, monkeypatch) -> None:
+    """Hash / keypoint-hit links that neither M1 nor SIFT supports are dropped; supported, unscored and other links stay."""
+    import research.data.build_master_v7 as bm
+    monkeypatch.setattr(bm, "OUT_DIR", tmp_path)
+    monkeypatch.setattr(bm, "WEAK_RAW", tmp_path / "weak_links_raw.csv")
+    frame = pd.DataFrame([("x", "y", "at_risk", "hash_at_risk"), ("x", "z", "at_risk", "hash_at_risk"),
+                          ("p", "q", "at_risk", "sift_eval_hits"), ("x", "y", "at_risk", "patient_id"),
+                          ("u", "v", "at_risk", "hash_at_risk")], columns=["a", "b", "tier", "evidence"])
+    monkeypatch.setattr(bm, "SECOND_OPINION", tmp_path / "absent.csv")
+    same, info = bm.second_opinion_filter(frame)
+    assert len(same) == 5 and info["dropped"] == 0                           # no opinion file: nothing dropped
+    opinion = tmp_path / "second_opinion.csv"
+    pd.DataFrame([("x", "y", "hash_at_risk", "unsupported"), ("x", "z", "hash_at_risk", "supported"),
+                  ("p", "q", "sift_eval_hits", "unsupported")], columns=["a", "b", "evidence", "verdict"]).to_csv(opinion, index=False)
+    monkeypatch.setattr(bm, "SECOND_OPINION", opinion)
+    kept, info = bm.second_opinion_filter(frame)
+    assert set(map(tuple, kept[["a", "b", "evidence"]].values)) == {("x", "z", "hash_at_risk"), ("x", "y", "patient_id"), ("u", "v", "hash_at_risk")}
+    assert info["dropped"] == 2 and info["kept_unscored"] == 1
+    assert len(pd.read_csv(tmp_path / "weak_links_raw.csv")) == 4             # every weak link written before filtering

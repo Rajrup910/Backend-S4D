@@ -264,3 +264,11 @@ results/v6/added_pool/meta_*.csv
 
 # MRA-MIDAS per-patient metadata (Stanford research use agreement): never published
 results/v7/external/midas_v7/cohort.csv
+
+# Internal planning notes (owner decision, 12 Nov 2026): kept on disk, never published
+docs/FABLE_5_2_RESEARCH_HANDOFF.md
+docs/V6_NOVELTY_AND_PUBLICATION_AUDIT.md
+docs/V6_NOVELTY_AUDIT_SEARCH_LOG.md
+docs/v7_final_revision/_backup_2026-11-10/
+research_notes/
+reports/

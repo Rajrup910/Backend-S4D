@@ -81,7 +81,9 @@ AMENDABLE = (PLAN, "docs/v7_final_revision/V7_FINAL_EXECUTION_RUNSHEET.md", "res
              # M1 amendment 01 (12 Nov): density-normalised, fused scores and the tier rule; its record, evidence and result
              "research/v7/m1/amend.py", "research/v7/m1/density.py", "research/v7/m1/tiers.py", "research/v7/m1/develop.py",
              "results/v7/m1/protocol_amendment_01.json", "results/v7/m1/amendment_01_development.json",
-             "results/v7/m1/amendment_01.json", *TESTS)
+             "results/v7/m1/amendment_01.json",
+             # 12 Nov: M1's second opinion on single-detector links, read by the gate builder
+             "research/v7/m1/second_opinion.py", "results/v7/m1/second_opinion.csv", *TESTS)
 FROZEN = (*PROTECTED, *AMENDABLE)
 SCHEMA = 2
 KINDS = ("GATE0", "AMENDMENT", "PROTOCOL_CHANGE")

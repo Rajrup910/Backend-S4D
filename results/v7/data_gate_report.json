@@ -5,7 +5,7 @@
  "declared_rows": 57488,
  "links": {
   "confirmed": 27162,
-  "at_risk": 111330
+  "at_risk": 109280
  },
  "fill": {
   "archive_id": 1.0,
@@ -58,18 +58,18 @@
   "spans_frozen_splits": 428
  },
  "removals": {
-  "global": 1569,
+  "global": 259,
   "by_fold": {
-   "0": 106,
-   "1": 83,
-   "2": 110,
-   "3": 91,
-   "4": 117
+   "0": 452,
+   "1": 386,
+   "2": 391,
+   "3": 340,
+   "4": 391
   },
   "by_holdout": {
-   "ham": 1459,
-   "bcn20000": 9320,
-   "mskcc": 1209
+   "ham": 2010,
+   "bcn20000": 9616,
+   "mskcc": 1522
   }
  },
  "plants": {
@@ -122,9 +122,9 @@
   }
  },
  "fingerprint_failures": 0,
- "fingerprint_minutes": 1.77,
- "match_minutes": 10.36,
- "total_minutes": 12.38,
+ "fingerprint_minutes": 2.24,
+ "match_minutes": 13.13,
+ "total_minutes": 15.7,
  "workers": 8,
  "audit_pairs": {
   "copies_bar40": {
@@ -151,16 +151,26 @@
   "ham_test": 1502,
   "train_hiba": 1199
  },
+ "single_detector_links_dropped": {
+  "opinion_file": "results/v7/m1/second_opinion.csv",
+  "dropped": 2050,
+  "dropped_by_evidence": {
+   "hash_at_risk": 1538,
+   "sift_eval_hits": 410,
+   "hash_confirmed": 102
+  },
+  "kept_unscored": 1775
+ },
  "links_by_evidence": [
   {
    "tier": "at_risk",
    "evidence": "hash_at_risk",
-   "n": 1569
+   "n": 31
   },
   {
    "tier": "at_risk",
    "evidence": "hash_confirmed",
-   "n": 104
+   "n": 2
   },
   {
    "tier": "at_risk",
@@ -175,7 +185,7 @@
   {
    "tier": "at_risk",
    "evidence": "sift_eval_hits",
-   "n": 530
+   "n": 120
   },
   {
    "tier": "confirmed",

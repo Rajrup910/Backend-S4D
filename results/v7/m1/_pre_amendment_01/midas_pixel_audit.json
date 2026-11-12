@@ -1,0 +1,20 @@
+{
+ "cohort_sha256": "9cc010e493513b5f22d6c4c139ae450aed481cd2370b11da1c642d965ca025cf",
+ "images": 765,
+ "copies": [],
+ "labels_read": 0,
+ "rule": ">= 30 RANSAC inliers (SIFT, originals) to one of the 5 nearest V7 training images by the M1 matcher, or a confirmed M1 link to a training row",
+ "at_risk_only_not_excluded": [
+  "MIDAS:s-prd-443701846.jpg",
+  "MIDAS:s-prd-571479405.jpg",
+  "MIDAS:s-prd-636329752.jpg",
+  "MIDAS:s-prd-643256557.jpg"
+ ],
+ "training_rows_searched": 52577,
+ "score_percentiles": {
+  "50": 2.0,
+  "99": 10.0,
+  "100": 22.0
+ },
+ "written": "2026-11-12T03:57:53"
+}

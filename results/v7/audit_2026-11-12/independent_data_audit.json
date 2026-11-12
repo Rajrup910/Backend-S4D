@@ -1,0 +1,385 @@
+{
+ "A_receipt": {
+  "master_matches": true,
+  "links_matches": true,
+  "code_mismatches": [],
+  "receipt_written": "2026-11-12T17:09:16"
+ },
+ "B_ledger": {
+  "ham_test": {
+   "images": 1502,
+   "kept": 1502,
+   "master_groups": 1120,
+   "group_ids": 1121,
+   "src_lesion_ids": 1121,
+   "rows_with_lesion_id": 1502,
+   "src_patient_ids": 0,
+   "rows_with_patient_id": 0,
+   "archives": {
+    "ham": 1502
+   },
+   "label_missing": 0,
+   "class_7": {
+    "nv": 1004,
+    "bkl": 167,
+    "mel": 167,
+    "bcc": 71,
+    "akiec": 52,
+    "vasc": 21,
+    "df": 20
+   },
+   "age_band": {
+    "40-59": 671,
+    "60+": 532,
+    "<40": 290,
+    "unknown": 9
+   },
+   "under40_escalating_images": 21,
+   "under40_escalating_groups": 10
+  },
+  "ham_val": {
+   "images": 1532,
+   "kept": 1510,
+   "master_groups": 1119,
+   "group_ids": 1120,
+   "src_lesion_ids": 1120,
+   "rows_with_lesion_id": 1532,
+   "src_patient_ids": 0,
+   "rows_with_patient_id": 0,
+   "archives": {
+    "ham": 1532
+   },
+   "label_missing": 0,
+   "class_7": {
+    "nv": 1018,
+    "mel": 173,
+    "bkl": 160,
+    "bcc": 82,
+    "akiec": 53,
+    "df": 24,
+    "vasc": 22
+   },
+   "age_band": {
+    "40-59": 699,
+    "60+": 558,
+    "<40": 267,
+    "unknown": 8
+   },
+   "under40_escalating_images": 22,
+   "under40_escalating_groups": 10
+  },
+  "midas": {
+   "images": 3409,
+   "kept": 3409,
+   "master_groups": 2964,
+   "group_ids": 3409,
+   "src_lesion_ids": 0,
+   "rows_with_lesion_id": 0,
+   "src_patient_ids": 685,
+   "rows_with_patient_id": 3152,
+   "archives": {
+    "midas": 3409
+   }
+  },
+  "reserved": {
+   "images": 4733,
+   "kept": 4723,
+   "master_groups": 1985,
+   "group_ids": 1992,
+   "src_lesion_ids": 1371,
+   "rows_with_lesion_id": 4105,
+   "src_patient_ids": 41,
+   "rows_with_patient_id": 44,
+   "archives": {
+    "bcn20000": 3856,
+    "mskcc": 877
+   },
+   "label_missing": 0,
+   "class_7": {
+    "nv": 1892,
+    "mel": 1174,
+    "bcc": 828,
+    "bkl": 420,
+    "akiec": 338,
+    "df": 53,
+    "vasc": 28
+   },
+   "age_band": {
+    "60+": 2111,
+    "40-59": 1525,
+    "<40": 978,
+    "unknown": 119
+   },
+   "under40_escalating_images": 279,
+   "under40_escalating_groups": 103
+  },
+  "train": {
+   "images": 15294,
+   "kept": 15223,
+   "master_groups": 8673,
+   "group_ids": 8734,
+   "src_lesion_ids": 7590,
+   "rows_with_lesion_id": 14136,
+   "src_patient_ids": 61,
+   "rows_with_patient_id": 77,
+   "archives": {
+    "ham": 6981,
+    "bcn20000": 6704,
+    "mskcc": 1609
+   },
+   "label_missing": 0,
+   "class_7": {
+    "nv": 8038,
+    "mel": 2525,
+    "bcc": 1928,
+    "bkl": 1657,
+    "akiec": 874,
+    "vasc": 158,
+    "df": 114
+   },
+   "age_band": {
+    "60+": 6497,
+    "40-59": 5825,
+    "<40": 2721,
+    "unknown": 251
+   },
+   "under40_escalating_images": 193,
+   "under40_escalating_groups": 81
+  },
+  "train_added": {
+   "images": 25471,
+   "kept": 25349,
+   "master_groups": 21571,
+   "group_ids": 12318,
+   "src_lesion_ids": 10713,
+   "rows_with_lesion_id": 13543,
+   "src_patient_ids": 1605,
+   "rows_with_patient_id": 11928,
+   "archives": {
+    "derm12345": 11928,
+    "isic2020": 5559,
+    "milk10k": 4128,
+    "isic2019_test": 3856
+   },
+   "label_missing": 0,
+   "class_7": {
+    "nv": 16005,
+    "bcc": 3639,
+    "mel": 2023,
+    "bkl": 1641,
+    "akiec": 1581,
+    "vasc": 336,
+    "df": 246
+   },
+   "age_band": {
+    "unknown": 11972,
+    "60+": 6696,
+    "40-59": 5798,
+    "<40": 1005
+   },
+   "under40_escalating_images": 90,
+   "under40_escalating_groups": 73
+  },
+  "train_extra": {
+   "images": 2078,
+   "kept": 2044,
+   "master_groups": 1360,
+   "group_ids": 1539,
+   "src_lesion_ids": 897,
+   "rows_with_lesion_id": 1436,
+   "src_patient_ids": 0,
+   "rows_with_patient_id": 0,
+   "archives": {
+    "isic_young": 2078
+   },
+   "label_missing": 2078,
+   "class_7": {},
+   "age_band": {
+    "MISSING": 2078
+   },
+   "under40_escalating_images": 0,
+   "under40_escalating_groups": 0
+  },
+  "train_hiba": {
+   "images": 1199,
+   "kept": 1199,
+   "master_groups": 1192,
+   "group_ids": 1199,
+   "src_lesion_ids": 1199,
+   "rows_with_lesion_id": 1199,
+   "src_patient_ids": 589,
+   "rows_with_patient_id": 1199,
+   "archives": {
+    "hiba": 1199
+   },
+   "label_missing": 0,
+   "class_7": {
+    "nv": 552,
+    "bcc": 223,
+    "mel": 159,
+    "akiec": 125,
+    "bkl": 61,
+    "vasc": 40,
+    "df": 39
+   },
+   "age_band": {
+    "60+": 587,
+    "40-59": 357,
+    "<40": 251,
+    "unknown": 4
+   },
+   "under40_escalating_images": 20,
+   "under40_escalating_groups": 20
+  },
+  "val": {
+   "images": 2270,
+   "kept": 2270,
+   "master_groups": 941,
+   "group_ids": 942,
+   "src_lesion_ids": 645,
+   "rows_with_lesion_id": 1972,
+   "src_patient_ids": 17,
+   "rows_with_patient_id": 22,
+   "archives": {
+    "bcn20000": 1853,
+    "mskcc": 417
+   },
+   "label_missing": 0,
+   "class_7": {
+    "nv": 923,
+    "mel": 483,
+    "bcc": 414,
+    "bkl": 220,
+    "akiec": 178,
+    "df": 28,
+    "vasc": 24
+   },
+   "age_band": {
+    "60+": 1107,
+    "40-59": 770,
+    "<40": 343,
+    "unknown": 50
+   },
+   "under40_escalating_images": 0,
+   "under40_escalating_groups": 0
+  }
+ },
+ "C_fold_isolation": {
+  "master_group": {
+   "keys": 8673,
+   "keys_in_more_than_one_fold": 45,
+   "examples": [
+    "ISIC_0000164",
+    "ISIC_0000171",
+    "ISIC_0000173",
+    "ISIC_0000184_downsampled",
+    "ISIC_0000189_downsampled"
+   ]
+  },
+  "group_id": {
+   "keys": 8734,
+   "keys_in_more_than_one_fold": 0,
+   "examples": []
+  },
+  "src_lesion_id": {
+   "keys": 7590,
+   "keys_in_more_than_one_fold": 0,
+   "examples": []
+  },
+  "src_patient_id": {
+   "keys": 61,
+   "keys_in_more_than_one_fold": 11,
+   "examples": [
+    "IP_0532448",
+    "IP_0630443",
+    "IP_1087114",
+    "IP_1132421",
+    "IP_2424644"
+   ]
+  },
+  "fold_sizes": {
+   "0.0": 3059,
+   "1.0": 3059,
+   "2.0": 3059,
+   "3.0": 3059,
+   "4.0": 3058
+  },
+  "dev_rows_without_fold": 0
+ },
+ "D_protected_sharing": {
+  "master_group": {
+   "keys_shared_protected_and_training_kept": 0,
+   "examples": []
+  },
+  "src_lesion_id": {
+   "keys_shared_protected_and_training_kept": 0,
+   "examples": []
+  },
+  "src_patient_id": {
+   "keys_shared_protected_and_training_kept": 0,
+   "examples": []
+  }
+ },
+ "E_exact_duplicates": {
+  "sha256": {
+   "rows_in_clusters": 104,
+   "clusters": 52,
+   "clusters_spanning_dev_folds": 0,
+   "clusters_spanning_master_groups": 0,
+   "clusters_touching_protected_and_training": 0
+  },
+  "phash_exact": {
+   "rows_in_clusters": 365,
+   "clusters": 181,
+   "clusters_spanning_dev_folds": 0,
+   "clusters_spanning_master_groups": 0,
+   "clusters_touching_protected_and_training": 0
+  }
+ },
+ "F_links_image_id_unique": true,
+ "F_links": {
+  "rows": 136442,
+  "tiers": {
+   "at_risk": 109280,
+   "confirmed": 27162
+  },
+  "unresolved_endpoints": 0,
+  "at_risk": {
+   "links": 109280,
+   "cross_master_group": 104113,
+   "dev_cross_fold_both_kept": 179,
+   "protected_to_training_both_kept": 0
+  },
+  "confirmed": {
+   "links": 27162,
+   "cross_master_group": 0,
+   "dev_cross_fold_both_kept": 67,
+   "protected_to_training_both_kept": 0
+  }
+ },
+ "G_files": {
+  "missing": 0,
+  "missing_by_role": {},
+  "sample": 1500,
+  "sha256_mismatch": [],
+  "n_sha256_mismatch": 0,
+  "decode_failures": [],
+  "n_decode_failures": 0,
+  "decoder": "PIL"
+ },
+ "H_label_conflicts": {
+  "master_groups_with_more_than_one_class": 16,
+  "rows_in_them": 122,
+  "in_dev": 12,
+  "examples": [
+   "ISIC_0010852",
+   "ISIC_0053506",
+   "ISIC_0053603",
+   "ISIC_0053652",
+   "ISIC_0053690",
+   "ISIC_0053909",
+   "ISIC_0054428",
+   "ISIC_0054691"
+  ]
+ }
+}

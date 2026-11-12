@@ -1,6 +1,6 @@
 # Disclosure: duplicate images and linked lesions across splits (V1 to V6), and the V7 fix
 
-**Status: DRAFT for the owner's review. Not committed, not published.**
+**Status: published with V7 (owner decision of 5 Nov 2026); updated 12 Nov 2026 with the independent isolation check.**
 
 **Found:** 5 November 2026, by a read-only audit of every split and training pool from V1 to V6. This disclosure is
 published at the start of V7, by the owner's decision of 5 November. The commit dates show the gap between finding and
@@ -75,35 +75,48 @@ binds both (`research/data/`, `research/v7/train_v7.py`). From the gate's own re
 * **Planted positives found: 384 of 384**, eight families (renamed copy, downsampled variant, lesion link, patient link,
   re-encoded, resized and recoloured, rotated, centre crop) x 48 real images, 16 per archive. A check that has never found a
   planted copy proves nothing, so this runs with every gate build.
-* **Links (receipt of 12 Nov, after M1 amendment 01):** 27,162 confirmed (same lesion by ID, normalised ID, SHA-256, existing
-  groups, correlation plus keypoint copies, and matcher hits that SIFT confirms); 111,330 at risk (patient IDs, hash matches,
-  single-detector keypoint hits, matcher hits without enough SIFT agreement). Patient IDs and hash matches alone never merge
+* **Links (receipt of 12 Nov, 17:09):** 27,162 confirmed (same lesion by ID, normalised ID, SHA-256, existing
+  groups, correlation plus keypoint copies, and matcher hits that SIFT confirms); 109,280 at risk (patient IDs, hash matches
+  and keypoint hits that M1 or SIFT backs, matcher hits without enough SIFT agreement). 2,050 hash and keypoint matches that
+  neither M1 nor SIFT backed were dropped: where lesion IDs are known, 0 of 446 were the same lesion, and 32 of 32 checked by
+  eye were different lesions (`results/v7/m1/second_opinion.csv`). Patient IDs and hash matches alone never merge
   groups; they mark rows at risk. Before M1: 15,233 and 106,839.
-* **Removals:** 1,569 rows leave all training because they link to an evaluated row or a never-train set (681 before M1;
-  3,424 with the first M1, whose at-risk links were mostly look-alikes); 83 to 117 more per held-out fold; when an archive is
-  held out, every row from it or linked to it (BCN 9,320, HAM 1,459, MSKCC 1,209, net of the rows already removed from all
-  training). V7 keeps V6's number of optimiser steps, so removing rows never also shortens training (plan 13.5, decision 7).
+* **Removals:** a link to one photo of a lesion reaches every photo in its group (since 12 Nov; before, an at-risk link to
+  photo b left a training row in place while b's lesion-mate was evaluated). A training row leaves a run when it is linked
+  to a row that run evaluates: 259 rows leave every run (linked to a never-train set),
+  340 to 452 more leave each fold's run, 1.2% to 1.4% of its training rows (until 12 Nov an added or extra row linked to
+  any development row left every run, though it can only leak into the run that evaluates that row; the first M1 under
+  today's rules would remove 5.1% to 5.6%); when an archive is held out, every row from it or linked to it (BCN 9,616,
+  HAM 2,010, MSKCC 1,522, net of the rows already removed from every run). V7 keeps V6's number of optimiser steps, so removing rows never also shortens training (plan 13.5, decision 7).
 * **Learned same-lesion matcher (M1, `research/v7/m1/`):** endpoints and the adoption rule were written to
-  `results/v7/m1/protocol.json` before any matcher was scored, and amendment 01 (`protocol_amendment_01.json`) before its
-  one held-out read. M1 scores each pair with SSCD (a copy detector) and a ConvNeXt-Femto matcher trained here, each
+  `results/v7/m1/protocol.json` before any matcher was scored, and amendment 01 (`protocol_amendment_01.json`) before
+  its scoring on the held-out benchmark (the benchmark the baselines and earlier candidates were scored on; not a fresh test set). M1 scores each pair with SSCD (a copy detector) and a ConvNeXt-Femto matcher trained here, each
   normalised by how crowded the two images' neighbourhoods are, and asks SIFT keypoints to agree wherever that score is not
-  decisive. On 1,039 held-out lesions (7,648 same-lesion pairs) at a pairwise false-match rate of 1 in 100,000 it links
-  **58.4%** of re-photograph pairs, against 26.3% for SSCD alone and 22.5% for the old pipeline (DINOv2 retrieval plus SIFT),
-  and is higher on every archive (HAM 86.6%, BCN 59.7%). On rows no matcher was trained, tuned or benchmarked on (6,227 images
+  decisive. On 1,039 held-out lesions (7,648 same-lesion pairs) at a pairwise false-match rate of 1 in 100,000 its score puts
+  **58.4%** of re-photograph pairs above its threshold, against 26.3% for SSCD alone (the old pipeline, DINOv2 retrieval
+  plus SIFT, linked 22.5% at its own stricter operating point of 5.7 in 10 million); the scan's tier rule, which also asks
+  SIFT to agree below the 1e-6 threshold, links 54.7% of same-lesion pairs end to end on unseen rows. It is higher on every archive (HAM 86.6%, BCN 59.7%). On rows no matcher was trained, tuned or benchmarked on (6,227 images
   of 1,754 lesions in val, reserved and HAM val) it catches **93.3%** of re-photographed images (at least one other photo of
-  the lesion linked; BCN 94.0%, HAM 88.9%), against **4.9%** for the hash and file-name rules alone; it guards **60.7%
-  [54.3%, 67.2%]** of same-lesion pairs and **92.9%** of known copies (100% of exact copies). Where both images carry a lesion
+  the lesion linked; BCN 94.0%, HAM 88.9%), against **4.9%** for the hash and file-name rules alone; it guards **67.2%
+  [60.5%, 73.7%]** of same-lesion pairs and **92.9%** of known copies (100% of exact copies). Where both images carry a lesion
   ID, 99.0% of its confirmed and 92.6% of its at-risk links are the same lesion (a lower bound). It found the 8 HAM-test
   copies above and no copy of a training image in the sealed external cohort (MIDAS, pixels only; labels unread). Sources:
   `results/v7/m1/amendment_01.json`, `headline.json`, `verify.json`, `training_cost.json`.
+* **Checked independently (12 Nov 2026):** a separate script that does not call the gate's code rebuilds each run's training
+  set from the receipt and counts every connection left to the rows that run evaluates (shared lesion group, lesion ID,
+  patient ID, SHA-256, perceptual hash, confirmed or at-risk link). It finds **0 in all 8 run forms** (5 folds, 3 held-out
+  archives) and 0 to `ham_test` or MIDAS; with fold 0's removal list emptied it finds 128 confirmed links, 76 shared groups and
+  6 shared patients, so it can see a leak when one is there. It runs on every test run
+  (`results/v7/audit_2026-11-12/independent_fold_isolation.py`, `tests/test_v7_audit_isolation.py`, `docs/V7_AUDIT_REPORT.md`).
+  This shows that no *detected* link crosses; the limits below still apply.
 * **Reads:** every V7 promotion read is repeated on four row sets (all rows, without the 380, without the 426, without every
   development row the gate links), and a gain from added data does not count until it survives that last set.
 
 ## 5. What this does not fix, stated plainly
 
 * **Some re-photographs of one lesion are still missed.** About 7% of re-photographed images have no link to any other photo
-  of their lesion, and about 39% of same-lesion pairs are neither linked nor in one confirmed group (27% of lesions are not
-  fully guarded); MSKCC has too few test pairs (15 images) to estimate. Up to about 7% of at-risk links join different lesions, so
+  of their lesion, and about 33% of same-lesion pairs are not guarded (22% of lesions are not fully guarded), measured with lesion IDs
+  hidden; MSKCC has too few test pairs (15 images) to estimate. Up to about 7% of M1's at-risk links join different lesions (where IDs are known), so
   V7 also removes some rows that were never leaks; that is the cost the data plan accepts. **The gate is "audited, with
   stated lower bounds". This project does not claim to be leak-free.**
 * Patient overlap in HAM and BCN cannot be measured: those archives carry no patient ID.

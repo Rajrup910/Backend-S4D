@@ -21,7 +21,7 @@
   <img src="docs/assets/readme/icons/latex.svg" width="56" height="56" alt="LaTeX" title="LaTeX">
 </p>
 
-**Lesion-grouped splits · HAM10000 test locked · SHA-256 pre-registered plans · V6 complete · V7 duplicate gate**
+**Lesion-grouped splits · HAM10000 test locked · SHA-256 pre-registered plans · V6 complete · V7 duplicate gate: 0 detected train-to-test links, independently verified**
 
 [V1 Baseline](#v1) · [V2 Rigour](#v2) · [V3 Validity](#v3) · [V4 Measurement](#v4) · [V5 Mechanism](#v5) · [V6 Result](#v6) · [V7 Duplicate gate](#v7)
 
@@ -311,6 +311,15 @@ The V6 vote replaces V5 as the deployed system. It passes on all rows, without t
 
 ## V7 · The duplicate problem, and the gate that now guards every run
 
+| The V7 gate, at a glance | Measured on |
+|---|---|
+| **93.3%** of re-photographed images linked to another photo of their lesion, up from 4.9% with hash and file-name rules | 6,227 images that no matcher was trained, tuned or benchmarked on, lesion IDs hidden |
+| **100%** of byte-identical copies (37 of 37) and renamed copies (56 of 56); **98.8%** of recoloured, cropped or zoomed copies (322 of 326) | 465 known copy pairs found by other detectors |
+| **384 of 384** planted copies found, eight transform families, on every build | every gate rebuild |
+| **86.6%** of held-out HAM same-lesion pairs matched at 1 false match in 100,000 (58.4% over all archives, from 26.3% for SSCD alone) | the held-out M1 benchmark |
+| **0** detected links between any training row and the rows its own run evaluates, in all 8 run forms (5 folds, 3 held-out archives), and **0** to the locked HAM test or the sealed MIDAS cohort | re-derived by a separate script that does not call the gate's code, and locked by a regression test |
+| Only 1.2% to 1.4% of each fold's training rows removed to achieve it | `data_gate_report.json` |
+
 **The problem.** Every split in V1–V6 was grouped by `lesion_id`, and no ID crosses a split. But the same image, or another photo of the same lesion, can sit on both sides **under a different name or ID**, and no ID check can see that. A pixel audit found such rows in every version, from 0.01% to 1.47% of the rows read. Each is disclosed with its effect in [`docs/LEAK_DISCLOSURE.md`](docs/LEAK_DISCLOSURE.md); V5's under-40 gain shrank once its copies were removed (see V5 above).
 
 **The fix.** V7 will not train without a receipt that binds one master table of every image it can touch (57,488) to one link table, checked by four layers ([`research/data/`](research/data/), [`research/v7/m1/`](research/v7/m1/)):
@@ -318,24 +327,36 @@ The V6 vote replaces V5 as the deployed system. It passes on all rows, without t
 1. **Identity:** the same file, lesion ID, patient ID, normalised name, SHA-256 or image hash.
 2. **Appearance search (M1):** every image against all others with two matchers, SSCD (a copy-detection network) and a ConvNeXt-Femto trained here on same-lesion pairs. Each score is normalised by how crowded the two images' neighbourhoods are, so a dense region of look-alike moles cannot set the bar for everyone.
 3. **Geometry:** SIFT keypoints must agree wherever the score is not decisive, and at least 30 RANSAC inliers (12 at the strictest score) make a link *confirmed*: two different detectors agree.
-4. **The gate:** any training row linked to an evaluated or never-train row is removed. Today that is 1,569 rows from all training and 83 to 117 more per held-out fold (about 3.3% of a fold's training rows), from 27,162 confirmed and 111,330 at-risk links ([`data_gate_report.json`](results/v7/data_gate_report.json)). Planted copies, eight kinds, are found 384 of 384 times on every build.
+4. **The gate:** lesion IDs merge photos of one lesion into a group, and a link to any photo reaches the whole group. A training row is removed from a run when it is linked to a row that run evaluates, and from every run when it is linked to a never-train row; a hash or keypoint match alone must be backed by M1 or SIFT. Today that removes 1.2% to 1.4% of each fold's training rows (259 from every run, 340 to 452 more per fold), from 27,162 confirmed and 109,280 at-risk links ([`data_gate_report.json`](results/v7/data_gate_report.json)). Planted copies, eight kinds, are found 384 of 384 times on every build.
 
-**How well it works, measured** on rows no matcher was trained, tuned or benchmarked on ([`headline.json`](results/v7/m1/headline.json), [`verify.json`](results/v7/m1/verify.json), [`amendment_01.json`](results/v7/m1/amendment_01.json)). The endpoints and adoption rule were written to [`protocol.json`](results/v7/m1/protocol.json) before any matcher was scored, and M1's design to [`protocol_amendment_01.json`](results/v7/m1/protocol_amendment_01.json) before its one held-out read.
+**How well it works, measured** on rows no matcher was trained, tuned or benchmarked on ([`headline.json`](results/v7/m1/headline.json), [`verify.json`](results/v7/m1/verify.json), [`amendment_01.json`](results/v7/m1/amendment_01.json)). The endpoints and adoption rule were written to [`protocol.json`](results/v7/m1/protocol.json) before any matcher was scored, and M1's design to [`protocol_amendment_01.json`](results/v7/m1/protocol_amendment_01.json) before it was scored on the held-out benchmark (the same benchmark the baselines and earlier candidates were scored on, so this is not a fresh test set).
 
 | Check | Hash and file-name rules | First M1 (SSCD + SIFT) | **V7 gate (M1, amendment 01)** |
 |---|---|---|---|
 | Re-photographed images caught (6,227 images, 1,754 lesions) | 4.9% | 68.1% | **93.3%** (BCN 94.0%, HAM 88.9%) |
-| Same-lesion pairs guarded (13,489 pairs) | 1.2% | 30.7% | **60.7%** [54.3%, 67.2%] |
-| Known copies (465 pairs; exact copies) | 100% exact | 89.9% | **92.9%**; exact 100% |
-| Held-out benchmark pairs, 1 false match in 100,000 | - | 26.3% | **58.4%** (HAM 86.6%) |
-| At-risk links that are the same lesion (where IDs are known) | - | 34.3% | **92.6%** |
-| Training rows lost per held-out fold | - | about 3,660 | **about 1,650** |
+| Same-lesion pairs guarded (13,489 pairs) | 1.2% | 32.9% | **67.2%** [60.5%, 73.7%] |
+| Known copies found by other detectors (465 pairs) | - | 89.9% | **92.9%**; exact copies 100% |
+| Held-out benchmark pairs above the score threshold, 1 false match in 100,000 | - | 26.3% | **58.4%** (HAM 86.6%) |
+| M1's at-risk links that are the same lesion (where IDs are known; a lower bound) | - | 34.3% | **92.6%** |
+| Training rows lost per held-out fold (today's guard) | - | about 2,670 | **about 640** (1.2-1.4%) |
 
 It found **8 HAM-test images** with a copy that every earlier audit missed, one of them copied in V1 and V4 training data, and **no copy** of a training image in the sealed external cohort (MIDAS, pixels only, labels unread).
 
-**What it does not fix.** About 7% of re-photographed images still have no link to another photo of their lesion, 39% of same-lesion pairs are not guarded, and up to about 7% of at-risk links join different lesions, so the gate also removes some rows that were never leaks. The repository's claim is **"audited, with stated lower bounds"**, never "leak-free".
+**Verified independently, 12 Nov 2026.** A separate script rebuilds every run's training set from the receipt's removal lists and counts every remaining connection to the rows that run evaluates: shared lesion group, lesion ID, patient ID, SHA-256 or perceptual hash, and confirmed or at-risk link ([`independent_fold_isolation.py`](results/v7/audit_2026-11-12/independent_fold_isolation.py), [`tests/test_v7_audit_isolation.py`](tests/test_v7_audit_isolation.py)).
 
-**What V7 tests next.** With the gate in place, V7's pre-registered plan returns to the under-40 question: resolution above 224 px, learning-rate fixes for foundation backbones, concept guidance and dark young melanomas, each read on all rows and again without every gate-linked development row. The plan is under review and not yet signed: [`V7_FINAL_MASTER_RESEARCH_PLAN.md`](docs/v7_final_revision/V7_FINAL_MASTER_RESEARCH_PLAN.md).
+| Run | Training rows | Evaluated rows | Rows removed for this run | Connections left |
+|---|--:|--:|--:|--:|
+| Fold 0 | 48,821 | 3,059 | 711 | **0** |
+| Folds 1, 2, 3, 4 | 48,881 to 48,935 | 3,058 to 3,059 | 599 to 650 | **0** |
+| BCN20000 held out | 36,000 | 6,704 | 9,875 | **0** |
+| HAM10000 held out | 43,396 | 6,981 | 2,269 | **0** |
+| MSKCC held out | 49,187 | 1,609 | 1,781 | **0** |
+
+The check is not a formality: with fold 0's removal list emptied, it finds 128 confirmed links, 76 shared lesion groups and 6 shared patients between training and evaluation, which is the kind of overlap V1–V6 carried. Full audit: [`docs/V7_AUDIT_REPORT.md`](docs/V7_AUDIT_REPORT.md); frozen inputs and hashes: [`docs/V7_FREEZE_MANIFEST.md`](docs/V7_FREEZE_MANIFEST.md).
+
+**What it does not fix.** These figures are measured with lesion IDs hidden; in the gate, the 69% of rows that carry a lesion ID are grouped by it as well. About 7% of re-photographed images still have no link to another photo of their lesion, 33% of same-lesion pairs are not guarded, and up to about 7% of M1's at-risk links join different lesions, so the gate also removes some rows that were never leaks. The repository's claim is **"audited, with stated lower bounds"**, never "leak-free".
+
+**What V7 tests next.** With the gate in place, V7's pre-registered plan returns to the under-40 question: resolution above 224 px, learning-rate fixes for foundation backbones, concept guidance and dark young melanomas, each read on all rows and again without every gate-linked development row. Every owner decision in the plan is written and the freeze audit has passed; the first training night (six fold-0 screens) starts once the owner signs Gate 0: [`V7_FINAL_MASTER_RESEARCH_PLAN.md`](docs/v7_final_revision/V7_FINAL_MASTER_RESEARCH_PLAN.md), [`V7_FREEZE_MANIFEST.md`](docs/V7_FREEZE_MANIFEST.md).
 
 ---
 
@@ -350,6 +371,7 @@ These rules are enforced in code, not left to convention. Breaking any one of th
 5. **No accuracy for selection.** Model, weight, threshold and temperature choices are made on validation or out-of-fold data, never on test, and never by accuracy.
 6. **Pre-registration before data.** Plans are SHA-256-hashed before the runs that test them (`results/v3/analysis_plan_v3.json`, `results/v4/analysis_plan_v4.json`, `results/v5/v5_plan_freeze.json`). Deviations are numbered and logged before the data they concern (`results/v5/protocol_deviations.json`).
 7. **Honest intervals.** Exact Clopper–Pearson intervals for small-count proportions, a lesion-grouped bootstrap for everything else, Holm correction inside each declared comparison family (`research/stats/`). An interval that contains the null is reported as *not certified*, never as evidence of absence.
+8. **No run without a data-gate receipt.** From V7, training refuses to start unless a receipt binds the master table, the link table and the gate's own code by SHA-256, and the receipt's removal lists are re-checked by `tests/test_v7_audit_isolation.py` on every test run.
 
 ---
 
@@ -367,13 +389,15 @@ Backend-S4D/
 │   ├── ensembling/ tta/ calibration/ selective/ conformal/ agerule/ dca/   V1 phases 1–4
 │   ├── stats/ ablation/ external/ xdomain/                                V1 statistics, audits, external cohorts
 │   ├── v2/ v3/ v4/ v5/ v6/                                                The post-Review-1 programme
+│   ├── data/               V7 data gate: master table, typed lesion groups, overlap guard, planted-copy checks
+│   ├── v7/                 V7 trainer, M1 same-lesion matcher, promotion rule, Gate 0 freeze, sealed external read
 │   ├── review2/            Generator for the Review-2 fact tables
 │   └── experiments.csv     Append-only ledger of every run
 ├── results/                Every number and figure (JSON / CSV / Markdown), per version
 ├── paper/                  Manuscripts (LaTeX), tables and figures
 ├── docs/                   Research plans, runsheets and the research log, in time order
 ├── scripts/                Environment check, dataset download, run launchers, GPU benchmark, README media
-├── tests/                  Unit and contract tests (V4 service, V5 modules)
+├── tests/                  Unit and contract tests (V4 service, V5-V7 modules, data gate, isolation re-check)
 └── CHANGELOG.md            Session-by-session record: what was done, why, and the source of every new number
 ```
 
@@ -408,6 +432,8 @@ python -m research.ablation.audit_manuscript      # V1 manuscript claims vs resu
 python -m research.v4.audit_v4 --check            # V4 splits, receipts and numerical claims
 python -m research.v5.adopt_e1 --verify           # V5 pre-registration hashes
 python scripts/readme_media/audit_readme.py       # every number and link on this page vs results/
+python scripts/audit_v7_final_verification.py     # V7 plan, receipts, gate hashes and test counts
+python -I results/v7/audit_2026-11-12/independent_fold_isolation.py   # per-run isolation, re-derived
 pytest tests -q                                   # unit and contract tests
 ```
 
@@ -421,6 +447,9 @@ None of these read the test split.
 |---|---|
 | [`NAVIGATION.md`](NAVIGATION.md) | Fast lookups: where each piece of code, result and number lives |
 | [`docs/README.md`](docs/README.md) | Every plan, runsheet and log, in the order it was written |
+| [`docs/LEAK_DISCLOSURE.md`](docs/LEAK_DISCLOSURE.md) | Every duplicate found across V1–V6, what it changed, and the V7 fix |
+| [`docs/V7_AUDIT_REPORT.md`](docs/V7_AUDIT_REPORT.md) | The V7 freeze audit: data, isolation, tests, numbers re-derived, findings |
+| [`docs/V7_FREEZE_MANIFEST.md`](docs/V7_FREEZE_MANIFEST.md) | Exact inputs, hashes, environment and the first-night run order |
 | [`CHANGELOG.md`](CHANGELOG.md) | The full narrative: each session, its decision and the file behind each number |
 | [`results/README.md`](results/README.md) | How the V1 result files are generated |
 | [`paper/v4/v4_findings.md`](paper/v4/v4_findings.md) | What V4 settled |

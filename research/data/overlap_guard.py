@@ -60,17 +60,25 @@ def code_sha() -> dict[str, str]:
 
 
 def _adjacency(master: pd.DataFrame, links: pd.DataFrame) -> dict[str, set[str]]:
-    """Each row's neighbours: every row it shares a master group with, plus every row it has a link to (either tier).
-    Group membership matters because confirmed links chain: a-b and b-c put a and c in one lesion group."""
+    """Each row's neighbours: every row it shares a master group with, every row it has a link to (either tier), and every
+    member of that linked row's group. Group membership matters because confirmed links chain: a-b and b-c put a and c in
+    one lesion group. A link reaches the whole group because a row that may be the same lesion as one image of a lesion may
+    be the same lesion as all of them: before 12 Nov an at-risk link to image b of lesion {b, c} left a training row in
+    place while c was evaluated (710 rows across all training on the gate of 12 Nov 14:42). At-risk links never chain to
+    each other (that would percolate); only through a group of confirmed members."""
     adjacent: dict[str, set[str]] = defaultdict(set)
+    group = dict(zip(master["image_id"].astype(str), master["master_group"].astype(str)))
+    members: dict[str, set[str]] = {g: set(rows.astype(str)) for g, rows in master.groupby(master["master_group"].astype(str))["image_id"]}
     for a, b in zip(links["a"].astype(str), links["b"].astype(str)):
-        adjacent[a].add(b)
-        adjacent[b].add(a)
-    for rows in master.groupby(master["master_group"].astype(str))["image_id"]:
-        members = set(rows[1].astype(str))
-        if len(members) > 1:
-            for r in members:
-                adjacent[r] |= members - {r}
+        for x, y in ((a, b), (b, a)):           # symmetric: x reaches y's group, and every member of y's group reaches x
+            for z in members.get(group.get(y), {y}):
+                if z != x:
+                    adjacent[x].add(z)
+                    adjacent[z].add(x)
+    for rows in members.values():
+        if len(rows) > 1:
+            for r in rows:
+                adjacent[r] |= rows - {r}
     return adjacent
 
 
@@ -83,18 +91,16 @@ def removals(master: pd.DataFrame, links: pd.DataFrame) -> dict:
     adjacent = _adjacency(master, links)
     training_side = {r for r, s in split.items() if s == DEV_SPLIT or s in TRAINING_ONLY_SPLITS}
     global_drop: set[str] = set()
+    by_fold: dict[int, set[str]] = {f: set() for f in DEV_FOLDS}
     for row in training_side:
         for other in adjacent.get(row, ()):
             if split[other] in SPENT_SPLITS:
-                global_drop.add(row)
-            elif split[row] in TRAINING_ONLY_SPLITS and split[other] == DEV_SPLIT:
-                global_drop.add(row)  # an added or extra row linked to a development row it could be evaluated against
-    by_fold: dict[int, set[str]] = {f: set() for f in DEV_FOLDS}
-    for row in training_side:
-        if split[row] != DEV_SPLIT:
-            continue
-        for other in adjacent.get(row, ()):
-            if split[other] == DEV_SPLIT and fold[other] != fold[row]:
+                global_drop.add(row)    # never-train rows are never in training: out of every run
+            elif split[other] == DEV_SPLIT and (split[row] in TRAINING_ONLY_SPLITS or fold[other] != fold[row]):
+                # out of the run whose held-out fold holds `other`. A training-only row linked to a development row was
+                # removed from EVERY run until 12 Nov; it can only leak into the run that evaluates that row (every V7
+                # fold model is read on its own fold only; holdouts have their own list below), so it stays in the other
+                # four (about 1,300 rows per fold on the gate of 12 Nov 15:46).
                 by_fold[int(fold[other])].add(row)
     by_holdout: dict[str, set[str]] = {a: set() for a in ARCHIVES}
     for row in training_side:

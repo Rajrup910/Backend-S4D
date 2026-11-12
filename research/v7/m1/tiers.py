@@ -35,8 +35,9 @@ def tier(score: np.ndarray, inliers: np.ndarray, thr_primary: float, thr_strict:
     matcher scored before the amendment). Every condition only ever asks for MORE score or MORE inliers, so more evidence can
     never weaken a tier. Why these bars (training clusters, top-8 candidates by normalised SSCD; recomputed by `develop.py`
     into `results/v7/m1/amendment_01_development.json`):
-    the 1e-5..1e-6 band with fewer than 8 inliers was 800 true pairs to 453 false ones, so the score alone is trusted only
-    from 1e-6; a SIFT agreement of 8-12 inliers is about 30:1 true within 1e-4..1e-6. Same pair recall as score >= T5
+    the 1e-5..1e-6 band with fewer than 8 inliers was 800 same-lesion pairs to 454 different-cluster ones, so the score
+    alone is trusted only from 1e-6; with 8-11 inliers that band was 257 to 6, and the 1e-4..1e-5 band with 12-15 inliers
+    157 to 5 (8-11 inliers there: 202 to 20, too weak, hence 12). Same pair recall as score >= T5
     (0.479 against 0.472) with 91 false at-risk links instead of 521 (25 false confirmed against 16; largest merged
     group 21 either way), so far fewer training rows are lost to links that are not duplicates.
     """

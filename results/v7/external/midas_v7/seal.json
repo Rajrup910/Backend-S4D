@@ -1,0 +1,9 @@
+{
+ "sealed": "2026-11-10T20:21:08",
+ "cohort_sha256": "9cc010e493513b5f22d6c4c139ae450aed481cd2370b11da1c642d965ca025cf",
+ "labels_sha256": "6bdb6f40e5ed7dff77dfe3aadd43a157db6989f36bf2804c72c6dc5864bfe4aa",
+ "labels_path": "data\\external\\midas\\labels_restricted\\labels.csv",
+ "rows": 765,
+ "lesion_groups": 513,
+ "pixel_audit": "required before predict: run scripts/audit_leak_keypoints.py against the master table"
+}

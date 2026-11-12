@@ -263,6 +263,33 @@ def plant_control(rows: pd.DataFrame, prints: dict[str, fp.Fingerprint], n: int,
     return report
 
 
+#: Single-detector at-risk links and M1's second opinion on them (`research/v7/m1/second_opinion.py`, 12 Nov 2026).
+WEAK_EVIDENCE = ("hash_at_risk", "hash_confirmed", "sift_eval_hits")
+WEAK_RAW = OUT_DIR / "weak_links_raw.csv"
+SECOND_OPINION = REPO / "results" / "v7" / "m1" / "second_opinion.csv"
+
+
+def second_opinion_filter(link_frame: pd.DataFrame, write_raw: bool = True) -> tuple[pd.DataFrame, dict]:
+    """Drop single-detector links that neither M1 nor SIFT supports. Every such link is first written, unfiltered, to
+    `WEAK_RAW` so the second opinion can score it (the build does this; a simulation passes write_raw=False); a link the
+    opinion file has not scored is KEPT (fails safe)."""
+    weak = link_frame["evidence"].isin(WEAK_EVIDENCE)
+    if write_raw:
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        link_frame[weak].to_csv(WEAK_RAW, index=False)
+    if not SECOND_OPINION.is_file():
+        return link_frame, {"opinion_file": "absent: nothing dropped", "dropped": 0}
+    opinion = pd.read_csv(SECOND_OPINION, dtype=str)
+    verdict = dict(zip(zip(opinion["a"], opinion["b"], opinion["evidence"]), opinion["verdict"]))
+    keys = list(zip(link_frame["a"], link_frame["b"], link_frame["evidence"]))
+    drop = weak & pd.Series([verdict.get(k) == "unsupported" for k in keys], index=link_frame.index)
+    unscored = int((weak & pd.Series([k not in verdict for k in keys], index=link_frame.index)).sum())
+    label = SECOND_OPINION.relative_to(REPO).as_posix() if SECOND_OPINION.is_relative_to(REPO) else str(SECOND_OPINION)
+    return link_frame[~drop].reset_index(drop=True), {"opinion_file": label, "dropped": int(drop.sum()),
+                                                      "dropped_by_evidence": link_frame[drop]["evidence"].value_counts().to_dict(),
+                                                      "kept_unscored": unscored}
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Build the V7 master and link tables and run the data gate.")
     parser.add_argument("--workers", type=int, default=8)
@@ -291,6 +318,7 @@ def main(argv: list[str] | None = None) -> int:
     extra, audit = audit_links(set(rows["image_id"]))
     links += extra
     link_frame = pd.DataFrame(links, columns=["a", "b", "tier", "evidence"]).drop_duplicates()
+    link_frame, weak_dropped = second_opinion_filter(link_frame)
     # one row per pair, keeping the strongest tier
     link_frame["pair"] = [tuple(sorted(p)) for p in zip(link_frame["a"], link_frame["b"])]
     link_frame = link_frame.sort_values("tier", key=lambda s: s.map({"confirmed": 0, "at_risk": 1})).drop_duplicates("pair")
@@ -327,6 +355,7 @@ def main(argv: list[str] | None = None) -> int:
     summary.update({"fingerprint_failures": len(errors), "fingerprint_minutes": round(t_print / 60, 2),
                     "match_minutes": round(t_match / 60, 2), "total_minutes": round((time.time() - started) / 60, 2),
                     "workers": args.workers, "audit_pairs": audit, "rows_by_split": rows["frozen_split"].value_counts().to_dict(),
+                    "single_detector_links_dropped": weak_dropped,
                     "links_by_evidence": link_frame.groupby(["tier", "evidence"]).size().rename("n").reset_index().to_dict("records"),
                     "radii": {"confirmed_both_hashes_le": fp.CONFIRMED_RADIUS, "at_risk_both_hashes_le": fp.AT_RISK_RADIUS,
                               "source": "results/v7/hash_radius_probe.json", "status": "provisional; fixed at plan step 5"}})

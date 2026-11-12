@@ -1,0 +1,25 @@
+﻿  [smoke:R2 -> exit 0] python.exe -m research.v7.train_v7 --build R2 --member dinov2_b --fold 0 --added-train results/v7/added_pool_v7/added_train_v7.csv --num-workers 2 --smoke
+2026-11-12 19.33.08  smoke R2: exit 0
+  [smoke:R3 -> exit 0] python.exe -m research.v7.train_v7 --build R3 --member panderm_b --fold 0 --added-train results/v7/added_pool_v7/added_train_v7.csv --num-workers 2 --smoke
+2026-11-12 19.33.08  smoke R3: exit 0
+  [smoke:R3b -> exit 0] python.exe -m research.v7.train_v7 --build R3b --member panderm_b --fold 0 --added-train results/v7/added_pool_v7/added_train_v7.csv --num-workers 2 --smoke
+2026-11-12 19.33.08  smoke R3b: exit 0
+  [range:R2 -> exit 0] python.exe -m research.v7.lr_range --build R2 --member dinov2_b --added-train results/v7/added_pool_v7/added_train_v7.csv --num-workers 2
+2026-11-12 19.33.08  range check R2: exit 0 (PASS or PASS_AT_EDGE)
+  [range:R3 -> exit 0] python.exe -m research.v7.lr_range --build R3 --member panderm_b --added-train results/v7/added_pool_v7/added_train_v7.csv --num-workers 2
+2026-11-12 19.33.08  range check R3: exit 0 (PASS or PASS_AT_EDGE)
+  [range:R3b -> exit 0] python.exe -m research.v7.lr_range --build R3b --member panderm_b --added-train results/v7/added_pool_v7/added_train_v7.csv --num-workers 2
+2026-11-12 19.33.08  range check R3b: exit 0 (PASS or PASS_AT_EDGE)
+  [screen:R1 -> exit 0] python.exe -m research.v7.train_v7 --build R1 --member anchor --fold 0 --added-train results/v7/added_pool_v7/added_train_v7.csv --run-tag v70 --num-workers 2
+2026-11-12 19.33.08  screen R1: exit 0 after 56 min (planned 55.6)
+  [screen:B3 -> exit 0] python.exe -m research.v7.train_v7 --build B3 --member anchor --fold 0 --added-train results/v7/added_pool_v7/added_train_v7.csv --run-tag v70 --image-size 384 --batch-size 16 --grad-accum 2 --num-workers 2
+2026-11-12 19.33.08  screen B3: exit 0 after 89 min (planned 88.8)
+  [screen:B5 -> exit 0] python.exe -m research.v7.train_v7 --build B5 --member anchor --fold 0 --added-train results/v7/added_pool_v7/added_train_v7.csv --run-tag v70 --num-workers 2
+2026-11-12 19.33.08  screen B5: exit 0 after 66 min (planned 66)
+  [screen:R2 -> exit 0] python.exe -m research.v7.train_v7 --build R2 --member dinov2_b --fold 0 --added-train results/v7/added_pool_v7/added_train_v7.csv --run-tag v70 --num-workers 2
+2026-11-12 19.33.08  screen R2: exit 0 after 78 min (planned 78.4)
+  [screen:R3 -> exit 0] python.exe -m research.v7.train_v7 --build R3 --member panderm_b --fold 0 --added-train results/v7/added_pool_v7/added_train_v7.csv --run-tag v70 --num-workers 2
+2026-11-12 19.33.08  screen R3: exit 0 after 65 min (planned 64.5)
+  [screen:R3b -> exit 0] python.exe -m research.v7.train_v7 --build R3b --member panderm_b --fold 0 --added-train results/v7/added_pool_v7/added_train_v7.csv --run-tag v70 --num-workers 2
+2026-11-12 19.33.08  screen R3b: exit 0 after 65 min (planned 64.5)
+2026-11-12 19.33.08  === night finished: screens completed 6 of 6 (R1, B3, B5, R2, R3, R3b). Read fold 0 and apply each drop rule in the morning. ===

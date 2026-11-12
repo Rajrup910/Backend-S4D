@@ -1,0 +1,20 @@
+{
+ "rule": "a single-detector at-risk link (hash_at_risk, hash_confirmed, sift_eval_hits) is kept only if M1's score >= its FMR-1e-4 threshold or SIFT RANSAC inliers on the originals >= 8; a pair not scored here is kept",
+ "method": "sscd_femto_sn",
+ "threshold_fmr_1e-4": -0.02335485816001892,
+ "source": "ml\\data\\v7\\links_v7.csv",
+ "by_evidence": {
+  "hash_at_risk": {
+   "links": 1569,
+   "supported": 31
+  },
+  "hash_confirmed": {
+   "links": 104,
+   "supported": 2
+  },
+  "sift_eval_hits": {
+   "links": 530,
+   "supported": 120
+  }
+ }
+}

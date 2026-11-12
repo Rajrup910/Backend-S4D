@@ -12,10 +12,11 @@
  "detectors": {
   "rules": {
    "pairs_linked": 0.01238045815108607,
-   "pairs_guarded": 0.01238045815108607,
+   "pairs_guarded_before_group_reach": 0.01238045815108607,
+   "pairs_guarded": 0.012454592631032694,
    "pairs_guarded_ci95": [
-    0.009848844255469499,
-    0.015441277870486256
+    0.009912523659234502,
+    0.015503061282418568
    ],
    "images_caught": 0.04898024731010117,
    "lesions_fully_guarded": 0.0,
@@ -23,7 +24,7 @@
    "by_archive": {
     "bcn20000": {
      "pairs": 12953,
-     "pairs_guarded": 0.011889137651509302,
+     "pairs_guarded": 0.011966339844051571,
      "images": 5491,
      "images_caught": 0.0508104170460754
     },
@@ -43,24 +44,25 @@
   },
   "rules + M1 (before amendment 01)": {
    "pairs_linked": 0.2767440136407443,
-   "pairs_guarded": 0.3068426124990733,
+   "pairs_guarded_before_group_reach": 0.3068426124990733,
+   "pairs_guarded": 0.3288605530432204,
    "pairs_guarded_ci95": [
-    0.2666571618876224,
-    0.3512608825873255
+    0.2858291441164864,
+    0.3765881380906027
    ],
    "images_caught": 0.6807451421230127,
-   "lesions_fully_guarded": 0.41391106043329534,
+   "lesions_fully_guarded": 0.44070695553021666,
    "links_used": 33887,
    "by_archive": {
     "bcn20000": {
      "pairs": 12953,
-     "pairs_guarded": 0.2969196325175635,
+     "pairs_guarded": 0.3196170771249903,
      "images": 5491,
      "images_caught": 0.6922236386814787
     },
     "ham": {
      "pairs": 527,
-     "pairs_guarded": 0.5559772296015181,
+     "pairs_guarded": 0.5616698292220114,
      "images": 721,
      "images_caught": 0.6074895977808599
     },
@@ -74,24 +76,25 @@
   },
   "rules + M1 (amendment 01)": {
    "pairs_linked": 0.5469641930461858,
-   "pairs_guarded": 0.6070872562828972,
+   "pairs_guarded_before_group_reach": 0.6070872562828972,
+   "pairs_guarded": 0.6715101193565127,
    "pairs_guarded_ci95": [
-    0.5432035357818443,
-    0.672058880038715
+    0.6049252790037162,
+    0.7372805355951857
    ],
    "images_caught": 0.9325517905893689,
-   "lesions_fully_guarded": 0.7280501710376283,
+   "lesions_fully_guarded": 0.7844925883694412,
    "links_used": 34872,
    "by_archive": {
     "bcn20000": {
      "pairs": 12953,
-     "pairs_guarded": 0.5976221724696982,
+     "pairs_guarded": 0.6637072492858798,
      "images": 5491,
      "images_caught": 0.9402658896375888
     },
     "ham": {
      "pairs": 527,
-     "pairs_guarded": 0.8462998102466793,
+     "pairs_guarded": 0.8709677419354839,
      "images": 721,
      "images_caught": 0.8890429958391124
     },
@@ -105,24 +108,25 @@
   },
   "M1 alone (amendment 01)": {
    "pairs_linked": 0.5469641930461858,
-   "pairs_guarded": 0.6070872562828972,
+   "pairs_guarded_before_group_reach": 0.6070872562828972,
+   "pairs_guarded": 0.6715101193565127,
    "pairs_guarded_ci95": [
-    0.5432035357818443,
-    0.672058880038715
+    0.6049252790037162,
+    0.7372805355951857
    ],
    "images_caught": 0.9325517905893689,
-   "lesions_fully_guarded": 0.7280501710376283,
+   "lesions_fully_guarded": 0.7844925883694412,
    "links_used": 31583,
    "by_archive": {
     "bcn20000": {
      "pairs": 12953,
-     "pairs_guarded": 0.5976221724696982,
+     "pairs_guarded": 0.6637072492858798,
      "images": 5491,
      "images_caught": 0.9402658896375888
     },
     "ham": {
      "pairs": 527,
-     "pairs_guarded": 0.8462998102466793,
+     "pairs_guarded": 0.8709677419354839,
      "images": 721,
      "images_caught": 0.8890429958391124
     },

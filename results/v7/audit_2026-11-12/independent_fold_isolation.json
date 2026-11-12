@@ -1,0 +1,118 @@
+{
+ "runs": {
+  "fold0": {
+   "train_rows": 48821,
+   "eval_rows": 3059,
+   "removed_for_run": 711,
+   "master_group": 0,
+   "group_id": 0,
+   "src_lesion_id": 0,
+   "src_patient_id": 0,
+   "sha256": 0,
+   "phash": 0,
+   "confirmed_links": 0,
+   "at_risk_links": 0
+  },
+  "fold1": {
+   "train_rows": 48888,
+   "eval_rows": 3059,
+   "removed_for_run": 645,
+   "master_group": 0,
+   "group_id": 0,
+   "src_lesion_id": 0,
+   "src_patient_id": 0,
+   "sha256": 0,
+   "phash": 0,
+   "confirmed_links": 0,
+   "at_risk_links": 0
+  },
+  "fold2": {
+   "train_rows": 48882,
+   "eval_rows": 3059,
+   "removed_for_run": 650,
+   "master_group": 0,
+   "group_id": 0,
+   "src_lesion_id": 0,
+   "src_patient_id": 0,
+   "sha256": 0,
+   "phash": 0,
+   "confirmed_links": 0,
+   "at_risk_links": 0
+  },
+  "fold3": {
+   "train_rows": 48935,
+   "eval_rows": 3059,
+   "removed_for_run": 599,
+   "master_group": 0,
+   "group_id": 0,
+   "src_lesion_id": 0,
+   "src_patient_id": 0,
+   "sha256": 0,
+   "phash": 0,
+   "confirmed_links": 0,
+   "at_risk_links": 0
+  },
+  "fold4": {
+   "train_rows": 48881,
+   "eval_rows": 3058,
+   "removed_for_run": 650,
+   "master_group": 0,
+   "group_id": 0,
+   "src_lesion_id": 0,
+   "src_patient_id": 0,
+   "sha256": 0,
+   "phash": 0,
+   "confirmed_links": 0,
+   "at_risk_links": 0
+  },
+  "holdout_bcn20000": {
+   "train_rows": 36000,
+   "eval_rows": 6704,
+   "removed_for_run": 9875,
+   "master_group": 0,
+   "group_id": 0,
+   "src_lesion_id": 0,
+   "src_patient_id": 0,
+   "sha256": 0,
+   "phash": 0,
+   "confirmed_links": 0,
+   "at_risk_links": 0
+  },
+  "holdout_ham": {
+   "train_rows": 43396,
+   "eval_rows": 6981,
+   "removed_for_run": 2269,
+   "master_group": 0,
+   "group_id": 0,
+   "src_lesion_id": 0,
+   "src_patient_id": 0,
+   "sha256": 0,
+   "phash": 0,
+   "confirmed_links": 0,
+   "at_risk_links": 0
+  },
+  "holdout_mskcc": {
+   "train_rows": 49187,
+   "eval_rows": 1609,
+   "removed_for_run": 1781,
+   "master_group": 0,
+   "group_id": 0,
+   "src_lesion_id": 0,
+   "src_patient_id": 0,
+   "sha256": 0,
+   "phash": 0,
+   "confirmed_links": 0,
+   "at_risk_links": 0
+  }
+ },
+ "any_training_vs_spent": {
+  "master_group": 0,
+  "group_id": 0,
+  "src_lesion_id": 0,
+  "src_patient_id": 0,
+  "sha256": 0,
+  "phash": 0,
+  "confirmed_links": 0,
+  "at_risk_links": 0
+ }
+}

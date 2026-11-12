@@ -45,6 +45,10 @@ tests/       unit and contract tests
 | Confidence intervals, multiple-comparison families | [`research/stats/intervals.py`](research/stats/intervals.py), [`research/stats/families.py`](research/stats/families.py) |
 | Bootstrap, McNemar and DeLong for the ablation ladder | [`research/ablation/bootstrap.py`](research/ablation/bootstrap.py), [`research/ablation/delong.py`](research/ablation/delong.py), [`research/ablation/run_part_a.py`](research/ablation/run_part_a.py) |
 | The test-set lock | [`research/testguard.py`](research/testguard.py), receipt [`results/test_pass_receipt.json`](results/test_pass_receipt.json) |
+| The V7 duplicate gate (every image, every link, every removal) | [`research/data/build_master_v7.py`](research/data/build_master_v7.py), [`research/data/overlap_guard.py`](research/data/overlap_guard.py), receipt [`results/v7/data_gate_receipt.json`](results/v7/data_gate_receipt.json) |
+| The same-lesion matcher (M1) and how well it works | [`research/v7/m1/`](research/v7/m1/), [`results/v7/m1/headline.json`](results/v7/m1/headline.json), [`results/v7/m1/verify.json`](results/v7/m1/verify.json) |
+| Proof that no run trains on what it is tested on | [`results/v7/audit_2026-11-12/independent_fold_isolation.py`](results/v7/audit_2026-11-12/independent_fold_isolation.py), [`tests/test_v7_audit_isolation.py`](tests/test_v7_audit_isolation.py) |
+| Every duplicate found in V1–V6 and what it changed | [`docs/LEAK_DISCLOSURE.md`](docs/LEAK_DISCLOSURE.md) |
 | Every experiment ever run | [`research/experiments.csv`](research/experiments.csv) (append-only ledger) |
 | Grad-CAM explanations | [`ml/explainability/gradcam.py`](ml/explainability/gradcam.py), figures [`paper/figures/gradcam/`](paper/figures/gradcam/) |
 | The manuscript | [`paper/manuscript.tex`](paper/manuscript.tex) (full), [`paper/manuscript_edited.tex`](paper/manuscript_edited.tex) (condensed), [`paper/v4/`](paper/v4/) (V4 findings and model card) |
@@ -63,7 +67,8 @@ tests/       unit and contract tests
 | **V3** (S40–S47) | Can more archives, a better head or removing age fix it? | [`research/v3/`](research/v3/) (`oos_probe.py`, `probes.py`, `eval_conditions.py`, `age_invariant.py`) | [`results/v3/`](results/v3/) — verdict [`final_verdict.json`](results/v3/final_verdict.json) | [`results/v3/analysis_plan_v3.json`](results/v3/analysis_plan_v3.json) |
 | **V4** (S48–S75) | With a powered endpoint, does any lever work? | [`research/v4/`](research/v4/) (`power.py`, `build_corpus.py`, `recipe.py`, `train_v4.py`, `s56_abstention.py`, `s59_cascade.py`, `s71_kfold.py`) | [`results/v4/`](results/v4/) — verdict [`final_verdict_v4.json`](results/v4/final_verdict_v4.json) | [`results/v4/analysis_plan_v4.json`](results/v4/analysis_plan_v4.json), [`paper/v4/v4_findings.md`](paper/v4/v4_findings.md) |
 | **V5** (Q0–Q11, E14) | Do dermatologist-style modules help young patients? | [`research/v5/`](research/v5/) (`train_v5.py`, `arms.py`, `modules.py`, `screen_gate.py`, `falsifiers.py`, `confirmation.py`, `q11_read.py`) | [`results/v5/`](results/v5/) — confirmation [`confirm_s42_s43_s44.json`](results/v5/confirm_s42_s43_s44.json), tables [`review2_tables.md`](results/v5/review2_tables.md) | [`docs/V5_RUNSHEET.md`](docs/V5_RUNSHEET.md), [`docs/v5_design/`](docs/v5_design/), [`docs/v5_record/`](docs/v5_record/) |
-| **V6** (planned, runs after Review 2) | Counterexample-guided differential morphology (CG-DM) | [`research/v6/`](research/v6/) (pre-checks only) | [`results/v6/`](results/v6/) (planning probes that re-score V5 predictions; no V6 model has been trained) | [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md) (finalised, not yet frozen) |
+| **V6** (complete, 7 Nov 2026) | Does a data-maximal ensemble across pretraining families replace V5, and close the under-40 gap? | [`research/v6/`](research/v6/) (`train_v6.py`, `members.py`, `system_reads.py`, `hiba_read.py`) | [`results/v6/`](results/v6/) — [`e_primary.json`](results/v6/e_primary.json), HIBA [`hiba_report.json`](results/v6/hiba/hiba_report.json) | [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md) |
+| **V7** (freeze audit passed; Gate 0 pending) | With every same-lesion copy guarded, can the under-40 ranking be fixed without harm? | [`research/data/`](research/data/) (data gate), [`research/v7/`](research/v7/) (`train_v7.py`, `m1/`, `promotion.py`, `plan_freeze.py`, `external_read.py`) | [`results/v7/`](results/v7/) — gate [`data_gate_report.json`](results/v7/data_gate_report.json), M1 [`results/v7/m1/`](results/v7/m1/), audit [`results/v7/audit_2026-11-12/`](results/v7/audit_2026-11-12/) | [`V7_FINAL_MASTER_RESEARCH_PLAN.md`](docs/v7_final_revision/V7_FINAL_MASTER_RESEARCH_PLAN.md), [`V7_AUDIT_REPORT.md`](docs/V7_AUDIT_REPORT.md), [`V7_FREEZE_MANIFEST.md`](docs/V7_FREEZE_MANIFEST.md) |
 
 ---
 
@@ -100,8 +105,13 @@ tests/       unit and contract tests
 python -m research.ablation.audit_manuscript      # 366 manuscript claims vs results/
 python -m research.v4.audit_v4 --check            # 76 V4 splits, receipts and claims
 python -m research.v5.adopt_e1 --verify           # V5 pre-registration hashes
+python scripts/audit_v7_final_verification.py     # V7 plan, receipts and gate hashes
+python -I results/v7/audit_2026-11-12/independent_fold_isolation.py   # V7 per-run isolation
 pytest tests -q                                   # unit and contract tests
 ```
+
+Last V7 run, 12 Nov 2026: the V7 verifier passed every check, the isolation check found 0 connections in all
+8 run forms, and the suite passed 605 tests with 1 skipped.
 
 None of these read the test split. Last run on 9 Oct 2026, the morning of Review 2: 366 / 366 manuscript
 claims, 76 passed / 0 failed / 0 warnings for V4 (receipt still at 2 executions), 11 pre-registration hashes
