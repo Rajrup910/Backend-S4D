@@ -21,9 +21,9 @@
   <img src="docs/assets/readme/icons/latex.svg" width="56" height="56" alt="LaTeX" title="LaTeX">
 </p>
 
-**Lesion-grouped splits · HAM10000 test locked · SHA-256 pre-registered plans · V5 final · V6 frozen**
+**Lesion-grouped splits · HAM10000 test locked · SHA-256 pre-registered plans · V6 complete · V7 duplicate gate**
 
-[V1 Baseline](#v1) · [V2 Rigour](#v2) · [V3 Validity](#v3) · [V4 Measurement](#v4) · [V5 Mechanism](#v5) · [V6 Frozen](#v6)
+[V1 Baseline](#v1) · [V2 Rigour](#v2) · [V3 Validity](#v3) · [V4 Measurement](#v4) · [V5 Mechanism](#v5) · [V6 Result](#v6) · [V7 Duplicate gate](#v7)
 
 **Team 193 · Project Exhibition · School of Computing Science and Engineering, VIT Bhopal University**
 
@@ -290,11 +290,49 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 
 <a id="v6"></a>
 
-## V6 · In progress: fold 0 done, no claim yet
+## V6 · Complete: a better system, and the under-40 gap still open
 
-The current plan is a **data-maximal ensemble across pretraining families, image-only**, frozen on 4 Nov 2026. The anchor is ConvNeXt-Tiny (IN-22k). Fold 0 chose PanDerm-B, DINOv2 ViT-B/14 and the same ConvNeXt at 384 px as members; SigLIP 2 went first on the frozen cut order. On fold 0 the V6 vote scores Macro-F1 0.7129 and all-age pAUC 0.8839 against V5's 0.6866 and 0.8556. Fold 0 is a compute filter, not a result. Folds 1–4 are the first read that can support a claim, and a single receipted read of HIBA is the planned confirmation. The plan records in advance that the under-40 gate is unlikely to pass.
+V6 is a **data-maximal ensemble across pretraining families, image-only**, frozen on 4 Nov 2026: a uniform vote of ConvNeXt-Tiny (IN-22k) at 224 and 384 px, PanDerm-B and DINOv2 ViT-B/14, chosen on fold 0 and read once on folds 1–4 (12,235 rows) against V5's 15-model system, both with 24-view TTA.
+
+| Endpoint (folds 1–4) | V6 vs V5 | Interval | Verdict |
+|---|---|---|---|
+| Macro-F1 | 0.7433 vs 0.7005, +0.0427 | [+0.0245, +0.0618] | Pass |
+| All-age pAUC | 0.8890 vs 0.8553, +0.0337 | [+0.0263, +0.0415] | Pass |
+| Escalation sensitivity (no harm) | +0.0115 | [+0.0005, +0.0231] | Pass |
+| **Gate A** · under-40 pAUC | +0.0381 | [+0.0107, +0.0711] | **Not met** (MCID +0.050) |
+
+The V6 vote replaces V5 as the deployed system. It passes on all rows, without the 380 at-risk rows and without the 426, under a rule declared before any fold 1–4 prediction existed ([`leak_sensitivity_read.json`](results/v6/leak_sensitivity_read.json)). Its under-40 gain is real but smaller than the clinically meaningful difference fixed in advance, so the under-40 question stays open. On HIBA, a new hospital read once under a receipt ([`hiba_report.json`](results/v6/hiba/hiba_report.json)), it scores Macro-F1 0.7348 against V5's 0.5715 (+0.1633 [+0.1235, +0.2064]) on 1,199 lesions and catches 18 of 20 under-40 escalating lesions; 20 is too few to certify the under-40 band. Sources: [`e_primary.json`](results/v6/e_primary.json), plan [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md).
 
 **Leak audit, 5 Nov 2026.** 380 development rows (2.5%) have a copy or another photo of the same lesion in training data, found by name and by keypoint matching. A second audit's lesion, patient and pixel links extend that to 426 (2.8%). The frozen training rows stay as they are, because V5 trained on the same extras. Instead, a system must pass on all rows, without the 380 and without the 426, declared before any V6 prediction on folds 1–4 existed ([`leak_sensitivity_declaration.json`](results/v6/leak_sensitivity_declaration.json)). Every fold-0 decision comes out the same without them ([`decisions_without_at_risk_rows.json`](results/v6/screens/decisions_without_at_risk_rows.json)). Plan: [`docs/V6_RUNSHEET.md`](docs/V6_RUNSHEET.md), Part 0.
+
+---
+
+<a id="v7"></a>
+
+## V7 · The duplicate problem, and the gate that now guards every run
+
+**The problem.** Every split in V1–V6 was grouped by `lesion_id`, and no ID crosses a split. But the same image, or another photo of the same lesion, can sit on both sides **under a different name or ID**, and no ID check can see that. A pixel audit found such rows in every version, from 0.01% to 1.47% of the rows read. Each is disclosed with its effect in [`docs/LEAK_DISCLOSURE.md`](docs/LEAK_DISCLOSURE.md); V5's under-40 gain shrank once its copies were removed (see V5 above).
+
+**The fix.** V7 will not train without a receipt that binds one master table of every image it can touch (57,488) to one link table, checked by four layers ([`research/data/`](research/data/), [`research/v7/m1/`](research/v7/m1/)):
+
+1. **Identity:** the same file, lesion ID, patient ID, normalised name, SHA-256 or image hash.
+2. **Appearance search:** every image against all others with SSCD, a copy-detection network; a neighbour above a threshold fixed on held-out data becomes an *at-risk* link.
+3. **Geometry:** SIFT keypoints must agree (at least 30 RANSAC inliers) for a link to become *confirmed*, so two different detectors agree.
+4. **The gate:** any training row linked to an evaluated or never-train row is removed. Today that is 3,424 rows from all training and 305 to 349 more per held-out fold, from 20,370 confirmed and 123,471 at-risk links ([`data_gate_report.json`](results/v7/data_gate_report.json)). Planted copies, eight kinds, are found 384 of 384 times on every build.
+
+**How well it works, measured** ([`verify.json`](results/v7/m1/verify.json), [`baselines.json`](results/v7/m1/baselines.json)). The endpoints and the adoption rule were written to [`protocol.json`](results/v7/m1/protocol.json) before any matcher was scored.
+
+| Check | Before V7 (DINOv2 retrieval) | V7 gate (SSCD + SIFT) |
+|---|---|---|
+| Known copies, 465 pairs found by other detectors | 72.3% | **89.9%**, exact copies 100% |
+| Re-photographs, 1,039 held-out lesions, 1 false match in 100,000 pairs | 22.5% (with SIFT) | **26.3%** |
+| Re-photographs in rows no matcher used, 13,489 pairs | 6.0% | **27.7%** [24.1%, 31.5%] |
+
+It found **8 HAM-test images** with a copy that every earlier audit missed, one of them copied in V1 and V4 training data, and **no copy** of a training image in the sealed external cohort (MIDAS, pixels only, labels unread). Two matchers trained here scored higher overall (29.6% and 28.7%) but lower on HAM, so the rule fixed in advance kept SSCD.
+
+**What it does not fix.** Most re-photographs of one lesion, taken on another day or at another angle, are still missed, and an at-risk link is right only about half the time by eye. The gate therefore removes some rows that were never leaks; that is the stated cost of a missed leak being worse than a lost training row. The repository's claim is **"audited, with stated lower bounds"**, never "leak-free".
+
+**What V7 tests next.** With the gate in place, V7's pre-registered plan returns to the under-40 question: resolution above 224 px, learning-rate fixes for foundation backbones, concept guidance and dark young melanomas, each read on all rows and again without every gate-linked development row. The plan is under review and not yet signed: [`V7_FINAL_MASTER_RESEARCH_PLAN.md`](docs/v7_final_revision/V7_FINAL_MASTER_RESEARCH_PLAN.md).
 
 ---
 

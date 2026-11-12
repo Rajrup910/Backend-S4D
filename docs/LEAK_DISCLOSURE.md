@@ -49,7 +49,7 @@ overlap is largely unobservable.
 | V5 under-40 escalation pAUC gain (Gate A) | +0.0351 [+0.0125, +0.0596], p 0.003 | **+0.0136 [-0.0084, +0.0357], p 0.228** without the 90 rows with a copy in V5's training data. Gate A failed in both reads (MCID +0.050) | `results/v5/confirm_s42_s43_s44_without_copies.json` |
 | V5 S84 (MILK10k) | under-40 0.98 vs 0.94, McNemar p 0.3125 | unchanged without 89 copied lesions; Macro-F1 gain +0.100 to +0.106 | `results/v5/s84/s84_without_copies.json` |
 | V6 (deployed vote vs V5) | Macro-F1 +0.0427 [+0.0245, +0.0618] | passes on all rows, without 380 declared at-risk rows and without 426. The rule was declared before any V6 prediction on folds 1-4 | `results/v6/e_primary.json`, `results/v6/leak_sensitivity_read.json`, `results/v6/leak_sensitivity_declaration.json` |
-| V1 HAM test figures | as in the V1 paper draft | **not recomputed**: that needs a second test read, which Hard Rule 2 forbids. 7 of 1,502 test rows (0.47%) had a copy in training | audit table above |
+| V1 HAM test figures | as in the V1 paper draft | **not recomputed**: that needs a second test read, which Hard Rule 2 forbids. at least 8 of 1,502 test rows (0.53%) had a copy in training (7 found by the pixel audit, 1 more by M1) | audit table above |
 | V1 PAD-only models | as reported | not correctable: the checkpoints no longer exist | - |
 
 The V5 correction matters because V5 trained on the extras and its control did not, so the copies favoured V5. The other
