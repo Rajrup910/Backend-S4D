@@ -2,6 +2,7 @@
 
 **Date:** 2026-09-29
 **Correction, 5 Nov 2026 (outside Part 0, so the freeze holds):** Part 0 quotes V5's under-40 gain as +0.0351. Without the 90 rows that had a copy in V5's training data it is +0.0136 [−0.0084, +0.0357], p = 0.228 (`results/v5/confirm_s42_s43_s44_without_copies.json`). Also from 5 Nov, by owner decision and declared before any V6 prediction on folds 1–4: a system must pass E-primary and no-harm on all rows, without the 380 at-risk rows and without the extended 426 (`scripts/read_leak_sensitivity.py`, `results/v6/leak_sensitivity_declaration.json`), and `research.v6.refit_system` and `research.v6.hiba_read` follow that read. Every fold-0 decision stands without those rows (`results/v6/screens/decisions_without_at_risk_rows.json`).
+**Correction, 11 Nov 2026 (outside Part 0, so the freeze holds):** Part 0's statement that V5's young extras share "0 images and 0 archive lesions" with the evaluation splits, "no fold leakage in V5", is wrong: 35 extras are the same photo as a development row under another name (4 val, 14 reserved), and 63 / 19 / 37 share a lesion ID. The ID check could not see them. See `docs/LEAK_DISCLOSURE.md`.
 **Status (4 Nov 2026):** **FROZEN.** The owner approved the hash on 4 Nov (`results/v6/v6_plan_freeze.json`). Part 0 is the plan, and it describes the state before the freeze; any change to it or to a frozen file now needs a dated amendment (`research/v6/plan_freeze.py --amendment`). Revisions below are in date order.
 
 ## V6 results and subheadlines (7 Nov 2026, outside Part 0, so the freeze holds)

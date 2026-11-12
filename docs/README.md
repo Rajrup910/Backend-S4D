@@ -16,6 +16,7 @@ narrative is [`../CHANGELOG.md`](../CHANGELOG.md).
 | 7 | V5 (design) | 29 Sep | [`v5_design/V5_PLAN_AMENDMENT_02.md`](v5_design/V5_PLAN_AMENDMENT_02.md), [`v5_design/V5_DERM_REASONING_ENGINE.md`](v5_design/V5_DERM_REASONING_ENGINE.md), [`v5_design/V5_PLAN_AUDIT.md`](v5_design/V5_PLAN_AUDIT.md) | Amendment 02, the dermatologist reasoning engine, and its pre-adoption audit |
 | 8 | V5 (execution) | adopted 30 Sep | [`V5_RUNSHEET.md`](V5_RUNSHEET.md) | The single V5 execution document: arms, gates, schedule, commands |
 | 9 | V6 (draft) | 29 Sep – 4 Oct | [`V6_RUNSHEET.md`](V6_RUNSHEET.md) | V6 plan (Part A) and execution (Part B); runs after Review 2 |
+| 10 | V7 (frozen plan & audit) | 8 Nov | [`v7_final_revision/README.md`](v7_final_revision/README.md) | Authoritative V7 specification suite: 5-module architecture, 11-phase runsheet, statistical preregistration, and forensic audit |
 
 ## Rules
 

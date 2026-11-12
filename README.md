@@ -2,7 +2,7 @@
 
 # Scan4Disease · Backend-S4D
 
-### Leak-free, pre-registered research on safe skin-lesion triage in dermoscopy, and on why it keeps failing patients under 40
+### Pre-registered research on safe skin-lesion triage in dermoscopy, and on why it keeps failing patients under 40 ([duplicate-image disclosure](docs/LEAK_DISCLOSURE.md))
 
 <img src="docs/assets/readme/hero.gif" width="100%" alt="Animated intro: accuracy is misleading on HAM10000; the best system reaches Macro-F1 0.8047 but catches 3 of 21 serious under-40 cases; five versions narrowed the cause to a ranking limit.">
 
@@ -229,7 +229,7 @@ One execution, one label read, receipted. Before any stage ran, lesions already 
 
 | Gate | Δ (composite − control) | 95% CI | p | Result |
 |---|:---:|:---:|:---:|:---:|
-| **A** · under-40 escalation pAUC | **+0.0351** | [+0.0125, +0.0596] | 0.003 | Not met (MCID +0.050) |
+| **A** · under-40 escalation pAUC | **+0.0351** (+0.0136 [−0.0084, +0.0357], p 0.228, without the 90 rows with a copy in V5's training data; [disclosure](docs/LEAK_DISCLOSURE.md)) | [+0.0125, +0.0596] | 0.003 | Not met (MCID +0.050) |
 | **B** · Macro-F1 retention | +0.0107 | [−0.0015, +0.0225] | 0.095 | Pass |
 | **C** · older-band sensitivity at spec 0.80 | +0.0071 (40–59), −0.0007 (60+) | [−0.0127, +0.0234], [−0.0101, +0.0083] | 0.522, 0.872 | Pass |
 | **D** · all-age escalation pAUC | +0.0020 | [−0.0056, +0.0093] | 0.596 | Not met |
@@ -395,7 +395,7 @@ None of these read the test split.
 | **Prateek Chhabra** | 23BAI10169 | Ensembling, TTA and inference |
 | **Rajrup Roy Chowdhury** | 23BAI10213 | CNN backbones, calibration, V5 confirmation (corresponding author) |
 | **Aditya Srivastava** | 23BAI10303 | Vision transformers and foundation-model probes |
-| **Kanak Pravin Sonare** | 23BAI11369 | Multi-cohort data and the zero-leakage shield |
+| **Kanak Pravin Sonare** | 23BAI11369 | Multi-cohort data and the lesion-grouped split guard |
 | **Manishka Gupta** | 23BAI11303 | Metadata fusion and the dermatologist decision flow |
 | **Uddhav Gupta** | 23BAI10146 | Statistical audits and conformal guarantees |
 
