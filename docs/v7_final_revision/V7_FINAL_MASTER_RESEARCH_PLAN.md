@@ -457,10 +457,10 @@ start without it.
 |---|---|
 | Planted copies, eight families x 48 real development images | 384 of 384 found |
 | Fields filled (ids, archive, split, group, SHA-256, hashes, status) | 100% |
-| Links | **Current receipt (14.2): 20,370 confirmed, 123,471 at risk (after M1, 12 Nov), on 57,488 rows.** Earlier run, before MIDAS joined: 15,228 confirmed (lesion id, normalised id, SHA-256, existing groups, correlation+keypoint copies); 96,668 at risk (patient ids incl. DERM12345 and HIBA, hash matches, single-detector keypoint hits) |
+| Links | **Current receipt (14.2): 27,162 confirmed, 111,330 at risk (after M1 amendment 01, 12 Nov 14:42), on 57,488 rows.** Earlier run, before MIDAS joined: 15,228 confirmed (lesion id, normalised id, SHA-256, existing groups, correlation+keypoint copies); 96,668 at risk (patient ids incl. DERM12345 and HIBA, hash matches, single-detector keypoint hits) |
 | Largest confirmed group (percolation limit 31) | 31: one real BCN lesion |
 | Groups for review (span archives / frozen splits) | 107 / 115; their rows stay at risk (removed from the training side) |
-| Training-side removals | **Current receipt (14.2): 3,424 from all training; 306, 330, 341, 349, 305 more for folds 0-4; holdouts BCN 8,951, HAM 1,323, MSKCC 1,195 (after M1, 12 Nov).** Earlier run: 656 from all training (rows linked to a development row, `ham_test` or MIDAS, incl. 2 HIBA rows); 31-42 more per held-out fold; BCN 9,484, HAM 1,476, MSKCC 1,255 |
+| Training-side removals | **Current receipt (14.2): 1,569 from all training; 106, 83, 110, 91, 117 more for folds 0-4; holdouts BCN 9,320, HAM 1,459, MSKCC 1,209 (after M1 amendment 01, 12 Nov 14:42).** Earlier run: 656 from all training (rows linked to a development row, `ham_test` or MIDAS, incl. 2 HIBA rows); 31-42 more per held-out fold; BCN 9,484, HAM 1,476, MSKCC 1,255 |
 
 Correction: the first gate runs of 10 Nov loaded no HIBA rows at all (a missing-value filter dropped them silently), so the
 earlier claim that HIBA pixels were covered was wrong. Fixed, and the builder now stops if any declared source loads zero
@@ -1090,13 +1090,13 @@ Gate 0, committed or pushed. Evidence: `results/v7/freeze_audit/AUDIT_REPORT.md`
 | F12 | **New.** The gate builder adds HIBA and MIDAS only if their file is present, so an absent file would drop a source without an error | `MITIGATED` | `data_roles.py::check_sources` now fails the bindings on an absent, empty or resized source; two new tests | Fixed inside the gate code at its next rebuild (that changes the code hash: the gate reruns and the B5 bases are refitted) |
 | F13 | **New.** Every smoke is one or two steps and predates the current receipt and code; R3b has none | `OPEN` | `results/v7/smoke/`, WS5 | Re-run in the first session (14.8 step 2) |
 | F14 | **New.** Companion documents still state rules this plan replaced (Tier C2 as prospective, Gate A2 as primary, HIBA as a V7 benchmark, "Certified") | `BANNERED` | banner added to each on 11 Nov | A rewrite is not done; the banner says section 14 controls |
-| F15 | **New (12 Nov).** M1, the same-lesion matcher (decision 11: before runs of record) | `DECIDED`: SSCD, untrained, with SIFT; gate rebuilt | `results/v7/m1/` (protocol written before scoring; baselines; candidates; verify); CHANGELOG 12 Nov parts 1-2. Femto 0.296 and MobileNetV4 0.287 beat SSCD 0.263 pooled but were lower on HAM, so the pre-registered rule kept SSCD; LightGlue lost to SIFT | Re-photograph recall about 0.28. Declared follow-up: SSCD with Femto, by the same rule. B5 bases refitted on the new receipt |
+| F15 | **New (12 Nov).** M1, the same-lesion matcher (decision 11: before runs of record) | `DECIDED` by amendment 01: SSCD fused with Femto, each score normalised by its own local density, tiers by `tiers.RULE` (SIFT spent where the score is unsure). **Gate rebuilt on the new links (12 Nov 14:42, passed; owner request)** | `results/v7/m1/` (protocol, then `protocol_amendment_01.json` sha 35142b10 written before its one held-out read; `amendment_01_development.json` training clusters only; `amendment_01.json`; `m1_scan.json`; `verify.json`; `training_cost.json`); CHANGELOG 12 Nov parts 1-3. Held-out pair TPR at FMR 1e-5: SSCD raw 0.263, normalised 0.492, fused **0.584** (difference +0.321 [+0.288, +0.358], higher on every archive incl. HAM 0.498 -> 0.866) | Unseen re-photographs 0.277 -> 0.583 [0.527, 0.642] by score, 0.276 -> 0.547 linked by the scan; known copies 0.899 -> 0.929; guard removals (simulated on the pre-M1 table) 3,424 -> 1,569 global, about 3,660 -> 1,650 per fold. Earlier: Femto 0.296 and MobileNetV4 0.287 alone were lower on HAM and not adopted; LightGlue lost to SIFT |
 
 ### 14.2 Corrections of fact
 
 | Where | Was | Is (source) |
 |---|---|---|
-| 10.6, links and removals | 15,228 confirmed, 96,668 at risk, 656 removals; HAM 1,476, MSKCC 1,255 | The receipt on disk (12 Nov 05:00, after M1): 57,488 rows compared; 20,370 confirmed and 123,471 at-risk links; 3,424 training-side removals; 306, 330, 341, 349, 305 more for folds 0-4; holdouts BCN 8,951, HAM 1,323, MSKCC 1,195. Before M1 (10 Nov 20:20): 15,233 confirmed, 106,839 at risk, 681 removals (`ml/data/v7/_pre_m1_2026-11-12/`) |
+| 10.6, links and removals | 15,228 confirmed, 96,668 at risk, 656 removals; HAM 1,476, MSKCC 1,255 | The receipt on disk (12 Nov 14:42, after M1 amendment 01): 57,488 rows compared; 27,162 confirmed and 111,330 at-risk links; 1,569 training-side removals; 106, 83, 110, 91, 117 more for folds 0-4; holdouts BCN 9,320, HAM 1,459, MSKCC 1,209. First M1 (12 Nov 05:00): 20,370 / 123,471 links, 3,424 removals (`ml/data/v7/_pre_amendment_01_2026-11-12/`). Before M1 (10 Nov 20:20): 15,233 confirmed, 106,839 at risk, 681 removals (`ml/data/v7/_pre_m1_2026-11-12/`) |
 | 10.10 | "the data gate run on all 52,880 rows" | 52,880 was the run before the HIBA fix (54,079 minus 1,199). The current run compared 57,488 |
 | 10.11, 12.3, 13.5 | `reserved` "read once at S63" | `reserved` was read 8 times in V1-V4 (`docs/V6_RUNSHEET.md`, exhausted-cohorts row). It is previously read development data |
 | 10.11, 13.7 | MIDAS "69 under 40" records | 69 **images** under 40 (`data_roles_v7.json`: 529 + 167 + 69 = 765 images). The number of under-40 records and of under-40 escalating cases is unknown while the cohort is sealed |
@@ -1163,7 +1163,7 @@ against older negatives, all negatives and confirmed negatives; Macro-F1 delta p
 statistical plan's 5.1 (H1A at +0.050 as primary, Macro-F1 non-inferiority -0.015, 40+ sensitivity -0.010), which the code
 never implemented.
 
-### 14.4 Data: what the gate compared (`ml/data/v7/master_v7.csv`, receipt of 12 Nov 05:00, after M1)
+### 14.4 Data: what the gate compared (`ml/data/v7/master_v7.csv`, receipt of 12 Nov 14:42, after M1 amendment 01)
 
 | Source (`frozen_split`) | Images | Role in V7 |
 |---|--:|---|
@@ -1177,10 +1177,10 @@ never implemented.
 | MIDAS | 3,409 files | compared for overlap only; 765 sealed for the one external read |
 | **Rows the gate compared** | **57,488** | |
 
-Removed from every training run: 3,424 rows (linked to a development row, `ham_test` or MIDAS). The gate is
+Removed from every training run: 1,569 rows (linked to a development row, `ham_test` or MIDAS). The gate is
 **audited, with stated lower bounds**, never "leak-free": only identical bytes confirm on pixels alone; a hash match is a candidate; the
 planted-copy result (384 of 384) is a software check on eight synthetic transforms, not real-world recall; re-photograph
-recall is about 0.28 (SSCD with SIFT, M1, 12 Nov: 0.277 [0.241, 0.315] on unseen val/reserved/ham_val pairs; 0.263 [0.225, 0.308] on the held-out benchmark), so most re-photographs are still missed, while known copies are caught about 90% of the time; the trained matchers were not adopted (lower on HAM); patient overlap cannot
+recall is about 0.28 (SSCD with SIFT, M1, 12 Nov: 0.277 [0.241, 0.315] on unseen val/reserved/ham_val pairs; 0.263 [0.225, 0.308] on the held-out benchmark) with the first M1. After amendment 01 (`results/v7/m1/`): 0.584 of held-out benchmark pairs; on unseen val/reserved/ham_val rows 93.3% of re-photographed images linked to a sibling and 0.607 [0.543, 0.672] of same-lesion pairs guarded (`headline.json`), known copies 0.929; so about 39% of pairs are still unguarded; patient overlap cannot
 be measured in HAM or BCN; and the group-size limit of 31 equals the largest group observed (one BCN lesion), so it has no
 headroom and is a description of the data, not an independent bound.
 

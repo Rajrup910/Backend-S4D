@@ -316,21 +316,24 @@ The V6 vote replaces V5 as the deployed system. It passes on all rows, without t
 **The fix.** V7 will not train without a receipt that binds one master table of every image it can touch (57,488) to one link table, checked by four layers ([`research/data/`](research/data/), [`research/v7/m1/`](research/v7/m1/)):
 
 1. **Identity:** the same file, lesion ID, patient ID, normalised name, SHA-256 or image hash.
-2. **Appearance search:** every image against all others with SSCD, a copy-detection network; a neighbour above a threshold fixed on held-out data becomes an *at-risk* link.
-3. **Geometry:** SIFT keypoints must agree (at least 30 RANSAC inliers) for a link to become *confirmed*, so two different detectors agree.
-4. **The gate:** any training row linked to an evaluated or never-train row is removed. Today that is 3,424 rows from all training and 305 to 349 more per held-out fold, from 20,370 confirmed and 123,471 at-risk links ([`data_gate_report.json`](results/v7/data_gate_report.json)). Planted copies, eight kinds, are found 384 of 384 times on every build.
+2. **Appearance search (M1):** every image against all others with two matchers, SSCD (a copy-detection network) and a ConvNeXt-Femto trained here on same-lesion pairs. Each score is normalised by how crowded the two images' neighbourhoods are, so a dense region of look-alike moles cannot set the bar for everyone.
+3. **Geometry:** SIFT keypoints must agree wherever the score is not decisive, and at least 30 RANSAC inliers (12 at the strictest score) make a link *confirmed*: two different detectors agree.
+4. **The gate:** any training row linked to an evaluated or never-train row is removed. Today that is 1,569 rows from all training and 83 to 117 more per held-out fold (about 3.3% of a fold's training rows), from 27,162 confirmed and 111,330 at-risk links ([`data_gate_report.json`](results/v7/data_gate_report.json)). Planted copies, eight kinds, are found 384 of 384 times on every build.
 
-**How well it works, measured** ([`verify.json`](results/v7/m1/verify.json), [`baselines.json`](results/v7/m1/baselines.json)). The endpoints and the adoption rule were written to [`protocol.json`](results/v7/m1/protocol.json) before any matcher was scored.
+**How well it works, measured** on rows no matcher was trained, tuned or benchmarked on ([`headline.json`](results/v7/m1/headline.json), [`verify.json`](results/v7/m1/verify.json), [`amendment_01.json`](results/v7/m1/amendment_01.json)). The endpoints and adoption rule were written to [`protocol.json`](results/v7/m1/protocol.json) before any matcher was scored, and M1's design to [`protocol_amendment_01.json`](results/v7/m1/protocol_amendment_01.json) before its one held-out read.
 
-| Check | Before V7 (DINOv2 retrieval) | V7 gate (SSCD + SIFT) |
-|---|---|---|
-| Known copies, 465 pairs found by other detectors | 72.3% | **89.9%**, exact copies 100% |
-| Re-photographs, 1,039 held-out lesions, 1 false match in 100,000 pairs | 22.5% (with SIFT) | **26.3%** |
-| Re-photographs in rows no matcher used, 13,489 pairs | 6.0% | **27.7%** [24.1%, 31.5%] |
+| Check | Hash and file-name rules | First M1 (SSCD + SIFT) | **V7 gate (M1, amendment 01)** |
+|---|---|---|---|
+| Re-photographed images caught (6,227 images, 1,754 lesions) | 4.9% | 68.1% | **93.3%** (BCN 94.0%, HAM 88.9%) |
+| Same-lesion pairs guarded (13,489 pairs) | 1.2% | 30.7% | **60.7%** [54.3%, 67.2%] |
+| Known copies (465 pairs; exact copies) | 100% exact | 89.9% | **92.9%**; exact 100% |
+| Held-out benchmark pairs, 1 false match in 100,000 | - | 26.3% | **58.4%** (HAM 86.6%) |
+| At-risk links that are the same lesion (where IDs are known) | - | 34.3% | **92.6%** |
+| Training rows lost per held-out fold | - | about 3,660 | **about 1,650** |
 
-It found **8 HAM-test images** with a copy that every earlier audit missed, one of them copied in V1 and V4 training data, and **no copy** of a training image in the sealed external cohort (MIDAS, pixels only, labels unread). Two matchers trained here scored higher overall (29.6% and 28.7%) but lower on HAM, so the rule fixed in advance kept SSCD.
+It found **8 HAM-test images** with a copy that every earlier audit missed, one of them copied in V1 and V4 training data, and **no copy** of a training image in the sealed external cohort (MIDAS, pixels only, labels unread).
 
-**What it does not fix.** Most re-photographs of one lesion, taken on another day or at another angle, are still missed, and an at-risk link is right only about half the time by eye. The gate therefore removes some rows that were never leaks; that is the stated cost of a missed leak being worse than a lost training row. The repository's claim is **"audited, with stated lower bounds"**, never "leak-free".
+**What it does not fix.** About 7% of re-photographed images still have no link to another photo of their lesion, 39% of same-lesion pairs are not guarded, and up to about 7% of at-risk links join different lesions, so the gate also removes some rows that were never leaks. The repository's claim is **"audited, with stated lower bounds"**, never "leak-free".
 
 **What V7 tests next.** With the gate in place, V7's pre-registered plan returns to the under-40 question: resolution above 224 px, learning-rate fixes for foundation backbones, concept guidance and dark young melanomas, each read on all rows and again without every gate-linked development row. The plan is under review and not yet signed: [`V7_FINAL_MASTER_RESEARCH_PLAN.md`](docs/v7_final_revision/V7_FINAL_MASTER_RESEARCH_PLAN.md).
 

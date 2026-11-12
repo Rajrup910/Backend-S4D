@@ -1,0 +1,362 @@
+{
+ "method": "sscd",
+ "threshold": 0.687049150466919,
+ "comparator": "dinov2_cache",
+ "protocol_sha256": "64e38c124ca2b2e9036d56ba1b82ed522643cf9518cfdbfcc20639ea5d3514c2",
+ "known_copies": {
+  "pairs": 465,
+  "caught": 0.8989247311827957,
+  "caught_comparator": 0.7225806451612903,
+  "by_evidence": {
+   "sha256": {
+    "pairs": 37,
+    "caught": 1.0
+   },
+   "normalised_id": {
+    "pairs": 56,
+    "caught": 0.9821428571428571
+   },
+   "copies_bar40": {
+    "pairs": 326,
+    "caught": 0.9570552147239264
+   },
+   "existing_group": {
+    "pairs": 46,
+    "caught": 0.30434782608695654
+   }
+  }
+ },
+ "unseen_rephotographs": {
+  "splits": [
+   "val",
+   "reserved",
+   "ham_val"
+  ],
+  "pairs": 13489,
+  "lesions": 1754,
+  "recall_chosen": 0.2765957446808511,
+  "recall_chosen_ci95": [
+   0.24148174541385706,
+   0.31494897395851434
+  ],
+  "recall_comparator": 0.05960412187708503,
+  "recall_comparator_ci95": [
+   0.050856471782114165,
+   0.07012772014141753
+  ],
+  "difference_ci95": [
+   0.1887119527458177,
+   0.24703860644161915
+  ],
+  "by_archive": {
+   "bcn20000": {
+    "pairs": 12953,
+    "chosen": 0.2675827993515016,
+    "comparator": 0.05790164440670115
+   },
+   "ham": {
+    "pairs": 527,
+    "chosen": 0.5028462998102466,
+    "comparator": 0.10246679316888045
+   },
+   "mskcc": {
+    "pairs": 9,
+    "chosen": 0.0,
+    "comparator": 0.0
+   }
+  }
+ },
+ "review_sheet": {
+  "new_links": 21769,
+  "shown": [
+   {
+    "n": 1,
+    "tier": "confirmed",
+    "a": "ISIC_0066132",
+    "b": "ISIC_0070230"
+   },
+   {
+    "n": 2,
+    "tier": "confirmed",
+    "a": "ISIC_0033737",
+    "b": "ISIC_8377707"
+   },
+   {
+    "n": 3,
+    "tier": "confirmed",
+    "a": "ISIC_0062949",
+    "b": "ISIC_0066896"
+   },
+   {
+    "n": 4,
+    "tier": "confirmed",
+    "a": "ISIC_0054610",
+    "b": "ISIC_0070106"
+   },
+   {
+    "n": 5,
+    "tier": "confirmed",
+    "a": "ISIC_0071821",
+    "b": "ISIC_0072212"
+   },
+   {
+    "n": 6,
+    "tier": "confirmed",
+    "a": "ISIC_0063829",
+    "b": "ISIC_0071583"
+   },
+   {
+    "n": 7,
+    "tier": "confirmed",
+    "a": "ISIC_0033171",
+    "b": "ISIC_0034052"
+   },
+   {
+    "n": 8,
+    "tier": "confirmed",
+    "a": "ISIC_0057848",
+    "b": "ISIC_0069479"
+   },
+   {
+    "n": 9,
+    "tier": "confirmed",
+    "a": "ISIC_0062418",
+    "b": "ISIC_0072096"
+   },
+   {
+    "n": 10,
+    "tier": "confirmed",
+    "a": "ISIC_0055899",
+    "b": "ISIC_0067719"
+   },
+   {
+    "n": 11,
+    "tier": "confirmed",
+    "a": "ISIC_0058321",
+    "b": "ISIC_0070784"
+   },
+   {
+    "n": 12,
+    "tier": "confirmed",
+    "a": "ISIC_0054564",
+    "b": "ISIC_0067385"
+   },
+   {
+    "n": 13,
+    "tier": "confirmed",
+    "a": "ISIC_0068511",
+    "b": "ISIC_0072367"
+   },
+   {
+    "n": 14,
+    "tier": "confirmed",
+    "a": "ISIC_0063823",
+    "b": "ISIC_0072022"
+   },
+   {
+    "n": 15,
+    "tier": "confirmed",
+    "a": "ISIC_0010852",
+    "b": "ISIC_0022338"
+   },
+   {
+    "n": 16,
+    "tier": "confirmed",
+    "a": "ISIC_0061191",
+    "b": "ISIC_0066977"
+   },
+   {
+    "n": 17,
+    "tier": "confirmed",
+    "a": "ISIC_0058658",
+    "b": "ISIC_0062296"
+   },
+   {
+    "n": 18,
+    "tier": "confirmed",
+    "a": "ISIC_0033662",
+    "b": "ISIC_0034317"
+   },
+   {
+    "n": 19,
+    "tier": "confirmed",
+    "a": "ISIC_0059694",
+    "b": "ISIC_0070722"
+   },
+   {
+    "n": 20,
+    "tier": "confirmed",
+    "a": "ISIC_0060639",
+    "b": "ISIC_0073021"
+   },
+   {
+    "n": 21,
+    "tier": "confirmed",
+    "a": "ISIC_0069967",
+    "b": "ISIC_0070092"
+   },
+   {
+    "n": 22,
+    "tier": "confirmed",
+    "a": "ISIC_0057632",
+    "b": "ISIC_0069397"
+   },
+   {
+    "n": 23,
+    "tier": "confirmed",
+    "a": "ISIC_0060500",
+    "b": "ISIC_0070476"
+   },
+   {
+    "n": 24,
+    "tier": "confirmed",
+    "a": "ISIC_0065515",
+    "b": "ISIC_0067827"
+   },
+   {
+    "n": 25,
+    "tier": "at_risk",
+    "a": "ISIC_0061311",
+    "b": "ISIC_0068708"
+   },
+   {
+    "n": 26,
+    "tier": "at_risk",
+    "a": "ISIC_0056380",
+    "b": "ISIC_0069903"
+   },
+   {
+    "n": 27,
+    "tier": "at_risk",
+    "a": "ISIC_2562769",
+    "b": "ISIC_2325537"
+   },
+   {
+    "n": 28,
+    "tier": "at_risk",
+    "a": "ISIC_0064287",
+    "b": "ISIC_0069948"
+   },
+   {
+    "n": 29,
+    "tier": "at_risk",
+    "a": "ISIC_9571028",
+    "b": "ISIC_2303849"
+   },
+   {
+    "n": 30,
+    "tier": "at_risk",
+    "a": "ISIC_0058425",
+    "b": "ISIC_0066500"
+   },
+   {
+    "n": 31,
+    "tier": "at_risk",
+    "a": "ISIC_0025445",
+    "b": "ISIC_1938549"
+   },
+   {
+    "n": 32,
+    "tier": "at_risk",
+    "a": "ISIC_0802891",
+    "b": "ISIC_0245817"
+   },
+   {
+    "n": 33,
+    "tier": "at_risk",
+    "a": "ISIC_6345815",
+    "b": "ISIC_4323732"
+   },
+   {
+    "n": 34,
+    "tier": "at_risk",
+    "a": "ISIC_0030164",
+    "b": "ISIC_0031548"
+   },
+   {
+    "n": 35,
+    "tier": "at_risk",
+    "a": "ISIC_0030437",
+    "b": "ISIC_5494642"
+   },
+   {
+    "n": 36,
+    "tier": "at_risk",
+    "a": "ISIC_0029711",
+    "b": "ISIC_7392681"
+   },
+   {
+    "n": 37,
+    "tier": "at_risk",
+    "a": "ISIC_2046079",
+    "b": "ISIC_6725782"
+   },
+   {
+    "n": 38,
+    "tier": "at_risk",
+    "a": "ISIC_0064585",
+    "b": "ISIC_0072689"
+   },
+   {
+    "n": 39,
+    "tier": "at_risk",
+    "a": "ISIC_6729290",
+    "b": "ISIC_2569252"
+   },
+   {
+    "n": 40,
+    "tier": "at_risk",
+    "a": "ISIC_5883331",
+    "b": "ISIC_6119156"
+   },
+   {
+    "n": 41,
+    "tier": "at_risk",
+    "a": "ISIC_0059149",
+    "b": "ISIC_0065999"
+   },
+   {
+    "n": 42,
+    "tier": "at_risk",
+    "a": "ISIC_0069565",
+    "b": "ISIC_0059607"
+   },
+   {
+    "n": 43,
+    "tier": "at_risk",
+    "a": "ISIC_0022146",
+    "b": "ISIC_0022148"
+   },
+   {
+    "n": 44,
+    "tier": "at_risk",
+    "a": "ISIC_4415203",
+    "b": "ISIC_4311486"
+   },
+   {
+    "n": 45,
+    "tier": "at_risk",
+    "a": "ISIC_0024675",
+    "b": "ISIC_0029355"
+   },
+   {
+    "n": 46,
+    "tier": "at_risk",
+    "a": "ISIC_0032882",
+    "b": "ISIC_0033283"
+   },
+   {
+    "n": 47,
+    "tier": "at_risk",
+    "a": "ISIC_0030075",
+    "b": "ISIC_9921461"
+   },
+   {
+    "n": 48,
+    "tier": "at_risk",
+    "a": "ISIC_8652894",
+    "b": "ISIC_9180333"
+   }
+  ]
+ }
+}

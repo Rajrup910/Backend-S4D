@@ -1,0 +1,33 @@
+{
+ "what": "M1 amendment 01: density-normalised scores, fixed before the held-out benchmark is read for them",
+ "amends_protocol_sha256": "64e38c124ca2b2e9036d56ba1b82ed522643cf9518cfdbfcc20639ea5d3514c2",
+ "density": {
+  "ranks": [
+   8,
+   24
+  ],
+  "weight": 1.0,
+  "gallery": "every master-table row, pixels only",
+  "fusion": "each matcher normalised by its own density; fused score = mean of the normalised scores"
+ },
+ "candidates": {
+  "sscd_sn": [
+   "sscd"
+  ],
+  "sscd_femto_sn": [
+   "sscd",
+   "ml/checkpoints/m1/m1_convnext_femto_ms_s42.pt"
+  ]
+ },
+ "femto_checkpoint_sha256": "6d0f8906e18bcf9c2b5941ffb61c82f9faa3879632ff453ad792b7eceb2f441e",
+ "baseline": "sscd, raw cosine (the kept matcher)",
+ "benchmark": "the held-out images and clusters of protocol.json, unchanged",
+ "primary": "pair TPR at FMR 1e-05",
+ "fmr_strict": 1e-06,
+ "adoption": "protocol.json's rule against the baseline; the fused candidate must also pass it against sscd_sn",
+ "chosen_on": "training clusters only (pre-M1 links); evidence in amendment_01_development.json",
+ "development_receipt_sha256": "43c691978de39aaab2772909d517f8c7381e71a6da882012c41088f6eaf50f3d",
+ "tier_rule": "thresholds T4, T5, T6 = the matcher's score at FMR 1e-4, 1e-5, 1e-6 on the held-out benchmark; confirmed: (score >= T5 and SIFT RANSAC inliers on the originals >= 30) or (score >= T6 and inliers >= 12); at_risk (if not confirmed): score >= T6, or (score >= T5 and inliers >= 8), or (score >= T4 and inliers >= 12); a matcher without T4/T6 (scored before amendment 01): at_risk score >= T5, confirmed also inliers >= 30",
+ "written": "2026-11-12T12:46:09",
+ "sha256": "35142b10e1350b25f23bec2eef1ee676ff9ca7d772cef1307c5127e75457aab2"
+}

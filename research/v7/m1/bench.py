@@ -121,10 +121,12 @@ def sscd(frame: pd.DataFrame, device) -> np.ndarray:
 
 # ------------------------------------------------------------------ scoring
 @torch.no_grad()
-def similarity_scan(emb: np.ndarray, pairs: Pairs, device, keep: int, top_k: int, chunk: int = 512):
+def similarity_scan(emb: np.ndarray, pairs: Pairs, device, keep: int, top_k: int, chunk: int = 512, offset: np.ndarray | None = None):
     """One pass over the similarity matrix: the `keep` largest negative similarities (for FMR thresholds), each image's
-    top-k neighbours (for pipelines) and its nearest non-masked neighbour (for recall@1)."""
+    top-k neighbours (for pipelines) and its nearest non-masked neighbour (for recall@1). `offset` (per image, half its
+    local density, `density.py`) is subtracted for both images of a pair; None scores the raw cosine."""
     e = torch.from_numpy(emb).to(device)
+    off = None if offset is None else torch.from_numpy(np.asarray(offset, dtype=np.float32)).to(device)
     cl = torch.from_numpy(pairs.cluster).to(device)
     lesion = torch.from_numpy(pairs.lesion).to(device)
     top_neg = torch.empty(0, device=device)
@@ -132,13 +134,15 @@ def similarity_scan(emb: np.ndarray, pairs: Pairs, device, keep: int, top_k: int
     for start in range(0, pairs.n, chunk):
         rows = torch.arange(start, min(start + chunk, pairs.n), device=device)
         s = e[rows] @ e.T
-        s[torch.arange(len(rows)), rows] = -2.0                                   # self
+        if off is not None:
+            s = s - off[rows][:, None] - off[None, :]
+        s[torch.arange(len(rows)), rows] = -4.0                                   # self (below any normalised score)
         knn.append(s.topk(top_k, dim=1).indices.cpu())
         same = cl[rows][:, None] == cl[None, :]
         other_lesion = same & ~((lesion[rows][:, None] >= 0) & (lesion[rows][:, None] == lesion[None, :]))
-        nn1.append(s.masked_fill(other_lesion, -2.0).argmax(1).cpu())               # masked links are not candidates
+        nn1.append(s.masked_fill(other_lesion, -4.0).argmax(1).cpu())               # masked links are not candidates
         upper = torch.arange(pairs.n, device=device)[None, :] > rows[:, None]
-        neg = s.masked_fill(same | ~upper, -2.0).flatten()
+        neg = s.masked_fill(same | ~upper, -4.0).flatten()
         top_neg = torch.cat([top_neg, neg.topk(min(keep, neg.numel())).values]).topk(min(keep, top_neg.numel() + neg.numel())).values
     return top_neg.cpu().numpy(), torch.cat(knn).numpy(), torch.cat(nn1).numpy()
 
@@ -156,12 +160,15 @@ def lesion_bootstrap(hits_by: dict[str, np.ndarray], pos_lesion: np.ndarray, n_b
             "ci": {m: [float(np.percentile(b, 2.5)), float(np.percentile(b, 97.5))] for m, b in boot.items()}}
 
 
-def score_embedding(emb: np.ndarray, pairs: Pairs, device) -> dict:
-    keep = int(np.ceil(protocol.FMR_SECONDARY * pairs.n_neg)) + 2
-    top_neg, knn, nn1 = similarity_scan(emb, pairs, device, keep, protocol.TOP_K)
+def score_embedding(emb: np.ndarray, pairs: Pairs, device, offset: np.ndarray | None = None,
+                    fmrs: tuple[float, ...] = (protocol.FMR_PRIMARY, protocol.FMR_SECONDARY)) -> dict:
+    keep = int(np.ceil(max(fmrs) * pairs.n_neg)) + 2
+    top_neg, knn, nn1 = similarity_scan(emb, pairs, device, keep, protocol.TOP_K, offset=offset)
     pos_sim = np.einsum("ij,ij->i", emb[pairs.pos[:, 0]], emb[pairs.pos[:, 1]])
+    if offset is not None:
+        pos_sim = pos_sim - offset[pairs.pos[:, 0]] - offset[pairs.pos[:, 1]]
     out = {"n_negative_pairs": pairs.n_neg, "n_positive_pairs": int(len(pairs.pos)), "thresholds": {}, "hits": {}}
-    for fmr in (protocol.FMR_PRIMARY, protocol.FMR_SECONDARY):
+    for fmr in fmrs:
         k = max(1, int(fmr * pairs.n_neg))
         thr = float(top_neg[k - 1])
         out["thresholds"][str(fmr)] = thr

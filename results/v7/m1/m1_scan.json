@@ -1,45 +1,53 @@
 {
- "method": "sscd",
- "threshold": 0.687049150466919,
+ "method": "sscd_femto_sn",
+ "threshold": 0.032321810722351074,
  "fmr_primary": 1e-05,
  "protocol_sha256": "64e38c124ca2b2e9036d56ba1b82ed522643cf9518cfdbfcc20639ea5d3514c2",
  "images": 57488,
- "links": 30598,
+ "links": 31583,
  "by_tier": {
-  "at_risk": 20684,
-  "confirmed": 9914
+  "confirmed": 20386,
+  "at_risk": 11197
  },
- "new_links_not_in_links_v7": 21769,
+ "new_links_not_in_links_v7": 9811,
  "new_by_tier": {
-  "at_risk": 17833,
-  "confirmed": 3936
+  "at_risk": 5362,
+  "confirmed": 4449
  },
  "new_by_split_pair": {
-  "train_added | train_added": 6312,
-  "train | train": 4253,
-  "train | train_added": 3079,
-  "reserved | reserved": 1399,
-  "train_extra | train_extra": 805,
-  "reserved | train": 672,
-  "val | val": 595,
-  "ham_test | train": 528,
-  "ham_val | train": 523,
-  "ham_test | train_added": 520,
-  "ham_val | train_added": 497,
-  "train_added | train_extra": 439,
-  "train | train_extra": 391,
-  "reserved | train_added": 361,
-  "train | val": 306,
-  "reserved | val": 135,
-  "train_added | val": 126,
-  "reserved | train_extra": 113,
-  "ham_test | ham_test": 102,
-  "train_added | train_hiba": 101
+  "train | train": 3520,
+  "train_added | train_added": 2603,
+  "reserved | reserved": 1594,
+  "val | val": 743,
+  "train_extra | train_extra": 451,
+  "train | train_added": 272,
+  "midas | midas": 102,
+  "reserved | train": 97,
+  "train | val": 48,
+  "ham_val | train_added": 41,
+  "reserved | train_added": 38,
+  "reserved | val": 36,
+  "train | train_extra": 36,
+  "ham_val | ham_val": 35,
+  "ham_test | ham_test": 30,
+  "train_added | train_extra": 30,
+  "train_added | val": 24,
+  "ham_test | train_added": 24,
+  "ham_test | train": 23,
+  "ham_val | train": 13
  },
- "minutes": 6.4,
+ "minutes": 55.2,
+ "tier_rule": "thresholds T4, T5, T6 = the matcher's score at FMR 1e-4, 1e-5, 1e-6 on the held-out benchmark; confirmed: (score >= T5 and SIFT RANSAC inliers on the originals >= 30) or (score >= T6 and inliers >= 12); at_risk (if not confirmed): score >= T6, or (score >= T5 and inliers >= 8), or (score >= T4 and inliers >= 12); a matcher without T4/T6 (scored before amendment 01): at_risk score >= T5, confirmed also inliers >= 30",
+ "thresholds": {
+  "fmr_1e-4": -0.02335485816001892,
+  "fmr_1e-5": 0.032321810722351074,
+  "fmr_1e-6": 0.1103006899356842
+ },
+ "sift_pairs": 180196,
+ "sift_minutes": 55.1,
  "midas": {
   "copies": 0,
-  "at_risk_only": 4,
-  "max_inliers": 22.0
+  "at_risk_only": 1,
+  "max_inliers": 18.0
  }
 }

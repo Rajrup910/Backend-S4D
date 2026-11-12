@@ -37,6 +37,7 @@ SOURCES = [
     "results/v5/confirm_s42_s43_s44.json", "results/v5/confirm_s42_s43_s44_without_copies.json", "results/v5/s84/s84_without_copies.json", "results/v6/screens/decision_go_no_go.json", "results/v6/leak_sensitivity_declaration.json", "results/v6/leak_sensitivity_declaration_extended.json", "results/v5/q11_decomposition.json", "results/v5/review2_tables.md", "results/v5/same_footing.md", "results/v5/s84/s84_report.json", "results/v5/v5_oof_common_matrix.json",
     "results/v6/e_primary.json", "results/v6/leak_sensitivity_read.json", "results/v6/hiba/hiba_report.json", "results/v7/data_gate_report.json",
     "results/v7/m1/baselines.json", "results/v7/m1/verify.json", "results/v7/m1/m1_scan.json",
+    "results/v7/m1/amendment_01.json", "results/v7/m1/headline.json", "results/v7/m1/training_cost.json",
     "results/v7/m1/candidate_m1_convnext_femto_ms_s42.json", "results/v7/m1/candidate_m1_mobilenetv4_conv_small_ms_s42.json",
 ]
 

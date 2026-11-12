@@ -12,18 +12,18 @@
    "pool_file": "results\\v7\\added_pool_v7\\added_train_v7.csv",
    "pool_sha256": "cfe48f197b03b61260767aa6fbec07b4e552fed8a15b543801be428da4a5a4b2",
    "removed_by_gate": {
-    "global": 3424,
+    "global": 1569,
     "by_fold": {
-     "0": 306,
-     "1": 330,
-     "2": 341,
-     "3": 349,
-     "4": 305
+     "0": 106,
+     "1": 83,
+     "2": 110,
+     "3": 91,
+     "4": 117
     },
     "by_holdout": {
-     "ham": 1323,
-     "bcn20000": 8951,
-     "mskcc": 1195
+     "ham": 1459,
+     "bcn20000": 9320,
+     "mskcc": 1209
     }
    }
   },
@@ -44,15 +44,15 @@
   "CROSS_SITE": {
    "ham": {
     "held_out_development_images": 6981,
-    "training_rows_removed": 1323
+    "training_rows_removed": 1459
    },
    "bcn20000": {
     "held_out_development_images": 6704,
-    "training_rows_removed": 8951
+    "training_rows_removed": 9320
    },
    "mskcc": {
     "held_out_development_images": 1609,
-    "training_rows_removed": 1195
+    "training_rows_removed": 1209
    }
   },
   "NEVER_TRAIN": {
@@ -71,7 +71,7 @@
    "labels_sha256": "6bdb6f40e5ed7dff77dfe3aadd43a157db6989f36bf2804c72c6dc5864bfe4aa"
   }
  },
- "gate_receipt_sha256": "138965151cdc3fbbb3e33ac3c70fcef192f452a87c0ad1e560eb1546e78bc947",
+ "gate_receipt_sha256": "86d7be6bbeb1e917a9c680dd4a02d1f739cff2fb1686c92d88c4973e9fb51b64",
  "master_rows": 57488,
  "rows_by_frozen_split": {
   "train_added": 25471,

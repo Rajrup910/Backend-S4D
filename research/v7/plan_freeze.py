@@ -77,7 +77,11 @@ AMENDABLE = (PLAN, "docs/v7_final_revision/V7_FINAL_EXECUTION_RUNSHEET.md", "res
              # M1 (12 Nov): the same-lesion matcher whose links feed the data gate, and the builder that reads them
              "research/v7/m1/data.py", "research/v7/m1/protocol.py", "research/v7/m1/bench.py", "research/v7/m1/train.py",
              "research/v7/m1/scan.py", "research/v7/m1/verify.py", "research/v7/m1/chain.py", "research/data/build_master_v7.py",
-             "results/v7/m1/protocol.json", *TESTS)
+             "results/v7/m1/protocol.json",
+             # M1 amendment 01 (12 Nov): density-normalised, fused scores and the tier rule; its record, evidence and result
+             "research/v7/m1/amend.py", "research/v7/m1/density.py", "research/v7/m1/tiers.py", "research/v7/m1/develop.py",
+             "results/v7/m1/protocol_amendment_01.json", "results/v7/m1/amendment_01_development.json",
+             "results/v7/m1/amendment_01.json", *TESTS)
 FROZEN = (*PROTECTED, *AMENDABLE)
 SCHEMA = 2
 KINDS = ("GATE0", "AMENDMENT", "PROTOCOL_CHANGE")

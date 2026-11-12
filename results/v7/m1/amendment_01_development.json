@@ -1,0 +1,428 @@
+{
+ "rows": "training clusters of the pre-M1 links, data.benchmark_set(seed=1); none in the held-out benchmark",
+ "images": 10368,
+ "positive_pairs": 21311,
+ "negative_pairs": 53720529,
+ "density_ranks": [
+  8,
+  24
+ ],
+ "sscd_raw": {
+  "0.0001": {
+   "threshold": 0.6421767473220825,
+   "pair_tpr": 0.34498615738351085,
+   "by_archive": {
+    "bcn20000": 0.36797934151065204,
+    "ham": 0.6043613707165109,
+    "isic2019_test": 0.24923508414074452,
+    "isic_young": 0.4280078895463511
+   },
+   "images_linked_to_a_partner": 0.7511574074074074,
+   "pairs_joined_after_closure": 0.45342780723569986,
+   "different_cluster_pairs_joined_by_closure": 2197812,
+   "largest_component": 2098
+  },
+  "1e-05": {
+   "threshold": 0.7071717977523804,
+   "pair_tpr": 0.24611702876448782,
+   "by_archive": {
+    "bcn20000": 0.2637646407820714,
+    "ham": 0.4735202492211838,
+    "isic2019_test": 0.16738908720040796,
+    "isic_young": 0.3047337278106509
+   },
+   "images_linked_to_a_partner": 0.6207561728395061,
+   "pairs_joined_after_closure": 0.3079160996668387,
+   "different_cluster_pairs_joined_by_closure": 109610,
+   "largest_component": 469
+  },
+  "1e-06": {
+   "threshold": 0.7553455829620361,
+   "pair_tpr": 0.18042325559570174,
+   "by_archive": {
+    "bcn20000": 0.1951489440191829,
+    "ham": 0.3514018691588785,
+    "isic2019_test": 0.1179245283018868,
+    "isic_young": 0.2357001972386588
+   },
+   "images_linked_to_a_partner": 0.5015432098765432,
+   "pairs_joined_after_closure": 0.21148702547979917,
+   "different_cluster_pairs_joined_by_closure": 237,
+   "largest_component": 13
+  }
+ },
+ "sscd_sn": {
+  "0.0001": {
+   "threshold": 0.016847744584083557,
+   "pair_tpr": 0.57533668058749,
+   "by_archive": {
+    "bcn20000": 0.6046297150235175,
+    "ham": 0.756386292834891,
+    "isic2019_test": 0.4909484956654768,
+    "isic_young": 0.6282051282051282
+   },
+   "images_linked_to_a_partner": 0.9127121913580247,
+   "pairs_joined_after_closure": 0.896391534888086,
+   "different_cluster_pairs_joined_by_closure": 24114300,
+   "largest_component": 6947
+  },
+  "1e-05": {
+   "threshold": 0.06579563021659851,
+   "pair_tpr": 0.47337055980479564,
+   "by_archive": {
+    "bcn20000": 0.502720649266808,
+    "ham": 0.6816199376947041,
+    "isic2019_test": 0.3818204997450281,
+    "isic_young": 0.5374753451676528
+   },
+   "images_linked_to_a_partner": 0.8614969135802469,
+   "pairs_joined_after_closure": 0.6804467176575477,
+   "different_cluster_pairs_joined_by_closure": 5772,
+   "largest_component": 47
+  },
+  "1e-06": {
+   "threshold": 0.12962767481803894,
+   "pair_tpr": 0.35071090047393366,
+   "by_archive": {
+    "bcn20000": 0.37738633219588674,
+    "ham": 0.5476635514018692,
+    "isic2019_test": 0.2659357470678225,
+    "isic_young": 0.40828402366863903
+   },
+   "images_linked_to_a_partner": 0.7546296296296297,
+   "pairs_joined_after_closure": 0.4704143400122003,
+   "different_cluster_pairs_joined_by_closure": 212,
+   "largest_component": 19
+  }
+ },
+ "inner_validation": {
+  "images": 1482,
+  "positive_pairs": 2881,
+  "sscd_raw": {
+   "0.0001": {
+    "threshold": 0.6327873468399048,
+    "pair_tpr": 0.409580006942034,
+    "by_archive": {
+     "bcn20000": 0.4639945652173913,
+     "ham": 0.5914893617021276,
+     "isic2019_test": 0.2808988764044944,
+     "isic_young": 0.5523809523809524
+    },
+    "images_linked_to_a_partner": 0.7989203778677463,
+    "pairs_joined_after_closure": 0.5345366192294342,
+    "different_cluster_pairs_joined_by_closure": 2625,
+    "largest_component": 54
+   },
+   "1e-05": {
+    "threshold": 0.7012189030647278,
+    "pair_tpr": 0.2776813606386671,
+    "by_archive": {
+     "bcn20000": 0.31046195652173914,
+     "ham": 0.41702127659574467,
+     "isic2019_test": 0.19194756554307116,
+     "isic_young": 0.38095238095238093
+    },
+    "images_linked_to_a_partner": 0.6470985155195681,
+    "pairs_joined_after_closure": 0.3672335994446373,
+    "different_cluster_pairs_joined_by_closure": 42,
+    "largest_component": 16
+   },
+   "1e-06": {
+    "threshold": 0.7575126886367798,
+    "pair_tpr": 0.1947240541478653,
+    "by_archive": {
+     "bcn20000": 0.21671195652173914,
+     "ham": 0.2851063829787234,
+     "isic2019_test": 0.14138576779026218,
+     "isic_young": 0.22857142857142856
+    },
+    "images_linked_to_a_partner": 0.5128205128205128,
+    "pairs_joined_after_closure": 0.21832696980215202,
+    "different_cluster_pairs_joined_by_closure": 0,
+    "largest_component": 9
+   }
+  },
+  "sscd_sn": {
+   "0.0001": {
+    "threshold": 0.014544486999511719,
+    "pair_tpr": 0.6115931968066644,
+    "by_archive": {
+     "bcn20000": 0.6582880434782609,
+     "ham": 0.7531914893617021,
+     "isic2019_test": 0.5028089887640449,
+     "isic_young": 0.7523809523809524
+    },
+    "images_linked_to_a_partner": 0.917004048582996,
+    "pairs_joined_after_closure": 0.835820895522388,
+    "different_cluster_pairs_joined_by_closure": 1734,
+    "largest_component": 47
+   },
+   "1e-05": {
+    "threshold": 0.05248299241065979,
+    "pair_tpr": 0.5262061784102742,
+    "by_archive": {
+     "bcn20000": 0.576766304347826,
+     "ham": 0.6851063829787234,
+     "isic2019_test": 0.4110486891385768,
+     "isic_young": 0.638095238095238
+    },
+    "images_linked_to_a_partner": 0.8812415654520918,
+    "pairs_joined_after_closure": 0.7289135716765012,
+    "different_cluster_pairs_joined_by_closure": 85,
+    "largest_component": 21
+   },
+   "1e-06": {
+    "threshold": 0.08309388160705566,
+    "pair_tpr": 0.4647691773689691,
+    "by_archive": {
+     "bcn20000": 0.5176630434782609,
+     "ham": 0.6212765957446809,
+     "isic2019_test": 0.34831460674157305,
+     "isic_young": 0.5619047619047619
+    },
+    "images_linked_to_a_partner": 0.840080971659919,
+    "pairs_joined_after_closure": 0.6542867060048594,
+    "different_cluster_pairs_joined_by_closure": 6,
+    "largest_component": 19
+   }
+  },
+  "femto_sn": {
+   "0.0001": {
+    "threshold": 0.034897059202194214,
+    "pair_tpr": 0.6709475876431794,
+    "by_archive": {
+     "bcn20000": 0.7133152173913043,
+     "ham": 0.8638297872340426,
+     "isic2019_test": 0.5580524344569289,
+     "isic_young": 0.7904761904761904
+    },
+    "images_linked_to_a_partner": 0.9568151147098516,
+    "pairs_joined_after_closure": 0.8944810829573064,
+    "different_cluster_pairs_joined_by_closure": 1134,
+    "largest_component": 25
+   },
+   "1e-05": {
+    "threshold": 0.11483895778656006,
+    "pair_tpr": 0.5203054494967025,
+    "by_archive": {
+     "bcn20000": 0.5618206521739131,
+     "ham": 0.7531914893617021,
+     "isic2019_test": 0.398876404494382,
+     "isic_young": 0.6571428571428571
+    },
+    "images_linked_to_a_partner": 0.8940620782726046,
+    "pairs_joined_after_closure": 0.6955918083998611,
+    "different_cluster_pairs_joined_by_closure": 37,
+    "largest_component": 15
+   },
+   "1e-06": {
+    "threshold": 0.17756301164627075,
+    "pair_tpr": 0.403332176327664,
+    "by_archive": {
+     "bcn20000": 0.4388586956521739,
+     "ham": 0.6042553191489362,
+     "isic2019_test": 0.300561797752809,
+     "isic_young": 0.5047619047619047
+    },
+    "images_linked_to_a_partner": 0.8124156545209177,
+    "pairs_joined_after_closure": 0.5185699409927108,
+    "different_cluster_pairs_joined_by_closure": 3,
+    "largest_component": 12
+   }
+  },
+  "concatenation_then_sn": {
+   "0.0001": {
+    "threshold": 0.02852165699005127,
+    "pair_tpr": 0.7219715376605346,
+    "by_archive": {
+     "bcn20000": 0.7615489130434783,
+     "ham": 0.8893617021276595,
+     "isic2019_test": 0.6189138576779026,
+     "isic_young": 0.8380952380952381
+    },
+    "images_linked_to_a_partner": 0.9723346828609987,
+    "pairs_joined_after_closure": 0.9253731343283582,
+    "different_cluster_pairs_joined_by_closure": 1141,
+    "largest_component": 26
+   },
+   "1e-05": {
+    "threshold": 0.08501452207565308,
+    "pair_tpr": 0.607080874696286,
+    "by_archive": {
+     "bcn20000": 0.657608695652174,
+     "ham": 0.7914893617021277,
+     "isic2019_test": 0.48408239700374533,
+     "isic_young": 0.7428571428571429
+    },
+    "images_linked_to_a_partner": 0.9352226720647774,
+    "pairs_joined_after_closure": 0.804581742450538,
+    "different_cluster_pairs_joined_by_closure": 58,
+    "largest_component": 21
+   },
+   "1e-06": {
+    "threshold": 0.1467815637588501,
+    "pair_tpr": 0.47761194029850745,
+    "by_archive": {
+     "bcn20000": 0.5183423913043478,
+     "ham": 0.6851063829787234,
+     "isic2019_test": 0.36142322097378277,
+     "isic_young": 0.6285714285714286
+    },
+    "images_linked_to_a_partner": 0.8711201079622132,
+    "pairs_joined_after_closure": 0.6528982992016661,
+    "different_cluster_pairs_joined_by_closure": 2,
+    "largest_component": 17
+   }
+  },
+  "mean_of_normalised_scores (sscd_femto_sn)": {
+   "0.0001": {
+    "threshold": -0.019895344972610474,
+    "pair_tpr": 0.7337729954876779,
+    "by_archive": {
+     "bcn20000": 0.7710597826086957,
+     "ham": 0.8893617021276595,
+     "isic2019_test": 0.6376404494382022,
+     "isic_young": 0.8380952380952381
+    },
+    "images_linked_to_a_partner": 0.970310391363023,
+    "pairs_joined_after_closure": 0.9142658799028115,
+    "different_cluster_pairs_joined_by_closure": 1630,
+    "largest_component": 47
+   },
+   "1e-05": {
+    "threshold": 0.03864029049873352,
+    "pair_tpr": 0.6136758070114544,
+    "by_archive": {
+     "bcn20000": 0.6650815217391305,
+     "ham": 0.7872340425531915,
+     "isic2019_test": 0.49250936329588013,
+     "isic_young": 0.7428571428571429
+    },
+    "images_linked_to_a_partner": 0.9345479082321188,
+    "pairs_joined_after_closure": 0.812912183269698,
+    "different_cluster_pairs_joined_by_closure": 66,
+    "largest_component": 21
+   },
+   "1e-06": {
+    "threshold": 0.06340005993843079,
+    "pair_tpr": 0.5636931620964942,
+    "by_archive": {
+     "bcn20000": 0.6100543478260869,
+     "ham": 0.7574468085106383,
+     "isic2019_test": 0.4400749063670412,
+     "isic_young": 0.7428571428571429
+    },
+    "images_linked_to_a_partner": 0.9163292847503374,
+    "pairs_joined_after_closure": 0.7865324540090246,
+    "different_cluster_pairs_joined_by_closure": 0,
+    "largest_component": 21
+   }
+  }
+ },
+ "tiers": {
+  "candidates": 17515,
+  "sift_minutes": 1.4,
+  "bands": {
+   "1e-4..1e-5 | 0-7": {
+    "same_lesion": 968,
+    "different_cluster": 4724
+   },
+   "1e-4..1e-5 | 8-11": {
+    "same_lesion": 202,
+    "different_cluster": 20
+   },
+   "1e-4..1e-5 | 12-15": {
+    "same_lesion": 157,
+    "different_cluster": 5
+   },
+   "1e-4..1e-5 | 16-19": {
+    "same_lesion": 137,
+    "different_cluster": 6
+   },
+   "1e-4..1e-5 | 20-29": {
+    "same_lesion": 205,
+    "different_cluster": 13
+   },
+   "1e-4..1e-5 | 30+": {
+    "same_lesion": 447,
+    "different_cluster": 9
+   },
+   "1e-5..1e-6 | 0-7": {
+    "same_lesion": 800,
+    "different_cluster": 454
+   },
+   "1e-5..1e-6 | 8-11": {
+    "same_lesion": 257,
+    "different_cluster": 6
+   },
+   "1e-5..1e-6 | 12-15": {
+    "same_lesion": 200,
+    "different_cluster": 6
+   },
+   "1e-5..1e-6 | 16-19": {
+    "same_lesion": 199,
+    "different_cluster": 2
+   },
+   "1e-5..1e-6 | 20-29": {
+    "same_lesion": 306,
+    "different_cluster": 7
+   },
+   "1e-5..1e-6 | 30+": {
+    "same_lesion": 832,
+    "different_cluster": 10
+   },
+   ">=1e-6 | 0-7": {
+    "same_lesion": 683,
+    "different_cluster": 30
+   },
+   ">=1e-6 | 8-11": {
+    "same_lesion": 368,
+    "different_cluster": 7
+   },
+   ">=1e-6 | 12-15": {
+    "same_lesion": 365,
+    "different_cluster": 4
+   },
+   ">=1e-6 | 16-19": {
+    "same_lesion": 343,
+    "different_cluster": 0
+   },
+   ">=1e-6 | 20-29": {
+    "same_lesion": 694,
+    "different_cluster": 5
+   },
+   ">=1e-6 | 30+": {
+    "same_lesion": 5018,
+    "different_cluster": 6
+   }
+  },
+  "old_rule": {
+   "pair_recall": 0.47229130495987987,
+   "pair_recall_confirmed": 0.2745061235981418,
+   "images_linked_to_a_partner": 0.8614969135802469,
+   "different_cluster_at_risk": 521,
+   "different_cluster_confirmed": 16,
+   "at_full_scale_upper_bound": [
+    16026,
+    492
+   ],
+   "confirmed_closure_false_pairs": 54,
+   "confirmed_largest_component": 21
+  },
+  "amended_rule": {
+   "pair_recall": 0.4791422270189104,
+   "pair_recall_confirmed": 0.34029374501431187,
+   "images_linked_to_a_partner": 0.8722029320987654,
+   "different_cluster_at_risk": 91,
+   "different_cluster_confirmed": 25,
+   "at_full_scale_upper_bound": [
+    2799,
+    769
+   ],
+   "confirmed_closure_false_pairs": 97,
+   "confirmed_largest_component": 21
+  },
+  "amended_rule_text": "thresholds T4, T5, T6 = the matcher's score at FMR 1e-4, 1e-5, 1e-6 on the held-out benchmark; confirmed: (score >= T5 and SIFT RANSAC inliers on the originals >= 30) or (score >= T6 and inliers >= 12); at_risk (if not confirmed): score >= T6, or (score >= T5 and inliers >= 8), or (score >= T4 and inliers >= 12); a matcher without T4/T6 (scored before amendment 01): at_risk score >= T5, confirmed also inliers >= 30",
+  "note": "different-cluster pairs with many inliers may be real duplicates the existing links missed"
+ }
+}

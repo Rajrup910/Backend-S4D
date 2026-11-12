@@ -75,32 +75,37 @@ binds both (`research/data/`, `research/v7/train_v7.py`). From the gate's own re
 * **Planted positives found: 384 of 384**, eight families (renamed copy, downsampled variant, lesion link, patient link,
   re-encoded, resized and recoloured, rotated, centre crop) x 48 real images, 16 per archive. A check that has never found a
   planted copy proves nothing, so this runs with every gate build.
-* **Links (receipt of 12 Nov, after M1):** 20,370 confirmed (same lesion by ID, normalised ID, SHA-256, existing groups,
-  correlation plus keypoint copies, and matcher hits that SIFT confirms); 123,471 at risk (patient IDs, hash matches,
-  single-detector keypoint hits, matcher hits alone). Patient IDs and hash matches alone never merge groups; they mark rows at
-  risk. Before M1: 15,233 and 106,839.
-* **Removals:** 3,424 rows leave all training because they link to an evaluated row or a never-train set (681 before M1);
-  305 to 349 more per held-out fold (31 to 41 before); when an archive is held out, every row from it or linked to it (BCN 8,951,
-  HAM 1,323, MSKCC 1,195, net of the rows already removed from all training). V7 keeps V6's number of optimiser steps, so
-  removing rows never also shortens training (plan 13.5, decision 7).
+* **Links (receipt of 12 Nov, after M1 amendment 01):** 27,162 confirmed (same lesion by ID, normalised ID, SHA-256, existing
+  groups, correlation plus keypoint copies, and matcher hits that SIFT confirms); 111,330 at risk (patient IDs, hash matches,
+  single-detector keypoint hits, matcher hits without enough SIFT agreement). Patient IDs and hash matches alone never merge
+  groups; they mark rows at risk. Before M1: 15,233 and 106,839.
+* **Removals:** 1,569 rows leave all training because they link to an evaluated row or a never-train set (681 before M1;
+  3,424 with the first M1, whose at-risk links were mostly look-alikes); 83 to 117 more per held-out fold; when an archive is
+  held out, every row from it or linked to it (BCN 9,320, HAM 1,459, MSKCC 1,209, net of the rows already removed from all
+  training). V7 keeps V6's number of optimiser steps, so removing rows never also shortens training (plan 13.5, decision 7).
 * **Learned same-lesion matcher (M1, `research/v7/m1/`):** endpoints and the adoption rule were written to
-  `results/v7/m1/protocol.json` before any matcher was scored. On 1,039 held-out lesions (7,648 same-lesion pairs) at a pairwise
-  false-match rate of 1 in 100,000, the old pipeline (DINOv2 retrieval plus SIFT) linked **22.5%** of re-photograph pairs and
-  the untrained copy detector SSCD **26.3%**. Two matchers trained here scored higher pooled (29.6% and 28.7%) but lower on HAM,
-  so the pre-registered rule kept SSCD, with SIFT as the second detector (LightGlue scored lower than SIFT). On rows no matcher
-  used (13,489 pairs in val, reserved and HAM val) SSCD links **27.7% [24.1%, 31.5%]** of re-photographs and **89.9%** of
-  known copies (100% of exact copies). It found the 8 HAM-test copies above and no copy of a training image in the sealed
-  external cohort (MIDAS, pixels only; labels unread).
+  `results/v7/m1/protocol.json` before any matcher was scored, and amendment 01 (`protocol_amendment_01.json`) before its
+  one held-out read. M1 scores each pair with SSCD (a copy detector) and a ConvNeXt-Femto matcher trained here, each
+  normalised by how crowded the two images' neighbourhoods are, and asks SIFT keypoints to agree wherever that score is not
+  decisive. On 1,039 held-out lesions (7,648 same-lesion pairs) at a pairwise false-match rate of 1 in 100,000 it links
+  **58.4%** of re-photograph pairs, against 26.3% for SSCD alone and 22.5% for the old pipeline (DINOv2 retrieval plus SIFT),
+  and is higher on every archive (HAM 86.6%, BCN 59.7%). On rows no matcher was trained, tuned or benchmarked on (6,227 images
+  of 1,754 lesions in val, reserved and HAM val) it catches **93.3%** of re-photographed images (at least one other photo of
+  the lesion linked; BCN 94.0%, HAM 88.9%), against **4.9%** for the hash and file-name rules alone; it guards **60.7%
+  [54.3%, 67.2%]** of same-lesion pairs and **92.9%** of known copies (100% of exact copies). Where both images carry a lesion
+  ID, 99.0% of its confirmed and 92.6% of its at-risk links are the same lesion (a lower bound). It found the 8 HAM-test
+  copies above and no copy of a training image in the sealed external cohort (MIDAS, pixels only; labels unread). Sources:
+  `results/v7/m1/amendment_01.json`, `headline.json`, `verify.json`, `training_cost.json`.
 * **Reads:** every V7 promotion read is repeated on four row sets (all rows, without the 380, without the 426, without every
   development row the gate links), and a gain from added data does not count until it survives that last set.
 
 ## 5. What this does not fix, stated plainly
 
-* **Most re-photographs of one lesion are still missed.** With M1 the gate links about 28% of same-lesion re-photographs taken
-  on another day or at another angle (HAM about half, BCN about a quarter), while exact and recoloured copies are found about
-  90-100% of the time. An at-risk link is right about half the time by eye (24 reviewed), so V7 also removes some rows that
-  were never leaks; that is the cost the data plan accepts. **The gate is "audited, with stated lower bounds". This project
-  does not claim to be leak-free.**
+* **Some re-photographs of one lesion are still missed.** About 7% of re-photographed images have no link to any other photo
+  of their lesion, and about 39% of same-lesion pairs are neither linked nor in one confirmed group (27% of lesions are not
+  fully guarded); MSKCC has too few test pairs (15 images) to estimate. Up to about 7% of at-risk links join different lesions, so
+  V7 also removes some rows that were never leaks; that is the cost the data plan accepts. **The gate is "audited, with
+  stated lower bounds". This project does not claim to be leak-free.**
 * Patient overlap in HAM and BCN cannot be measured: those archives carry no patient ID.
 * Pretraining corpora of foundation-model members cannot be audited for our evaluation images; every V7 read is repeated with
   ImageNet-pretrained members only (plan 11.3).

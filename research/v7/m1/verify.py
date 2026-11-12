@@ -22,10 +22,11 @@ import torch
 from PIL import Image, ImageDraw
 
 from research import testguard
-from research.v7.m1 import bench, data, protocol, scan
+from research.v7.m1 import amend, bench, data, density, protocol, scan
 
 SPLITS = ("val", "reserved", "ham_val")
 COPY_EVIDENCE = ("sha256", "normalised_id", "copies_bar40", "existing_group")
+PRE_AMENDMENT = data.OUT / "_pre_amendment_01"   # the scan's outputs before amendment 01 (copied there before the rescan)
 
 
 def main() -> int:
@@ -36,8 +37,8 @@ def main() -> int:
     thr = float(summary["threshold"])
     master = pd.read_csv(data.MASTER, dtype=str, low_memory=False)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    key = method if method in ("dinov2_cache", "sscd") else f"ml/checkpoints/m1/{method}.pt"
-    emb = scan.embed_all(key, master, device)
+    key = method if method in ("dinov2_cache", "sscd", *amend.CANDIDATES) else f"ml/checkpoints/m1/{method}.pt"
+    emb, off = scan.embed_scored(key, master, device)
     best = json.loads((data.OUT / "baselines.json").read_text(encoding="utf-8"))["best_untrained_baseline"]
     comparator = best if best != method else "dinov2_cache"   # the bar the chosen matcher had to clear; if it IS that bar, DINOv2-B
     base = scan.embed_all(comparator, master, device)
@@ -45,12 +46,15 @@ def main() -> int:
     pos = pd.Series(np.arange(len(master)), index=master["image_id"].to_numpy())
     out = {"method": method, "threshold": thr, "comparator": comparator, "protocol_sha256": protocol.require()["sha256"]}
 
-    # 1. known copies
-    links = pd.read_csv(data.LINKS, dtype=str)
+    # 1. known copies, from the links BEFORE any M1 scan: once a scan's links are in the gate, its own evidence label can replace
+    # another detector's on the same pair (465 copy pairs before M1, 112 after), so the current links are not a fixed yardstick
+    fixed = amend.BENCH_SOURCE / "links_v7.csv"
+    links = pd.read_csv(fixed if fixed.is_file() else data.LINKS, dtype=str)
+    out["known_copies_source"] = str((fixed if fixed.is_file() else data.LINKS).relative_to(data.REPO))
     copies = links[(links["tier"] == "confirmed") & links["evidence"].isin(COPY_EVIDENCE)]
     copies = copies[copies["a"].isin(pos.index) & copies["b"].isin(pos.index)]
     a, b = pos.loc[copies["a"]].to_numpy(), pos.loc[copies["b"]].to_numpy()
-    sim = np.einsum("ij,ij->i", emb[a], emb[b])
+    sim = density.pair_scores(emb, off, a, b)
     sim_base = np.einsum("ij,ij->i", base[a], base[b])
     out["known_copies"] = {"pairs": int(len(copies)), "caught": float((sim >= thr).mean()), "caught_comparator": float((sim_base >= base_thr).mean()),
                            "by_evidence": {e: {"pairs": int((copies["evidence"] == e).sum()),
@@ -69,7 +73,7 @@ def main() -> int:
                 pairs.append((i, j)); lesion_of.append(lesion); archive_of.append(lesion.split(":")[0])
     pairs = np.array(pairs)
     lesion_of, archive_of = np.array(lesion_of), np.array(archive_of)
-    s_new = np.einsum("ij,ij->i", emb[pairs[:, 0]], emb[pairs[:, 1]]) >= thr
+    s_new = density.pair_scores(emb, off, pairs[:, 0], pairs[:, 1]) >= thr
     s_base = np.einsum("ij,ij->i", base[pairs[:, 0]], base[pairs[:, 1]]) >= base_thr
     boot = bench.lesion_bootstrap({"chosen": s_new, "comparator": s_base}, lesion_of, protocol.N_BOOT, protocol.SEED)
     diff = boot["boot"]["chosen"] - boot["boot"]["comparator"]
@@ -80,6 +84,19 @@ def main() -> int:
         "difference_ci95": [float(np.percentile(diff, 2.5)), float(np.percentile(diff, 97.5))],
         "by_archive": {ar: {"pairs": int((archive_of == ar).sum()), "chosen": float(s_new[archive_of == ar].mean()),
                             "comparator": float(s_base[archive_of == ar].mean())} for ar in sorted(set(archive_of))}}
+    # 2b. end to end: the same pairs as LINKED by the scan (tier rule and SIFT included), against the scan before amendment 01
+    ids = master["image_id"].to_numpy()
+    keys = pd.Series([frozenset(p) for p in zip(ids[pairs[:, 0]], ids[pairs[:, 1]])])
+    for label, path in (("scan", data.OUT / "m1_links.csv"), ("scan_before_amendment_01", PRE_AMENDMENT / "m1_links.csv")):
+        if not path.is_file():
+            continue
+        found = pd.read_csv(path, dtype=str)
+        tier_of = dict(zip(map(frozenset, found[["a", "b"]].itertuples(index=False)), found["tier"]))
+        t = keys.map(tier_of).fillna("").to_numpy()
+        linked = t != ""
+        img = pd.DataFrame({"i": np.r_[pairs[:, 0], pairs[:, 1]], "l": np.r_[linked, linked]}).groupby("i")["l"].any()
+        out["unseen_rephotographs"][label] = {"pairs_linked": float(linked.mean()), "pairs_confirmed": float((t == "confirmed").mean()),
+                                              "images_linked_to_a_partner": float(img.mean()), "links_in_file": int(len(found))}
 
     # 3. review sheet of new links
     m1_links = pd.read_csv(data.OUT / "m1_links.csv", dtype=str)

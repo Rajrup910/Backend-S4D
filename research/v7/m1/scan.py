@@ -3,10 +3,11 @@ MIDAS pixel audit that `external_read.predict` requires.
 
     python -m research.v7.m1.scan --method dinov2_cache                    # an untrained baseline kept by the adoption test
     python -m research.v7.m1.scan --method ml/checkpoints/m1/<name>.pt     # an adopted trained model
+    python -m research.v7.m1.scan --method sscd_sn                         # the method adopted by amendment 01 (`amend.py`)
 
-Links (data plan tiers 2-3): each image's top-8 neighbours by the matcher; a pair at or above the matcher's threshold at the
-primary FMR (fixed on the held-out benchmark, `results/v7/m1/`) is `at_risk`; it is `confirmed` when SIFT on the originals also
-reaches the V6 bar of 30 RANSAC inliers (a second, different detector agrees). Output `results/v7/m1/m1_links.csv`, read by
+Links (data plan tiers 2-3): each image's top-8 neighbours by the matcher's score (density-normalised for an amended method,
+`density.py`); the tier of each pair comes from its score and its SIFT inliers on the originals by the one rule in `tiers.py`
+(thresholds fixed on the held-out benchmark, `results/v7/m1/`). Output `results/v7/m1/m1_links.csv`, read by
 `research/data/build_master_v7.py` like the other audit pair files.
 
 MIDAS (sealed; labels never read here): each of the 765 sealed images against its 5 nearest V7 training images by the matcher;
@@ -27,7 +28,7 @@ import torch
 
 from research import testguard
 from research.data import overlap_guard
-from research.v7.m1 import bench, data, protocol
+from research.v7.m1 import amend, bench, data, density, protocol, tiers
 
 MIDAS_DIR = data.REPO / "results" / "v7" / "external" / "midas_v7"
 TRAINING = (overlap_guard.DEV_SPLIT, *overlap_guard.TRAINING_ONLY_SPLITS)
@@ -37,6 +38,11 @@ MIDAS_TOP = 5
 def threshold(method: str) -> tuple[float, str]:
     """The matcher's similarity threshold at the primary FMR, as measured on the held-out benchmark."""
     fmr = protocol.FMR_PRIMARY
+    if method in amend.CANDIDATES:
+        record = amend.result()
+        if record["adopted"] != method:
+            raise SystemExit(f"amendment 01 adopted {record['adopted']}, not {method}")
+        return float(record["methods"][method]["thresholds"][str(fmr)]), method
     if method.endswith(".pt"):
         record = json.loads((data.OUT / f"candidate_{Path(method).stem}.json").read_text(encoding="utf-8"))
         if record.get("checkpoint_sha256") != bench.file_sha(data.REPO / method):
@@ -51,6 +57,22 @@ def threshold(method: str) -> tuple[float, str]:
     raise SystemExit(f"no benchmark threshold for {method}")
 
 
+def extra_thresholds(method: str) -> tuple[float | None, float | None]:
+    """The thresholds at the amendment's strict (1e-6) and loose (1e-4) FMR; (None, None) for a matcher scored before it."""
+    if method not in amend.CANDIDATES:
+        return None, None
+    t = amend.result()["methods"][method]["thresholds"]
+    return float(t[str(amend.FMR_STRICT)]), float(t[str(protocol.FMR_SECONDARY)])
+
+
+def embed_scored(method: str, frame: pd.DataFrame, device) -> tuple[np.ndarray, np.ndarray]:
+    """The matcher's embedding of every row and the per-row offset of its score (half the local density; zeros = raw cosine)."""
+    if method in amend.CANDIDATES:
+        return amend.scored(method, frame, device)
+    emb = embed_all(method, frame, device)
+    return emb, np.zeros(len(emb), dtype=np.float32)
+
+
 def embed_all(method: str, frame: pd.DataFrame, device) -> np.ndarray:
     if method.endswith(".pt"):
         path = data.REPO / method
@@ -63,13 +85,20 @@ def embed_all(method: str, frame: pd.DataFrame, device) -> np.ndarray:
 
 
 @torch.no_grad()
-def topk(query: np.ndarray, gallery: np.ndarray, k: int, device, same: bool, chunk: int = 1024) -> tuple[np.ndarray, np.ndarray]:
+def topk(query: np.ndarray, gallery: np.ndarray, k: int, device, same: bool, chunk: int = 1024,
+         query_offset: np.ndarray | None = None, gallery_offset: np.ndarray | None = None) -> tuple[np.ndarray, np.ndarray]:
+    """Each query's k best gallery rows by score = cosine - query_offset - gallery_offset (offsets default to 0)."""
     g = torch.from_numpy(gallery).to(device)
+    go = None if gallery_offset is None else torch.from_numpy(gallery_offset).to(device)
     sims, idx = [], []
     for start in range(0, len(query), chunk):
         s = torch.from_numpy(query[start:start + chunk]).to(device) @ g.T
+        if go is not None:
+            s = s - go[None, :]
+        if query_offset is not None:
+            s = s - torch.from_numpy(query_offset[start:start + chunk]).to(device)[:, None]
         if same:
-            s[torch.arange(s.shape[0]), torch.arange(start, start + s.shape[0])] = -2.0
+            s[torch.arange(s.shape[0]), torch.arange(start, start + s.shape[0])] = -4.0
         v, i = s.topk(k, dim=1)
         sims.append(v.cpu())
         idx.append(i.cpu())
@@ -83,16 +112,22 @@ def scan(method: str, device) -> dict:
     master = pd.read_csv(data.MASTER, dtype=str, low_memory=False)
     started = time.time()
     data.build_cache(master)
-    emb = embed_all(method, master, device)
-    sim, nbr = topk(emb, emb, protocol.TOP_K, device, same=True)
+    emb, off = embed_scored(method, master, device)
+    sim, nbr = topk(emb, emb, protocol.TOP_K, device, same=True, query_offset=off, gallery_offset=off)
     i = np.repeat(np.arange(len(master)), protocol.TOP_K)
     j, s = nbr.ravel(), sim.ravel()
-    keep = s >= thr
+    strict, loose = extra_thresholds(method)
+    keep = s >= (thr if loose is None else loose)    # SIFT runs on every pair the rule could link, and on no other
     cand = np.unique(np.sort(np.stack([i[keep], j[keep]], 1), 1), axis=0)
+    score = density.pair_scores(emb, off, cand[:, 0], cand[:, 1])
+    sift_started = time.time()
     inl = bench.sift_scores(cand, master, originals=True)
+    sift_minutes, sift_pairs = round((time.time() - sift_started) / 60, 1), int(len(cand))
+    tier = tiers.tier(score, inl, thr, strict, loose)
+    cand, score, inl, tier = cand[tier != ""], score[tier != ""], inl[tier != ""], tier[tier != ""]
     ids = master["image_id"].to_numpy()
-    links = pd.DataFrame({"a": ids[cand[:, 0]], "b": ids[cand[:, 1]], "tier": np.where(inl >= protocol.SIFT_BAR, "confirmed", "at_risk"),
-                          "evidence": f"m1:{name}", "inliers": inl.astype(int)})
+    links = pd.DataFrame({"a": ids[cand[:, 0]], "b": ids[cand[:, 1]], "tier": tier, "evidence": f"m1:{name}",
+                          "inliers": inl.astype(int), "score": np.round(score, 4)})
     split = master["frozen_split"].to_numpy()
     links["splits"] = [" | ".join(sorted((split[a], split[b]))) for a, b in cand]
     links.to_csv(data.OUT / "m1_links.csv", index=False)
@@ -103,12 +138,15 @@ def scan(method: str, device) -> dict:
                "images": len(master), "links": int(len(links)), "by_tier": links["tier"].value_counts().to_dict(),
                "new_links_not_in_links_v7": int(new.sum()), "new_by_tier": links[new]["tier"].value_counts().to_dict(),
                "new_by_split_pair": links[new]["splits"].value_counts().head(20).to_dict(), "minutes": round((time.time() - started) / 60, 1)}
-    summary["midas"] = midas_audit(master, emb, links, device)
+    summary["tier_rule"] = tiers.RULE
+    summary["thresholds"] = {"fmr_1e-4": loose, "fmr_1e-5": thr, "fmr_1e-6": strict}
+    summary["sift_pairs"], summary["sift_minutes"] = sift_pairs, sift_minutes
+    summary["midas"] = midas_audit(master, emb, off, links, device)
     (data.OUT / "m1_scan.json").write_text(json.dumps(summary, indent=1, default=int), encoding="utf-8")
     return summary
 
 
-def midas_audit(master: pd.DataFrame, emb: np.ndarray, links: pd.DataFrame, device) -> dict:
+def midas_audit(master: pd.DataFrame, emb: np.ndarray, off: np.ndarray, links: pd.DataFrame, device) -> dict:
     seal = json.loads((MIDAS_DIR / "seal.json").read_text(encoding="utf-8"))
     cohort = pd.read_csv(MIDAS_DIR / "cohort.csv", dtype=str, usecols=["image_id"])["image_id"].tolist()
     if (MIDAS_DIR / "predictions.json").is_file():
@@ -116,7 +154,7 @@ def midas_audit(master: pd.DataFrame, emb: np.ndarray, links: pd.DataFrame, devi
     pos = pd.Series(np.arange(len(master)), index=master["image_id"])
     q = pos.loc[cohort].to_numpy()
     train_rows = np.where(master["frozen_split"].isin(TRAINING).to_numpy())[0]
-    _, nbr = topk(emb[q], emb[train_rows], MIDAS_TOP, device, same=False)
+    _, nbr = topk(emb[q], emb[train_rows], MIDAS_TOP, device, same=False, gallery_offset=off[train_rows])
     pairs = np.stack([np.repeat(q, MIDAS_TOP), train_rows[nbr.ravel()]], 1)
     inl = bench.sift_scores(pairs, master, originals=True).reshape(len(q), MIDAS_TOP)
     best = inl.max(1)

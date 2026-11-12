@@ -2,22 +2,22 @@
  "split": "loao-mskcc",
  "fold": null,
  "loao_holdout": "mskcc",
- "n_images": 13225,
+ "n_images": 13549,
  "seed": 20260930,
  "basis": {
   "v_mel": [
-   -0.5498144414237965,
-   -0.24785281984340174,
-   0.7976672612671983
+   -0.5461474885816822,
+   -0.25256129120141096,
+   0.7987087797830932
   ],
   "v_hb": [
-   -0.8137986979385438,
-   0.46433417660153786,
-   0.34946452133700595
+   -0.8139239803766197,
+   0.4630495612349327,
+   0.350874419141687
   ],
   "fold": null,
-  "n_pixels": 1005100,
-  "t_mel": 0.2405683994293213,
+  "n_pixels": 1002626,
+  "t_mel": 0.2366800308227539,
   "channel_mean": [
    0.0,
    0.0,
@@ -29,15 +29,15 @@
    1.0
   ],
   "naming_cosines": {
-   "mel_vs_ref": 0.9745412173796885,
-   "hb_vs_ref": 0.9293227252690391,
-   "mel_vs_hb": 0.6111081491630801
+   "mel_vs_ref": 0.9731650552862084,
+   "hb_vs_ref": 0.9286151794875842,
+   "mel_vs_hb": 0.6078206218731143
   }
  },
  "basis_only": true,
  "basis_only_note": "passes 1-2 of research/v5/fit_fold_artefacts.py; channel_mean/std are identity defaults (unused by B5)",
- "rows_sha256": "ddbe48aa7269b43c8319cbfdb2c439c1d89c98630d2a88687a74217d1ee44746",
- "gate_receipt_sha256": "138965151cdc3fbbb3e33ac3c70fcef192f452a87c0ad1e560eb1546e78bc947",
+ "rows_sha256": "1a9802de3b3cb41ba695ac7a525d9d6df826ec59567fb6dfc3bc61865d357c6a",
+ "gate_receipt_sha256": "86d7be6bbeb1e917a9c680dd4a02d1f739cff2fb1686c92d88c4973e9fb51b64",
  "labels_read": false,
- "minutes": 4.32
+ "minutes": 5.27
 }
