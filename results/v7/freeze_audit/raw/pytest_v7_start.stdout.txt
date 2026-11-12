@@ -1,0 +1,12 @@
+........................................................................ [ 67%]
+..................................                                       [100%]
+============================== warnings summary ===============================
+tests/test_v7_decisions.py::test_xauc_keeps_young_positives_and_older_negatives_only_and_never_decides
+  C:\Users\RAJ\Downloads\Capstone\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1396: RuntimeWarning: All-NaN slice encountered
+    return _nanquantile_unchecked(
+
+tests/test_v7_decisions.py::test_xauc_keeps_young_positives_and_older_negatives_only_and_never_decides
+  C:\Users\RAJ\Downloads\Capstone\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+    var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html

@@ -1,0 +1,25 @@
+under-40 pAUC
+  rho 0.85 truth +0.0012: coverage95 0.931 (se 0.008) P2 pass 0.967 (se 0.006) sd 0.0189
+  rho 0.95 truth -0.0001: coverage95 0.929 (se 0.008) P2 pass 0.972 (se 0.005) sd 0.0119
+  rho 0.85 truth -0.0192: coverage95 0.942 (se 0.007) P2 pass 0.827 (se 0.012) sd 0.0192
+  rho 0.95 truth -0.0207: coverage95 0.914 (se 0.009) P2 pass 0.555 (se 0.016) sd 0.0127
+  rho 0.85 truth -0.0401: coverage95 0.939 (se 0.008) P2 pass 0.430 (se 0.016) sd 0.0199
+  rho 0.95 truth -0.0420: coverage95 0.942 (se 0.007) P2 pass 0.073 (se 0.008) sd 0.0132
+  rho 0.85 truth -0.0820: coverage95 0.939 (se 0.008) P2 pass 0.017 (se 0.004) sd 0.0227
+  rho 0.95 truth -0.0857: coverage95 0.931 (se 0.008) P2 pass 0.000 (se 0.000) sd 0.0183
+  rho 0.85 truth +0.0354: coverage95 0.924 (se 0.008) P2 pass 1.000 (se 0.000) sd 0.0186
+  rho 0.95 truth +0.0346: coverage95 0.922 (se 0.008) P2 pass 1.000 (se 0.000) sd 0.0126
+all-age escalation sensitivity
+  rho 0.85 truth +0.0000: coverage95 0.950 (se 0.007) P2 pass 0.975 (se 0.005) sd 0.0087
+  rho 0.95 truth +0.0000: coverage95 0.934 (se 0.008) P2 pass 0.969 (se 0.005) sd 0.0059
+  rho 0.85 truth -0.0100: coverage95 0.946 (se 0.007) P2 pass 0.785 (se 0.013) sd 0.0085
+  rho 0.95 truth -0.0100: coverage95 0.940 (se 0.008) P2 pass 0.606 (se 0.015) sd 0.0062
+  rho 0.85 truth -0.0200: coverage95 0.947 (se 0.007) P2 pass 0.354 (se 0.015) sd 0.0090
+  rho 0.95 truth -0.0200: coverage95 0.941 (se 0.007) P2 pass 0.100 (se 0.009) sd 0.0062
+  rho 0.85 truth -0.0300: coverage95 0.935 (se 0.008) P2 pass 0.089 (se 0.009) sd 0.0092
+  rho 0.95 truth -0.0300: coverage95 0.957 (se 0.006) P2 pass 0.001 (se 0.001) sd 0.0061
+  rho 0.85 truth -0.0500: coverage95 0.937 (se 0.008) P2 pass 0.000 (se 0.000) sd 0.0094
+  rho 0.95 truth -0.0500: coverage95 0.950 (se 0.007) P2 pass 0.000 (se 0.000) sd 0.0064
+  rho 0.85 truth +0.0200: coverage95 0.957 (se 0.006) P2 pass 1.000 (se 0.000) sd 0.0083
+  rho 0.95 truth +0.0200: coverage95 0.947 (se 0.007) P2 pass 1.000 (se 0.000) sd 0.0057
+2081.2 s -> C:\Users\RAJ\Downloads\Capstone review 1\results\v7\p2_coverage.json

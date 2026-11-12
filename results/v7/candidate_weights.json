@@ -1,0 +1,20 @@
+{
+ "tf_efficientnet_b5.ns_jft_in1k": {
+  "file": "C:\\Users\\RAJ\\.cache\\huggingface\\hub\\models--timm--tf_efficientnet_b5.ns_jft_in1k\\snapshots\\8c0c5004702fa3dca6eeea777700cecef4fb66be\\model.safetensors",
+  "bytes": 122330162,
+  "sha256": "228034f5e30661f6f8a9ad8e0791c25bb7009ba543e6aef84811ebc01afb8665",
+  "seconds": 13.4
+ },
+ "eva02_small_patch14_224.mim_in22k": {
+  "file": "C:\\Users\\RAJ\\.cache\\huggingface\\hub\\models--timm--eva02_small_patch14_224.mim_in22k\\snapshots\\79c7d4274f6dbf202549d8f976ae24eeaf97e5ad\\model.safetensors",
+  "bytes": 86499188,
+  "sha256": "d3d632352efbd0a0a8269dce114ab8a214833f85ce6f738860221f11ab0f0c2f",
+  "seconds": 8.3
+ },
+ "maxvit_tiny_tf_224.in1k": {
+  "file": "C:\\Users\\RAJ\\.cache\\huggingface\\hub\\models--timm--maxvit_tiny_tf_224.in1k\\snapshots\\041f2cce4d74c7539d63aa9fb85786e78072d487\\model.safetensors",
+  "bytes": 123917994,
+  "sha256": "e3998ec8e5f70ad5fa7682a1fa211b76d4adcb775f809b976b1a60506be113e6",
+  "seconds": 0
+ }
+}

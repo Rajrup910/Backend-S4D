@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\RAJ\AppData\Local\Programs\Python\Python312\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJ\AppData\Local\Programs\Python\Python312\Lib\multiprocessing\spawn.py", line 131, in _main
+    prepare(preparation_data)
+  File "C:\Users\RAJ\AppData\Local\Programs\Python\Python312\Lib\multiprocessing\spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+  File "C:\Users\RAJ\AppData\Local\Programs\Python\Python312\Lib\multiprocessing\spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\RAJ\Downloads\Capstone review 1\scripts\v7_p2_coverage.py", line 39, in <module>
+    from scipy.stats import norm
+  File "C:\Users\RAJ\Downloads\Capstone\.venv\Lib\site-packages\scipy\stats\__init__.py", line 600, in <module>
+    from ._stats_py import *
+  File "C:\Users\RAJ\Downloads\Capstone\.venv\Lib\site-packages\scipy\stats\_stats_py.py", line 42, in <module>
+    from scipy.optimize import milp, LinearConstraint
+  File "C:\Users\RAJ\Downloads\Capstone\.venv\Lib\site-packages\scipy\optimize\__init__.py", line 435, in <module>
+    from ._linprog import linprog, linprog_verbose_callback
+  File "C:\Users\RAJ\Downloads\Capstone\.venv\Lib\site-packages\scipy\optimize\_linprog.py", line 21, in <module>
+    from ._linprog_highs import _linprog_highs
+  File "C:\Users\RAJ\Downloads\Capstone\.venv\Lib\site-packages\scipy\optimize\_linprog_highs.py", line 20, in <module>
+    from ._highspy._highs_wrapper import _highs_wrapper
+  File "C:\Users\RAJ\Downloads\Capstone\.venv\Lib\site-packages\scipy\optimize\_highspy\_highs_wrapper.py", line 5, in <module>
+    from scipy.optimize._highspy import _highs_options as hopt  # type: ignore[attr-defined]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ImportError: DLL load failed while importing _highs_options: The paging file is too small for this operation to complete.

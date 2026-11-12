@@ -1,0 +1,53 @@
+{
+ "written": "2026-11-12T05:01:17",
+ "decision": "owner, 10 Nov 2026: biggest training pool that keeps integrity",
+ "trained_on": [
+  "development folds other than the held-out one",
+  "young extras",
+  "v6_added",
+  "retired_split",
+  "hiba"
+ ],
+ "never_trained_on": [
+  "the held-out development fold",
+  "ham_test",
+  "midas"
+ ],
+ "inputs_sha256": {
+  "results/v6/added_pool/added_train.csv": "42c2cdcfeecde36ab8901756b4e979faecaa10e9bf171088805329a891e8c0ff",
+  "results/v7/hiba_train/hiba_train.csv": "3154c997c128821cab4308de1b2648d18bfc2bc567e71bdee440ea569d620b39",
+  "ml/data/manifest_v4.csv": "43be63926df1bb6dbe18d11937f70740ffe610495e12381b2dbfe87ff3f8c2f9",
+  "ml/data/v7/master_v7.csv": "d9ed13ee88f342c5ddabc40620676b52c5d30c7f7a5be00710169742df48e03e"
+ },
+ "output_sha256": "cfe48f197b03b61260767aa6fbec07b4e552fed8a15b543801be428da4a5a4b2",
+ "rows_by_source_before": {
+  "v6_added": 25471,
+  "retired_split": 8535,
+  "hiba": 1199
+ },
+ "byte_identical_dropped": 22,
+ "byte_identical_dropped_by_source": {
+  "retired_split": 22
+ },
+ "rows_by_source_after": {
+  "v6_added": 25471,
+  "retired_split": 8513,
+  "hiba": 1199
+ },
+ "rows": 35183,
+ "under40_rows_by_source": {
+  "retired_split": 1585,
+  "v6_added": 1005,
+  "hiba": 251
+ },
+ "rows_by_archive": {
+  "derm12345": 11928,
+  "bcn20000": 5689,
+  "isic2020": 5559,
+  "milk10k": 4128,
+  "isic2019_test": 3856,
+  "ham": 1531,
+  "mskcc": 1293,
+  "hiba": 1199
+ }
+}

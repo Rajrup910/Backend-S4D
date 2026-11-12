@@ -1,0 +1,122 @@
+{
+ "source": "data/external/isic2018_task2/ISIC2018_Task2_Training_GroundTruth_v3.zip",
+ "development_images_with_masks": 1441,
+ "reserved_or_val_masks_read": 0,
+ "premise": {
+  "rows_with_masks": 1441,
+  "by_age_class": {
+   "<40": {
+    "melanoma_images": 11,
+    "melanoma_groups": 11,
+    "nevus_images": 389,
+    "attributes": {
+     "globules": {
+      "melanoma": "5/11",
+      "nevus": "127/389",
+      "odds_ratio": 1.7191601049868765,
+      "fisher_p": 0.5162071308264977
+     },
+     "streaks": {
+      "melanoma": "1/11",
+      "nevus": "16/389",
+      "odds_ratio": 2.33125,
+      "fisher_p": 0.3836496246452945
+     },
+     "pigment_network": {
+      "melanoma": "6/11",
+      "nevus": "212/389",
+      "odds_ratio": 1.0018867924528303,
+      "fisher_p": 1.0
+     },
+     "negative_network": {
+      "melanoma": "2/11",
+      "nevus": "23/389",
+      "odds_ratio": 3.536231884057971,
+      "fisher_p": 0.14588444208092174
+     },
+     "milia_like_cyst": {
+      "melanoma": "1/11",
+      "nevus": "87/389",
+      "odds_ratio": 0.3471264367816092,
+      "fisher_p": 0.4683430531826286
+     }
+    }
+   },
+   "40-59": {
+    "melanoma_images": 66,
+    "melanoma_groups": 64,
+    "nevus_images": 315,
+    "attributes": {
+     "globules": {
+      "melanoma": "24/66",
+      "nevus": "60/315",
+      "odds_ratio": 2.4285714285714284,
+      "fisher_p": 0.0031690928543292316
+     },
+     "streaks": {
+      "melanoma": "7/66",
+      "nevus": "6/315",
+      "odds_ratio": 6.110169491525424,
+      "fisher_p": 0.002507621758152378
+     },
+     "pigment_network": {
+      "melanoma": "38/66",
+      "nevus": "208/315",
+      "odds_ratio": 0.6981456043956044,
+      "fisher_p": 0.2045088601706851
+     },
+     "negative_network": {
+      "melanoma": "14/66",
+      "nevus": "24/315",
+      "odds_ratio": 3.264423076923077,
+      "fisher_p": 0.0023663331003194064
+     },
+     "milia_like_cyst": {
+      "melanoma": "20/66",
+      "nevus": "71/315",
+      "odds_ratio": 1.494182486221678,
+      "fisher_p": 0.20396451824215944
+     }
+    }
+   },
+   "60+": {
+    "melanoma_images": 162,
+    "melanoma_groups": 156,
+    "nevus_images": 218,
+    "attributes": {
+     "globules": {
+      "melanoma": "37/162",
+      "nevus": "41/218",
+      "odds_ratio": 1.2778536585365854,
+      "fisher_p": 0.36952819685997673
+     },
+     "streaks": {
+      "melanoma": "5/162",
+      "nevus": "3/218",
+      "odds_ratio": 2.2823779193205946,
+      "fisher_p": 0.2939322034821561
+     },
+     "pigment_network": {
+      "melanoma": "108/162",
+      "nevus": "145/218",
+      "odds_ratio": 1.006896551724138,
+      "fisher_p": 1.0
+     },
+     "negative_network": {
+      "melanoma": "24/162",
+      "nevus": "6/218",
+      "odds_ratio": 6.144927536231884,
+      "fisher_p": 2.4170800456514593e-05
+     },
+     "milia_like_cyst": {
+      "melanoma": "52/162",
+      "nevus": "59/218",
+      "odds_ratio": 1.273959938366718,
+      "fisher_p": 0.3057722570105332
+     }
+    }
+   }
+  },
+  "unit_note": "images, not lesions; MSKCC rows only; descriptive, no gate"
+ }
+}

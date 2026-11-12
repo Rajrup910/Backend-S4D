@@ -1,0 +1,97 @@
+{
+ "status": "exploratory (folds 1-4 read at V6-5); evidence for the safety stack, not a promotion read",
+ "rows": 12235,
+ "C": 1.0,
+ "by_band": {
+  "<40": {
+   "uncalibrated": {
+    "signed_gap": -0.051298263966035096,
+    "ece": 0.0565529723304067
+   },
+   "global_dirichlet": {
+    "signed_gap": -0.01516396567563183,
+    "ece": 0.02360477583799237
+   },
+   "bandwise_dirichlet": {
+    "signed_gap": 0.00944161405061339,
+    "ece": 0.017654968932362815
+   },
+   "abs_gap_change_bandwise_minus_global": {
+    "delta": -0.00572235162501844,
+    "ci95": [
+     -0.027626941360917732,
+     0.018422866888718043
+    ],
+    "sd": 0.012368226332687979,
+    "n_boot": 500,
+    "n_clusters": 1294,
+    "seed": 20261110
+   },
+   "images": 2164
+  },
+  "40-59": {
+   "uncalibrated": {
+    "signed_gap": -0.02298946689587711,
+    "ece": 0.044554032835679803
+   },
+   "global_dirichlet": {
+    "signed_gap": 0.010335925891563402,
+    "ece": 0.02771245403018273
+   },
+   "bandwise_dirichlet": {
+    "signed_gap": 0.015337813146115264,
+    "ece": 0.02642731252429512
+   },
+   "abs_gap_change_bandwise_minus_global": {
+    "delta": 0.00500188725455164,
+    "ci95": [
+     -0.003157543542902902,
+     0.010667028423539936
+    ],
+    "sd": 0.0034530992179343965,
+    "n_boot": 500,
+    "n_clusters": 2876,
+    "seed": 20261110
+   },
+   "images": 4663
+  },
+  "60+": {
+   "uncalibrated": {
+    "signed_gap": 0.011381162391684296,
+    "ece": 0.026169812890339955
+   },
+   "global_dirichlet": {
+    "signed_gap": 0.031116593573969786,
+    "ece": 0.03179173709850915
+   },
+   "bandwise_dirichlet": {
+    "signed_gap": 0.015850083141725646,
+    "ece": 0.02460010607513466
+   },
+   "abs_gap_change_bandwise_minus_global": {
+    "delta": -0.01526651043224414,
+    "ci95": [
+     -0.021049869628397763,
+     -0.009103876364127558
+    ],
+    "sd": 0.0030252062995592254,
+    "n_boot": 500,
+    "n_clusters": 2652,
+    "seed": 20261110
+   },
+   "images": 5207
+  }
+ },
+ "macro_f1": {
+  "uncalibrated": 0.7432581241254821,
+  "global_dirichlet": 0.7442920115441379,
+  "bandwise_dirichlet": 0.751256034900401
+ },
+ "drop_rule": {
+  "bands_where_abs_gap_falls_by_0.01": [
+   "60+"
+  ],
+  "macro_f1_not_lower": true,
+  "verdict": "band-wise map helps: carry to the safety stack for the frozen V7 read"
+ }
+}

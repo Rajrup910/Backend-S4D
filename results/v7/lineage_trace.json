@@ -1,0 +1,933 @@
+{
+ "ledger": "docs\\v7_final_revision\\V7_LINEAGE_EVIDENCE_LEDGER.csv",
+ "rows": 36,
+ "rows_with_numbers": 35,
+ "point_traced": 35,
+ "untraced": [],
+ "detail": [
+  {
+   "claim_id": "V1-B1",
+   "files": [
+    "results/ablation_table.csv"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.7459,
+    "found_at": [
+     "line 3"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V1-E1",
+   "files": [
+    "results/bootstrap_cis.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.7718,
+    "found_at": [
+     "A5_soft_vote_6cnn.macro_f1.point_estimate"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.7459,
+    "found_at": [
+     "A2_convnext_tiny.macro_f1.point_estimate"
+    ]
+   },
+   "delta": {
+    "value": 0.0259,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V1-T1",
+   "files": [
+    "results/ablation_table.csv"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.7859,
+    "found_at": [
+     "line 7"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.7718,
+    "found_at": [
+     "line 6"
+    ]
+   },
+   "delta": {
+    "value": 0.0141,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V1-C1",
+   "files": [
+    "results/reports/research__calibration__results__session2_report.md"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.0201,
+    "found_at": [
+     "line 10"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.1575,
+    "found_at": [
+     "line 7"
+    ]
+   },
+   "delta": {
+    "value": -0.1374,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V1-D1",
+   "files": [
+    "results/mcnemar_delong.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.9572,
+    "found_at": [
+     "[3].delong_per_class[2].auc_a",
+     "[4].delong_per_class[2].auc_b"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.9195,
+    "found_at": [
+     "[0].delong_per_class[2].auc_a",
+     "[1].delong_per_class[2].auc_b",
+     "[2].delong_per_class[2].auc_b",
+     "[3].delong_per_class[2].auc_b"
+    ]
+   },
+   "delta": {
+    "value": 0.0377,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V1-S9",
+   "files": [
+    "results/test_pass_receipt.json",
+    "results/session9/ladder.csv"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.8047,
+    "found_at": [
+     "line 2"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.8047,
+    "found_at": [
+     "line 2"
+    ]
+   },
+   "delta": {
+    "value": 0.0,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V1-A8",
+   "files": [
+    "results/test_pass_receipt.json",
+    "results/session9/new_rung_comparisons.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "comparator_estimate": {
+    "value": 0.8047,
+    "found_at": [
+     "a7_reproduction.published_macro_f1",
+     "a7_reproduction.reproduced_macro_f1"
+    ]
+   },
+   "delta": {
+    "value": -0.0237,
+    "found_at": [
+     "comparisons[1].point_estimate"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V4-P1",
+   "files": [
+    "results/v4/s54/reserved_receipt.json",
+    "results/v5/same_footing.md"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.603,
+    "found_at": [
+     "line 17"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.411,
+    "found_at": [
+     "line 16"
+    ]
+   },
+   "delta": {
+    "value": 0.192,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V4-S1",
+   "files": [
+    "results/v4/s56/reserved_receipt.json",
+    "results/v4/s56/s56_report.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.763,
+    "found_at": [
+     "floor_transfer[6].realised"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V4-R1",
+   "files": [
+    "results/v4/s53r/s53r_report.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "delta": {
+    "value": 0.0297,
+    "found_at": [
+     "verdicts.R1.final_macro_f1.mean"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V4-R2",
+   "files": [
+    "results/v4/s53r/s53r_report.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "delta": {
+    "value": -0.0045,
+    "found_at": [
+     "verdicts.R2.final_macro_f1.mean"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V5-U1",
+   "files": [
+    "results/v5/confirm_s42_s43_s44.json",
+    "results/v5/confirm_s42_s43_s44.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "delta": {
+    "value": 0.0351,
+    "found_at": [
+     "primary.delta.pauc_u40.point",
+     "gates.A.point",
+     "primary.delta.pauc_u40.point",
+     "gates.A.point"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V5-U2",
+   "files": [
+    "results/v5/confirm_s42_s43_s44_without_copies.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "delta": {
+    "value": 0.0136,
+    "found_at": [
+     "extras_copies.gates.A.point",
+     "extras_copies.delta.pauc_u40.point"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V5-Q1",
+   "files": [
+    "results/v5/q11_decomposition.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "delta": {
+    "value": 0.027,
+    "found_at": [
+     "module_effect.per_seed[0].delta.b2_melnv_auc_u40",
+     "module_effect.per_seed[1].delta.b2_std_pauc_u40",
+     "module_effect.per_seed[1].delta.b4_pauc_u40_bcn20000",
+     "module_effect.per_seed[1].delta.b4_pooled_fe",
+     "module_effect.delta.pauc_u40.point"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V5-S8",
+   "files": [
+    "results/v5/s84_lesion_links.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 985.0,
+    "found_at": [
+     "counts.linked_total_union"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.0,
+    "found_at": [
+     "counts.isic_id_shared_with_isic2019"
+    ]
+   },
+   "delta": {
+    "value": 985.0,
+    "found_at": [
+     "counts.linked_total_union"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-R1",
+   "files": [
+    "results/v6/screens/decision_v61.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "delta": {
+    "value": -0.0107,
+    "found_at": [
+     "gate_descriptive.mean_delta.macro_f1"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-P1",
+   "files": [
+    "results/v6/screens/decision_v62.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "delta": {
+    "value": 0.0133,
+    "found_at": [
+     "y_vs_p.pauc_u40"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-M1",
+   "files": [
+    "results/v6/screens/decision_v63.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.8623,
+    "found_at": [
+     "singles.panderm_b_h7.pauc_all"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.8514,
+    "found_at": [
+     "anchor.pauc_all"
+    ]
+   },
+   "delta": {
+    "value": 0.0109,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-M2",
+   "files": [
+    "results/v6/screens/decision_v63.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.8564,
+    "found_at": [
+     "singles.dinov2_b_h7.pauc_all"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.8514,
+    "found_at": [
+     "anchor.pauc_all"
+    ]
+   },
+   "delta": {
+    "value": 0.005,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-M3",
+   "files": [
+    "results/v6/screens/decision_v63.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.854,
+    "found_at": [
+     "singles.anchor384_h7.pauc_all"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.8514,
+    "found_at": [
+     "anchor.pauc_all"
+    ]
+   },
+   "delta": {
+    "value": 0.0026,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-M4",
+   "files": [
+    "results/v6/screens/decision_v63.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "traced": false
+  },
+  {
+   "claim_id": "V6-E1",
+   "files": [
+    "results/v6/e_primary.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.7433,
+    "found_at": [
+     "e_primary.read.macro_f1.a",
+     "combined_vote.vs_v6_vote.macro_f1.b",
+     "descriptive.v6_endpoints.macro_f1"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.7005,
+    "found_at": [
+     "e_primary.read.macro_f1.b",
+     "combined_vote.read.macro_f1.b",
+     "descriptive.v5_endpoints.macro_f1"
+    ]
+   },
+   "delta": {
+    "value": 0.0427,
+    "found_at": [
+     "e_primary.read.macro_f1.delta"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-E2",
+   "files": [
+    "results/v6/e_primary.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.889,
+    "found_at": [
+     "e_primary.read.pauc_all.a",
+     "combined_vote.vs_v6_vote.pauc_all.b",
+     "descriptive.v6_endpoints.pauc_all"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.8553,
+    "found_at": [
+     "e_primary.read.pauc_all.b",
+     "combined_vote.read.pauc_all.b",
+     "descriptive.v5_endpoints.pauc_all"
+    ]
+   },
+   "delta": {
+    "value": 0.0337,
+    "found_at": [
+     "e_primary.read.pauc_all.delta"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-E3",
+   "files": [
+    "results/v6/e_primary.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.8255,
+    "found_at": [
+     "e_primary.read.esc_sens.a",
+     "combined_vote.vs_v6_vote.esc_sens.b",
+     "descriptive.v6_endpoints.esc_sens"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.814,
+    "found_at": [
+     "e_primary.read.esc_sens.b",
+     "combined_vote.read.esc_sens.b",
+     "descriptive.v5_endpoints.esc_sens"
+    ]
+   },
+   "delta": {
+    "value": 0.0115,
+    "found_at": [
+     "e_primary.read.esc_sens.delta"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-G1",
+   "files": [
+    "results/v6/e_primary.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.8329,
+    "found_at": [
+     "e_primary.read.pauc_u40.a",
+     "combined_vote.vs_v6_vote.pauc_u40.b",
+     "descriptive.v6_endpoints.pauc_u40"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.7949,
+    "found_at": [
+     "e_primary.read.pauc_u40.b",
+     "combined_vote.read.pauc_u40.b",
+     "descriptive.v5_endpoints.pauc_u40"
+    ]
+   },
+   "delta": {
+    "value": 0.0381,
+    "found_at": [
+     "e_primary.read.pauc_u40.delta",
+     "gate_a.point"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-L1",
+   "files": [
+    "results/v6/leak_sensitivity_read.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.7396,
+    "found_at": [
+     "v6_vote.without_380_rows.macro_f1.a"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.6962,
+    "found_at": [
+     "v6_vote.without_380_rows.macro_f1.b",
+     "combined_vote.without_380_rows.macro_f1.b"
+    ]
+   },
+   "delta": {
+    "value": 0.0433,
+    "found_at": [
+     "v6_vote.without_380_rows.macro_f1.delta"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-L2",
+   "files": [
+    "results/v6/leak_sensitivity_read.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.7394,
+    "found_at": [
+     "v6_vote.without_426_rows.macro_f1.a"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.6961,
+    "found_at": [
+     "v6_vote.without_426_rows.macro_f1.b",
+     "combined_vote.without_426_rows.macro_f1.b"
+    ]
+   },
+   "delta": {
+    "value": 0.0434,
+    "found_at": [
+     "v6_vote.without_426_rows.macro_f1.delta"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-C3",
+   "files": [
+    "results/v6/claim3.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.001,
+    "found_at": [
+     "contrast"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.0,
+    "found_at": [
+     "gain_u40",
+     "gain_all",
+     "contrast",
+     "ci95[0]",
+     "ci95[1]"
+    ]
+   },
+   "delta": {
+    "value": 0.001,
+    "found_at": [
+     "contrast"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-N1",
+   "files": [
+    "results/v6/nested_selection.json"
+   ],
+   "files_exist": [
+    true
+   ],
+   "point_estimate": {
+    "value": 0.752,
+    "found_at": [
+     "read_vs_uniform.macro_f1.a"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.7433,
+    "found_at": [
+     "read_vs_uniform.macro_f1.b"
+    ]
+   },
+   "delta": {
+    "value": 0.0088,
+    "found_at": [
+     "read_vs_uniform.macro_f1.delta"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-H1",
+   "files": [
+    "results/v6/hiba_receipt.json",
+    "results/v6/hiba/hiba_report.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.7348,
+    "found_at": [
+     "systems.v6_vote.macro_f1"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.5715,
+    "found_at": [
+     "systems.v5.macro_f1"
+    ]
+   },
+   "delta": {
+    "value": 0.1633,
+    "found_at": [
+     "deployed_vs.v5.macro_f1.delta"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-H2",
+   "files": [
+    "results/v6/hiba_receipt.json",
+    "results/v6/hiba/hiba_report.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.7348,
+    "found_at": [
+     "systems.v6_vote.macro_f1"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.4718,
+    "found_at": [
+     "systems.v1.macro_f1"
+    ]
+   },
+   "delta": {
+    "value": 0.2629,
+    "found_at": [
+     "deployed_vs.v1.macro_f1.delta"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-H3",
+   "files": [
+    "results/v6/hiba_receipt.json",
+    "results/v6/hiba/hiba_report.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.8104,
+    "found_at": [
+     "systems.v6_vote.mechanism_pauc"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.753,
+    "found_at": [
+     "systems.v5.mechanism_pauc"
+    ]
+   },
+   "delta": {
+    "value": 0.0574,
+    "found_at": [
+     "deployed_vs.v5.mechanism_pauc.delta"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-H4",
+   "files": [
+    "results/v6/hiba_receipt.json",
+    "results/v6/hiba/hiba_report.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.9132,
+    "found_at": [
+     "systems.v6_vote.all_ages.sensitivity"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.8323,
+    "found_at": [
+     "systems.v5.all_ages.sensitivity"
+    ]
+   },
+   "delta": {
+    "value": 0.0809,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-H5",
+   "files": [
+    "results/v6/hiba_receipt.json",
+    "results/v6/hiba/hiba_report.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.9,
+    "found_at": [
+     "systems.v6_vote.pauc_all",
+     "systems.v6_vote.u40.sensitivity",
+     "systems.v6_vote.all_ages.sensitivity",
+     "systems.v6_vote.all_ages.ci95_clopper_pearson[0]",
+     "systems.v6_vote.all_ages.ci95_clopper_pearson[1]"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.855,
+    "found_at": [
+     "s70.target"
+    ]
+   },
+   "delta": {
+    "value": 0.045,
+    "found_at": []
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-H6",
+   "files": [
+    "results/v6/hiba_receipt.json",
+    "results/v6/hiba/hiba_report.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.0,
+    "found_at": [
+     "systems.v6_vote.budget_scalar",
+     "deployed_vs.v5.mechanism_pauc.ci95[0]",
+     "deployed_vs.v5.macro_f1.margin",
+     "deployed_vs.v5.c6_u40_matched_referral.deployed_only",
+     "deployed_vs.v1.mechanism_pauc.ci95[0]"
+    ]
+   },
+   "delta": {
+    "value": 0.0,
+    "found_at": [
+     "systems.v6_vote.budget_scalar",
+     "deployed_vs.v5.mechanism_pauc.ci95[0]",
+     "deployed_vs.v5.macro_f1.margin",
+     "deployed_vs.v5.c6_u40_matched_referral.deployed_only",
+     "deployed_vs.v1.mechanism_pauc.ci95[0]"
+    ]
+   },
+   "traced": true
+  },
+  {
+   "claim_id": "V6-H7",
+   "files": [
+    "results/v6/hiba_receipt.json",
+    "results/v6/hiba/hiba_report.json"
+   ],
+   "files_exist": [
+    true,
+    true
+   ],
+   "point_estimate": {
+    "value": 0.9,
+    "found_at": [
+     "systems.v6_vote.pauc_all",
+     "systems.v6_vote.u40.sensitivity",
+     "systems.v6_vote.all_ages.sensitivity",
+     "systems.v6_vote.all_ages.ci95_clopper_pearson[0]",
+     "systems.v6_vote.all_ages.ci95_clopper_pearson[1]"
+    ]
+   },
+   "comparator_estimate": {
+    "value": 0.65,
+    "found_at": [
+     "systems.v1.u40.sensitivity"
+    ]
+   },
+   "delta": {
+    "value": 0.25,
+    "found_at": [
+     "deployed_vs.v1.c6_u40_matched_referral.delta_sensitivity"
+    ]
+   },
+   "traced": true
+  }
+ ]
+}

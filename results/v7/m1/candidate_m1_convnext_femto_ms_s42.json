@@ -1,0 +1,101 @@
+{
+ "protocol_sha256": "64e38c124ca2b2e9036d56ba1b82ed522643cf9518cfdbfcc20639ea5d3514c2",
+ "candidate": "m1_convnext_femto_ms_s42",
+ "checkpoint_sha256": "6d0f8906e18bcf9c2b5941ffb61c82f9faa3879632ff453ad792b7eceb2f441e",
+ "baseline": "sscd",
+ "primary_fmr": 1e-05,
+ "baseline_tpr": 0.26333682008368203,
+ "candidate_tpr": 0.29602510460251047,
+ "baseline_tpr_ci95": [
+  0.2250221814784389,
+  0.30768744501886214
+ ],
+ "candidate_tpr_ci95": [
+  0.2523770344571513,
+  0.34503204768215884
+ ],
+ "difference": 0.03268828451882844,
+ "difference_ci95": [
+  0.013680371110816682,
+  0.053852216572735416
+ ],
+ "per_archive": {
+  "bcn20000": {
+   "baseline": 0.26425661914460286,
+   "candidate": 0.29786150712830956,
+   "positive_pairs": 3928
+  },
+  "ham": {
+   "baseline": 0.4981060606060606,
+   "candidate": 0.48295454545454547,
+   "positive_pairs": 528
+  },
+  "isic2019_test": {
+   "baseline": 0.19237883832778394,
+   "candidate": 0.2341842397336293,
+   "positive_pairs": 2703
+  },
+  "isic_young": {
+   "baseline": 0.3970893970893971,
+   "candidate": 0.42411642411642414,
+   "positive_pairs": 481
+  },
+  "mskcc": {
+   "positive_pairs": 8,
+   "note": "under 100 pairs: not estimated"
+  }
+ },
+ "not_lower_on_any_powered_archive": false,
+ "adopted": false,
+ "secondary": {
+  "tpr_at_1e-4": {
+   "baseline": 0.34688807531380755,
+   "candidate": 0.4571129707112971
+  },
+  "recall_at_1": {
+   "baseline": 0.9043869516310461,
+   "candidate": 0.9443194600674916
+  },
+  "candidate_top8_plus_today_sift": {
+   "method": "candidate top-8 + SIFT >= 30",
+   "tpr": 0.2914487447698745,
+   "tpr_ci95": [
+    0.2556625743447515,
+    0.3330559112249253
+   ],
+   "by_archive": {
+    "bcn20000": {
+     "positive_pairs": 3928,
+     "lesions": 416,
+     "tpr": 0.2853869653767821
+    },
+    "ham": {
+     "positive_pairs": 528,
+     "lesions": 348,
+     "tpr": 0.6401515151515151
+    },
+    "isic2019_test": {
+     "positive_pairs": 2703,
+     "lesions": 216,
+     "tpr": 0.21864594894561598
+    },
+    "isic_young": {
+     "positive_pairs": 481,
+     "lesions": 56,
+     "tpr": 0.3700623700623701
+    },
+    "mskcc": {
+     "positive_pairs": 8,
+     "lesions": 3,
+     "tpr": null
+    }
+   },
+   "bar": 30,
+   "false_links": 45,
+   "fmr": 1.112070017509913e-06,
+   "linked_positive_pairs": 2229,
+   "positive_pairs_in_candidates": 5404
+  }
+ },
+ "threshold_at_primary_fmr": 0.7967746257781982
+}

@@ -1,0 +1,119 @@
+{
+  "run_id": "R3_panderm_b_h7_f0_s42_smoke",
+  "arm": "panderm_b_h7",
+  "member": "panderm_b",
+  "session": "v7_smoke",
+  "split": "f0",
+  "seed": 42,
+  "fold": 0,
+  "head": 7,
+  "image_size": 224,
+  "trunk": "vit_base_patch16_224",
+  "recipe": {
+    "name": "panderm_b",
+    "timm_name": "vit_base_patch16_224",
+    "image_size": 224,
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "backbone_lr": 0.000125,
+    "layer_decay": 0.8,
+    "head_lr": 0.000125,
+    "weight_decay": 0.05,
+    "drop_path": 0.2,
+    "warmup_fraction": 0.2,
+    "source": "PanDerm repo classification/script/finetune_train.sh: lr 5e-4 at batch 128, not rescaled in code",
+    "head_dropout": 0.0,
+    "checkpoint_sha256": "be1e0fb108b3bc58721cb5195f136c948160799438f222acf1fd142230ac1ff1",
+    "timm_weights": false,
+    "pending": []
+  },
+  "epochs": 1,
+  "epochs_run": 1,
+  "step_budget": 13410,
+  "optimizer_steps": 2,
+  "head_steps": 1341,
+  "warmup_steps": 2414,
+  "v5_pool_rows": 13280,
+  "added_train": "results/v7/added_pool_v7/added_train_v7.csv",
+  "added_train_rows": 32580,
+  "extra_train_rows": 1692,
+  "sampler": "young",
+  "young_share_v5_pool": 0.27786144578313254,
+  "young_share_trained_on": 0.4625,
+  "batch_size": 32,
+  "grad_accum": 1,
+  "effective_batch": 32,
+  "num_workers": 2,
+  "run_tag": null,
+  "primary_checkpoint": "last",
+  "plan_freeze_sha256": null,
+  "final_val_macro_f1": 0.04395604395604396,
+  "final_val_balanced_accuracy": 0.16666666666666666,
+  "final_val_escalation_sensitivity": 0.3333333333333333,
+  "train_images": 160,
+  "train_class_counts": [
+    3,
+    9,
+    3,
+    2,
+    31,
+    112,
+    0
+  ],
+  "val_images": 64,
+  "train_time_seconds": 22.0,
+  "device": "cuda",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "vram_peak_gb": 3.010671104,
+  "vram_total_gb": 8.546484224,
+  "checkpoints": {
+    "last": "results\\v7\\smoke\\panderm_b-v6_R3_panderm_b_h7_f0_s42_smoke_last.pt",
+    "swad": "results\\v7\\smoke\\panderm_b-v6_R3_panderm_b_h7_f0_s42_smoke_swad.pt"
+  },
+  "predictions": {
+    "last": "results\\v7\\smoke\\preds\\R3_panderm_b_h7_f0_s42_smoke.csv",
+    "swad": "results\\v7\\smoke\\preds\\R3_panderm_b_h7_f0_s42_smoke_swad.csv"
+  },
+  "swad": {
+    "window": [
+      1,
+      1
+    ],
+    "n_averaged": 1,
+    "val_macro_f1": 0.04395604395604396
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "optimizer_steps": 2,
+      "train_loss": 2.196367621421814,
+      "train_accuracy": 0.015625,
+      "val_macro_f1": 0.04395604395604396,
+      "val_balanced_accuracy": 0.16666666666666666,
+      "val_accuracy": 0.0625,
+      "val_escalation_sensitivity": 0.3333333333333333,
+      "val_missed_serious": 8,
+      "learning_rate": 6.871947673600005e-06,
+      "seconds": 22.016916751861572
+    }
+  ],
+  "v7_build": "R3",
+  "v7_build_title": "PanDerm-B layer decay 0.80 (V6 0.65 left blocks 0-5 moving under 1.4%)",
+  "loao_holdout": null,
+  "data_gate_receipt_sha256": "138965151cdc3fbbb3e33ac3c70fcef192f452a87c0ad1e560eb1546e78bc947",
+  "removed_training_rows": 3636,
+  "step_budget_rule": "hold_v6",
+  "pool_rows_before_removal": 14313,
+  "pool_rows_kept": 13280
+}

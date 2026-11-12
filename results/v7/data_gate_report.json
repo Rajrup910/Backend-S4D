@@ -1,0 +1,217 @@
+{
+ "passed": true,
+ "failures": [],
+ "rows_compared": 57488,
+ "declared_rows": 57488,
+ "links": {
+  "confirmed": 20370,
+  "at_risk": 123471
+ },
+ "fill": {
+  "archive_id": 1.0,
+  "archive": 1.0,
+  "source": 1.0,
+  "frozen_split": 1.0,
+  "master_group": 1.0,
+  "sha256": 1.0,
+  "phash": 1.0,
+  "dhash": 1.0,
+  "status": 1.0
+ },
+ "components": {
+  "components": 41560,
+  "largest": 31,
+  "histogram": {
+   "1": 34619,
+   "2": 3481,
+   "3": 1694,
+   "4": 660,
+   "5": 352,
+   "6": 269,
+   "7": 147,
+   "8": 79,
+   "9": 80,
+   "10": 40,
+   "11": 30,
+   "12": 31,
+   "13": 18,
+   "14": 13,
+   "15": 6,
+   "16": 5,
+   "17": 7,
+   "18": 4,
+   "19": 6,
+   "20": 7,
+   "21": 3,
+   "22": 1,
+   "23": 1,
+   "24": 2,
+   "26": 1,
+   "27": 2,
+   "30": 1,
+   "31": 1
+  }
+ },
+ "review": {
+  "oversized": 0,
+  "spans_archives": 303,
+  "spans_frozen_splits": 339
+ },
+ "removals": {
+  "global": 3424,
+  "by_fold": {
+   "0": 306,
+   "1": 330,
+   "2": 341,
+   "3": 349,
+   "4": 305
+  },
+  "by_holdout": {
+   "ham": 1323,
+   "bcn20000": 8951,
+   "mskcc": 1195
+  }
+ },
+ "plants": {
+  "renamed_copy": {
+   "planted": 48,
+   "found": 48,
+   "recall": 1.0
+  },
+  "downsampled_variant": {
+   "planted": 48,
+   "found": 48,
+   "recall": 1.0
+  },
+  "lesion_link": {
+   "planted": 48,
+   "found": 48,
+   "recall": 1.0
+  },
+  "patient_link": {
+   "planted": 48,
+   "found": 48,
+   "recall": 1.0
+  },
+  "reencoded_copy": {
+   "planted": 48,
+   "found": 48,
+   "recall": 1.0
+  },
+  "resized_recoloured": {
+   "planted": 48,
+   "found": 48,
+   "recall": 1.0
+  },
+  "rotated_copy": {
+   "planted": 48,
+   "found": 48,
+   "recall": 1.0
+  },
+  "centre_crop": {
+   "planted": 48,
+   "found": 48,
+   "recall": 1.0
+  },
+  "all_found": true,
+  "sources": 48,
+  "by_archive": {
+   "bcn20000": 16,
+   "ham": 16,
+   "mskcc": 16
+  }
+ },
+ "fingerprint_failures": 0,
+ "fingerprint_minutes": 2.23,
+ "match_minutes": 10.12,
+ "total_minutes": 12.6,
+ "workers": 6,
+ "audit_pairs": {
+  "copies_bar40": {
+   "pairs": 489,
+   "kept": 387
+  },
+  "sift_eval_hits": {
+   "pairs": 735,
+   "kept": 735
+  },
+  "m1": {
+   "pairs": 30598,
+   "kept": 30598
+  }
+ },
+ "rows_by_split": {
+  "train_added": 25471,
+  "train": 15294,
+  "reserved": 4733,
+  "midas": 3409,
+  "val": 2270,
+  "train_extra": 2078,
+  "ham_val": 1532,
+  "ham_test": 1502,
+  "train_hiba": 1199
+ },
+ "links_by_evidence": [
+  {
+   "tier": "at_risk",
+   "evidence": "hash_at_risk",
+   "n": 1582
+  },
+  {
+   "tier": "at_risk",
+   "evidence": "hash_confirmed",
+   "n": 111
+  },
+  {
+   "tier": "at_risk",
+   "evidence": "m1:sscd",
+   "n": 17865
+  },
+  {
+   "tier": "at_risk",
+   "evidence": "patient_id",
+   "n": 103344
+  },
+  {
+   "tier": "at_risk",
+   "evidence": "sift_eval_hits",
+   "n": 569
+  },
+  {
+   "tier": "confirmed",
+   "evidence": "copies_bar40",
+   "n": 27
+  },
+  {
+   "tier": "confirmed",
+   "evidence": "existing_group",
+   "n": 45
+  },
+  {
+   "tier": "confirmed",
+   "evidence": "lesion_id",
+   "n": 14768
+  },
+  {
+   "tier": "confirmed",
+   "evidence": "m1:sscd",
+   "n": 5490
+  },
+  {
+   "tier": "confirmed",
+   "evidence": "normalised_id",
+   "n": 34
+  },
+  {
+   "tier": "confirmed",
+   "evidence": "sha256",
+   "n": 6
+  }
+ ],
+ "radii": {
+  "confirmed_both_hashes_le": 4,
+  "at_risk_both_hashes_le": 6,
+  "source": "results/v7/hash_radius_probe.json",
+  "status": "provisional; fixed at plan step 5"
+ }
+}

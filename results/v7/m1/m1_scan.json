@@ -1,0 +1,45 @@
+{
+ "method": "sscd",
+ "threshold": 0.687049150466919,
+ "fmr_primary": 1e-05,
+ "protocol_sha256": "64e38c124ca2b2e9036d56ba1b82ed522643cf9518cfdbfcc20639ea5d3514c2",
+ "images": 57488,
+ "links": 30598,
+ "by_tier": {
+  "at_risk": 20684,
+  "confirmed": 9914
+ },
+ "new_links_not_in_links_v7": 21769,
+ "new_by_tier": {
+  "at_risk": 17833,
+  "confirmed": 3936
+ },
+ "new_by_split_pair": {
+  "train_added | train_added": 6312,
+  "train | train": 4253,
+  "train | train_added": 3079,
+  "reserved | reserved": 1399,
+  "train_extra | train_extra": 805,
+  "reserved | train": 672,
+  "val | val": 595,
+  "ham_test | train": 528,
+  "ham_val | train": 523,
+  "ham_test | train_added": 520,
+  "ham_val | train_added": 497,
+  "train_added | train_extra": 439,
+  "train | train_extra": 391,
+  "reserved | train_added": 361,
+  "train | val": 306,
+  "reserved | val": 135,
+  "train_added | val": 126,
+  "reserved | train_extra": 113,
+  "ham_test | ham_test": 102,
+  "train_added | train_hiba": 101
+ },
+ "minutes": 6.4,
+ "midas": {
+  "copies": 0,
+  "at_risk_only": 4,
+  "max_inliers": 22.0
+ }
+}

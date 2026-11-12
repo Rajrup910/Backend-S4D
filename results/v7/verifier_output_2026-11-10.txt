@@ -1,0 +1,59 @@
+=== 1. STRICT CSV PARSING & PRIMARY KEY AUDIT ===
+PASS: V7_MODEL_CANDIDATE_REGISTRY.csv (17 rows, 43 cols, 17 unique 'candidate_id' keys)
+PASS: V7_LINEAGE_EVIDENCE_LEDGER.csv (36 rows, 19 cols, 36 unique 'claim_id' keys)
+PASS: V7_LITERATURE_EVIDENCE_REGISTER.csv (28 rows, 9 cols, 28 unique 'source' keys)
+PASS: agent01_lineage_evidence.csv (36 rows, 18 cols, 36 unique 'claim_id' keys)
+PASS: agent01_state_discrepancies.csv (14 rows, 8 cols, 14 unique 'discrepancy_id' keys)
+
+=== 2. HASH & MODEL CANDIDATE AUDIT ===
+PASS: PanDerm physical checkpoint SHA-256 verified on disk: be1e0fb108b3bc58...
+PASS: Candidate Registry integrity, hashes, legacy CNNs, and licensing verified 100%.
+
+=== 3. MASTER SPECIFICATION FILES PRESENCE AUDIT ===
+PASS: All 15 master specification documents present and non-empty in docs/v7_final_revision.
+
+=== 4. REVISION 9 HISTORICAL BANNER AUDIT ===
+PASS: Revision 9 historical banners and supersede disclaimers verified.
+
+=== 5a. COUNTS RECOMPUTED FROM DATA (added 10 Nov 2026) ===
+PASS: folds 1-4 = 12235 images, 7002 lesion ids, 6989 lesion groups (recomputed).
+PASS: under-40 escalating = 65 lesion groups: {'akiec': 2, 'bcc': 15, 'mel': 48} (recomputed).
+PASS: V6_REFERENCE rebuilt from banked predictions reproduces the receipt: Macro-F1 0.743258.
+PASS: 8 obsolete claims absent from every V7_*.md and README.md (agent reports are historical and not checked).
+
+=== 5. POSITIVE QUANTITATIVE ASSERTIONS ===
+PASS: Pattern '65 escalating' verified in 7 documents: ['V7_AGENT_RESEARCH_SYNTHESIS.md', 'V7_DOMAIN_GENERALISATION_AND_VALIDATION_PROTOCOL.md', 'V7_FINAL_EXECUTION_RUNSHEET.md']...
+PASS: Pattern '1,199 lesions' verified in 7 documents: ['agent01_repository_forensics.md', 'agent03_domain_generalisation_review.md', 'agent06_foundation_model_landscape.md']...
+PASS: Pattern 'E >= 71' verified in 10 documents: ['agent03_domain_generalisation_review.md', 'agent12_statistical_safety_review.md', 'README.md']...
+PASS: Pattern 'N >= 4,250' verified in 10 documents: ['agent03_domain_generalisation_review.md', 'agent12_statistical_safety_review.md', 'README.md']...
+PASS: Pattern '34.375% or 34.31% FOV' verified in 6 documents: ['README.md', 'V7_AGENT_RESEARCH_SYNTHESIS.md', 'V7_FINAL_MASTER_RESEARCH_PLAN.md']...
+PASS: Pattern 'MCID +0.050' verified in 17 documents: ['agent01_repository_forensics.md', 'agent03_domain_generalisation_review.md', 'agent07_panderm_tuning_audit.md']...
+PASS: Pattern 'raw gain 0.0180' verified in 5 documents: ['agent12_statistical_safety_review.md', 'V7_AGENT_RESEARCH_SYNTHESIS.md', 'V7_FINAL_EXECUTION_RUNSHEET.md']...
+PASS: Pattern 'N >= 4,666 (80% assurance)' verified in 6 documents: ['agent03_domain_generalisation_review.md', 'V7_DOMAIN_GENERALISATION_AND_VALIDATION_PROTOCOL.md', 'V7_FINAL_EXECUTION_RUNSHEET.md']...
+PASS: Pattern 'Event-driven accrual' verified in 7 documents: ['README.md', 'V7_AGENT_RESEARCH_SYNTHESIS.md', 'V7_DOMAIN_GENERALISATION_AND_VALIDATION_PROTOCOL.md']...
+
+=== 6. NEGATIVE EXCLUSION INVARIANTS (ACTIVE SUITE) ===
+PASS: Negative exclusion invariants verified: zero obsolete phase counts or unrefuted sample slogans in core active docs.
+
+=== 7. SIX CONDITIONAL-PASS RECONCILIATION AUDITS ===
+PASS: Correction 1 (Event-Driven Sizing: E>=71, N=4,250 expected [51.5%], N>=4,666 [80%]) verified.
+PASS: Correction 2 (Denominator Ground-Truth Table & N=64 vs N=65 harmonization) verified.
+PASS: Correction 3 (Resampling unit hierarchy & residual intra-patient correlation disclosure) verified.
+PASS: Correction 4 (Section 7.4 updated to Phase 9) verified.
+PASS: Correction 5 (Section 9 Traceability Matrix: all 28 rows explicitly tagged with binding governance status) verified.
+PASS: Correction 6 (Ambiguous truncation 'or 34.37%' removed; exact 34.375% rational & 34.31% raster preserved) verified.
+
+=== 8. EIGHT ROUND-2 STATISTICAL & GOVERNANCE CATCHES AUDIT ===
+PASS: Catch 1 (Paired pAUC Power [E>=71 -> 80.3%] decoupled from Binomial Accrual [N>=4,666 -> 80.0%] and backed by simulation) verified.
+PASS: Catch 2 (OOF confirmatory status retracted; designated internal promotion read; confirmatory reserved for Tier C2) verified.
+PASS: Catch 3 (Neyman-Pearson certified at lesion-cluster level [K=64]; residual patient-clustering limitation disclosed for M<59) verified.
+PASS: Catch 4 (Section 1.3 table corrected; all-age yields fixed; split=='train' overlap accounting disclosed) verified.
+PASS: Catch 5 (Section 9 status conflict resolved: [CONDITIONAL_ARM] restricted to Modules 3-4, chromophore stem tagged conditional) verified.
+PASS: Catch 6 (IPW claims qualified under MAR and positivity; 4 identifiability conditions and LTFU policy codified) verified.
+PASS: Catch 7 (Simplex shift theorem corrected: minimum norm attained across simplex, bound qualified to pure covariate shift) verified.
+PASS: Catch 8 (Revision metadata aligned: closing banner updated to Revision 9 Reconciled Master Research & Gating Plan) verified.
+
+========================================================
+ALL VERIFICATION CHECKS PASSED WITH UNCOMPROMISING RIGOR!
+========================================================
+exit=0

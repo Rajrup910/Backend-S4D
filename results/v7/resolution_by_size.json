@@ -1,0 +1,96 @@
+{
+ "what": "L3a: 384 px minus 224 px ConvNeXt-T (V6 banked anchor384_h7 vs anchor_h7), escalation pAUC at FPR 0.20, by lesion-area tercile; folds 1-4; exploratory (plan 13.3)",
+ "tercile_cuts_area_fraction": [
+  0.12626139322916666,
+  0.24026319715711802
+ ],
+ "n_boot": 1000,
+ "all_ages": {
+  "counts": {
+   "small": {
+    "positive_groups": 393,
+    "negative_groups": 1938
+   },
+   "mid": {
+    "positive_groups": 541,
+    "negative_groups": 1789
+   },
+   "large": {
+    "positive_groups": 749,
+    "negative_groups": 1582
+   }
+  },
+  "small": {
+   "point": 0.013345496820839076,
+   "ci95": [
+    0.0039042642984873314,
+    0.023645534000239606
+   ]
+  },
+  "mid": {
+   "point": 0.011923193538941224,
+   "ci95": [
+    0.0010765511328211519,
+    0.02291430884077125
+   ]
+  },
+  "large": {
+   "point": 0.0013631304506421804,
+   "ci95": [
+    -0.011442793348694247,
+    0.014573616274282405
+   ]
+  },
+  "small_minus_large": {
+   "point": 0.011982366370196895,
+   "ci95": [
+    -0.004679977629916629,
+    0.029815557427078317
+   ]
+  }
+ },
+ "under_40": {
+  "counts": {
+   "small": {
+    "positive_groups": 12,
+    "negative_groups": 434
+   },
+   "mid": {
+    "positive_groups": 26,
+    "negative_groups": 401
+   },
+   "large": {
+    "positive_groups": 27,
+    "negative_groups": 394
+   }
+  },
+  "small": {
+   "point": -0.009033423667569984,
+   "ci95": [
+    -0.06214132695794643,
+    0.04489855222438235
+   ]
+  },
+  "mid": {
+   "point": 0.006788420268909023,
+   "ci95": [
+    -0.03842935591434645,
+    0.05408269371614706
+   ]
+  },
+  "large": {
+   "point": 0.00854968683386903,
+   "ci95": [
+    -0.024477507382677195,
+    0.04524932934924598
+   ]
+  },
+  "small_minus_large": {
+   "point": -0.017583110501439014,
+   "ci95": [
+    -0.08089253440581691,
+    0.04475226656964843
+   ]
+  }
+ }
+}

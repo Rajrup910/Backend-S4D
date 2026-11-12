@@ -1,0 +1,38 @@
+{
+ "status": "exploratory pre-test on V6 folds 1-4 (already read at V6-5); no gate",
+ "rows": 12235,
+ "candidates": 15,
+ "strata_min_positives": 5,
+ "by_fold": {
+  "1": {
+   "chosen": "anchor_h7+panderm_b_h7",
+   "worst_heldout_chosen": 0.6655535316737502,
+   "worst_heldout_uniform4": 0.7060311677798017
+  },
+  "2": {
+   "chosen": "anchor384_h7",
+   "worst_heldout_chosen": 0.6773203926818385,
+   "worst_heldout_uniform4": 0.7052097278000893
+  },
+  "3": {
+   "chosen": "anchor_h7+panderm_b_h7",
+   "worst_heldout_chosen": 0.8347306724127963,
+   "worst_heldout_uniform4": 0.844477060230485
+  },
+  "4": {
+   "chosen": "anchor_h7+panderm_b_h7",
+   "worst_heldout_chosen": 0.8372699046351741,
+   "worst_heldout_uniform4": 0.82756708804613
+  }
+ },
+ "choices": [
+  "anchor_h7+panderm_b_h7",
+  "anchor384_h7",
+  "anchor_h7+panderm_b_h7",
+  "anchor_h7+panderm_b_h7"
+ ],
+ "stable": false,
+ "mean_gain_worst_stratum": -0.01710263561323669,
+ "most_common_choice_share": 0.75,
+ "verdict": "restricted form (V6's own members, no checkpoints): same choice in 3 of 4 folds, held-out worst-stratum -0.0171 vs uniform. Not useful in this form; NOT a test of B6 on V7 candidates, so not dropped"
+}

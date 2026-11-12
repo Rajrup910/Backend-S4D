@@ -1,0 +1,91 @@
+{
+  "run_id": "L0_anchor_h7_loao-bcn20000_s42_smoke",
+  "arm": "anchor_h7",
+  "member": "anchor",
+  "session": "v7_smoke",
+  "split": "f0",
+  "seed": 42,
+  "fold": 0,
+  "head": 7,
+  "image_size": 224,
+  "trunk": "in22k",
+  "recipe": "anchor (V5 youngdata)",
+  "epochs": 1,
+  "epochs_run": 1,
+  "step_budget": 9720,
+  "optimizer_steps": 2,
+  "head_steps": 972,
+  "warmup_steps": 0,
+  "v5_pool_rows": 10389,
+  "added_train": "results/v7/added_pool_v7/added_train_v7.csv",
+  "added_train_rows": 25341,
+  "extra_train_rows": 1874,
+  "sampler": "young",
+  "young_share_v5_pool": 0.3446915006256618,
+  "young_share_trained_on": 0.4375,
+  "batch_size": 32,
+  "grad_accum": 1,
+  "effective_batch": 32,
+  "num_workers": 2,
+  "run_tag": null,
+  "primary_checkpoint": "last",
+  "plan_freeze_sha256": null,
+  "final_val_macro_f1": 0.09262043998886105,
+  "final_val_balanced_accuracy": 0.2129120879120879,
+  "final_val_escalation_sensitivity": 0.8529411764705882,
+  "train_images": 160,
+  "train_class_counts": [
+    0,
+    2,
+    5,
+    1,
+    35,
+    116,
+    1
+  ],
+  "val_images": 64,
+  "train_time_seconds": 34.8,
+  "device": "cuda",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "vram_peak_gb": 2.200810496,
+  "vram_total_gb": 8.546484224,
+  "checkpoints": {
+    "last": "results\\v7\\smoke\\anchor-v6_L0_anchor_h7_loao-bcn20000_s42_smoke_last.pt",
+    "swad": "results\\v7\\smoke\\anchor-v6_L0_anchor_h7_loao-bcn20000_s42_smoke_swad.pt"
+  },
+  "predictions": {
+    "last": "results\\v7\\smoke\\preds\\L0_anchor_h7_loao-bcn20000_s42_smoke.csv",
+    "swad": "results\\v7\\smoke\\preds\\L0_anchor_h7_loao-bcn20000_s42_smoke_swad.csv"
+  },
+  "swad": {
+    "window": [
+      1,
+      1
+    ],
+    "n_averaged": 1,
+    "val_macro_f1": 0.09262043998886105
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "optimizer_steps": 2,
+      "train_loss": 4.514885187149048,
+      "train_accuracy": 0.171875,
+      "val_macro_f1": 0.09262043998886105,
+      "val_balanced_accuracy": 0.2129120879120879,
+      "val_accuracy": 0.140625,
+      "val_escalation_sensitivity": 0.8529411764705882,
+      "val_missed_serious": 5,
+      "learning_rate": 0.0001,
+      "seconds": 34.75393080711365
+    }
+  ],
+  "v7_build": "L0",
+  "v7_build_title": "V6-recipe LOAO baseline: each held-out archive, development rows only, gate removals applied",
+  "loao_holdout": "bcn20000",
+  "data_gate_receipt_sha256": "865f3f24c521b5f45e1386edc007cabf2bfb5ff3ea11641a1aeb6ef683e1bfd4",
+  "removed_training_rows": 10118
+}

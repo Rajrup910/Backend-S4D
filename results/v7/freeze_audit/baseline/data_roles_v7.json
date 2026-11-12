@@ -1,0 +1,79 @@
+{
+ "roles": {
+  "TRAIN": {
+   "development_other_folds": "4 of 5 folds per run (frozen S71 assignment)",
+   "young_extras": 2078,
+   "v7_pool_rows": 35183,
+   "v7_pool_by_source": {
+    "v6_added": 25471,
+    "retired_split": 8513,
+    "hiba": 1199
+   },
+   "pool_file": "results\\v7\\added_pool_v7\\added_train_v7.csv",
+   "pool_sha256": "cfe48f197b03b61260767aa6fbec07b4e552fed8a15b543801be428da4a5a4b2",
+   "removed_by_gate": {
+    "global": 681,
+    "by_fold": {
+     "0": 41,
+     "1": 31,
+     "2": 36,
+     "3": 36,
+     "4": 34
+    },
+    "by_holdout": {
+     "ham": 1475,
+     "bcn20000": 9484,
+     "mskcc": 1253
+    }
+   }
+  },
+  "SELECT": {
+   "fold": 0,
+   "images": 3059
+  },
+  "READ_ONCE": {
+   "folds": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "images": 12235,
+   "comparator": "banked V6 vote (results/v7/v6_reference_manifest.json)"
+  },
+  "CROSS_SITE": {
+   "ham": {
+    "held_out_development_images": 6981,
+    "training_rows_removed": 1475
+   },
+   "bcn20000": {
+    "held_out_development_images": 6704,
+    "training_rows_removed": 9484
+   },
+   "mskcc": {
+    "held_out_development_images": 1609,
+    "training_rows_removed": 1253
+   }
+  },
+  "NEVER_TRAIN": {
+   "ham_test": 1502
+  },
+  "SEALED_EXTERNAL": {
+   "midas_primary_images": 765,
+   "midas_records": 513,
+   "midas_by_age_band": {
+    "60+": 529,
+    "40-59": 167,
+    "<40": 69
+   },
+   "midas_secondary_intermediate": 39,
+   "seal": "results\\v7\\external\\midas_v7\\seal.json",
+   "labels_sha256": "6bdb6f40e5ed7dff77dfe3aadd43a157db6989f36bf2804c72c6dc5864bfe4aa"
+  }
+ },
+ "gate_receipt_sha256": "df090c6d56b69134c7cc4db415aff965cf66c50874cb71213bee8197ec3494ac",
+ "master_rows": 57488,
+ "labels_read": false,
+ "bindings_ok": true,
+ "problems": []
+}

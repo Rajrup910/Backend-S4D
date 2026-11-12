@@ -1,0 +1,71 @@
+{
+ "what": "F4: coverage of the paired lesion-group percentile 95% interval for the under-40 escalation pAUC delta",
+ "calibration": {
+  "pos_groups": 65,
+  "neg_groups": 1229,
+  "pos": [
+   0.45,
+   2.12,
+   0.93
+  ],
+  "neg": [
+   -2.96,
+   1.24,
+   0.89
+  ],
+  "source": "banked V6 vote, under-40 rows, folds 1-4 (measured 11 Nov)"
+ },
+ "decision_rule": "coverage >= 0.93 in every scenario: keep the percentile interval; else a declared wider interval",
+ "scenarios": [
+  {
+   "rho": 0.85,
+   "shift_logits": 0.0,
+   "true_delta": -0.0003146975859731338,
+   "trials": 300,
+   "n_boot": 400,
+   "coverage": 0.9133333333333333,
+   "coverage_mc_se_at_nominal": 0.012583057392117916,
+   "upper_bound_below_truth": 0.04,
+   "lower_bound_above_truth": 0.04666666666666667,
+   "median_width": 0.0721083321424865
+  },
+  {
+   "rho": 0.95,
+   "shift_logits": 0.0,
+   "true_delta": -0.0003264319817494199,
+   "trials": 300,
+   "n_boot": 400,
+   "coverage": 0.9566666666666667,
+   "coverage_mc_se_at_nominal": 0.012583057392117916,
+   "upper_bound_below_truth": 0.013333333333333334,
+   "lower_bound_above_truth": 0.03,
+   "median_width": 0.042652463059380946
+  },
+  {
+   "rho": 0.85,
+   "shift_logits": -0.5,
+   "true_delta": -0.03933741664662993,
+   "trials": 300,
+   "n_boot": 400,
+   "coverage": 0.93,
+   "coverage_mc_se_at_nominal": 0.012583057392117916,
+   "upper_bound_below_truth": 0.02,
+   "lower_bound_above_truth": 0.05,
+   "median_width": 0.07621293765705484
+  },
+  {
+   "rho": 0.95,
+   "shift_logits": -0.5,
+   "true_delta": -0.03842881020409272,
+   "trials": 300,
+   "n_boot": 400,
+   "coverage": 0.9133333333333333,
+   "coverage_mc_se_at_nominal": 0.012583057392117916,
+   "upper_bound_below_truth": 0.043333333333333335,
+   "lower_bound_above_truth": 0.043333333333333335,
+   "median_width": 0.052231574162853296
+  }
+ ],
+ "seconds": 1169.4,
+ "passes_rule": false
+}

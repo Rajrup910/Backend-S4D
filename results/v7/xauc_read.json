@@ -204,5 +204,83 @@
    "young_neg_groups": 476,
    "older_neg_groups": 1242
   }
+ },
+ "melanoma_only_archive_stratified": {
+  "by_archive": {
+   "bcn20000": {
+    "counts": {
+     "young_pos_groups": 16,
+     "older_pos_groups": 203,
+     "young_neg_groups": 208,
+     "older_neg_groups": 530
+    },
+    "positive_side_deficit": {
+     "point": -0.14337421815765683,
+     "ci95": [
+      -0.3289882516946492,
+      0.016847750752950082
+     ]
+    },
+    "young_pos_vs_older_neg": {
+     "point": 0.6466607169418415,
+     "ci95": [
+      0.46272464378755224,
+      0.8010598672837582
+     ]
+    },
+    "se": 0.08822347001214267
+   },
+   "ham": {
+    "counts": {
+     "young_pos_groups": 22,
+     "older_pos_groups": 310,
+     "young_neg_groups": 686,
+     "older_neg_groups": 2836
+    },
+    "positive_side_deficit": {
+     "point": -0.09660213102179627,
+     "ci95": [
+      -0.1903918343099198,
+      -0.0037187636831865142
+     ]
+    },
+    "young_pos_vs_older_neg": {
+     "point": 0.7604945310190465,
+     "ci95": [
+      0.666789598834012,
+      0.8540540721171412
+     ]
+    },
+    "se": 0.047620681282329914
+   },
+   "mskcc": {
+    "counts": {
+     "young_pos_groups": 10,
+     "older_pos_groups": 224,
+     "young_neg_groups": 335,
+     "older_neg_groups": 716
+    },
+    "positive_side_deficit": {
+     "point": -0.10024928774928776,
+     "ci95": [
+      -0.2602157817208931,
+      0.06682778532435853
+     ]
+    },
+    "young_pos_vs_older_neg": {
+     "point": 0.7179783950617284,
+     "ci95": [
+      0.5595261831428818,
+      0.8785144738690036
+     ]
+    },
+    "se": 0.0834294813890948
+   }
+  },
+  "pooled_positive_side_deficit": -0.1057636105741007,
+  "pooled_ci95_normal": [
+   -0.179160170520819,
+   -0.032367050627382404
+  ]
  }
 }

@@ -1,0 +1,23 @@
+{
+ "name": "m1_mobilenetv4_conv_small_ms_s42_smoke",
+ "backbone": "mobilenetv4_conv_small.e2400_r224_in1k",
+ "best_inner_val_tpr_1e-4": 0.1522633744855967,
+ "best_epoch": 1,
+ "minutes": 0.6,
+ "vram_peak_gb": 0.91,
+ "train_images": 8886,
+ "inner_val_images": 1482,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 0.6353317201137543,
+   "seconds": 33.3,
+   "tpr_1e-4": 0.1522633744855967,
+   "tpr_1e-5": 0.102880658436214,
+   "recall_at_1": 0.47701149425287354,
+   "positive_pairs": 243,
+   "negative_pairs": 79557
+  }
+ ],
+ "checkpoint": "ml\\checkpoints\\m1\\m1_mobilenetv4_conv_small_ms_s42_smoke.pt"
+}

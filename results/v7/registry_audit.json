@@ -1,0 +1,136 @@
+{
+ "lineage_ledger": {
+  "rows": 36,
+  "rows_all_files_exist": 36,
+  "rows_without_files": [],
+  "missing_files": [],
+  "point_checked": 32,
+  "point_found": 17,
+  "point_not_found": [
+   "V1-E1",
+   "V1-S9",
+   "V1-A8",
+   "V4-P1",
+   "V4-S1",
+   "V4-R1",
+   "V4-R2",
+   "V5-U1",
+   "V5-Q1",
+   "V5-S8",
+   "V6-R1",
+   "V6-P1",
+   "V6-M1",
+   "V6-M2",
+   "V6-M3"
+  ]
+ },
+ "literature_register": {
+  "sources": 28,
+  "inspected_level": {
+   "FULL_TEXT": 27,
+   "OFFICIAL_DOC": 1
+  },
+  "status": "not fetched in this audit; treat every citation as UNVERIFIED unless its full text was read"
+ },
+ "model_registry": {
+  "candidates": 17,
+  "with_local_file": 2,
+  "sha256_checked": 2,
+  "sha256_match": 2,
+  "sha256_mismatch": [],
+  "licences": "UNVERIFIED offline (license_code / license_weights columns are agent-reported)",
+  "entries": [
+   {
+    "candidate_id": "anchor_h7",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "anchor384_h7",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "panderm_b_h7",
+    "recorded_sha256": "be1e0fb108b3bc58721cb5195f136c948160799438f222acf1fd142230ac1ff1",
+    "local_files": [
+     "ml\\checkpoints\\pretrained\\panderm_b\\panderm_bb_data6_checkpoint-499.pth"
+    ],
+    "sha256_matches": true
+   },
+   {
+    "candidate_id": "dinov2_b_h7",
+    "recorded_sha256": "55cbb5d887b336d430e649c277b85a1429e724871f9d02ac16203235886d8c7b",
+    "local_files": []
+   },
+   {
+    "candidate_id": "convnext_tiny_384_v7",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "panderm_base_384_lpft",
+    "recorded_sha256": "be1e0fb108b3bc58721cb5195f136c948160799438f222acf1fd142230ac1ff1",
+    "local_files": [
+     "ml\\checkpoints\\pretrained\\panderm_b\\panderm_bb_data6_checkpoint-499.pth"
+    ],
+    "sha256_matches": true
+   },
+   {
+    "candidate_id": "dinov2_reg_vitb14_392",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "maxvit_tiny_384",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "convnext_small_224",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "efficientnet_b0",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "efficientnet_b3",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "densenet121",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "resnet50",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "siglip2_b",
+    "recorded_sha256": "9106b0d8d9d02ea90fc3571fffd1557cf444736f695ee40b1e57c856bc3d9494",
+    "local_files": []
+   },
+   {
+    "candidate_id": "dermfm_zero",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "dermlip_base",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   },
+   {
+    "candidate_id": "dermino_vitb16",
+    "recorded_sha256": "NOT_HASHED",
+    "local_files": []
+   }
+  ]
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "decision": "HIBA is training-only from V7; MRA-MIDAS is the sole sealed external read (owner, 10 Nov 2026)",
+ "written": "2026-11-10T17:56:00",
+ "conditions": [
+  "V6's HIBA result stays as read (receipt below, unchanged)",
+  "no V7 system is ever scored or compared on HIBA",
+  "reason recorded before training: young escalating lesions are the scarcest data",
+  "HIBA rows pass the V7 data gate as split train_hiba"
+ ],
+ "v6_hiba_receipt_sha256": "bb220a93c9ee3adf072c6454defaf45f6e3c39412f1333d8db374e9c39652161",
+ "v6_hiba_label_read_count": 1,
+ "label_source": "ISIC archive API, collections 175/176/251, diagnosis_1-4 (cached in results/v7/hiba_train/hiba_metadata_api.csv); 8-class by research.v6.added_pool.map_class_8, checked equal to V6's HIBA 7-class map",
+ "rows": 1199,
+ "lesions": 1199,
+ "by_class_7": {
+  "nv": 552,
+  "bcc": 223,
+  "mel": 159,
+  "akiec": 125,
+  "bkl": 61,
+  "vasc": 40,
+  "df": 39
+ },
+ "by_age_band": {
+  "60+": 587,
+  "40-59": 357,
+  "<40": 251,
+  "unknown": 4
+ },
+ "under40_escalating_lesions": 20,
+ "under40_escalating_by_class": {
+  "mel": 14,
+  "bcc": 5,
+  "akiec": 1
+ },
+ "histopathology_share": 0.575,
+ "outputs": {
+  "hiba_train": "results\\v7\\hiba_train\\hiba_train.csv",
+  "hiba_train_sha256": "3154c997c128821cab4308de1b2648d18bfc2bc567e71bdee440ea569d620b39",
+  "added_train_v7": "results\\v7\\added_pool_v7\\added_train_v7.csv",
+  "added_train_v7_sha256": "6d65fae5775f2a30ec1bf3ec54c7b3f193e781ccccf17693938c3b264e392e33",
+  "added_train_v7_rows": 26670,
+  "v6_added_train_sha256_unchanged": "42c2cdcfeecde36ab8901756b4e979faecaa10e9bf171088805329a891e8c0ff"
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "status": "power and fairness recheck of the 10 Nov pre-tests; exploratory; may not drop a build",
+ "B4": {
+  "tested_form_z_within_age_x_melanin": {
+   "odds_ratio_per_sd": 0.919,
+   "or_ci95": [
+    0.728,
+    1.159
+   ],
+   "wald_p_cluster": 0.4752,
+   "min_detectable_or_per_sd_80pct": 1.394,
+   "n_rows": 2164,
+   "n_escalating": 158,
+   "n_lesions": 1294
+  },
+  "pigment_band_direct_melanin_rank": {
+   "odds_ratio_per_sd": 0.818,
+   "or_ci95": [
+    0.577,
+    1.158
+   ],
+   "wald_p_cluster": 0.2569,
+   "min_detectable_or_per_sd_80pct": 1.644,
+   "n_rows": 2164,
+   "n_escalating": 158,
+   "n_lesions": 1294
+  },
+  "untested_parts": [
+   "nearest-neighbour cohort (needs embeddings not banked for V6)",
+   "a fitted second stage combining ranks and z-scores",
+   "V7 members' logits instead of V6's"
+  ],
+  "reading": "rules out only effects larger than the CI's upper bound; cannot drop B4"
+ },
+ "B2": {
+  "power_fisher_globules_11_vs_389": {
+   "1.5": 0.0865,
+   "2.0": 0.202,
+   "3.0": 0.4135,
+   "5.0": 0.7175,
+   "8.0": 0.8975
+  },
+  "reading": "an 11-melanoma premise check detects only very large prevalence differences; it cannot refute B2, whose benefit (CoFiDA-M) comes from concept supervision as a whole, not from one feature's prevalence"
+ },
+ "B6": {
+  "observed_choices": [
+   "anchor_h7+panderm_b_h7",
+   "anchor384_h7",
+   "anchor_h7+panderm_b_h7",
+   "anchor_h7+panderm_b_h7"
+  ],
+  "candidates": 15,
+  "reading": "15 candidate subsets, 4 folds and strata of 5-30 lesions make a flip likely even if a true best subset exists; the tested form selected among V6's own members only, without per-epoch checkpoints. Not a test of B6 on V7 candidates."
+ }
+}

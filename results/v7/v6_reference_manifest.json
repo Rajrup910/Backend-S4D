@@ -1,0 +1,152 @@
+{
+ "what": "V6_REFERENCE members: SWA checkpoints for folds 0-4 and banked fold 1-4 TTA predictions; hashed 2026-11-10",
+ "checkpoints": {
+  "ml/checkpoints/anchor-v6_anchor_h7_f0_s42_in22k_v62p_swad.pt": {
+   "sha256": "d29ebb93fba17d6629e5045811e9ddc7f373132d25b2e01ae6b1d66ebec67a6d",
+   "bytes": 111365255
+  },
+  "ml/checkpoints/anchor-v6_anchor_h7_f1_s42_in22k_v64_swad.pt": {
+   "sha256": "b636e281ee9b6a06c53d4a9df8d28acf312164acd3716be122b52911239cf45c",
+   "bytes": 111365067
+  },
+  "ml/checkpoints/anchor-v6_anchor_h7_f2_s42_in22k_v64_swad.pt": {
+   "sha256": "9448c864230be26e9370850b2fc4d786c002b194493efad00ea16eca4576f4c6",
+   "bytes": 111365067
+  },
+  "ml/checkpoints/anchor-v6_anchor_h7_f3_s42_in22k_v64_swad.pt": {
+   "sha256": "0eb87ae53929fbafbf090c14b04f0ebddb5d9abad053f35aa76dd52f2174a61c",
+   "bytes": 111365067
+  },
+  "ml/checkpoints/anchor-v6_anchor_h7_f4_s42_in22k_v64_swad.pt": {
+   "sha256": "197bb61f7ad5f5f8ec10e12b5e2b570b8037b6986219cc13d7cc4a187c3d0cc4",
+   "bytes": 111365067
+  },
+  "ml/checkpoints/panderm_b-v6_panderm_b_h7_f0_s42_v63_swad.pt": {
+   "sha256": "806ca08fedd22dce1ff9414218691b5646d415be32f0dde79525bf141c4b7ed4",
+   "bytes": 343742155
+  },
+  "ml/checkpoints/panderm_b-v6_panderm_b_h7_f1_s42_v64_swad.pt": {
+   "sha256": "482263730cb35d25425f941c583cf1fee87b31e52f0aa0bdb151ac1ab318f5b4",
+   "bytes": 343742155
+  },
+  "ml/checkpoints/panderm_b-v6_panderm_b_h7_f2_s42_v64_swad.pt": {
+   "sha256": "26d5e7f835f5565d698ac4a510de6c63cda474cf62f73df7682de2d0d88dc588",
+   "bytes": 343742155
+  },
+  "ml/checkpoints/panderm_b-v6_panderm_b_h7_f3_s42_v64_swad.pt": {
+   "sha256": "a520883fa50da5f305e73acbdfd6fc85a99a27520967f279d4d57855d86ebb22",
+   "bytes": 343742155
+  },
+  "ml/checkpoints/panderm_b-v6_panderm_b_h7_f4_s42_v64_swad.pt": {
+   "sha256": "2dffc043b7b677a8ca22d600174359d06c6d13a2066c119f76ab88e10c424fcb",
+   "bytes": 343742155
+  },
+  "ml/checkpoints/dinov2_b-v6_dinov2_b_h7_f0_s42_v63_swad.pt": {
+   "sha256": "7e71d84931a36587daa50a49b2654febc0ae2c49f06681e68deaeb275f03c9f4",
+   "bytes": 342980255
+  },
+  "ml/checkpoints/dinov2_b-v6_dinov2_b_h7_f1_s42_v64_swad.pt": {
+   "sha256": "3cef74683aff21e55134fe332be909130d53012321ebb25f6b65d7b0e045f72d",
+   "bytes": 342980255
+  },
+  "ml/checkpoints/dinov2_b-v6_dinov2_b_h7_f2_s42_v64_swad.pt": {
+   "sha256": "61bd0e0120585f900e0a67ae394c161f8e0a905d8fedb322de9653f189e04d73",
+   "bytes": 342980255
+  },
+  "ml/checkpoints/dinov2_b-v6_dinov2_b_h7_f3_s42_v64_swad.pt": {
+   "sha256": "d2e473f361076abf5095fe2c74597ea7c82d6a3f419b27ff3d5678b60903f0a7",
+   "bytes": 342980255
+  },
+  "ml/checkpoints/dinov2_b-v6_dinov2_b_h7_f4_s42_v64_swad.pt": {
+   "sha256": "1cf7ca9b72b1c141c5af0d6acf1402343f7a8b87714a25a45c0544af504cafc9",
+   "bytes": 342980255
+  },
+  "ml/checkpoints/anchor-v6_anchor384_h7_f0_s42_in22k_v63_swad.pt": {
+   "sha256": "21be7b98dcdd6cf65fed4f2e52c83171de4053ab31ce724cd6eeef285a91fcba",
+   "bytes": 111365695
+  },
+  "ml/checkpoints/anchor-v6_anchor384_h7_f1_s42_in22k_v64_swad.pt": {
+   "sha256": "07886ad102f136e92278b86ba9eabfa769fe9a98da64f7df182615ff00f9649a",
+   "bytes": 111365695
+  },
+  "ml/checkpoints/anchor-v6_anchor384_h7_f2_s42_in22k_v64_swad.pt": {
+   "sha256": "90a277d8f213abecd15987f66cfc91b947aa44a36d0ffe00453b444b219af9c8",
+   "bytes": 111365695
+  },
+  "ml/checkpoints/anchor-v6_anchor384_h7_f3_s42_in22k_v64_swad.pt": {
+   "sha256": "4a46f81b394c135bb39728746707af2d30921fe3626809b105a99b6fd00acb90",
+   "bytes": 111365695
+  },
+  "ml/checkpoints/anchor-v6_anchor384_h7_f4_s42_in22k_v64_swad.pt": {
+   "sha256": "1a3db856ae2d1c6e6e0a9d988a7f303078233e4b3e51067508946f296f656adf",
+   "bytes": 111365695
+  }
+ },
+ "predictions_tta": {
+  "results/v6/preds_tta/anchor_h7_f1_s42_in22k_v64_swad_tta.csv": {
+   "sha256": "43d73f75c1c56a4992313715339caed9a7c81bc5b49dfe5f40486a47b72fa675",
+   "bytes": 656815
+  },
+  "results/v6/preds_tta/anchor_h7_f2_s42_in22k_v64_swad_tta.csv": {
+   "sha256": "a75aa11e8f464b8aa19c2f05104a9f9c7cbadb0048986eebf09207079b66c6f6",
+   "bytes": 657164
+  },
+  "results/v6/preds_tta/anchor_h7_f3_s42_in22k_v64_swad_tta.csv": {
+   "sha256": "a8785173f344ef40c8dcb3971f45736fd64fc67fe61daaf518e89c5e668be87c",
+   "bytes": 659218
+  },
+  "results/v6/preds_tta/anchor_h7_f4_s42_in22k_v64_swad_tta.csv": {
+   "sha256": "d6776ffd1ec1f6d2b0c8b050006aa1663b55defdac2cab2aa60193350902ccd0",
+   "bytes": 657545
+  },
+  "results/v6/preds_tta/panderm_b_h7_f1_s42_v64_swad_tta.csv": {
+   "sha256": "3fd14b465ec801a4324a2629dfe10e605e10d58875e7f556ed6f456d23ab814f",
+   "bytes": 655612
+  },
+  "results/v6/preds_tta/panderm_b_h7_f2_s42_v64_swad_tta.csv": {
+   "sha256": "1e14efddf8913933eededaeaa145129ed3ab225c72b0c21beee140da92b7b22e",
+   "bytes": 656114
+  },
+  "results/v6/preds_tta/panderm_b_h7_f3_s42_v64_swad_tta.csv": {
+   "sha256": "c12783a44fb3614aa91f8ae56ae81f8eb4a8cba12c9760515b28088ee25bbe27",
+   "bytes": 657668
+  },
+  "results/v6/preds_tta/panderm_b_h7_f4_s42_v64_swad_tta.csv": {
+   "sha256": "335dbbadb93c62cfadd340c9f65cb63754eb33daa3abfe46f72e1ac6efcb1c07",
+   "bytes": 656108
+  },
+  "results/v6/preds_tta/dinov2_b_h7_f1_s42_v64_swad_tta.csv": {
+   "sha256": "56843d728d45d9fb92b7157bcb6520f9837f5008a53f6fa06a100e57db069510",
+   "bytes": 649068
+  },
+  "results/v6/preds_tta/dinov2_b_h7_f2_s42_v64_swad_tta.csv": {
+   "sha256": "ebaf3461171819e56530043e1e433c0d79239c6ac30fed6539291e25845c8de8",
+   "bytes": 650018
+  },
+  "results/v6/preds_tta/dinov2_b_h7_f3_s42_v64_swad_tta.csv": {
+   "sha256": "fad6e4d700f56ab513e787410d04114a3b47c9af3a412b6f326b4656c7680706",
+   "bytes": 650827
+  },
+  "results/v6/preds_tta/dinov2_b_h7_f4_s42_v64_swad_tta.csv": {
+   "sha256": "3eeeff075145be28450e623f48e17ad5c85a701006f689f8698bb5e990922ad6",
+   "bytes": 649286
+  },
+  "results/v6/preds_tta/anchor384_h7_f1_s42_in22k_v64_swad_tta.csv": {
+   "sha256": "c5d115767cd49d4b1adfc2968fcd8e12691002400bdeff51122d50fe83b684bb",
+   "bytes": 676092
+  },
+  "results/v6/preds_tta/anchor384_h7_f2_s42_in22k_v64_swad_tta.csv": {
+   "sha256": "8ee2eec89be7227f1fd0a019dae260978f0e7f1601536042082f0ceb03d28faa",
+   "bytes": 676077
+  },
+  "results/v6/preds_tta/anchor384_h7_f3_s42_in22k_v64_swad_tta.csv": {
+   "sha256": "695cfdc3faa98cf29ae0b58b27759203c331b369e1572afba822cae6eaac9a48",
+   "bytes": 678255
+  },
+  "results/v6/preds_tta/anchor384_h7_f4_s42_in22k_v64_swad_tta.csv": {
+   "sha256": "09a3ec9086a24661b71959afb3569b0d491ab0ff6f15c9c42a6c2fb30a7cdfbe",
+   "bytes": 676825
+  }
+ },
+ "missing": []
+}

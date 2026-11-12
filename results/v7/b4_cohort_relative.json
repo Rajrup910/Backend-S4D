@@ -1,0 +1,87 @@
+{
+ "status": "exploratory pre-test on V6 folds 1-4 (already read at V6-5); no gate",
+ "rows": 12235,
+ "tests": {
+  "age_x_melanin/under40": {
+   "n_rows": 2164,
+   "n_clusters": 1294,
+   "n_escalating": 158,
+   "beta_per_sd": -0.08470310452269737,
+   "odds_ratio_per_sd": 0.9187850270305661,
+   "se_naive": 0.08666424556572326,
+   "se_cluster_robust": 0.11863487732013166,
+   "lr_statistic": 0.923610253887091,
+   "lr_p": 0.3365288196262499,
+   "wald_z_cluster": -0.7139814735436468,
+   "wald_p_cluster": 0.4752386354939564,
+   "ci95_beta_cluster": [
+    -0.3172231932145719,
+    0.14781698416917716
+   ],
+   "decision_statistic": "wald_p_cluster",
+   "adds_signal": false
+  },
+  "age_x_melanin/all_ages": {
+   "n_rows": 12235,
+   "n_clusters": 6989,
+   "n_escalating": 4258,
+   "beta_per_sd": -0.08419168358327983,
+   "odds_ratio_per_sd": 0.9192550331074433,
+   "se_naive": 0.036107529161010996,
+   "se_cluster_robust": 0.056234281061237776,
+   "lr_statistic": 5.295996145769095,
+   "lr_p": 0.021374502357439294,
+   "wald_z_cluster": -1.4971594193868527,
+   "wald_p_cluster": 0.13435178171290124,
+   "ci95_beta_cluster": [
+    -0.19440885002918767,
+    0.026025482862628013
+   ],
+   "decision_statistic": "wald_p_cluster",
+   "adds_signal": false
+  },
+  "age_x_melanin_x_archive/under40": {
+   "n_rows": 2164,
+   "n_clusters": 1294,
+   "n_escalating": 158,
+   "beta_per_sd": -0.08626248090302234,
+   "odds_ratio_per_sd": 0.9173534118643558,
+   "se_naive": 0.08286912906073546,
+   "se_cluster_robust": 0.10612462245261209,
+   "lr_statistic": 1.0508850936566887,
+   "lr_p": 0.3053033298971511,
+   "wald_z_cluster": -0.8128413454807926,
+   "wald_p_cluster": 0.41630902706170925,
+   "ci95_beta_cluster": [
+    -0.29426292042373375,
+    0.12173795861768906
+   ],
+   "decision_statistic": "wald_p_cluster",
+   "adds_signal": false
+  },
+  "age_x_melanin_x_archive/all_ages": {
+   "n_rows": 12154,
+   "n_clusters": 6935,
+   "n_escalating": 4250,
+   "beta_per_sd": -0.13147603925039322,
+   "odds_ratio_per_sd": 0.8768002836781579,
+   "se_naive": 0.031544201013636676,
+   "se_cluster_robust": 0.04926601323961256,
+   "lr_statistic": 16.674659907718706,
+   "lr_p": 4.436973429363582e-05,
+   "wald_z_cluster": -2.6686965436180112,
+   "wald_p_cluster": 0.007614621258529755,
+   "ci95_beta_cluster": [
+    -0.2280356516235572,
+    -0.03491642687722922
+   ],
+   "decision_statistic": "wald_p_cluster",
+   "adds_signal": false
+  }
+ },
+ "drop_rule": {
+  "adds_without_archive": false,
+  "adds_only_with_archive": false,
+  "verdict": "no signal in this reduced form (z-scores only, no neighbour cohort, V6 logits, folds already read); it rules out only large effects (see results/v7/recheck_dropped.json), so B4 is NOT dropped: retest in full on V7 logits"
+ }
+}

@@ -1,0 +1,116 @@
+{
+  "run_id": "B1_panderm_b384_h7_f0_s42_smoke",
+  "arm": "panderm_b384_h7",
+  "member": "panderm_b",
+  "session": "v7_smoke",
+  "split": "f0",
+  "seed": 42,
+  "fold": 0,
+  "head": 7,
+  "image_size": 384,
+  "trunk": "vit_base_patch16_224",
+  "recipe": {
+    "name": "panderm_b",
+    "timm_name": "vit_base_patch16_224",
+    "image_size": 384,
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "backbone_lr": 0.000125,
+    "layer_decay": 0.65,
+    "head_lr": 0.000125,
+    "weight_decay": 0.05,
+    "drop_path": 0.2,
+    "warmup_fraction": 0.2,
+    "source": "PanDerm repo classification/script/finetune_train.sh: lr 5e-4 at batch 128, not rescaled in code",
+    "head_dropout": 0.0,
+    "checkpoint_sha256": "be1e0fb108b3bc58721cb5195f136c948160799438f222acf1fd142230ac1ff1",
+    "timm_weights": false,
+    "pending": []
+  },
+  "epochs": 1,
+  "epochs_run": 1,
+  "step_budget": 13110,
+  "optimizer_steps": 1,
+  "head_steps": 1311,
+  "warmup_steps": 2360,
+  "v5_pool_rows": 14008,
+  "added_train": "results/v7/added_pool_v7/added_train_v7.csv",
+  "added_train_rows": 34785,
+  "extra_train_rows": 1869,
+  "sampler": "young",
+  "young_share_v5_pool": 0.2855511136493432,
+  "young_share_trained_on": 0.45,
+  "batch_size": 16,
+  "grad_accum": 2,
+  "effective_batch": 32,
+  "num_workers": 2,
+  "run_tag": null,
+  "primary_checkpoint": "last",
+  "plan_freeze_sha256": null,
+  "final_val_macro_f1": 0.08362369337979093,
+  "final_val_balanced_accuracy": 0.21428571428571427,
+  "final_val_escalation_sensitivity": 0.75,
+  "train_images": 80,
+  "train_class_counts": [
+    1,
+    3,
+    3,
+    0,
+    16,
+    57,
+    0
+  ],
+  "val_images": 32,
+  "train_time_seconds": 24.0,
+  "device": "cuda",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "vram_peak_gb": 4.656260096,
+  "vram_total_gb": 8.546484224,
+  "checkpoints": {
+    "last": "results\\v7\\smoke\\panderm_b-v6_B1_panderm_b384_h7_f0_s42_smoke_last.pt",
+    "swad": "results\\v7\\smoke\\panderm_b-v6_B1_panderm_b384_h7_f0_s42_smoke_swad.pt"
+  },
+  "predictions": {
+    "last": "results\\v7\\smoke\\preds\\B1_panderm_b384_h7_f0_s42_smoke.csv",
+    "swad": "results\\v7\\smoke\\preds\\B1_panderm_b384_h7_f0_s42_smoke_swad.csv"
+  },
+  "swad": {
+    "window": [
+      1,
+      1
+    ],
+    "n_averaged": 1,
+    "val_macro_f1": 0.08362369337979093
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "optimizer_steps": 1,
+      "train_loss": 2.373871922492981,
+      "train_accuracy": 0.375,
+      "val_macro_f1": 0.08362369337979093,
+      "val_balanced_accuracy": 0.21428571428571427,
+      "val_accuracy": 0.375,
+      "val_escalation_sensitivity": 0.75,
+      "val_missed_serious": 1,
+      "learning_rate": 4.621507363773394e-07,
+      "seconds": 24.028191566467285
+    }
+  ],
+  "v7_build": "B1",
+  "v7_build_title": "High-resolution ViT members: DINOv2-B at 392 px (14 px patches) and PanDerm-B at 384 px",
+  "loao_holdout": null,
+  "data_gate_receipt_sha256": "df090c6d56b69134c7cc4db415aff965cf66c50874cb71213bee8197ec3494ac",
+  "removed_training_rows": 703
+}

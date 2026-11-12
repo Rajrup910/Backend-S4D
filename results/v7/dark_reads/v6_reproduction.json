@@ -1,0 +1,152 @@
+{
+ "candidate": "v6_reproduction",
+ "cuts_all_under40_images": [
+  0.23477490246295926,
+  0.4950158894062042
+ ],
+ "scope": "folds 1-4, rows both systems scored",
+ "systems": {
+  "v6_vote": {
+   "by_melanin": {
+    "threshold": 0.186687181745,
+    "young_melanoma_lesions": 48,
+    "by_tercile": {
+     "low": {
+      "melanoma_lesions": 13,
+      "missed": 2,
+      "nevus_images": 599,
+      "nevus_flagged_rate": 0.11185308848080133,
+      "pauc_melanoma_vs_nevus": {
+       "point": 0.8262149879428677,
+       "ci95": [
+        0.7200687394409478,
+        0.9160563501352649
+       ]
+      }
+     },
+     "mid": {
+      "melanoma_lesions": 20,
+      "missed": 7,
+      "nevus_images": 648,
+      "nevus_flagged_rate": 0.10802469135802469,
+      "pauc_melanoma_vs_nevus": {
+       "point": 0.8447487085193941,
+       "ci95": [
+        0.7406975434394683,
+        0.9157178850465569
+       ]
+      }
+     },
+     "high": {
+      "melanoma_lesions": 15,
+      "missed": 5,
+      "nevus_images": 671,
+      "nevus_flagged_rate": 0.12220566318926974,
+      "pauc_melanoma_vs_nevus": {
+       "point": 0.7296110634411678,
+       "ci95": [
+        0.6132299179420434,
+        0.8444341605183898
+       ]
+      }
+     }
+    },
+    "within_archive": {
+     "n": 48,
+     "n_missed": 14,
+     "rank_difference_missed_minus_caught": 0.19308632543926663,
+     "p_two_sided": 0.03864806759662017
+    },
+    "pauc_melanoma_vs_nevus_all_terciles": {
+     "point": 0.8055260729595974,
+     "ci95": [
+      0.7218258655563373,
+      0.8772305689847001
+     ]
+    }
+   },
+   "young_vs_older": {
+    "young_gap": 0.19308632543926663,
+    "older_gap": 0.17798818459240306,
+    "difference": 0.015098140846863561,
+    "ci95": [
+     -0.1735585693288747,
+     0.1764695847108667
+    ],
+    "young_lesions": 48,
+    "older_lesions": 740
+   }
+  },
+  "v6_reproduction": {
+   "by_melanin": {
+    "threshold": 0.18668718174499999,
+    "young_melanoma_lesions": 48,
+    "by_tercile": {
+     "low": {
+      "melanoma_lesions": 13,
+      "missed": 2,
+      "nevus_images": 599,
+      "nevus_flagged_rate": 0.11185308848080133,
+      "pauc_melanoma_vs_nevus": {
+       "point": 0.8262149879428677,
+       "ci95": [
+        0.720777315391164,
+        0.9136630022585854
+       ]
+      }
+     },
+     "mid": {
+      "melanoma_lesions": 20,
+      "missed": 7,
+      "nevus_images": 648,
+      "nevus_flagged_rate": 0.10802469135802469,
+      "pauc_melanoma_vs_nevus": {
+       "point": 0.8447487085193941,
+       "ci95": [
+        0.7401394535913213,
+        0.915270575296617
+       ]
+      }
+     },
+     "high": {
+      "melanoma_lesions": 15,
+      "missed": 5,
+      "nevus_images": 671,
+      "nevus_flagged_rate": 0.12220566318926974,
+      "pauc_melanoma_vs_nevus": {
+       "point": 0.7296110634411678,
+       "ci95": [
+        0.6111838774544607,
+        0.846054502377602
+       ]
+      }
+     }
+    },
+    "within_archive": {
+     "n": 48,
+     "n_missed": 14,
+     "rank_difference_missed_minus_caught": 0.19308632543926663,
+     "p_two_sided": 0.039798010099495025
+    },
+    "pauc_melanoma_vs_nevus_all_terciles": {
+     "point": 0.8055260729595974,
+     "ci95": [
+      0.7222170120766643,
+      0.8736147349511573
+     ]
+    }
+   },
+   "young_vs_older": {
+    "young_gap": 0.19308632543926663,
+    "older_gap": 0.17798818459240306,
+    "difference": 0.015098140846863561,
+    "ci95": [
+     -0.16997155434232403,
+     0.18135869129244075
+    ],
+    "young_lesions": 48,
+    "older_lesions": 740
+   }
+  }
+ }
+}

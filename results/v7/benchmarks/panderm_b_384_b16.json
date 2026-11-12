@@ -1,0 +1,24 @@
+{
+ "meta": {
+  "device": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "torch": "2.11.0+cu128",
+  "images": 6981,
+  "epochs": 30,
+  "cpu_ms_per_image": 3.5,
+  "note": "full fine-tune step (all parameters trainable), synthetic batches, AMP"
+ },
+ "rows": [
+  {
+   "arch": "vit_base_patch16_224",
+   "timm": true,
+   "grad_checkpointing": false,
+   "size": 384,
+   "batch": 16,
+   "ms_per_batch": 821.1742500425316,
+   "vram_peak_gb": 4.51582464,
+   "projected_minutes": {
+    "workers_2": 205.86838448566266
+   }
+  }
+ ]
+}

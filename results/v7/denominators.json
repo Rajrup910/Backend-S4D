@@ -1,0 +1,282 @@
+{
+ "denominators": {
+  "source": "results/v5/v5_oof_common_matrix.csv",
+  "unit_note": "images are rows; lesion_groups (group_id) is the bootstrap unit; no patient count exists for HAM or BCN",
+  "development_all_folds": {
+   "images": 15294,
+   "lesion_ids": 8748,
+   "lesion_groups": 8734,
+   "by_archive": {
+    "bcn20000": {
+     "images": 6704,
+     "lesion_ids": 1920,
+     "lesion_groups": 1915
+    },
+    "ham": {
+     "images": 6981,
+     "lesion_ids": 5229,
+     "lesion_groups": 5227
+    },
+    "mskcc": {
+     "images": 1609,
+     "lesion_ids": 1599,
+     "lesion_groups": 1593
+    }
+   },
+   "groups_spanning_archives": 1,
+   "under40_escalating": {
+    "images": 193,
+    "lesion_ids": 81,
+    "lesion_groups": 81,
+    "lesion_groups_by_class": {
+     "akiec": 3,
+     "bcc": 20,
+     "mel": 58
+    },
+    "images_by_class": {
+     "mel": 133,
+     "bcc": 52,
+     "akiec": 8
+    },
+    "lesion_groups_by_archive": {
+     "bcn20000": 35,
+     "ham": 34,
+     "mskcc": 12
+    }
+   }
+  },
+  "folds_1_to_4": {
+   "images": 12235,
+   "lesion_ids": 7002,
+   "lesion_groups": 6989,
+   "by_archive": {
+    "bcn20000": {
+     "images": 5373,
+     "lesion_ids": 1548,
+     "lesion_groups": 1543
+    },
+    "ham": {
+     "images": 5562,
+     "lesion_ids": 4163,
+     "lesion_groups": 4162
+    },
+    "mskcc": {
+     "images": 1300,
+     "lesion_ids": 1291,
+     "lesion_groups": 1285
+    }
+   },
+   "under40": {
+    "images": 2164,
+    "lesion_ids": 1295,
+    "lesion_groups": 1294
+   },
+   "under40_escalating": {
+    "images": 158,
+    "lesion_ids": 65,
+    "lesion_groups": 65,
+    "lesion_groups_by_class": {
+     "akiec": 2,
+     "bcc": 15,
+     "mel": 48
+    },
+    "images_by_class": {
+     "mel": 112,
+     "bcc": 40,
+     "akiec": 6
+    },
+    "lesion_groups_by_archive": {
+     "bcn20000": 28,
+     "ham": 27,
+     "mskcc": 10
+    }
+   },
+   "classes_present_by_archive": {
+    "bcn20000": [
+     "akiec",
+     "bcc",
+     "bkl",
+     "df",
+     "mel",
+     "nv",
+     "vasc"
+    ],
+    "ham": [
+     "akiec",
+     "bcc",
+     "bkl",
+     "df",
+     "mel",
+     "nv",
+     "vasc"
+    ],
+    "mskcc": [
+     "bkl",
+     "mel",
+     "nv"
+    ]
+   },
+   "class_images_by_archive": {
+    "bcn20000": {
+     "nv": 1819,
+     "bcc": 1256,
+     "mel": 1175,
+     "bkl": 527,
+     "akiec": 514,
+     "vasc": 45,
+     "df": 37
+    },
+    "ham": {
+     "nv": 3728,
+     "bkl": 629,
+     "mel": 601,
+     "bcc": 283,
+     "akiec": 185,
+     "vasc": 82,
+     "df": 54
+    },
+    "mskcc": {
+     "nv": 885,
+     "mel": 244,
+     "bkl": 171
+    }
+   },
+   "escalating_share_by_archive": {
+    "bcn20000": 0.5481,
+    "ham": 0.1922,
+    "mskcc": 0.1877
+   }
+  }
+ },
+ "v6_per_archive_scorecard": {
+  "status": "DESCRIPTIVE reread of folds 1-4, already read at V6-5; image level; no interval",
+  "systems": {
+   "v6": "uniform vote of the four finalists, banked predictions",
+   "v5": "mean of composite_tta seeds 42, 43, 44"
+  },
+  "pooled": {
+   "v6": {
+    "n_images": 12235,
+    "classes_present": 7,
+    "macro_f1_all_7_labels": 0.7432581241254821,
+    "macro_f1_present_classes": 0.7432581241254821,
+    "balanced_accuracy": 0.7228630265301321,
+    "escalation_pauc_mcclish_fpr20": 0.8890425258877821
+   },
+   "v5": {
+    "n_images": 12235,
+    "classes_present": 7,
+    "macro_f1_all_7_labels": 0.7005190211153162,
+    "macro_f1_present_classes": 0.7005190211153162,
+    "balanced_accuracy": 0.6910098474614499,
+    "escalation_pauc_mcclish_fpr20": 0.8553144678770472
+   }
+  },
+  "by_archive": {
+   "bcn20000": {
+    "v6": {
+     "n_images": 5373,
+     "classes_present": 7,
+     "macro_f1_all_7_labels": 0.6376519105259505,
+     "macro_f1_present_classes": 0.6376519105259505,
+     "balanced_accuracy": 0.6131320532840557,
+     "escalation_pauc_mcclish_fpr20": 0.8500894425751009
+    },
+    "v5": {
+     "n_images": 5373,
+     "classes_present": 7,
+     "macro_f1_all_7_labels": 0.5754452495260552,
+     "macro_f1_present_classes": 0.5754452495260552,
+     "balanced_accuracy": 0.5621426018170439,
+     "escalation_pauc_mcclish_fpr20": 0.7820461900353264
+    }
+   },
+   "ham": {
+    "v6": {
+     "n_images": 5562,
+     "classes_present": 7,
+     "macro_f1_all_7_labels": 0.8157235229518449,
+     "macro_f1_present_classes": 0.8157235229518449,
+     "balanced_accuracy": 0.7980746692461366,
+     "escalation_pauc_mcclish_fpr20": 0.9032483124669349
+    },
+    "v5": {
+     "n_images": 5562,
+     "classes_present": 7,
+     "macro_f1_all_7_labels": 0.7923779197817531,
+     "macro_f1_present_classes": 0.7923779197817531,
+     "balanced_accuracy": 0.7849826051929484,
+     "escalation_pauc_mcclish_fpr20": 0.8873872170114927
+    }
+   },
+   "mskcc": {
+    "v6": {
+     "n_images": 1300,
+     "classes_present": 3,
+     "macro_f1_all_7_labels": 0.34785302846676125,
+     "macro_f1_present_classes": 0.811657066422443,
+     "balanced_accuracy": 0.7864535416216438,
+     "escalation_pauc_mcclish_fpr20": 0.8376567933432688
+    },
+    "v5": {
+     "n_images": 1300,
+     "classes_present": 3,
+     "macro_f1_all_7_labels": 0.3306594898502147,
+     "macro_f1_present_classes": 0.7715388096505009,
+     "balanced_accuracy": 0.7413952164533466,
+     "escalation_pauc_mcclish_fpr20": 0.801802605977811
+    }
+   }
+  },
+  "under40_by_archive": {
+   "bcn20000": {
+    "n_images": 780,
+    "n_escalating_images": 95,
+    "v6_escalation_pauc": 0.7883211678832117,
+    "v5_escalation_pauc": 0.7265548298971273
+   },
+   "ham": {
+    "n_images": 1038,
+    "n_escalating_images": 53,
+    "v6_escalation_pauc": 0.8650086730730349,
+    "v5_escalation_pauc": 0.8564420181123562
+   },
+   "mskcc": {
+    "n_images": 346,
+    "n_escalating_images": 10,
+    "v6_escalation_pauc": 0.8037367724867726,
+    "v5_escalation_pauc": 0.7888558201058201
+   }
+  }
+ },
+ "hiba_workload": {
+  "source": "results/v6/hiba/decisions.csv",
+  "lesions": 1199,
+  "labels_read": false,
+  "systems": {
+   "v6_vote": {
+    "called_escalating": 0.3853,
+    "referred": 0.2002,
+    "flagged_total": 0.4987
+   },
+   "combined_vote": {
+    "called_escalating": 0.3987,
+    "referred": 0.2002,
+    "flagged_total": 0.5221
+   },
+   "v5": {
+    "called_escalating": 0.4262,
+    "referred": 0.2002,
+    "flagged_total": 0.5521
+   },
+   "v1": {
+    "called_escalating": 0.2068,
+    "referred": 0.2002,
+    "flagged_total": 0.3261
+   }
+  }
+ },
+ "test_read": false,
+ "reserved_read": false,
+ "hiba_labels_read": false
+}

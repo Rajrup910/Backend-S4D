@@ -1,0 +1,314 @@
+{
+ "protocol_sha256": "64e38c124ca2b2e9036d56ba1b82ed522643cf9518cfdbfcc20639ea5d3514c2",
+ "images": 9000,
+ "positive_pairs": 7648,
+ "lesions": 1039,
+ "negative_pairs": 40465078,
+ "candidate_pairs_top8": 59084,
+ "methods": [
+  {
+   "method": "dinov2_originals embedding, FMR 1e-05",
+   "tpr": 0.07910564853556486,
+   "tpr_ci95": [
+    0.061543885363918596,
+    0.10311297261866344
+   ],
+   "by_archive": {
+    "bcn20000": {
+     "positive_pairs": 3928,
+     "lesions": 416,
+     "tpr": 0.07357433808553972
+    },
+    "ham": {
+     "positive_pairs": 528,
+     "lesions": 348,
+     "tpr": 0.11742424242424243
+    },
+    "isic2019_test": {
+     "positive_pairs": 2703,
+     "lesions": 216,
+     "tpr": 0.05993340732519423
+    },
+    "isic_young": {
+     "positive_pairs": 481,
+     "lesions": 56,
+     "tpr": 0.1891891891891892
+    },
+    "mskcc": {
+     "positive_pairs": 8,
+     "lesions": 3,
+     "tpr": null
+    }
+   },
+   "threshold": 0.9401951432228088,
+   "recall_at_1": 0.6701349831271091
+  },
+  {
+   "method": "dinov2_originals embedding, FMR 0.0001",
+   "tpr": 0.1240847280334728,
+   "tpr_ci95": [
+    0.10131616655316636,
+    0.15201029619764395
+   ],
+   "by_archive": {
+    "bcn20000": {
+     "positive_pairs": 3928,
+     "lesions": 416,
+     "tpr": 0.11481670061099797
+    },
+    "ham": {
+     "positive_pairs": 528,
+     "lesions": 348,
+     "tpr": 0.22916666666666666
+    },
+    "isic2019_test": {
+     "positive_pairs": 2703,
+     "lesions": 216,
+     "tpr": 0.09803921568627451
+    },
+    "isic_young": {
+     "positive_pairs": 481,
+     "lesions": 56,
+     "tpr": 0.23076923076923078
+    },
+    "mskcc": {
+     "positive_pairs": 8,
+     "lesions": 3,
+     "tpr": null
+    }
+   },
+   "threshold": 0.9233166575431824,
+   "recall_at_1": 0.6701349831271091
+  },
+  {
+   "method": "dinov2_cache embedding, FMR 1e-05",
+   "tpr": 0.05308577405857741,
+   "tpr_ci95": [
+    0.041564105140861236,
+    0.06795413460544253
+   ],
+   "by_archive": {
+    "bcn20000": {
+     "positive_pairs": 3928,
+     "lesions": 416,
+     "tpr": 0.05066191446028513
+    },
+    "ham": {
+     "positive_pairs": 528,
+     "lesions": 348,
+     "tpr": 0.11553030303030302
+    },
+    "isic2019_test": {
+     "positive_pairs": 2703,
+     "lesions": 216,
+     "tpr": 0.03218645948945616
+    },
+    "isic_young": {
+     "positive_pairs": 481,
+     "lesions": 56,
+     "tpr": 0.12058212058212059
+    },
+    "mskcc": {
+     "positive_pairs": 8,
+     "lesions": 3,
+     "tpr": null
+    }
+   },
+   "threshold": 0.9438076615333557,
+   "recall_at_1": 0.6816647919010124
+  },
+  {
+   "method": "dinov2_cache embedding, FMR 0.0001",
+   "tpr": 0.08472803347280335,
+   "tpr_ci95": [
+    0.06814056454883934,
+    0.10530597082920475
+   ],
+   "by_archive": {
+    "bcn20000": {
+     "positive_pairs": 3928,
+     "lesions": 416,
+     "tpr": 0.0840122199592668
+    },
+    "ham": {
+     "positive_pairs": 528,
+     "lesions": 348,
+     "tpr": 0.17992424242424243
+    },
+    "isic2019_test": {
+     "positive_pairs": 2703,
+     "lesions": 216,
+     "tpr": 0.051424343322234556
+    },
+    "isic_young": {
+     "positive_pairs": 481,
+     "lesions": 56,
+     "tpr": 0.17255717255717257
+    },
+    "mskcc": {
+     "positive_pairs": 8,
+     "lesions": 3,
+     "tpr": null
+    }
+   },
+   "threshold": 0.9278711080551147,
+   "recall_at_1": 0.6816647919010124
+  },
+  {
+   "method": "sscd embedding, FMR 1e-05",
+   "tpr": 0.26333682008368203,
+   "tpr_ci95": [
+    0.2250221814784389,
+    0.30768744501886214
+   ],
+   "by_archive": {
+    "bcn20000": {
+     "positive_pairs": 3928,
+     "lesions": 416,
+     "tpr": 0.26425661914460286
+    },
+    "ham": {
+     "positive_pairs": 528,
+     "lesions": 348,
+     "tpr": 0.4981060606060606
+    },
+    "isic2019_test": {
+     "positive_pairs": 2703,
+     "lesions": 216,
+     "tpr": 0.19237883832778394
+    },
+    "isic_young": {
+     "positive_pairs": 481,
+     "lesions": 56,
+     "tpr": 0.3970893970893971
+    },
+    "mskcc": {
+     "positive_pairs": 8,
+     "lesions": 3,
+     "tpr": null
+    }
+   },
+   "threshold": 0.687049150466919,
+   "recall_at_1": 0.9043869516310461
+  },
+  {
+   "method": "sscd embedding, FMR 0.0001",
+   "tpr": 0.34688807531380755,
+   "tpr_ci95": [
+    0.29881035213716195,
+    0.4010794372084132
+   ],
+   "by_archive": {
+    "bcn20000": {
+     "positive_pairs": 3928,
+     "lesions": 416,
+     "tpr": 0.34826883910386963
+    },
+    "ham": {
+     "positive_pairs": 528,
+     "lesions": 348,
+     "tpr": 0.6193181818181818
+    },
+    "isic2019_test": {
+     "positive_pairs": 2703,
+     "lesions": 216,
+     "tpr": 0.2637809840917499
+    },
+    "isic_young": {
+     "positive_pairs": 481,
+     "lesions": 56,
+     "tpr": 0.5051975051975052
+    },
+    "mskcc": {
+     "positive_pairs": 8,
+     "lesions": 3,
+     "tpr": null
+    }
+   },
+   "threshold": 0.6328057646751404,
+   "recall_at_1": 0.9043869516310461
+  },
+  {
+   "method": "today: DINOv2 originals top-8 + SIFT >= 30",
+   "tpr": 0.22476464435146443,
+   "tpr_ci95": [
+    0.1972581354315358,
+    0.2576842634953825
+   ],
+   "by_archive": {
+    "bcn20000": {
+     "positive_pairs": 3928,
+     "lesions": 416,
+     "tpr": 0.21334012219959267
+    },
+    "ham": {
+     "positive_pairs": 528,
+     "lesions": 348,
+     "tpr": 0.5321969696969697
+    },
+    "isic2019_test": {
+     "positive_pairs": 2703,
+     "lesions": 216,
+     "tpr": 0.1657417684054754
+    },
+    "isic_young": {
+     "positive_pairs": 481,
+     "lesions": 56,
+     "tpr": 0.31392931392931395
+    },
+    "mskcc": {
+     "positive_pairs": 8,
+     "lesions": 3,
+     "tpr": null
+    }
+   },
+   "bar": 30,
+   "false_links": 23,
+   "fmr": 5.683913422828445e-07,
+   "linked_positive_pairs": 1719,
+   "positive_pairs_in_candidates": 3379
+  },
+  {
+   "method": "DINOv2 originals top-8 + LightGlue, at today's FMR",
+   "tpr": 0.1638336820083682,
+   "tpr_ci95": [
+    0.14059826715912765,
+    0.1922664727034541
+   ],
+   "by_archive": {
+    "bcn20000": {
+     "positive_pairs": 3928,
+     "lesions": 416,
+     "tpr": 0.1644602851323829
+    },
+    "ham": {
+     "positive_pairs": 528,
+     "lesions": 348,
+     "tpr": 0.42045454545454547
+    },
+    "isic2019_test": {
+     "positive_pairs": 2703,
+     "lesions": 216,
+     "tpr": 0.09100998890122086
+    },
+    "isic_young": {
+     "positive_pairs": 481,
+     "lesions": 56,
+     "tpr": 0.2869022869022869
+    },
+    "mskcc": {
+     "positive_pairs": 8,
+     "lesions": 3,
+     "tpr": null
+    }
+   },
+   "bar": 54.0,
+   "false_links": 21,
+   "fmr": 5.189660081712928e-07,
+   "linked_positive_pairs": 1253,
+   "positive_pairs_in_candidates": 3379
+  }
+ ],
+ "lightglue": "run",
+ "best_untrained_baseline": "sscd"
+}

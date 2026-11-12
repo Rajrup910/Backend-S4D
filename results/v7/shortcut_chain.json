@@ -1,0 +1,402 @@
+{
+  "status": "EXPLORATORY pre-test on folds 1-4 already read at V6-5; reorders work, never drops or promotes; not the dark read",
+  "melanin_cuts_from_under40_images": [
+    0.2393456548452377,
+    0.4941088855266571
+  ],
+  "rows": 12235,
+  "lesion_groups": 6989,
+  "link1_nevus_population_by_confirmation": {
+    "bcn20000|40-59|consensus_or_confocal": {
+      "images": 106,
+      "mean_melanin": 0.54104863781974,
+      "share_high_tercile": 0.5283018867924528,
+      "mean_escalation_score": 0.10431240361792453
+    },
+    "bcn20000|40-59|histo": {
+      "images": 551,
+      "mean_melanin": 0.47228037839258485,
+      "share_high_tercile": 0.41742286751361163,
+      "mean_escalation_score": 0.16690857468623865
+    },
+    "bcn20000|40-59|missing": {
+      "images": 142,
+      "mean_melanin": 0.5464447935859502,
+      "share_high_tercile": 0.6126760563380281,
+      "mean_escalation_score": 0.10738973461443661
+    },
+    "bcn20000|60+|consensus_or_confocal": {
+      "images": 38,
+      "mean_melanin": 0.46393782008243234,
+      "share_high_tercile": 0.4473684210526316,
+      "mean_escalation_score": 0.20042215991578943
+    },
+    "bcn20000|60+|histo": {
+      "images": 206,
+      "mean_melanin": 0.4304788108842755,
+      "share_high_tercile": 0.39805825242718446,
+      "mean_escalation_score": 0.28628011034919904
+    },
+    "bcn20000|60+|missing": {
+      "images": 106,
+      "mean_melanin": 0.5143779370371463,
+      "share_high_tercile": 0.4811320754716981,
+      "mean_escalation_score": 0.31856624157540087
+    },
+    "bcn20000|<40|consensus_or_confocal": {
+      "images": 105,
+      "mean_melanin": 0.4919901125487827,
+      "share_high_tercile": 0.5238095238095238,
+      "mean_escalation_score": 0.1525862058509524
+    },
+    "bcn20000|<40|histo": {
+      "images": 406,
+      "mean_melanin": 0.4802143416239013,
+      "share_high_tercile": 0.45566502463054187,
+      "mean_escalation_score": 0.12313961222088671
+    },
+    "bcn20000|<40|missing": {
+      "images": 135,
+      "mean_melanin": 0.4963751638377154,
+      "share_high_tercile": 0.5185185185185185,
+      "mean_escalation_score": 0.14757463125151848
+    },
+    "ham|40-59|consensus_or_confocal": {
+      "images": 97,
+      "mean_melanin": 0.5484960090714631,
+      "share_high_tercile": 0.4948453608247423,
+      "mean_escalation_score": 0.05483733894252577
+    },
+    "ham|40-59|follow_up": {
+      "images": 1334,
+      "mean_melanin": 0.1942740049455514,
+      "share_high_tercile": 0.019490254872563718,
+      "mean_escalation_score": 0.025894234098856817
+    },
+    "ham|40-59|histo": {
+      "images": 512,
+      "mean_melanin": 0.4041614494526442,
+      "share_high_tercile": 0.330078125,
+      "mean_escalation_score": 0.1387552746343799
+    },
+    "ham|60+|consensus_or_confocal": {
+      "images": 54,
+      "mean_melanin": 0.5632015209369086,
+      "share_high_tercile": 0.48148148148148145,
+      "mean_escalation_score": 0.13041059511018518
+    },
+    "ham|60+|follow_up": {
+      "images": 417,
+      "mean_melanin": 0.18774214529318453,
+      "share_high_tercile": 0.014388489208633094,
+      "mean_escalation_score": 0.02833765729940048
+    },
+    "ham|60+|histo": {
+      "images": 349,
+      "mean_melanin": 0.4255973965804864,
+      "share_high_tercile": 0.3524355300859599,
+      "mean_escalation_score": 0.2154334694077364
+    },
+    "ham|<40|consensus_or_confocal": {
+      "images": 126,
+      "mean_melanin": 0.38844571784988696,
+      "share_high_tercile": 0.29365079365079366,
+      "mean_escalation_score": 0.05967658757688492
+    },
+    "ham|<40|follow_up": {
+      "images": 301,
+      "mean_melanin": 0.1880844510745364,
+      "share_high_tercile": 0.026578073089700997,
+      "mean_escalation_score": 0.025091074821760796
+    },
+    "ham|<40|histo": {
+      "images": 513,
+      "mean_melanin": 0.3521554346031148,
+      "share_high_tercile": 0.2553606237816764,
+      "mean_escalation_score": 0.09142731875463939
+    },
+    "mskcc|40-59|histo": {
+      "images": 61,
+      "mean_melanin": 0.47884913320179845,
+      "share_high_tercile": 0.4098360655737705,
+      "mean_escalation_score": 0.07026262404614753
+    },
+    "mskcc|40-59|missing": {
+      "images": 197,
+      "mean_melanin": 0.4864105069773451,
+      "share_high_tercile": 0.4873096446700508,
+      "mean_escalation_score": 0.13816142853766497
+    },
+    "mskcc|60+|histo": {
+      "images": 40,
+      "mean_melanin": 0.4228304909542203,
+      "share_high_tercile": 0.375,
+      "mean_escalation_score": 0.156465042154375
+    },
+    "mskcc|60+|missing": {
+      "images": 129,
+      "mean_melanin": 0.3970141630013322,
+      "share_high_tercile": 0.32558139534883723,
+      "mean_escalation_score": 0.19760919356625967
+    },
+    "mskcc|<40|histo": {
+      "images": 54,
+      "mean_melanin": 0.3795424923300743,
+      "share_high_tercile": 0.25925925925925924,
+      "mean_escalation_score": 0.09470013769629627
+    },
+    "mskcc|<40|missing": {
+      "images": 254,
+      "mean_melanin": 0.7868412302029649,
+      "share_high_tercile": 0.6535433070866141,
+      "mean_escalation_score": 0.05752714201227362
+    },
+    "mskcc|unknown|missing": {
+      "images": 97,
+      "mean_melanin": 0.6519792782449999,
+      "share_high_tercile": 0.6597938144329897,
+      "mean_escalation_score": 0.11091677624030927
+    }
+  },
+  "link2_darkness_as_a_cue_under40": {
+    "melanoma": {
+      "lesions": 48,
+      "spearman_melanin_vs_escalation_score": -0.25227963525835867,
+      "p": 0.08365254562398783,
+      "mean_score_by_tercile": {
+        "low": 0.5408949773110577,
+        "mid": 0.4442740659773665,
+        "high": 0.31924352281029417
+      },
+      "lesions_by_tercile": {
+        "low": 13,
+        "mid": 18,
+        "high": 17
+      }
+    },
+    "nevus_excised": {
+      "lesions": 454,
+      "spearman_melanin_vs_escalation_score": 0.13694756391608504,
+      "p": 0.003458736591942657,
+      "mean_score_by_tercile": {
+        "low": 0.1035025941660302,
+        "mid": 0.08845938827758228,
+        "high": 0.1011753967949603
+      },
+      "lesions_by_tercile": {
+        "low": 149,
+        "mid": 149,
+        "high": 156
+      }
+    },
+    "nevus_follow_up": {
+      "lesions": 301,
+      "spearman_melanin_vs_escalation_score": -0.1215458405755649,
+      "p": 0.03504930617653708,
+      "mean_score_by_tercile": {
+        "low": 0.02617498359806763,
+        "mid": 0.022850684006686047,
+        "high": 0.021129136496875
+      },
+      "lesions_by_tercile": {
+        "low": 207,
+        "mid": 86,
+        "high": 8
+      }
+    }
+  },
+  "link3_missed_young_melanoma_by_tercile": {
+    "all_archives": {
+      "melanoma_lesions": 48,
+      "negative_lesions": 1227,
+      "excised_negative_lesions": 474,
+      "threshold_on_all_negatives": {
+        "threshold": 0.07381522898000002,
+        "missed_by_tercile": {
+          "low": "2/13",
+          "mid": "5/18",
+          "high": "2/17"
+        },
+        "nevus_flag_rate_by_tercile": {
+          "low": 0.15587529976019185,
+          "mid": 0.20786516853932585,
+          "high": 0.23514851485148514
+        }
+      },
+      "threshold_on_excised_negatives": {
+        "threshold": 0.11487971496166678,
+        "missed_by_tercile": {
+          "low": "2/13",
+          "mid": "6/18",
+          "high": "4/17"
+        },
+        "nevus_flag_rate_by_tercile": {
+          "low": 0.20945945945945946,
+          "mid": 0.16778523489932887,
+          "high": 0.1987179487179487
+        }
+      }
+    },
+    "ham": {
+      "melanoma_lesions": 22,
+      "negative_lesions": 685,
+      "excised_negative_lesions": 291,
+      "threshold_on_all_negatives": {
+        "threshold": 0.05739219730500002,
+        "missed_by_tercile": {
+          "low": "1/11",
+          "mid": "4/8",
+          "high": "0/3"
+        },
+        "nevus_flag_rate_by_tercile": {
+          "low": 0.13313609467455623,
+          "mid": 0.208955223880597,
+          "high": 0.38596491228070173
+        }
+      },
+      "threshold_on_excised_negatives": {
+        "threshold": 0.10103616107499999,
+        "missed_by_tercile": {
+          "low": "1/11",
+          "mid": "4/8",
+          "high": "0/3"
+        },
+        "nevus_flag_rate_by_tercile": {
+          "low": 0.18181818181818182,
+          "mid": 0.20224719101123595,
+          "high": 0.19753086419753085
+        }
+      }
+    },
+    "bcn20000": {
+      "melanoma_lesions": 16,
+      "negative_lesions": 207,
+      "excised_negative_lesions": 129,
+      "threshold_on_all_negatives": {
+        "threshold": 0.1722021754975,
+        "missed_by_tercile": {
+          "low": "0/1",
+          "mid": "0/6",
+          "high": "4/9"
+        },
+        "nevus_flag_rate_by_tercile": {
+          "low": 0.35294117647058826,
+          "mid": 0.18181818181818182,
+          "high": 0.16346153846153846
+        }
+      },
+      "threshold_on_excised_negatives": {
+        "threshold": 0.16662231544200004,
+        "missed_by_tercile": {
+          "low": "0/1",
+          "mid": "0/6",
+          "high": "4/9"
+        },
+        "nevus_flag_rate_by_tercile": {
+          "low": 0.36363636363636365,
+          "mid": 0.1388888888888889,
+          "high": 0.18032786885245902
+        }
+      }
+    }
+  },
+  "link4_per_class_on_histo_rows": {
+    "ham": {
+      "akiec": {
+        "n": 185,
+        "f1": 0.6647230320699709,
+        "recall": 0.6162162162162163,
+        "most_common_wrong_call": "bkl"
+      },
+      "bcc": {
+        "n": 283,
+        "f1": 0.8904109589041096,
+        "recall": 0.9187279151943463,
+        "most_common_wrong_call": "akiec"
+      },
+      "bkl": {
+        "n": 438,
+        "f1": 0.7066167290886392,
+        "recall": 0.6461187214611872,
+        "most_common_wrong_call": "nv"
+      },
+      "df": {
+        "n": 19,
+        "f1": 0.6060606060606061,
+        "recall": 0.5263157894736842,
+        "most_common_wrong_call": "mel"
+      },
+      "mel": {
+        "n": 601,
+        "f1": 0.6684256816182937,
+        "recall": 0.632279534109817,
+        "most_common_wrong_call": "nv"
+      },
+      "nv": {
+        "n": 1379,
+        "f1": 0.8611683848797251,
+        "recall": 0.9086294416243654,
+        "most_common_wrong_call": "mel"
+      },
+      "vasc": {
+        "n": 39,
+        "f1": 0.875,
+        "recall": 0.8974358974358975,
+        "most_common_wrong_call": "nv"
+      }
+    },
+    "bcn20000": {
+      "akiec": {
+        "n": 414,
+        "f1": 0.5810635538261998,
+        "recall": 0.5410628019323671,
+        "most_common_wrong_call": "bcc"
+      },
+      "bcc": {
+        "n": 943,
+        "f1": 0.8053553038105047,
+        "recall": 0.8292682926829268,
+        "most_common_wrong_call": "mel"
+      },
+      "bkl": {
+        "n": 350,
+        "f1": 0.5993690851735016,
+        "recall": 0.5428571428571428,
+        "most_common_wrong_call": "nv"
+      },
+      "df": {
+        "n": 25,
+        "f1": 0.26666666666666666,
+        "recall": 0.24,
+        "most_common_wrong_call": "bcc"
+      },
+      "mel": {
+        "n": 1175,
+        "f1": 0.76,
+        "recall": 0.7276595744680852,
+        "most_common_wrong_call": "nv"
+      },
+      "nv": {
+        "n": 1174,
+        "f1": 0.796844181459566,
+        "recall": 0.8603066439522998,
+        "most_common_wrong_call": "mel"
+      },
+      "vasc": {
+        "n": 37,
+        "f1": 0.5423728813559322,
+        "recall": 0.43243243243243246,
+        "most_common_wrong_call": "nv"
+      }
+    },
+    "f1_gap_ham_minus_bcn": {
+      "akiec": 0.08365947824377107,
+      "bcc": 0.08505565509360491,
+      "bkl": 0.10724764391513752,
+      "df": 0.3393939393939394,
+      "mel": -0.09157431838170627,
+      "nv": 0.0643242034201591,
+      "vasc": 0.3326271186440678
+    }
+  }
+}

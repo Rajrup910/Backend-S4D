@@ -1,0 +1,117 @@
+{
+ "status": "EXPLORATORY, image level, uncalibrated vote, folds 1-4 already read; source prior approximated by the pooled fold 1-4 class mix",
+ "bcn20000": {
+  "as_is": {
+   "macro_f1_present": 0.6377,
+   "bacc": 0.6131,
+   "esc_pauc": 0.8501
+  },
+  "true_prior_ceiling": {
+   "macro_f1_present": 0.6346,
+   "bacc": 0.6049,
+   "esc_pauc": 0.8509
+  },
+  "em_label_free": {
+   "macro_f1_present": 0.002,
+   "bacc": 0.1429,
+   "esc_pauc": 0.5951
+  },
+  "true_prior": [
+   0.096,
+   0.234,
+   0.098,
+   0.007,
+   0.219,
+   0.339,
+   0.008
+  ],
+  "em_prior": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "ham": {
+  "as_is": {
+   "macro_f1_present": 0.8157,
+   "bacc": 0.7981,
+   "esc_pauc": 0.9032
+  },
+  "true_prior_ceiling": {
+   "macro_f1_present": 0.8001,
+   "bacc": 0.7751,
+   "esc_pauc": 0.9006
+  },
+  "em_label_free": {
+   "macro_f1_present": 0.1364,
+   "bacc": 0.2683,
+   "esc_pauc": 0.6821
+  },
+  "true_prior": [
+   0.033,
+   0.051,
+   0.113,
+   0.01,
+   0.108,
+   0.67,
+   0.015
+  ],
+  "em_prior": [
+   0.0,
+   0.0,
+   0.0,
+   0.978,
+   0.0,
+   0.0,
+   0.022
+  ]
+ },
+ "mskcc": {
+  "as_is": {
+   "macro_f1_present": 0.8117,
+   "bacc": 0.7865,
+   "esc_pauc": 0.8377
+  },
+  "true_prior_ceiling": {
+   "macro_f1_present": 0.8196,
+   "bacc": 0.8002,
+   "esc_pauc": 0.8511
+  },
+  "em_label_free": {
+   "macro_f1_present": 0.0,
+   "bacc": 0.0,
+   "esc_pauc": 0.84
+  },
+  "true_prior": [
+   0.0,
+   0.0,
+   0.132,
+   0.0,
+   0.188,
+   0.681,
+   0.0
+  ],
+  "em_prior": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "source_prior": [
+  0.057,
+  0.126,
+  0.108,
+  0.007,
+  0.165,
+  0.526,
+  0.01
+ ]
+}

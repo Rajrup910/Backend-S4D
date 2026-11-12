@@ -1,0 +1,116 @@
+{
+  "run_id": "C3_eva02_s_h7_f0_s42_smoke",
+  "arm": "eva02_s_h7",
+  "member": "eva02_s",
+  "session": "v7_smoke",
+  "split": "f0",
+  "seed": 42,
+  "fold": 0,
+  "head": 7,
+  "image_size": 224,
+  "trunk": "eva02_small_patch14_224.mim_in22k",
+  "recipe": {
+    "name": "eva02_s",
+    "timm_name": "eva02_small_patch14_224.mim_in22k",
+    "image_size": 224,
+    "mean": [
+      0.48145466,
+      0.4578275,
+      0.40821073
+    ],
+    "std": [
+      0.26862954,
+      0.26130258,
+      0.27577711
+    ],
+    "backbone_lr": 5e-05,
+    "layer_decay": 0.8,
+    "head_lr": 0.0005,
+    "weight_decay": 0.05,
+    "drop_path": 0.1,
+    "warmup_fraction": 0.1,
+    "source": "MIM pretraining unlike V6 members; starting LRs, R4 decides",
+    "head_dropout": 0.0,
+    "checkpoint_sha256": null,
+    "timm_weights": true,
+    "pending": []
+  },
+  "epochs": 1,
+  "epochs_run": 1,
+  "step_budget": 13140,
+  "optimizer_steps": 2,
+  "head_steps": 1314,
+  "warmup_steps": 1183,
+  "v5_pool_rows": 14018,
+  "added_train": "results/v7/added_pool_v7/added_train_v7.csv",
+  "added_train_rows": 34798,
+  "extra_train_rows": 1874,
+  "sampler": "young",
+  "young_share_v5_pool": 0.2857754315879583,
+  "young_share_trained_on": 0.475,
+  "batch_size": 32,
+  "grad_accum": 1,
+  "effective_batch": 32,
+  "num_workers": 2,
+  "run_tag": null,
+  "primary_checkpoint": "last",
+  "plan_freeze_sha256": null,
+  "final_val_macro_f1": 0.0,
+  "final_val_balanced_accuracy": 0.0,
+  "final_val_escalation_sensitivity": 1.0,
+  "train_images": 160,
+  "train_class_counts": [
+    3,
+    7,
+    3,
+    2,
+    32,
+    113,
+    0
+  ],
+  "val_images": 64,
+  "train_time_seconds": 13.8,
+  "device": "cuda",
+  "smoke": true,
+  "test_read": false,
+  "reserved_read": false,
+  "vram_peak_gb": 1.956608,
+  "vram_total_gb": 8.546484224,
+  "checkpoints": {
+    "last": "results\\v7\\smoke\\eva02_s-v6_C3_eva02_s_h7_f0_s42_smoke_last.pt",
+    "swad": "results\\v7\\smoke\\eva02_s-v6_C3_eva02_s_h7_f0_s42_smoke_swad.pt"
+  },
+  "predictions": {
+    "last": "results\\v7\\smoke\\preds\\C3_eva02_s_h7_f0_s42_smoke.csv",
+    "swad": "results\\v7\\smoke\\preds\\C3_eva02_s_h7_f0_s42_smoke_swad.csv"
+  },
+  "swad": {
+    "window": [
+      1,
+      1
+    ],
+    "n_averaged": 1,
+    "val_macro_f1": 0.0
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "stage": "finetune",
+      "optimizer_steps": 2,
+      "train_loss": 2.3829420804977417,
+      "train_accuracy": 0.015625,
+      "val_macro_f1": 0.0,
+      "val_balanced_accuracy": 0.0,
+      "val_accuracy": 0.0,
+      "val_escalation_sensitivity": 1.0,
+      "val_missed_serious": 0,
+      "learning_rate": 2.748779069440002e-06,
+      "seconds": 13.761468887329102
+    }
+  ],
+  "v7_build": "C3",
+  "v7_build_title": "Second chance: EVA-02-Small (masked-image pretraining), 224 px",
+  "loao_holdout": null,
+  "data_gate_receipt_sha256": "865f3f24c521b5f45e1386edc007cabf2bfb5ff3ea11641a1aeb6ef683e1bfd4",
+  "removed_training_rows": 680
+}

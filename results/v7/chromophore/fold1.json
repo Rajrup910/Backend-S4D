@@ -1,0 +1,43 @@
+{
+ "split": "fold1",
+ "fold": 1,
+ "loao_holdout": null,
+ "n_images": 11553,
+ "seed": 20260930,
+ "basis": {
+  "v_mel": [
+   -0.5746967611021522,
+   -0.21493911141345792,
+   0.7896358725156102
+  ],
+  "v_hb": [
+   -0.8129537818670528,
+   0.47227667369184756,
+   0.3406771081752052
+  ],
+  "fold": 1,
+  "n_pixels": 1005111,
+  "t_mel": 0.28210020065307617,
+  "channel_mean": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "channel_std": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "naming_cosines": {
+   "mel_vs_ref": 0.9831027667167106,
+   "hb_vs_ref": 0.9336421898934664,
+   "mel_vs_hb": 0.6347020423401345
+  }
+ },
+ "basis_only": true,
+ "basis_only_note": "passes 1-2 of research/v5/fit_fold_artefacts.py; channel_mean/std are identity defaults (unused by B5)",
+ "rows_sha256": "6706f1441981df37c5944e0124ef13c1f59db34e8a267c7d1c56a33c77f618e2",
+ "gate_receipt_sha256": "138965151cdc3fbbb3e33ac3c70fcef192f452a87c0ad1e560eb1546e78bc947",
+ "labels_read": false,
+ "minutes": 4.39
+}

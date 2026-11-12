@@ -1,0 +1,48 @@
+{
+ "what": "L2 miss strata, young melanoma lesion groups, banked V6 vote, folds 1-4; exploratory (plan 13.3)",
+ "threshold_all_age_fpr_0.20": 0.12333729437499999,
+ "young_melanoma_groups": 48,
+ "missed": 12,
+ "caught": 36,
+ "minimum_detectable_effect_sd": 0.9338617393709894,
+ "missed_by_archive": {
+  "ham": 6,
+  "bcn20000": 3,
+  "mskcc": 3
+ },
+ "features": {
+  "area": {
+   "missed_median": 0.17287699381510416,
+   "caught_median": 0.24766413370768228,
+   "standardised_difference": -0.4856536823295004,
+   "mann_whitney_p": 0.08868397833654848,
+   "missed_by_tercile": {
+    "low": "5/16",
+    "mid": "5/16",
+    "high": "2/16"
+   }
+  },
+  "contrast": {
+   "missed_median": 0.5124949373876543,
+   "caught_median": 0.4843607347066503,
+   "standardised_difference": 0.2060411762107414,
+   "mann_whitney_p": 0.3593173383295707,
+   "missed_by_tercile": {
+    "low": "3/16",
+    "mid": "3/16",
+    "high": "6/16"
+   }
+  },
+  "sharpness": {
+   "missed_median": 54.803061327948754,
+   "caught_median": 41.30049499951403,
+   "standardised_difference": -0.36845117328937,
+   "mann_whitney_p": 0.8582742305474564,
+   "missed_by_tercile": {
+    "low": "3/16",
+    "mid": "6/16",
+    "high": "3/16"
+   }
+  }
+ }
+}

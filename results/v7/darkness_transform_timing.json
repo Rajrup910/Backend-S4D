@@ -1,0 +1,16 @@
+{
+ "ms_per_image_single_core": {
+  "full_decoded": 68.3,
+  "short_side_256": 8.5,
+  "median_source_size": [
+   1024,
+   1024
+  ],
+  "after_crop_224px": 6.0,
+  "after_crop_384px": 14.2
+ },
+ "images": 60,
+ "basis": "results/v5/chromophore/fold0.json",
+ "note": "CPU time of research.v7.darkness.LesionMelaninScale at p=1",
+ "placement": "applied after RandomResizedCrop, at the training resolution (research/v7/train_v7.py)"
+}

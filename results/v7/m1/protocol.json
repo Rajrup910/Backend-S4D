@@ -1,0 +1,31 @@
+{
+ "what": "M1 learned same-lesion matcher: endpoints and adoption rule, fixed before any candidate is scored",
+ "held_out_share": 0.25,
+ "split": "sha256(cluster root) bucket, whole clusters",
+ "train_splits": [
+  "train",
+  "train_added",
+  "train_extra"
+ ],
+ "cache_px": 320,
+ "fmr_primary": 1e-05,
+ "fmr_secondary": 0.0001,
+ "min_archive_pairs": 100,
+ "top_k": 8,
+ "sift_bar": 30,
+ "n_boot": 2000,
+ "seed": 20261112,
+ "baselines": [
+  "dinov2_b (vit_base_patch14_dinov2.lvd142m, untrained)",
+  "sscd_disc_mixup (untrained)"
+ ],
+ "today": "DINOv2-B on originals (Resize 256, CentreCrop 224), top-8, SIFT >= 30 RANSAC inliers",
+ "candidates": [
+  "convnext_femto.d1_in1k + GeM + 256-d, Multi-Similarity loss",
+  "mobilenetv4_conv_small.e2400_r224_in1k + GeM + 256-d, Multi-Similarity loss"
+ ],
+ "selection": "inner validation slice of the training clusters only",
+ "adoption": "paired lesion-bootstrap 95% CI of pooled TPR@1e-5 difference above 0, and not lower on any archive with >= 100 held-out positive pairs; otherwise keep the best untrained baseline",
+ "written": "2026-11-12T02:24:08",
+ "sha256": "64e38c124ca2b2e9036d56ba1b82ed522643cf9518cfdbfcc20639ea5d3514c2"
+}

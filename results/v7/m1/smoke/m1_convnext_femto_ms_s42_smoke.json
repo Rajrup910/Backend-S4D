@@ -1,0 +1,23 @@
+{
+ "name": "m1_convnext_femto_ms_s42_smoke",
+ "backbone": "convnext_femto.d1_in1k",
+ "best_inner_val_tpr_1e-4": 0.15637860082304528,
+ "best_epoch": 1,
+ "minutes": 0.6,
+ "vram_peak_gb": 2.0,
+ "train_images": 8886,
+ "inner_val_images": 1482,
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 0.6531564295291901,
+   "seconds": 38.2,
+   "tpr_1e-4": 0.15637860082304528,
+   "tpr_1e-5": 0.11934156378600823,
+   "recall_at_1": 0.5890804597701149,
+   "positive_pairs": 243,
+   "negative_pairs": 79557
+  }
+ ],
+ "checkpoint": "ml\\checkpoints\\m1\\m1_convnext_femto_ms_s42_smoke.pt"
+}

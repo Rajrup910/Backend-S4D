@@ -1,0 +1,48 @@
+{
+ "fold": 0,
+ "smoke": false,
+ "teacher": {
+  "epochs": 15,
+  "batch_size": 32,
+  "backbone_lr": 0.0001,
+  "head_lr": 0.001,
+  "weight_decay": 0.05,
+  "image_size": 224,
+  "seed": 42,
+  "trunk": "in22k",
+  "dropout": 0.3
+ },
+ "masked_training_images": 2252,
+ "training_rows_scored": 48815,
+ "optimiser_steps": 1050,
+ "final_loss_mean_last_20": 0.2216828629374504,
+ "train_minutes": 8.38,
+ "total_minutes": 13.4,
+ "positive_rate_masked": {
+  "globules": 0.22824156284332275,
+  "streaks": 0.037744227796792984,
+  "pigment_network": 0.5848134756088257,
+  "negative_network": 0.07060390710830688,
+  "milia_like_cyst": 0.2722024917602539
+ },
+ "mean_teacher_prob_unmasked": {
+  "globules": 0.21598175089587363,
+  "streaks": 0.026870537855851775,
+  "pigment_network": 0.457762798287968,
+  "negative_network": 0.08087155612078147,
+  "milia_like_cyst": 0.09191886474367697
+ },
+ "gate_receipt_sha256": "df090c6d56b69134c7cc4db415aff965cf66c50874cb71213bee8197ec3494ac",
+ "class_labels_read": false,
+ "fold0_selection_diagnostic": {
+  "images": 266,
+  "auroc": {
+   "globules": 0.8460767468499427,
+   "streaks": 0.9019531250000001,
+   "pigment_network": 0.8702797202797203,
+   "negative_network": 0.8437034277198211,
+   "milia_like_cyst": 0.7316377067069588
+  }
+ },
+ "targets_sha256": "fac152f54d10a05f14381eca1f912b32a88d2ab1415bbbd672d6b9eb0bf311a5"
+}

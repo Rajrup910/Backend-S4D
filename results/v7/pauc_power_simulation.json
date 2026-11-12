@@ -1,0 +1,181 @@
+{
+  "title": "V7 Paired McClish pAUC Power & Event Accrual Simulation",
+  "description": "Distinguishes event-accrual assurance from paired hypothesis testing statistical power.",
+  "prevalence": 0.0167,
+  "mcid_target": 0.05,
+  "fpr_max": 0.2,
+  "empirical_reference": {
+    "source": "results/v6/e_primary_power.json & confirm_s42_s43_s44.json",
+    "n_oof_events": 65,
+    "sd_paired_delta_u40": 0.0185777
+  },
+  "event_accrual_assurance": {
+    "2500": {
+      "n_consecutive_lesions": 2500,
+      "expected_events": 41.75,
+      "p_accrue_ge_71_events": 0.0,
+      "p_accrue_pct": 0.0
+    },
+    "3500": {
+      "n_consecutive_lesions": 3500,
+      "expected_events": 58.45,
+      "p_accrue_ge_71_events": 0.0593,
+      "p_accrue_pct": 5.93
+    },
+    "4250": {
+      "n_consecutive_lesions": 4250,
+      "expected_events": 70.975,
+      "p_accrue_ge_71_events": 0.515,
+      "p_accrue_pct": 51.5
+    },
+    "4500": {
+      "n_consecutive_lesions": 4500,
+      "expected_events": 75.15,
+      "p_accrue_ge_71_events": 0.7011,
+      "p_accrue_pct": 70.11
+    },
+    "4666": {
+      "n_consecutive_lesions": 4666,
+      "expected_events": 77.922,
+      "p_accrue_ge_71_events": 0.8004,
+      "p_accrue_pct": 80.04
+    },
+    "5000": {
+      "n_consecutive_lesions": 5000,
+      "expected_events": 83.5,
+      "p_accrue_ge_71_events": 0.9272,
+      "p_accrue_pct": 92.72
+    }
+  },
+  "analytical_statistical_power": {
+    "30": {
+      "events": 30,
+      "se_delta": 0.02735,
+      "power_superiority_delta_050": 0.4477,
+      "power_superiority_delta_035": 0.2482,
+      "p_point_ge_mcid_at_050": 0.5
+    },
+    "40": {
+      "events": 40,
+      "se_delta": 0.02368,
+      "power_superiority_delta_050": 0.5601,
+      "power_superiority_delta_035": 0.3149,
+      "p_point_ge_mcid_at_050": 0.5
+    },
+    "50": {
+      "events": 50,
+      "se_delta": 0.02118,
+      "power_superiority_delta_050": 0.6556,
+      "power_superiority_delta_035": 0.3792,
+      "p_point_ge_mcid_at_050": 0.5
+    },
+    "60": {
+      "events": 60,
+      "se_delta": 0.01934,
+      "power_superiority_delta_050": 0.7343,
+      "power_superiority_delta_035": 0.4404,
+      "p_point_ge_mcid_at_050": 0.5
+    },
+    "65": {
+      "events": 65,
+      "se_delta": 0.01858,
+      "power_superiority_delta_050": 0.7677,
+      "power_superiority_delta_035": 0.4697,
+      "p_point_ge_mcid_at_050": 0.5
+    },
+    "71": {
+      "events": 71,
+      "se_delta": 0.01778,
+      "power_superiority_delta_050": 0.8031,
+      "power_superiority_delta_035": 0.5036,
+      "p_point_ge_mcid_at_050": 0.5
+    },
+    "80": {
+      "events": 80,
+      "se_delta": 0.01675,
+      "power_superiority_delta_050": 0.8475,
+      "power_superiority_delta_035": 0.5518,
+      "p_point_ge_mcid_at_050": 0.5
+    },
+    "95": {
+      "events": 95,
+      "se_delta": 0.01537,
+      "power_superiority_delta_050": 0.9021,
+      "power_superiority_delta_035": 0.6246,
+      "p_point_ge_mcid_at_050": 0.5
+    },
+    "120": {
+      "events": 120,
+      "se_delta": 0.01367,
+      "power_superiority_delta_050": 0.9551,
+      "power_superiority_delta_035": 0.7257,
+      "p_point_ge_mcid_at_050": 0.5
+    }
+  },
+  "monte_carlo_simulation": {
+    "40": {
+      "events": 40,
+      "n_negative_samples": 2355,
+      "simulated_mean_delta": 0.0145,
+      "simulated_sd_delta": 0.01277,
+      "empirical_power_superiority": 0.204,
+      "empirical_power_point_mcid": 0.004,
+      "empirical_power_joint_gate": 0.004
+    },
+    "50": {
+      "events": 50,
+      "n_negative_samples": 2944,
+      "simulated_mean_delta": 0.0135,
+      "simulated_sd_delta": 0.01145,
+      "empirical_power_superiority": 0.204,
+      "empirical_power_point_mcid": 0.0,
+      "empirical_power_joint_gate": 0.0
+    },
+    "60": {
+      "events": 60,
+      "n_negative_samples": 3533,
+      "simulated_mean_delta": 0.0145,
+      "simulated_sd_delta": 0.0101,
+      "empirical_power_superiority": 0.284,
+      "empirical_power_point_mcid": 0.0,
+      "empirical_power_joint_gate": 0.0
+    },
+    "65": {
+      "events": 65,
+      "n_negative_samples": 3827,
+      "simulated_mean_delta": 0.0145,
+      "simulated_sd_delta": 0.00976,
+      "empirical_power_superiority": 0.312,
+      "empirical_power_point_mcid": 0.0,
+      "empirical_power_joint_gate": 0.0
+    },
+    "71": {
+      "events": 71,
+      "n_negative_samples": 4180,
+      "simulated_mean_delta": 0.0148,
+      "simulated_sd_delta": 0.0095,
+      "empirical_power_superiority": 0.332,
+      "empirical_power_point_mcid": 0.0,
+      "empirical_power_joint_gate": 0.0
+    },
+    "80": {
+      "events": 80,
+      "n_negative_samples": 4710,
+      "simulated_mean_delta": 0.0141,
+      "simulated_sd_delta": 0.00896,
+      "empirical_power_superiority": 0.343,
+      "empirical_power_point_mcid": 0.0,
+      "empirical_power_joint_gate": 0.0
+    },
+    "95": {
+      "events": 95,
+      "n_negative_samples": 5594,
+      "simulated_mean_delta": 0.0145,
+      "simulated_sd_delta": 0.00819,
+      "empirical_power_superiority": 0.408,
+      "empirical_power_point_mcid": 0.0,
+      "empirical_power_joint_gate": 0.0
+    }
+  },
+  "key_takeaway": "N=4,666 consecutive lesions provides 80.04% probability of accruing at least 71 events. Conditioned on accruing E=71 events, the paired McClish pAUC test provides 80.3% statistical power to detect an MCID of +0.050 at two-sided alpha=0.05 under the empirical paired standard error."
+}
