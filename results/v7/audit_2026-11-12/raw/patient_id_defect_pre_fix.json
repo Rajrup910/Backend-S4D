@@ -1,0 +1,37 @@
+{
+ "note": "Gate of 12 Nov 17:09 (before the patient-id fix). Shared patients between each run's training side and its evaluation rows, by archive-metadata patient id and by the builder's src_patient_id.",
+ "runs": {
+  "fold0": {
+   "archive_patient": 2,
+   "src_patient_id": 0
+  },
+  "fold1": {
+   "archive_patient": 0,
+   "src_patient_id": 0
+  },
+  "fold2": {
+   "archive_patient": 1,
+   "src_patient_id": 0
+  },
+  "fold3": {
+   "archive_patient": 2,
+   "src_patient_id": 0
+  },
+  "fold4": {
+   "archive_patient": 2,
+   "src_patient_id": 0
+  },
+  "holdout_bcn20000": {
+   "archive_patient": 0,
+   "src_patient_id": 0
+  },
+  "holdout_ham": {
+   "archive_patient": 0,
+   "src_patient_id": 0
+  },
+  "holdout_mskcc": {
+   "archive_patient": 6,
+   "src_patient_id": 0
+  }
+ }
+}

@@ -58,6 +58,13 @@ REPORT = REPO / "results" / "v7" / "data_gate_report.json"
 PLANT_DIR = OUT_DIR / "plants_disposable"
 PLANT_SEED = 7
 MAX_PATIENT_CLIQUE = 60
+#: ISIC archive patient ids per source (13 Nov 2026 fix). Before it, the builder read patient ids only from the leak audit's
+#: row list and from HIBA/MIDAS, so the young extras (1,039 ids in `candidates.csv`) and ISIC 2020 (every row) had none, and
+#: a patient on both sides of a split could not form an at-risk link (found by an external review; 3-12 rows per run).
+ARCHIVE_PATIENTS = {"isic2019_train": REPO / "results" / "v6" / "archive_meta" / "isic2019_train.csv",
+                    "isic2020": REPO / "results" / "v6" / "archive_meta" / "isic2020.csv",
+                    "derm12345": REPO / "results" / "v6" / "archive_meta" / "derm12345.csv",
+                    "isic_young": REPO / "results" / "v5" / "young_data" / "candidates.csv"}
 
 
 def _strip(value: object) -> str | None:
@@ -127,8 +134,10 @@ def load_rows() -> pd.DataFrame:
     linked = pd.read_csv(PATIENT_LINKS, usecols=["image_id", "ap"], dtype=str) if PATIENT_LINKS.is_file() else pd.DataFrame(columns=["image_id", "ap"])
     patient = dict(zip(linked["image_id"], linked["ap"]))
     rows["src_patient_id"] = [patient.get(i, _strip(p)) for i, p in zip(rows["image_id"], rows["patient_id"])]
+    rows["src_patient_id"] = fill_archive_patients(rows)
     keyed = patient_keyed(rows["group_id"])
-    rows.loc[keyed & rows["src_patient_id"].isna(), "src_patient_id"] = rows.loc[keyed, "group_id"].map(_strip)
+    gap = keyed & rows["src_patient_id"].isna()
+    rows.loc[gap, "src_patient_id"] = rows.loc[gap, "group_id"].map(_strip)
     rows["id_provenance"] = np.where(rows["source"] == "isic2019_train", "manifest_v4", rows["source"])
     if rows["image_id"].duplicated().any():
         raise AssertionError(f"{int(rows['image_id'].duplicated().sum())} image ids repeat across sources")
@@ -167,6 +176,30 @@ def _pairs_within(keys: pd.Series, ids: pd.Series, tier: str, evidence: str, cli
             out.extend((a, b, tier, evidence) for x, a in enumerate(m) for b in m[x + 1:])
         else:
             out.extend((m[0], b, tier, evidence) for b in m[1:])
+    return out
+
+
+def fill_archive_patients(rows: pd.DataFrame, sources: dict[str, Path] = ARCHIVE_PATIENTS) -> pd.Series:
+    """`src_patient_id` with gaps filled from each source's ISIC archive metadata, matched by normalised ISIC id.
+
+    Fails closed: a declared metadata file that is absent, or an archive id that disagrees with an id already held, stops
+    the build (a silent second patient id would split one patient into two)."""
+    out = rows["src_patient_id"].copy()
+    for source, path in sources.items():
+        if not path.is_file():
+            raise SystemExit(f"patient metadata for {source} is declared and {path} is absent")
+        meta = pd.read_csv(path, dtype=str)
+        key = "isic_id" if "isic_id" in meta.columns else "image_id"
+        meta = meta.dropna(subset=["patient_id"])
+        meta = meta[meta["patient_id"].str.strip().ne("")]
+        by_id = dict(zip(meta[key].map(normalise_id), meta["patient_id"].str.strip()))
+        mine = rows["source"].eq(source)
+        found = rows.loc[mine, "archive_id"].map(by_id)
+        held = out[mine]
+        clash = held.notna() & found.notna() & held.ne(found)
+        if clash.any():
+            raise SystemExit(f"{int(clash.sum())} {source} rows hold a patient id that disagrees with {path.name}")
+        out.loc[mine] = held.where(held.notna(), found)
     return out
 
 

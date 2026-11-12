@@ -1,4 +1,4 @@
-# V7 Freeze Manifest (candidate, 12 Nov 2026)
+# V7 Freeze Manifest (candidate, 12 Nov 2026; gate rebuilt 13 Nov 02:00)
 
 **Status: CANDIDATE.** It becomes the freeze record only when (1) the working tree below is committed and (2) the owner
 signs Gate 0. Until then the hashes describe the files on disk, not a commit. Verdict and reasoning: `docs/V7_AUDIT_REPORT.md`.
@@ -8,8 +8,8 @@ signs Gate 0. Until then the hashes describe the files on disk, not a commit. Ve
 | Item | Value |
 |---|---|
 | Branch | `v5-confirmation-review2` |
-| HEAD at audit | `5f14ebc` (parent of the freeze commit, still to be made) |
-| Working tree | 37 modified tracked + 12 untracked (`results/v7/audit_2026-11-12/raw/git_status_start.txt`), plus this audit's new files |
+| HEAD at audit | `5f17939` (12 Nov audit commit); the 13 Nov fixes go in the freeze commit, still to be made |
+| Working tree | the 13 Nov fixes (gate builder, promotion P2, tests, docs, rebuilt receipts), uncommitted until the owner says yes |
 | Frozen / protected file lists | stored in the Gate 0 record at signing (`research/v7/plan_freeze.py`); not yet written |
 | Gate 0 | unsigned |
 | Owner decisions | plan §13.5, 24 of 24 written on 12 Nov 2026 |
@@ -32,9 +32,9 @@ signs Gate 0. Until then the hashes describe the files on disk, not a commit. Ve
 
 | File | SHA-256 | Note |
 |---|---|---|
-| `ml/data/v7/master_v7.csv` | `7f98ba06…c45241` | 57,488 rows; matches receipt |
-| `ml/data/v7/links_v7.csv` | `094dae27…85d2e1` | 27,162 confirmed, 109,280 at-risk |
-| `results/v7/data_gate_receipt.json` | `93ebe79d…8396cd` | written 12 Nov 17:09, passed |
+| `ml/data/v7/master_v7.csv` | `65f6ea39…efd1d7` | 57,488 rows; matches receipt |
+| `ml/data/v7/links_v7.csv` | `9b4aa6d3…72bab6` | 27,162 confirmed, 137,170 at-risk |
+| `results/v7/data_gate_receipt.json` | `71e956a1…404a1e` | written 13 Nov 02:00 (patient ids loaded, audit A11), passed |
 | `ml/data/manifest_v4.csv` | `43be6392…f8c2f9` | labels, ages, S71 folds |
 | `ml/configs/class_mapping.json` | `acd01d00…7d05` | label map |
 | `results/v7/added_pool_v7/added_train_v7.csv` | `cfe48f19…a4b2` | V7 pool, 35,183 rows |
@@ -51,7 +51,7 @@ signs Gate 0. Until then the hashes describe the files on disk, not a commit. Ve
 - Never trained on: `ham_test` (1,502).
 - Sealed external: MIDAS, 765 primary images.
 
-**Gate removals:** 259 rows from every run, plus 452/386/391/340/391 for folds 0–4, and 9,616/2,010/1,522 for the
+**Gate removals:** 361 rows from every run, plus 476/413/437/375/457 for folds 0–4, and 9,616/2,097/1,559 for the
 BCN/HAM/MSKCC holdouts.
 
 ## 4. Model and recipe (first night: fold-0 screens)
@@ -91,7 +91,7 @@ candidate is frozen (P1–P3, plan §14.3).
 
 ## 6. Exact commands, in run order (owner runs them; PowerShell, repo root)
 
-All times are from 20:00 tonight if the owner starts then. **Measured** means from file timestamps or V6 run logs.
+The "Ends" column assumes a 20:00 start; the durations are what carry over to any start time. **Measured** means from file timestamps or V6 run logs.
 
 | # | Step | Command | Time | Ends (from 20:00) | Basis | Must finish before next |
 |:-:|---|---|---|---|---|---|
@@ -114,7 +114,16 @@ All times are from 20:00 tonight if the owner starts then. **Measured** means fr
 - Re-photograph guard about 0.67 of same-lesion pairs where IDs are hidden; no patient ids for HAM or BCN.
 - M1 over-merges at least about 7% of cross-lesion merges. This is conservative for leakage.
 - Folds 1–4 were read at V6-5 and mined for V7's hypotheses (audit A2). A subgroup gain there is exploratory.
-- MIDAS is all-age, retrospective and biopsy-verified, with 69 under-40 images. It cannot confirm an under-40 result.
-- One seed per member; P1's noise bar is exceeded about 20% of the time by seed noise alone.
-- PanDerm and DINOv2 pretraining corpora are unauditable. PanDerm weights are CC-BY-NC-ND.
+- MIDAS is a prospectively recruited, two-site (Stanford, Cleveland Clinic) general-dermatology cohort. All ages are
+  included, and there are 69 under-40 images. It cannot confirm an under-40 result. MIDAS also holds non-biopsied control
+  lesions. Our 765-image read keeps biopsied lesions only, by the code's rule (`iscontrol == no`,
+  `research/v7/midas_prepare.py`), so its negatives are biopsied benign lesions: a harder and less typical set than a
+  screening population.
+- One seed per member. Seed noise was measured for the anchor only (pair SD 0.00824 at V6-5). P1's bar sits at the
+  one-sided 80th percentile of that noise, so pure seed noise passes it 20% of the time by construction.
+- PanDerm and DINOv2 pretraining corpora are unauditable. PanDerm weights are CC-BY-NC-ND. PanDerm's public repository lists
+  HIBA among its benchmark datasets, so HIBA was in PanDerm's development loop. HIBA is training-only in V7, but V6's HIBA
+  read (0.7348) is not fully external for the PanDerm member.
+- Patient IDs reach the gate only where an archive publishes them: all of ISIC 2020, DERM12345 and HIBA, 1,039 of 2,078
+  young extras and 417 development rows. HAM, BCN and MILK10k publish none.
 - No dependency lock file.

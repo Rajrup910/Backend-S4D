@@ -14,6 +14,10 @@ re-derived here from the files on disk. *Reported* means read from a project fil
 
 **FREEZE APPROVED WITH EXPLICIT LIMITATIONS (technical).**
 
+> **Addendum, 13 Nov 2026 (section 11).** An external review found a gate defect this audit missed (A11, patient IDs
+> never loaded for the young extras and ISIC 2020) and a hole in P2 (A12). Both are fixed before signing; the gate and its
+> downstream files were rebuilt and re-verified. "Repairs: none were needed" below is superseded.
+
 **First run: NOT LAUNCHED. It is blocked on two owner-only actions:**
 1. Commit the working tree, on the owner's yes.
 2. Sign Gate 0: `python -m research.v7.plan_freeze --sign --owner-approved --owner "NAME"`.
@@ -342,3 +346,18 @@ In short:
 - `CHANGELOG.md` (one appended section).
 
 No existing file was modified except `CHANGELOG.md`.
+
+---
+
+## 11. Addendum, 13 Nov 2026: after an external review
+
+An independent review of the research brief (steps 1-2) raised points that were checked against the files on disk.
+
+| ID | Severity | Finding | Evidence | Fix / status | Regression test |
+|---|---|---|---|---|---|
+| A11 | **P0 (leakage, missed by this audit)** | `build_master_v7.load_rows` read patient IDs only from the leak audit's row list, HIBA and MIDAS. The young extras (1,039 IDs in `results/v5/young_data/candidates.csv`) and ISIC 2020 (5,559 in `results/v6/archive_meta/isic2020.csv`) had none, and 274 of the 417 ISIC 2019 patient IDs were missing. This audit's isolation check compared the builder's own column, so it could not see the gap. On the 12 Nov gate, training kept images of 2/0/1/2/2 patients evaluated in folds 0-4 and of 6 patients (12 images) in the MSKCC hold-out, all young extras | `raw/patient_id_defect_pre_fix.json` | `fill_archive_patients` (fails closed on a missing file or a clashing ID). Gate rebuilt (13 Nov 02:00, passed): at-risk links 109,280 → 137,170; removals 361 global (was 259), 476/413/437/375/457 per fold, HAM 2,097, MSKCC 1,559, BCN 9,616. No row left the removal lists (9 moved to the global list). Pool, roles, eight B5 bases and denominators rebuilt | isolation check now also keys on `archive_patient`, read from the archives' metadata: 0 in all 8 runs; with fold 0's list emptied it finds 14 shared patients |
+| A12 | P1 (promotion rule) | P1's all-age pAUC credits cross-band ranking. A candidate that lowers every under-40 score raises P1, leaves the within-band under-40 pAUC delta at exactly 0 and passes the old P2 | `test_p2_vetoes_a_candidate_that_lowers_every_young_score` | Owner decision before signing: the under-40 xAUC joins P2's veto (upper 95% bound ≥ 0); plan 13.5 row 19 and §14.3 amended | same test; `test_p2_fails_closed_without_the_xauc_read` |
+| A13 | info | The 40 back-solved HIBA vasc labels | `results/v7/hiba_train/hiba_train.csv` | All 40 are vasc in the separately fetched archive diagnoses: closed | — |
+| A14 | info | Wording: MIDAS is prospective, two-site and general dermatology (not retrospective); PanDerm lists HIBA as a benchmark dataset; seed noise measured for the anchor only; README's 0.8047 is V1's pre-fix HAM-test read | public sources named by the review | Corrected in `V7_FREEZE_MANIFEST.md` §7 and README | README audit |
+
+Not changed: the M1 recall residual on cross-archive, ID-less pairs is unmeasured (the review is right that the measured 67.2% is on same-archive pairs with IDs), and bootstrap intervals at 65 under-40 groups under-cover (F4; gain claims already use the wider interval).

@@ -21,9 +21,26 @@ TRAINING_ONLY = ("train_added", "train_extra", "train_hiba", "reserved", "val", 
 SPENT = ("ham_test", "midas")
 
 
+#: Patient ids read straight from the archives' own metadata, not from the builder's `src_patient_id` (added 13 Nov 2026:
+#: the builder had left the young extras and ISIC 2020 without ids, and a check on its own column could not see that).
+ARCHIVE_META = ("results/v6/archive_meta/isic2019_train.csv", "results/v6/archive_meta/isic2020.csv",
+                "results/v6/archive_meta/derm12345.csv", "results/v5/young_data/candidates.csv")
+
+
+def archive_patients() -> dict[str, str]:
+    out: dict[str, str] = {}
+    for name in ARCHIVE_META:
+        meta = pd.read_csv(REPO / name, dtype=str)
+        key = "isic_id" if "isic_id" in meta.columns else "image_id"
+        meta = meta.dropna(subset=["patient_id"])
+        out.update(zip(meta[key].str.replace("_downsampled", "", regex=False), meta["patient_id"].str.strip()))
+    return out
+
+
 def compute() -> dict:
     m = pd.read_csv(REPO / "ml/data/v7/master_v7.csv", low_memory=False)
     m["image_id"] = m["image_id"].astype(str)
+    m["archive_patient"] = m["archive_id"].astype(str).str.replace("_downsampled", "", regex=False).map(archive_patients())
     links = pd.read_csv(REPO / "ml/data/v7/links_v7.csv", low_memory=False)
     rec = json.loads((REPO / "results/v7/data_gate_receipt.json").read_text(encoding="utf-8"))
     rem = rec["report"]["removal_rows"]
@@ -33,7 +50,7 @@ def compute() -> dict:
 
     def connections(train: pd.DataFrame, evald: pd.DataFrame) -> dict:
         out = {}
-        for key in ("master_group", "group_id", "src_lesion_id", "src_patient_id", "sha256", "phash"):
+        for key in ("master_group", "group_id", "src_lesion_id", "src_patient_id", "archive_patient", "sha256", "phash"):
             a = set(train[key].dropna().astype(str))
             b = set(evald[key].dropna().astype(str))
             out[key] = len(a & b)

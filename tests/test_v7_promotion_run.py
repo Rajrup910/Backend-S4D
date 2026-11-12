@@ -122,7 +122,7 @@ def test_the_full_workflow_reads_once_writes_hashes_and_promotes_a_clearly_bette
     assert list(report["in_domain"]) == list(promotion.ROW_SETS) and sorted(report["cross_site"]) == sorted(ARCHIVES)
     n_all = int((world.rows.fold != 0).sum())
     assert report["rows"]["all_rows"] == n_all and report["rows"]["without_426_rows"] < report["rows"]["without_380_rows"] < n_all
-    assert report["secondary"]["decisive"] is False and report["secondary"]["holm_family"]["size"] == len(pr.SECONDARY_FAMILY) == 10
+    assert report["secondary"]["decisive"] is False and report["secondary"]["holm_family"]["size"] == len(pr.SECONDARY_FAMILY) == 11
     assert report["hashes"]["candidate_manifest"] and report["hashes"]["loao_manifest"] and report["gate0_record_sha256"] == SIGNATURE
     assert report["protected_reads"] == {"fold_0_pooled": False, "test_read": False, "reserved_read": False, "hiba_read": False, "midas_read": False}
     out = world.src.out_dir / "c1"

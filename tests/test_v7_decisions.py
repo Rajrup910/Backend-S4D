@@ -173,15 +173,39 @@ def test_p3_fails_closed_when_a_decisive_read_is_not_estimable() -> None:
     assert not single["passed"] and "escalation_pauc" in single["not_estimable"]
 
 
+def test_p2_vetoes_a_candidate_that_lowers_every_young_score() -> None:
+    """The external review's case (13 Nov 2026): shrink the escalation mass of every under-40 row by one monotone map. Ranks
+    inside the band do not change, so the under-40 pAUC delta is exactly 0 and the old two-endpoint veto cannot see it; the
+    young cancers now rank below older benign lesions, so the xAUC falls and P2 must fail on it."""
+    rows, noise = _rows()
+    where = rows.where()
+    reference = _probs(rows.y, noise, 1.0)
+    shifted = reference.copy()
+    young = rows.u40
+    esc_cols = list(promotion.ESC)
+    shifted[np.ix_(young, esc_cols)] *= 0.05
+    shifted[young] /= shifted[young].sum(1, keepdims=True)
+    out = promotion.p1_p2(shifted, reference, rows, where, bar=0.008, n_boot=200)
+    assert abs(out["read"]["pauc_u40"]["delta"]) < 1e-9          # invisible to the within-band read
+    assert out["read"]["xauc_u40"]["ci95"][1] < 0                # visible to the cross-band read
+    assert not out["p2"]["xauc_u40_ok"] and not out["p2"]["passed"]
+
+
+def test_p2_fails_closed_without_the_xauc_read() -> None:
+    with pytest.raises(SystemExit, match="xauc_u40"):
+        promotion.p2_verdict({"pauc_u40": {"ci95": [0.0, 0.1]}, "esc_sens": {"ci95": [0.0, 0.1]}}, margins={})
+
+
 def test_p2_is_the_veto_by_default_and_margins_only_tighten_it() -> None:
-    read = {"pauc_u40": {"ci95": [-0.06, 0.01]}, "esc_sens": {"ci95": [-0.015, 0.005]}}
+    read = {"pauc_u40": {"ci95": [-0.06, 0.01]}, "esc_sens": {"ci95": [-0.015, 0.005]}, "xauc_u40": {"ci95": [-0.03, 0.02]}}
+    assert not promotion.p2_verdict({**read, "xauc_u40": {"ci95": [-0.05, -0.01]}}, margins={})["passed"]  # xAUC harm vetoes
     assert promotion.P2_NONINFERIORITY_MARGINS is None or set(promotion.P2_NONINFERIORITY_MARGINS) == set(promotion.P2_ENDPOINTS)
     veto = promotion.p2_verdict(read, margins={})
     assert veto["passed"] and veto["non_inferiority"] is None and "not a non-inferiority claim" in veto["form"]
     tight = promotion.p2_verdict(read, margins={"pauc_u40": 0.05, "esc_sens": 0.02})
     assert not tight["passed"] and not tight["non_inferiority"]["pauc_u40"]["ok"] and tight["non_inferiority"]["esc_sens"]["ok"]
     assert promotion.p2_verdict(read, margins={"pauc_u40": 0.08, "esc_sens": 0.02})["passed"]
-    harmed = {"pauc_u40": {"ci95": [-0.09, -0.01]}, "esc_sens": {"ci95": [-0.01, 0.01]}}
+    harmed = {"pauc_u40": {"ci95": [-0.09, -0.01]}, "esc_sens": {"ci95": [-0.01, 0.01]}, "xauc_u40": {"ci95": [-0.01, 0.01]}}
     assert not promotion.p2_verdict(harmed, margins={"pauc_u40": 0.5, "esc_sens": 0.5})["passed"]      # a margin never rescues a veto failure
     with pytest.raises(SystemExit, match="margins"):
         promotion.p2_verdict(read, margins={"pauc_u40": 0.05})
@@ -378,3 +402,17 @@ def test_the_pixel_audit_must_name_this_cohort_and_cover_every_image(tmp_path, m
         audit.write_text(json.dumps(bad), encoding="utf-8")
         with pytest.raises(SystemExit, match=match):
             external.predict("a", paths["preds"], gate0=lambda: "sig")
+
+
+def test_u40_lesion_sensitivity_is_lesion_level_matched_specificity_and_never_decides() -> None:
+    rows, noise = _rows()
+    where = rows.where()
+    reference = _probs(rows.y, noise, 0.6)
+    same = promotion.u40_lesion_sensitivity(reference, reference, rows, where, n_boot=100)
+    assert same["delta"] == 0 and same["decisive"] is False and same["specificity"] == 0.8
+    assert same["lesion_groups"] == len(np.unique(rows.group[where][rows.u40[where]]))   # lesions, not images
+    better = reference.copy()
+    young_pos = rows.u40 & rows.esc
+    better[young_pos] = _probs(rows.y, noise, 1.5)[young_pos]
+    up = promotion.u40_lesion_sensitivity(better, reference, rows, where, n_boot=100)
+    assert up["delta"] > 0 and up["ci95"][0] <= up["delta"] <= up["ci95"][1]

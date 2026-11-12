@@ -37,7 +37,7 @@
  "basis_only": true,
  "basis_only_note": "passes 1-2 of research/v5/fit_fold_artefacts.py; channel_mean/std are identity defaults (unused by B5)",
  "rows_sha256": "1f9a0e16138306ec85635e0e0613ecfd3e567c605c5168c5a3d7635cc62e9fc0",
- "gate_receipt_sha256": "93ebe79da035de8487fc171a0b8b7e91bca5fc4be94892caccf6fbff658396cd",
+ "gate_receipt_sha256": "71e956a1cb3dab821b63981d6f9429f3d2886fc13e9068e6edc8b5ccc8404a1e",
  "labels_read": false,
- "minutes": 8.38
+ "minutes": 11.08
 }

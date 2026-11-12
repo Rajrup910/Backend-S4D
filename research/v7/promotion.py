@@ -4,8 +4,9 @@ A V7 candidate replaces V6 only if every part passes on every row set:
 
 * P1 (primary, in-domain, folds 1-4, paired against the banked V6 vote): all-age escalation pAUC delta above the single-seed
   bar AND Macro-F1 delta with its 95% lower bound above 0. V6's own E-primary form, so V7 and V6 face the same rule.
-* P2 (veto: no statistically detected harm): the upper 95% bounds of the under-40 escalation pAUC delta and of the ALL-AGE
-  argmax escalation-sensitivity delta are >= 0 (`p2_verdict`). This is not a non-inferiority demonstration: a simulation at
+* P2 (veto: no statistically detected harm): the upper 95% bounds of the under-40 escalation pAUC delta, of the ALL-AGE
+  argmax escalation-sensitivity delta and (owner decision, 13 Nov 2026) of the under-40 xAUC delta (young escalating
+  lesions against 40+ negatives, `xauc_u40`) are >= 0 (`p2_verdict`). This is not a non-inferiority demonstration: a simulation at
   the real sample sizes (`results/v7/p2_coverage.json`) shows a true under-40 pAUC harm of -0.04 still passes 7-43% of the
   time. Whether P2 also carries a non-inferiority margin is the owner's decision (`P2_NONINFERIORITY_MARGINS`).
 * P3 (cross-site): on each held-out archive (LOAO, development rows only), the candidate's present-class Macro-F1 and
@@ -63,8 +64,13 @@ P3_HOLDOUTS = ("bcn20000", "ham", "mskcc")
 #: non-inferiority condition, the owner writes the clinically justified margins here BEFORE signing, for example
 #: {"pauc_u40": 0.05, "esc_sens": 0.02}; P2 then also needs each delta's lower 95% bound above minus its margin.
 #: `results/v7/p2_coverage.json` gives the pass rate of each illustrative margin at the real sample sizes.
-P2_NONINFERIORITY_MARGINS: dict[str, float] | None = None  # TODO(human): the owner's choice; None = veto only
+P2_NONINFERIORITY_MARGINS: dict[str, float] | None = None  # owner decision 20 (12 Nov 2026): None, P2 is the veto only
 P2_ENDPOINTS = ("pauc_u40", "esc_sens")
+#: Owner decision, 13 Nov 2026, before signing: the xAUC (under-40 escalating lesions ranked against 40+ negatives) joins
+#: P2's veto. Why: all-age pAUC credits cross-band ranking, so a candidate that lowers every under-40 score raises P1 (young
+#: rows are mostly benign) while the within-band under-40 pAUC cannot see it (a shift inside one band keeps its ranks) and
+#: all-age sensitivity barely moves (under 40 is 3.7% of escalating images). The xAUC is the read that falls in that case.
+P2_VETO_ENDPOINTS = (*P2_ENDPOINTS, "xauc_u40")
 
 
 def wide(samples: np.ndarray, percentiles: tuple[float, float] = UNDER40_GAIN_PERCENTILES) -> list[float]:
@@ -81,10 +87,17 @@ def boot_p(samples: np.ndarray) -> float:
 
 
 def p2_verdict(read: dict, margins: dict[str, float] | None = None) -> dict:
-    """P2. The veto (V6's no-harm rule, unchanged) and, only if the owner set margins, a non-inferiority condition."""
+    """P2. The veto (V6's no-harm rule plus the xAUC) and, only if the owner set margins, a non-inferiority condition.
+
+    `read` must hold `xauc_u40` (`p1_p2` adds it); a read without it fails closed."""
     margins = P2_NONINFERIORITY_MARGINS if margins is None else margins
+    if "xauc_u40" not in read:
+        raise SystemExit("P2 needs the xauc_u40 read (young positives vs 40+ negatives); none was given")
     veto = sr.no_harm_verdict(read)
-    out = {**veto, "form": "veto: no statistically detected harm (upper 95% bound of candidate - V6 >= 0); not a non-inferiority claim",
+    xauc_ok = bool(read["xauc_u40"]["ci95"][1] >= 0)
+    veto = {**veto, "xauc_u40_ok": xauc_ok, "passed": bool(veto["passed"] and xauc_ok)}
+    out = {**veto, "form": "veto: no statistically detected harm (upper 95% bound of candidate - V6 >= 0) on under-40 pAUC, "
+                           "all-age sensitivity and under-40 xAUC; not a non-inferiority claim",
            "non_inferiority": None}
     if margins:
         if set(margins) != set(P2_ENDPOINTS) or not all(0 < m < 1 for m in margins.values()):
@@ -130,6 +143,41 @@ def xauc_u40(candidate: np.ndarray, reference: np.ndarray, rows: sr.Rows, where:
             "xauc_young_pos_older_neg": {**read["pauc_all"], "ci_gain": wide(samples), "p_boot": boot_p(samples)}, "decisive": False}
 
 
+def _lesion_scores(score: np.ndarray, esc: np.ndarray, group: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """One row per lesion group: mean escalation mass, escalating if any image is (groups sorted, so calls align)."""
+    frame = pd.DataFrame({"g": np.asarray(group).astype(str), "s": score, "e": np.asarray(esc, bool)}).groupby("g").agg(s=("s", "mean"), e=("e", "max"))
+    return frame["s"].to_numpy(float), frame["e"].to_numpy(bool)
+
+
+def sens_at_spec(score: np.ndarray, esc: np.ndarray, fpr: float = FPR_MAX) -> float:
+    """Sensitivity at the threshold where this system's own specificity is 1 - fpr on the same negatives."""
+    if not esc.any() or esc.all():
+        return float("nan")
+    return float((score[esc] > np.quantile(score[~esc], 1 - fpr)).mean())
+
+
+def u40_lesion_sensitivity(candidate: np.ndarray, reference: np.ndarray, rows: sr.Rows, where: np.ndarray,
+                           n_boot: int = sr.N_BOOT) -> dict:
+    """Secondary (13 Nov 2026, declared before signing): under-40 sensitivity per LESION at matched specificity 0.80.
+
+    Removes two explanations of the under-40 gap by construction: image weighting (BCN has several images per lesion) and
+    prevalence (argmax sensitivity falls when only 7% of the band escalates). Each system gets its own threshold at
+    specificity 1 - FPR_MAX on under-40 negative lesions; paired lesion-group bootstrap. Inside the Holm family; never promotes."""
+    keep = where[rows.u40[where]]
+    esc_cols = list(ESC)
+    cand, e = _lesion_scores(candidate[keep][:, esc_cols].sum(1), rows.esc[keep], rows.group[keep])
+    ref, _ = _lesion_scores(reference[keep][:, esc_cols].sum(1), rows.esc[keep], rows.group[keep])
+    rng = np.random.default_rng(sr.SEED)
+    samples = np.empty(n_boot)
+    for i in range(n_boot):
+        pick = rng.integers(0, len(e), len(e))
+        samples[i] = sens_at_spec(cand[pick], e[pick]) - sens_at_spec(ref[pick], e[pick])
+    a, b = sens_at_spec(cand, e), sens_at_spec(ref, e)
+    return {"lesion_groups": int(len(e)), "positive_lesions": int(e.sum()), "specificity": 1 - FPR_MAX, "candidate": a, "reference": b,
+            "delta": a - b, "ci95": [float(np.nanpercentile(samples, 2.5)), float(np.nanpercentile(samples, 97.5))],
+            "ci_gain": wide(samples), "p_boot": boot_p(samples), "decisive": False}
+
+
 def classes_counted(y: np.ndarray, groups: np.ndarray, min_groups: int = P3_MIN_CLASS_GROUPS) -> tuple[list[int], dict[int, int]]:
     """Which classes P3's Macro-F1 counts on one held-out archive, and the lesion-group count of every present class.
 
@@ -164,6 +212,8 @@ def p1_p2(candidate: np.ndarray, reference: np.ndarray, rows: sr.Rows, where: np
     read = sr.paired_bootstrap(candidate, reference, rows, where, n_boot=n_boot)
     samples = read.pop("samples")["pauc_u40"]
     u40_gain = wide(samples)
+    xauc = xauc_u40(candidate, reference, rows, where, n_boot=n_boot)["xauc_young_pos_older_neg"]
+    read["xauc_u40"] = {k: xauc[k] for k in xauc if k not in ("ci_gain", "p_boot")}  # P2 reads its 95% interval, like the others
     p1 = sr.e_primary_verdict(read, bar)
     p2 = p2_verdict(read)
     u40 = read["pauc_u40"]

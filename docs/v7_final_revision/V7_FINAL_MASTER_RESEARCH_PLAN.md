@@ -417,7 +417,7 @@ that runs it.
 ### 10.4 Promotion rule (PROPOSED; code `research/v7/promotion.py`, tested)
 
 * **P1** all-age escalation pAUC delta above the single-seed bar (0.0082) AND Macro-F1 delta with 95% lower bound above 0, paired against the banked V6 vote on folds 1-4.
-* **P2** no harm: upper bounds of the under-40 pAUC delta and the escalation-sensitivity delta at least 0.
+* **P2** no harm: upper bounds of the under-40 pAUC delta, the escalation-sensitivity delta and (13 Nov) the under-40 xAUC delta at least 0.
 * **P3** cross-site: on each held-out archive, not worse than the V6-recipe LOAO baseline (L0) by more than 0.02 (95% lower bound) on present-class Macro-F1 and escalation pAUC.
 * All three on four row sets: all rows, without the 380, without the 426, and without every development row the V7 data gate links.
 * Secondary, never decisive: Gate A2 (under-40 +0.050) and the dark read.
@@ -457,10 +457,10 @@ start without it.
 |---|---|
 | Planted copies, eight families x 48 real development images | 384 of 384 found |
 | Fields filled (ids, archive, split, group, SHA-256, hashes, status) | 100% |
-| Links | **Current receipt (14.2): 27,162 confirmed, 109,280 at risk (12 Nov 17:09), on 57,488 rows.** Earlier run, before MIDAS joined: 15,228 confirmed (lesion id, normalised id, SHA-256, existing groups, correlation+keypoint copies); 96,668 at risk (patient ids incl. DERM12345 and HIBA, hash matches, single-detector keypoint hits) |
+| Links | **Current receipt (14.2): 27,162 confirmed, 137,170 at risk (13 Nov 02:00, patient ids loaded), on 57,488 rows.** 12 Nov 17:09: 27,162 / 109,280. Earlier run, before MIDAS joined: 15,228 confirmed (lesion id, normalised id, SHA-256, existing groups, correlation+keypoint copies); 96,668 at risk (patient ids incl. DERM12345 and HIBA, hash matches, single-detector keypoint hits) |
 | Largest confirmed group (percolation limit 31) | 31: one real BCN lesion |
 | Groups for review (span archives / frozen splits) | 107 / 115; their rows stay at risk (removed from the training side) |
-| Training-side removals | **Current receipt (14.2): 259 from all training; 452, 386, 391, 340, 391 more for folds 0-4 (1.2-1.4% of a fold's training rows); holdouts BCN 9,616, HAM 2,010, MSKCC 1,522 (12 Nov 17:09: M1 amendment 01, group reach, per-fold scoping of training-only rows, M1 second opinion on single-detector links).** Earlier run: 656 from all training (rows linked to a development row, `ham_test` or MIDAS, incl. 2 HIBA rows); 31-42 more per held-out fold; BCN 9,484, HAM 1,476, MSKCC 1,255 |
+| Training-side removals | **Current receipt (14.2): 361 from all training; 476, 413, 437, 375, 457 more for folds 0-4 (1.5-1.7% of a fold's training rows); holdouts BCN 9,616, HAM 2,097, MSKCC 1,559 (13 Nov 02:00: the 12 Nov 17:09 rules plus the patient ids of the young extras, ISIC 2020 and ISIC 2019 that the builder had not loaded; audit A11).** 12 Nov 17:09: 259; 452, 386, 391, 340, 391; HAM 2,010, MSKCC 1,522. Earlier run: 656 from all training (rows linked to a development row, `ham_test` or MIDAS, incl. 2 HIBA rows); 31-42 more per held-out fold; BCN 9,484, HAM 1,476, MSKCC 1,255 |
 
 Correction: the first gate runs of 10 Nov loaded no HIBA rows at all (a missing-value filter dropped them silently), so the
 earlier claim that HIBA pixels were covered was wrong. Fixed, and the builder now stops if any declared source loads zero
@@ -926,7 +926,7 @@ constant, so they are settled and tested before signing; the rest have a safe re
 | 16 | **P3 unit (F2)** **(G0)** | (a) vote vs vote, 3 holdouts / (b) anchor vs anchor / (c) vote vs vote, BCN only | (a): 24.6 h with a V6-like candidate, 63.6-69.7 h with both B1 members (14.6, EXTRAPOLATED). (b) 4.8 h tests the recipe, not the system. (c) 7.1 h gives up the claim on HAM and MSKCC and sets `P3_HOLDOUTS = ("bcn20000",)` | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
 | 17 | L1-L5 reported reads | adopt / decline | adopt (L1, L2, L3a run; all exploratory, none drops a build) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
 | 18 | PanDerm learning-rate arm R3b | add / R3 only | add. Its rate has no source file here (`UNVERIFIED`) and it changes the head rate too; it runs only after its R4 receipt | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
-| 19 | xAUC as declared secondary; positive-side builds first | adopt / decline | adopt (coded; archive, subtype, thickness and images per lesion are not controlled) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 19 | xAUC as declared secondary; positive-side builds first | adopt / decline | adopt (coded; archive, subtype, thickness and images per lesion are not controlled) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option). **Amended by the owner, 13 Nov 2026, before signing:** the xAUC on each row set also joins P2's veto (upper 95% bound >= 0); its gain claim stays secondary |
 | 20 | **P2's form (F4)** **(G0)** | (a) veto only, worded "no statistically detected harm" / (b) veto plus non-inferiority margins the owner justifies clinically | (a). It is what the code does and the wording is now exact. (b) only with margins fixed on clinical grounds before any read; an equal candidate fails more often than it passes below about 0.04 (correlation 0.85) or 0.02 (0.95) on under-40 pAUC (14.3) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
 | 21 | Per-image label tables in the repository (`results/v7/added_pool_v7/added_train_v7.csv` 6.9 MB, `concept_teacher/fold0_targets.csv` 5.9 MB, `hiba_train/*.csv`) | publish / keep local | publish only what a reader needs to reproduce a number; these carry public-archive labels, no MIDAS row (checked for the pool and the concept targets) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
 | 22 | Older documents that still say "leak-free" (manuscripts, roadmap, research log, V6 runsheet, a README credit line; listed in `docs/LEAK_DISCLOSURE.md`) | correct each / leave as history under the disclosure | leave the frozen V6 runsheet and the manuscripts as dated history, correct the README line, and let the disclosure name every file | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
@@ -1096,7 +1096,7 @@ Gate 0, committed or pushed. Evidence: `results/v7/freeze_audit/AUDIT_REPORT.md`
 
 | Where | Was | Is (source) |
 |---|---|---|
-| 10.6, links and removals | 15,228 confirmed, 96,668 at risk, 656 removals; HAM 1,476, MSKCC 1,255 | The receipt on disk (12 Nov 17:09): 57,488 rows compared; 27,162 confirmed and 109,280 at-risk links; 259 removals from every run; 452, 386, 391, 340, 391 more for folds 0-4; holdouts BCN 9,616, HAM 2,010, MSKCC 1,522. Changes since the first M1: amendment 01 (14:42, 1,569 removals from every run), group reach (15:46, 2,279), per-fold scoping of training-only rows and the M1 second opinion on single-detector links (17:09, 259). First M1 (12 Nov 05:00): 20,370 / 123,471 links, 3,424 removals (`ml/data/v7/_pre_amendment_01_2026-11-12/`). Before M1 (10 Nov 20:20): 15,233 confirmed, 106,839 at risk, 681 removals (`ml/data/v7/_pre_m1_2026-11-12/`) |
+| 10.6, links and removals | 15,228 confirmed, 96,668 at risk, 656 removals; HAM 1,476, MSKCC 1,255 | The receipt on disk (13 Nov 02:00): 57,488 rows compared; 27,162 confirmed and 137,170 at-risk links; 361 removals from every run; 476, 413, 437, 375, 457 more for folds 0-4; holdouts BCN 9,616, HAM 2,097, MSKCC 1,559. Changes since the first M1: patient ids loaded (13 Nov 02:00, 361; audit A11); amendment 01 (14:42, 1,569 removals from every run), group reach (15:46, 2,279), per-fold scoping of training-only rows and the M1 second opinion on single-detector links (17:09, 259). First M1 (12 Nov 05:00): 20,370 / 123,471 links, 3,424 removals (`ml/data/v7/_pre_amendment_01_2026-11-12/`). Before M1 (10 Nov 20:20): 15,233 confirmed, 106,839 at risk, 681 removals (`ml/data/v7/_pre_m1_2026-11-12/`) |
 | 10.10 | "the data gate run on all 52,880 rows" | 52,880 was the run before the HIBA fix (54,079 minus 1,199). The current run compared 57,488 |
 | 10.11, 12.3, 13.5 | `reserved` "read once at S63" | `reserved` was read 8 times in V1-V4 (`docs/V6_RUNSHEET.md`, exhausted-cohorts row). It is previously read development data |
 | 10.11, 13.7 | MIDAS "69 under 40" records | 69 **images** under 40 (`data_roles_v7.json`: 529 + 167 + 69 = 765 images). The number of under-40 records and of under-40 escalating cases is unknown while the cohort is sealed |
@@ -1121,7 +1121,26 @@ is unavailable for HAM and BCN, so dependence between lesions of one patient is 
   point estimate against a noise bar: under pure seed noise it is exceeded 20% of the time, so P1 rests on the Macro-F1
   interval as much as on the bar.
 * **P2** (a veto): the upper 95% bound of the under-40 pAUC delta is at least 0, AND the upper 95% bound of the **all-age**
-  argmax escalation-sensitivity delta is at least 0. Under-40 sensitivity is not part of P2.
+  argmax escalation-sensitivity delta is at least 0, AND (owner decision, 13 Nov 2026, before signing) the upper 95% bound
+  of the under-40 **xAUC** delta (under-40 escalating lesions ranked against 40+ negatives, `promotion.xauc_u40`) is at
+  least 0. Why the third endpoint: the all-age pAUC credits cross-band ranking, so a candidate that lowers every under-40
+  score raises P1 while the within-band under-40 pAUC cannot move (a monotone shift inside one band keeps its ranks); the
+  xAUC is the read that falls (`tests/test_v7_decisions.py::test_p2_vetoes_a_candidate_that_lowers_every_young_score`).
+  Under-40 argmax sensitivity is not part of P2.
+* **Declared before signing, 13 Nov 2026 (owner request after an external review):**
+  * **Secondary, coded:** under-40 sensitivity per *lesion* at matched specificity 0.80 (each system's own threshold on
+    under-40 negative lesions; `promotion.u40_lesion_sensitivity`), in the Holm family (now 11 members), never decisive.
+    It removes the image-weighting and prevalence explanations of the under-40 gap by construction.
+  * **Study C, the hypothesis-clean under-40 confirmation (declared now, code and runs later):** V7's under-40 hypotheses
+    came from folds 1-4; `reserved` (4,733 images, BCN and MSKCC, 103-104 young escalating groups) did not generate them.
+    Design: the frozen V7 candidate and the V6-recipe baseline are each trained once with `reserved` held out (gate
+    removals computed for `reserved` as for a fold); one paired read on `reserved`. Primary endpoint: under-40 escalation
+    pAUC (FPR <= 0.2) delta at lesion level, lesion-group bootstrap; confirmed if the wider-interval (1.25, 98.75) lower
+    bound is above 0. Secondary: the lesion-level sensitivity above, on `reserved`. Read once; reported whatever the result.
+    Limits on record: internal, not external; BCN and MSKCC only; `reserved` was read 8 times in V1-V4 for other questions.
+    Before any read it needs its removal list in the gate and a test that the read refuses a second execution.
+  * **Descriptive, planned:** case-mix-standardised gaps (negatives reweighted over archive x confirmation type) beside
+    each by-band and by-archive gap, before and after; no GPU, outside the Holm family.
 * **P3** (each archive in `P3_HOLDOUTS`: BCN, HAM, MSKCC): candidate vote against the V6-recipe baseline vote on the held-out
   archive's development rows; lower 95% bound above -0.02 for Macro-F1 over the classes with at least 50 lesion groups
   there, and for escalation pAUC. Both reads must be estimable. Classes below the floor are reported with their counts.
@@ -1177,7 +1196,7 @@ never implemented.
 | MIDAS | 3,409 files | compared for overlap only; 765 sealed for the one external read |
 | **Rows the gate compared** | **57,488** | |
 
-Removed from every training run: 259 rows (linked to `ham_test` or MIDAS); 340-452 more per fold run. The gate is
+Removed from every training run: 361 rows (linked to `ham_test` or MIDAS); 375-476 more per fold run. The gate is
 **audited, with stated lower bounds**, never "leak-free": only identical bytes confirm on pixels alone; a hash match is a candidate; the
 planted-copy result (384 of 384) is a software check on eight synthetic transforms, not real-world recall; re-photograph
 recall is about 0.28 (SSCD with SIFT, M1, 12 Nov: 0.277 [0.241, 0.315] on unseen val/reserved/ham_val pairs; 0.263 [0.225, 0.308] on the held-out benchmark) with the first M1. After amendment 01 (`results/v7/m1/`): 0.584 of held-out benchmark pairs; on unseen val/reserved/ham_val rows 93.3% of re-photographed images linked to a sibling and 0.672 [0.605, 0.737] of same-lesion pairs guarded with lesion ids hidden (`headline.json`), known copies 0.929; so about 33% of pairs are still unguarded where ids are missing; patient overlap cannot

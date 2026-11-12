@@ -1,5 +1,5 @@
 {
- "written": "2026-11-12T17:09:22",
+ "written": "2026-11-13T01:56:10",
  "decision": "owner, 10 Nov 2026: biggest training pool that keeps integrity",
  "trained_on": [
   "development folds other than the held-out one",
@@ -17,7 +17,7 @@
   "results/v6/added_pool/added_train.csv": "42c2cdcfeecde36ab8901756b4e979faecaa10e9bf171088805329a891e8c0ff",
   "results/v7/hiba_train/hiba_train.csv": "3154c997c128821cab4308de1b2648d18bfc2bc567e71bdee440ea569d620b39",
   "ml/data/manifest_v4.csv": "43be63926df1bb6dbe18d11937f70740ffe610495e12381b2dbfe87ff3f8c2f9",
-  "ml/data/v7/master_v7.csv": "7f98ba0639719e7f224a5752c5ed4e46607a8fc54ab2c83e18d234c689c45241"
+  "ml/data/v7/master_v7.csv": "65f6ea3951d76e8225623023cf260a7935bc077d9f0e09c37df1e66da6efd1d7"
  },
  "output_sha256": "cfe48f197b03b61260767aa6fbec07b4e552fed8a15b543801be428da4a5a4b2",
  "rows_by_source_before": {

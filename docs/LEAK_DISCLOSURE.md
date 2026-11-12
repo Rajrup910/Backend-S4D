@@ -75,19 +75,19 @@ binds both (`research/data/`, `research/v7/train_v7.py`). From the gate's own re
 * **Planted positives found: 384 of 384**, eight families (renamed copy, downsampled variant, lesion link, patient link,
   re-encoded, resized and recoloured, rotated, centre crop) x 48 real images, 16 per archive. A check that has never found a
   planted copy proves nothing, so this runs with every gate build.
-* **Links (receipt of 12 Nov, 17:09):** 27,162 confirmed (same lesion by ID, normalised ID, SHA-256, existing
-  groups, correlation plus keypoint copies, and matcher hits that SIFT confirms); 109,280 at risk (patient IDs, hash matches
+* **Links (receipt of 13 Nov, 02:00):** 27,162 confirmed (same lesion by ID, normalised ID, SHA-256, existing
+  groups, correlation plus keypoint copies, and matcher hits that SIFT confirms); 137,170 at risk (patient IDs, hash matches
   and keypoint hits that M1 or SIFT backs, matcher hits without enough SIFT agreement). 2,050 hash and keypoint matches that
   neither M1 nor SIFT backed were dropped: where lesion IDs are known, 0 of 446 were the same lesion, and 32 of 32 checked by
   eye were different lesions (`results/v7/m1/second_opinion.csv`). Patient IDs and hash matches alone never merge
   groups; they mark rows at risk. Before M1: 15,233 and 106,839.
 * **Removals:** a link to one photo of a lesion reaches every photo in its group (since 12 Nov; before, an at-risk link to
   photo b left a training row in place while b's lesion-mate was evaluated). A training row leaves a run when it is linked
-  to a row that run evaluates: 259 rows leave every run (linked to a never-train set),
-  340 to 452 more leave each fold's run, 1.2% to 1.4% of its training rows (until 12 Nov an added or extra row linked to
+  to a row that run evaluates: 361 rows leave every run (linked to a never-train set),
+  375 to 476 more leave each fold's run, 1.5% to 1.7% of its training rows (until 12 Nov an added or extra row linked to
   any development row left every run, though it can only leak into the run that evaluates that row; the first M1 under
   today's rules would remove 5.1% to 5.6%); when an archive is held out, every row from it or linked to it (BCN 9,616,
-  HAM 2,010, MSKCC 1,522, net of the rows already removed from every run). V7 keeps V6's number of optimiser steps, so removing rows never also shortens training (plan 13.5, decision 7).
+  HAM 2,097, MSKCC 1,559, net of the rows already removed from every run). V7 keeps V6's number of optimiser steps, so removing rows never also shortens training (plan 13.5, decision 7).
 * **Learned same-lesion matcher (M1, `research/v7/m1/`):** endpoints and the adoption rule were written to
   `results/v7/m1/protocol.json` before any matcher was scored, and amendment 01 (`protocol_amendment_01.json`) before
   its scoring on the held-out benchmark (the benchmark the baselines and earlier candidates were scored on; not a fresh test set). M1 scores each pair with SSCD (a copy detector) and a ConvNeXt-Femto matcher trained here, each
@@ -102,13 +102,21 @@ binds both (`research/data/`, `research/v7/train_v7.py`). From the gate's own re
   ID, 99.0% of its confirmed and 92.6% of its at-risk links are the same lesion (a lower bound). It found the 8 HAM-test
   copies above and no copy of a training image in the sealed external cohort (MIDAS, pixels only; labels unread). Sources:
   `results/v7/m1/amendment_01.json`, `headline.json`, `verify.json`, `training_cost.json`.
-* **Checked independently (12 Nov 2026):** a separate script that does not call the gate's code rebuilds each run's training
+* **Checked independently (12 Nov 2026, repeated 13 Nov):** a separate script that does not call the gate's code rebuilds each run's training
   set from the receipt and counts every connection left to the rows that run evaluates (shared lesion group, lesion ID,
-  patient ID, SHA-256, perceptual hash, confirmed or at-risk link). It finds **0 in all 8 run forms** (5 folds, 3 held-out
+  patient ID, both the gate's and the one each archive publishes, SHA-256, perceptual hash, confirmed or at-risk link). It finds **0 in all 8 run forms** (5 folds, 3 held-out
   archives) and 0 to `ham_test` or MIDAS; with fold 0's removal list emptied it finds 128 confirmed links, 76 shared groups and
-  6 shared patients, so it can see a leak when one is there. It runs on every test run
+  14 shared patients, so it can see a leak when one is there. It runs on every test run
   (`results/v7/audit_2026-11-12/independent_fold_isolation.py`, `tests/test_v7_audit_isolation.py`, `docs/V7_AUDIT_REPORT.md`).
   This shows that no *detected* link crosses; the limits below still apply.
+* **Patient IDs the gate missed (found 13 Nov 2026 by an external review, fixed the same night):** the gate read patient
+  IDs only from an earlier audit's row list, HIBA and MIDAS. The young extras (1,039 of 2,078 carry an archive patient ID)
+  and ISIC 2020 (all 5,559) had none, so a patient on both sides of a split could not be linked. Against the archives' own
+  metadata, the 12 Nov gate let training keep images of 2, 0, 1, 2 and 2 patients evaluated in folds 0-4 and of 6 patients
+  in the MSKCC hold-out, all young extras (`results/v7/audit_2026-11-12/raw/patient_id_defect_pre_fix.json`). Different
+  lesions of one patient, not copies; no V7 run had trained on that gate. With the IDs loaded the gate removes 102 more rows
+  from every run and 24 to 66 more per fold, and the independent check now reads patient IDs from the archives directly.
+
 * **Reads:** every V7 promotion read is repeated on four row sets (all rows, without the 380, without the 426, without every
   development row the gate links), and a gain from added data does not count until it survives that last set.
 

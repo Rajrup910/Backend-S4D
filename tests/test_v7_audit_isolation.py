@@ -15,7 +15,7 @@ import pytest
 REPO = Path(__file__).resolve().parents[1]
 SCRIPT = REPO / "results/v7/audit_2026-11-12/independent_fold_isolation.py"
 NEEDED = (REPO / "ml/data/v7/master_v7.csv", REPO / "ml/data/v7/links_v7.csv", REPO / "results/v7/data_gate_receipt.json")
-KEYS = ("master_group", "group_id", "src_lesion_id", "src_patient_id", "sha256", "phash", "confirmed_links", "at_risk_links")
+KEYS = ("master_group", "group_id", "src_lesion_id", "src_patient_id", "archive_patient", "sha256", "phash", "confirmed_links", "at_risk_links")
 
 pytestmark = pytest.mark.skipif(not all(p.is_file() for p in (SCRIPT, *NEEDED)), reason="V7 gate files absent")
 

@@ -81,7 +81,7 @@ BANDS = ("40-59", "60+")
 #: The declared secondary family (plan 10.4, 13.3). Holm is applied across exactly these; none of them promotes.
 SECONDARY_FAMILY = ("gate_a2_pauc_u40", "e_histo_pauc_all", "e_histo_pauc_u40", "xauc_young_pos_older_neg",
                     "xauc_young_pos_older_confirmed_neg", "macro_f1_bcn20000", "macro_f1_ham", "macro_f1_mskcc",
-                    "pauc_40-59", "pauc_60+")
+                    "pauc_40-59", "pauc_60+", "u40_lesion_sens_at_spec80")
 ROW_SET_DEFINITION = ("each row set names evaluation rows of folds 1-4 left out of the read; the training side is the same in "
                       "all four (the data gate's training-side removals apply to every run of record)")
 NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{1,40}$")
@@ -427,6 +427,7 @@ def read(name: str, owner_approved: bool, allow_missing_p3: bool = False, rerun_
     xauc = promotion.xauc_u40(vote, reference, rows, every, n_boot=src.n_boot)
     confirmed = every[rows.esc[every] | histo[every]]
     xauc_confirmed = promotion.xauc_u40(vote, reference, rows, confirmed, n_boot=src.n_boot)
+    u40_lesion = promotion.u40_lesion_sensitivity(vote, reference, rows, every, n_boot=src.n_boot)
     by_archive = {}
     for a in promotion.P3_HOLDOUTS:
         sub = every[rows.archive[every] == a]
@@ -438,13 +439,15 @@ def read(name: str, owner_approved: bool, allow_missing_p3: bool = False, rerun_
     p_values = {"gate_a2_pauc_u40": primary["secondary_gate_a2"]["p_boot"], "e_histo_pauc_all": e_histo["pauc_all"]["p_boot"],
                 "e_histo_pauc_u40": e_histo["pauc_u40"]["p_boot"], "xauc_young_pos_older_neg": xauc["xauc_young_pos_older_neg"]["p_boot"],
                 "xauc_young_pos_older_confirmed_neg": xauc_confirmed["xauc_young_pos_older_neg"]["p_boot"],
-                **{f"macro_f1_{a}": by_archive[a]["p_boot"] for a in promotion.P3_HOLDOUTS}, **{f"pauc_{b}": by_band[b]["p_boot"] for b in BANDS}}
+                **{f"macro_f1_{a}": by_archive[a]["p_boot"] for a in promotion.P3_HOLDOUTS}, **{f"pauc_{b}": by_band[b]["p_boot"] for b in BANDS},
+                "u40_lesion_sens_at_spec80": u40_lesion["p_boot"]}
     if tuple(p_values) != SECONDARY_FAMILY:
         raise Refusal("the secondary reads are not the declared family")
     esc_columns = [CLASSES.index(c) for c in ("akiec", "bcc", "mel")]
     mass = pd.Series(vote[every][:, esc_columns].sum(1), index=rows.image_id[every])
     secondary = {"decisive": False, "gate_a2": primary["secondary_gate_a2"], "e_histo": e_histo, "xauc": xauc,
                  "xauc_confirmed_negatives": xauc_confirmed, "per_archive_macro_f1": by_archive, "per_band_escalation_pauc": by_band,
+                 "u40_lesion_sensitivity_at_spec80": u40_lesion,
                  "holm_family": {"members": list(SECONDARY_FAMILY), "size": len(SECONDARY_FAMILY), "p_boot": p_values, "p_holm": stats.holm(p_values),
                                  "note": "bootstrap p-values, two-sided, add-one; the dark-lesion read is descriptive and outside the family"},
                  "dark_lesion_read": src.dark(mass, name)}

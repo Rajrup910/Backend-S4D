@@ -4,7 +4,11 @@
 
 ### Pre-registered research on safe skin-lesion triage in dermoscopy, and on why it keeps failing patients under 40 ([duplicate-image disclosure](docs/LEAK_DISCLOSURE.md))
 
-<img src="docs/assets/readme/hero.gif" width="100%" alt="Animated intro: accuracy is misleading on HAM10000; the best system reaches Macro-F1 0.8047 but catches 3 of 21 serious under-40 cases; five versions narrowed the cause to a ranking limit.">
+<img src="docs/assets/readme/hero.gif" width="100%" alt="Animated intro: accuracy is misleading on HAM10000; the V1 system read Macro-F1 0.8047 on HAM test but caught 3 of 21 serious under-40 cases; five versions narrowed the cause to a ranking limit.">
+
+<sub>The intro's 0.8047 is V1's single HAM-test read (Sep 2026). That read was made before the duplicate fix: at least 8 of
+its 1,502 test images had a copy in training, and it is not recomputed, because a second test read is not allowed. The
+current, audited headline is V6's 0.7433 Macro-F1 on development folds 1–4 (below).</sub>
 
 <p>&nbsp;</p>
 
@@ -84,6 +88,9 @@ Lesion-grouped 1,000× bootstrap CIs. Rungs were **selected on validation**.
 | A7 | + Dirichlet calibration | **0.8047** [0.757, 0.841] | 0.7939 | 0.7310 | 78 |
 
 MaxViT-Tiny scores 0.7525 on test but 0.7176 on val, so it was not selected.
+
+These are V1's HAM-test reads, made before the duplicate fix. At least 8 of the 1,502 test images had a copy in training,
+and the figures are not recomputed ([disclosure](docs/LEAK_DISCLOSURE.md)).
 
 | | < 40 | 40–59 | ≥ 60 |
 |---|:---:|:---:|:---:|
@@ -318,7 +325,7 @@ The V6 vote replaces V5 as the deployed system. It passes on all rows, without t
 | **384 of 384** planted copies found, eight transform families, on every build | every gate rebuild |
 | **86.6%** of held-out HAM same-lesion pairs matched at 1 false match in 100,000 (58.4% over all archives, from 26.3% for SSCD alone) | the held-out M1 benchmark |
 | **0** detected links between any training row and the rows its own run evaluates, in all 8 run forms (5 folds, 3 held-out archives), and **0** to the locked HAM test or the sealed MIDAS cohort | re-derived by a separate script that does not call the gate's code, and locked by a regression test |
-| Only 1.2% to 1.4% of each fold's training rows removed to achieve it | `data_gate_report.json` |
+| Only 1.5% to 1.7% of each fold's training rows removed to achieve it | `data_gate_report.json` |
 
 **The problem.** Every split in V1–V6 was grouped by `lesion_id`, and no ID crosses a split. But the same image, or another photo of the same lesion, can sit on both sides **under a different name or ID**, and no ID check can see that. A pixel audit found such rows in every version, from 0.01% to 1.47% of the rows read. Each is disclosed with its effect in [`docs/LEAK_DISCLOSURE.md`](docs/LEAK_DISCLOSURE.md); V5's under-40 gain shrank once its copies were removed (see V5 above).
 
@@ -327,7 +334,7 @@ The V6 vote replaces V5 as the deployed system. It passes on all rows, without t
 1. **Identity:** the same file, lesion ID, patient ID, normalised name, SHA-256 or image hash.
 2. **Appearance search (M1):** every image against all others with two matchers, SSCD (a copy-detection network) and a ConvNeXt-Femto trained here on same-lesion pairs. Each score is normalised by how crowded the two images' neighbourhoods are, so a dense region of look-alike moles cannot set the bar for everyone.
 3. **Geometry:** SIFT keypoints must agree wherever the score is not decisive, and at least 30 RANSAC inliers (12 at the strictest score) make a link *confirmed*: two different detectors agree.
-4. **The gate:** lesion IDs merge photos of one lesion into a group, and a link to any photo reaches the whole group. A training row is removed from a run when it is linked to a row that run evaluates, and from every run when it is linked to a never-train row; a hash or keypoint match alone must be backed by M1 or SIFT. Today that removes 1.2% to 1.4% of each fold's training rows (259 from every run, 340 to 452 more per fold), from 27,162 confirmed and 109,280 at-risk links ([`data_gate_report.json`](results/v7/data_gate_report.json)). Planted copies, eight kinds, are found 384 of 384 times on every build.
+4. **The gate:** lesion IDs merge photos of one lesion into a group, and a link to any photo reaches the whole group. A training row is removed from a run when it is linked to a row that run evaluates, and from every run when it is linked to a never-train row; a hash or keypoint match alone must be backed by M1 or SIFT. Today that removes 1.5% to 1.7% of each fold's training rows (361 from every run, 375 to 476 more per fold), from 27,162 confirmed and 137,170 at-risk links ([`data_gate_report.json`](results/v7/data_gate_report.json)). Planted copies, eight kinds, are found 384 of 384 times on every build.
 
 **How well it works, measured** on rows no matcher was trained, tuned or benchmarked on ([`headline.json`](results/v7/m1/headline.json), [`verify.json`](results/v7/m1/verify.json), [`amendment_01.json`](results/v7/m1/amendment_01.json)). The endpoints and adoption rule were written to [`protocol.json`](results/v7/m1/protocol.json) before any matcher was scored, and M1's design to [`protocol_amendment_01.json`](results/v7/m1/protocol_amendment_01.json) before it was scored on the held-out benchmark (the same benchmark the baselines and earlier candidates were scored on, so this is not a fresh test set).
 
@@ -338,21 +345,21 @@ The V6 vote replaces V5 as the deployed system. It passes on all rows, without t
 | Known copies found by other detectors (465 pairs) | - | 89.9% | **92.9%**; exact copies 100% |
 | Held-out benchmark pairs above the score threshold, 1 false match in 100,000 | - | 26.3% | **58.4%** (HAM 86.6%) |
 | M1's at-risk links that are the same lesion (where IDs are known; a lower bound) | - | 34.3% | **92.6%** |
-| Training rows lost per held-out fold (today's guard) | - | about 2,670 | **about 640** (1.2-1.4%) |
+| Training rows lost per held-out fold (today's guard) | - | about 2,670 | **about 790** (1.5-1.7%) |
 
 It found **8 HAM-test images** with a copy that every earlier audit missed, one of them copied in V1 and V4 training data, and **no copy** of a training image in the sealed external cohort (MIDAS, pixels only, labels unread).
 
-**Verified independently, 12 Nov 2026.** A separate script rebuilds every run's training set from the receipt's removal lists and counts every remaining connection to the rows that run evaluates: shared lesion group, lesion ID, patient ID, SHA-256 or perceptual hash, and confirmed or at-risk link ([`independent_fold_isolation.py`](results/v7/audit_2026-11-12/independent_fold_isolation.py), [`tests/test_v7_audit_isolation.py`](tests/test_v7_audit_isolation.py)).
+**Verified independently, 13 Nov 2026.** A separate script rebuilds every run's training set from the receipt's removal lists and counts every remaining connection to the rows that run evaluates: shared lesion group, lesion ID, patient ID (the gate's own and, separately, the one each archive publishes), SHA-256 or perceptual hash, and confirmed or at-risk link ([`independent_fold_isolation.py`](results/v7/audit_2026-11-12/independent_fold_isolation.py), [`tests/test_v7_audit_isolation.py`](tests/test_v7_audit_isolation.py)).
 
 | Run | Training rows | Evaluated rows | Rows removed for this run | Connections left |
 |---|--:|--:|--:|--:|
-| Fold 0 | 48,821 | 3,059 | 711 | **0** |
-| Folds 1, 2, 3, 4 | 48,881 to 48,935 | 3,058 to 3,059 | 599 to 650 | **0** |
-| BCN20000 held out | 36,000 | 6,704 | 9,875 | **0** |
-| HAM10000 held out | 43,396 | 6,981 | 2,269 | **0** |
-| MSKCC held out | 49,187 | 1,609 | 1,781 | **0** |
+| Fold 0 | 48,695 | 3,059 | 837 | **0** |
+| Folds 1, 2, 3, 4 | 48,713 to 48,798 | 3,058 to 3,059 | 736 to 818 | **0** |
+| BCN20000 held out | 35,898 | 6,704 | 9,977 | **0** |
+| HAM10000 held out | 43,207 | 6,981 | 2,458 | **0** |
+| MSKCC held out | 49,048 | 1,609 | 1,920 | **0** |
 
-The check is not a formality: with fold 0's removal list emptied, it finds 128 confirmed links, 76 shared lesion groups and 6 shared patients between training and evaluation, which is the kind of overlap V1–V6 carried. Full audit: [`docs/V7_AUDIT_REPORT.md`](docs/V7_AUDIT_REPORT.md); frozen inputs and hashes: [`docs/V7_FREEZE_MANIFEST.md`](docs/V7_FREEZE_MANIFEST.md).
+The check is not a formality: with fold 0's removal list emptied, it finds 128 confirmed links, 76 shared lesion groups and 14 shared patients between training and evaluation, which is the kind of overlap V1–V6 carried. An external review on 13 Nov found that the gate had not loaded the patient IDs the young extras and ISIC 2020 publish; with them loaded, the gate now removes 24 to 66 more rows per fold, and the check reads patient IDs straight from each archive so the same gap cannot hide again. Full audit: [`docs/V7_AUDIT_REPORT.md`](docs/V7_AUDIT_REPORT.md); frozen inputs and hashes: [`docs/V7_FREEZE_MANIFEST.md`](docs/V7_FREEZE_MANIFEST.md).
 
 **What it does not fix.** These figures are measured with lesion IDs hidden; in the gate, the 69% of rows that carry a lesion ID are grouped by it as well. About 7% of re-photographed images still have no link to another photo of their lesion, 33% of same-lesion pairs are not guarded, and up to about 7% of M1's at-risk links join different lesions, so the gate also removes some rows that were never leaks. The repository's claim is **"audited, with stated lower bounds"**, never "leak-free".
 

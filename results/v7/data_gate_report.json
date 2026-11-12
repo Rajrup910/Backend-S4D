@@ -5,7 +5,7 @@
  "declared_rows": 57488,
  "links": {
   "confirmed": 27162,
-  "at_risk": 109280
+  "at_risk": 137170
  },
  "fill": {
   "archive_id": 1.0,
@@ -58,18 +58,18 @@
   "spans_frozen_splits": 428
  },
  "removals": {
-  "global": 259,
+  "global": 361,
   "by_fold": {
-   "0": 452,
-   "1": 386,
-   "2": 391,
-   "3": 340,
-   "4": 391
+   "0": 476,
+   "1": 413,
+   "2": 437,
+   "3": 375,
+   "4": 457
   },
   "by_holdout": {
-   "ham": 2010,
+   "ham": 2097,
    "bcn20000": 9616,
-   "mskcc": 1522
+   "mskcc": 1559
   }
  },
  "plants": {
@@ -122,9 +122,9 @@
   }
  },
  "fingerprint_failures": 0,
- "fingerprint_minutes": 2.24,
- "match_minutes": 13.13,
- "total_minutes": 15.7,
+ "fingerprint_minutes": 1.78,
+ "match_minutes": 9.93,
+ "total_minutes": 11.95,
  "workers": 8,
  "audit_pairs": {
   "copies_bar40": {
@@ -165,27 +165,27 @@
   {
    "tier": "at_risk",
    "evidence": "hash_at_risk",
-   "n": 31
+   "n": 24
   },
   {
    "tier": "at_risk",
    "evidence": "hash_confirmed",
-   "n": 2
+   "n": 1
   },
   {
    "tier": "at_risk",
    "evidence": "m1:sscd_femto_sn",
-   "n": 6899
+   "n": 6740
   },
   {
    "tier": "at_risk",
    "evidence": "patient_id",
-   "n": 102228
+   "n": 130286
   },
   {
    "tier": "at_risk",
    "evidence": "sift_eval_hits",
-   "n": 120
+   "n": 119
   },
   {
    "tier": "confirmed",
