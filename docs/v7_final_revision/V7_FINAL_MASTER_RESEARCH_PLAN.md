@@ -5,7 +5,7 @@
 **Baseline Git SHA:** `4e6d32b542999d1d3823807791a4149a16f2af25` (`v5-confirmation-review2`)  
 **Document Authority:** Authoritative V7 Scientific Specification (Supersedes Monolithic Revision 8 & Revision 9 Drafts)  
 **Date:** 8 November 2026  
-**Status:** Draft specification under audit. Not approved: Gate 0 is unsigned and no V7 code or run exists. Section 9 (10 Nov 2026) corrects sections 1-8 and controls where they differ.
+**Status:** Draft specification under audit. Not approved: Gate 0 is unsigned and no V7 run of record exists (V7 code and tests exist). Sections 9-14 correct the earlier ones; **section 14 (freeze audit, 11 Nov 2026) controls wherever sections differ**, and holds the only live blocker register.
 
 ---
 
@@ -457,10 +457,10 @@ start without it.
 |---|---|
 | Planted copies, eight families x 48 real development images | 384 of 384 found |
 | Fields filled (ids, archive, split, group, SHA-256, hashes, status) | 100% |
-| Links | 15,228 confirmed (lesion id, normalised id, SHA-256, existing groups, correlation+keypoint copies); 96,668 at risk (patient ids incl. DERM12345 and HIBA, hash matches, single-detector keypoint hits) |
+| Links | **Current receipt (14.2): 20,370 confirmed, 123,471 at risk (after M1, 12 Nov), on 57,488 rows.** Earlier run, before MIDAS joined: 15,228 confirmed (lesion id, normalised id, SHA-256, existing groups, correlation+keypoint copies); 96,668 at risk (patient ids incl. DERM12345 and HIBA, hash matches, single-detector keypoint hits) |
 | Largest confirmed group (percolation limit 31) | 31: one real BCN lesion |
 | Groups for review (span archives / frozen splits) | 107 / 115; their rows stay at risk (removed from the training side) |
-| Training-side removals | 656 from all training (rows linked to a development row, `ham_test` or MIDAS, incl. 2 HIBA rows); 31-42 more per held-out fold; when an archive is held out, every training row from it or linked to it: BCN 9,484, HAM 1,476, MSKCC 1,255 |
+| Training-side removals | **Current receipt (14.2): 3,424 from all training; 306, 330, 341, 349, 305 more for folds 0-4; holdouts BCN 8,951, HAM 1,323, MSKCC 1,195 (after M1, 12 Nov).** Earlier run: 656 from all training (rows linked to a development row, `ham_test` or MIDAS, incl. 2 HIBA rows); 31-42 more per held-out fold; BCN 9,484, HAM 1,476, MSKCC 1,255 |
 
 Correction: the first gate runs of 10 Nov loaded no HIBA rows at all (a missing-value filter dropped them silently), so the
 earlier claim that HIBA pixels were covered was wrong. Fixed, and the builder now stops if any declared source loads zero
@@ -517,7 +517,7 @@ Runs of record use `results/v7/added_pool_v7/added_train_v7.csv` (35,183 rows: V
   build will work. Three were wrong on first run and were fixed by correcting the test's assumption, each recorded in the
   CHANGELOG: per-image labels in a lesion-clustered simulation, a darkness test that expected brightness instead of
   melanin, and a pytest temp folder owned by Administrator.
-* The data gate run on all 52,880 rows is the real check. Its first full run stopped on percolation. The cause was V6's
+* The data gate run is the real check (57,488 rows in the current receipt; 52,880 was the run before the HIBA fix, 14.2). Its first full run stopped on percolation. The cause was V6's
   patient-keyed DERM12345 groups (the plan forbids patient ids merging groups), and then hash-only matches chaining seven
   different HAM lesions, found by a review by eye. Both were fixed by applying the plan's own rules, never by raising the limit.
 * Pre-tests on folds already read reorder work and never drop a build (10.5).
@@ -531,8 +531,8 @@ Runs of record use `results/v7/added_pool_v7/added_train_v7.csv` (35,183 rows: V
 | Source | Role in V7 | Why, and the condition that keeps it honest |
 |---|---|---|
 | HIBA (1,199 lesions, Buenos Aires) | **Training only** (`train_hiba`) | Its one sealed read is spent on V6 (receipt: one execution, labels read once). It adds 20 under-40 escalating lesions (14 melanoma). V6's HIBA result stays exactly as read; no V7 system is ever scored or compared on HIBA; HIBA rows pass the data gate and are removed when linked to any development or MIDAS row. Labels fetched from the public ISIC archive as V6's read did and mapped with V6's functions; both maps agree on every row (`results/v7/hiba_train/hiba_training_receipt.json`) |
-| MRA-MIDAS (Stanford, Cleveland Clinic; 3,409 image files) | **Sole sealed external read** (`midas`), **sealed 10 Nov 2026**: 765 dermoscopic biopsied images, 513 records (69 under 40), plus 39 intermediate tumours as a sealed secondary list (`results/v7/external/midas_v7/seal.json`, `data/external/midas/sealed/prepare_receipt.json`) | Access granted 10 Nov (AIMI membership and the Stanford Research Agreement). Per-image diagnoses stay unread until the single read; the class mapping is fixed from category names only; files are checked against `files.csv` checksums, gated against every other source, then sealed with `research/v7/external_read.py --own-split midas` before any V7 result exists |
-| Retired evaluation splits: `reserved` (4,733), `val` (2,270), `ham_val` (1,532) | **Training only** (roles change; `frozen_split` values stay verbatim) | Their evaluation roles ended in V1-V4 (`reserved` read once at S63, closed; `val` and `ham_val` selection sets). They add 5,709 BCN images, nearly doubling BCN training data, and about 1,600 under-40 images. They share no lesion group with the development rows or `ham_test`; pixel links are removed by the gate; their labels are checked equal to the manifest at load (`research/v7/train_v7.py::load_pool_v7`). V1-V4 results on them stay as historical results; no V7 system is ever scored on them |
+| MRA-MIDAS (Stanford, Cleveland Clinic; 3,409 image files) | **Sole sealed external read** (`midas`), **sealed 10 Nov 2026**: 765 dermoscopic biopsied images, 513 records (69 **images** under 40; under-40 records and cases unknown while sealed, 14.2), plus 39 intermediate tumours as a sealed secondary list (`results/v7/external/midas_v7/seal.json`, `data/external/midas/sealed/prepare_receipt.json`) | Access granted 10 Nov (AIMI membership and the Stanford Research Agreement). Per-image diagnoses stay unread until the single read; the class mapping is fixed from category names only; files are checked against `files.csv` checksums, gated against every other source, then sealed with `research/v7/external_read.py --own-split midas` before any V7 result exists |
+| Retired evaluation splits: `reserved` (4,733), `val` (2,270), `ham_val` (1,532) | **Training only** (roles change; `frozen_split` values stay verbatim) | Their evaluation roles ended in V1-V4 (`reserved` read 8 times in V1-V4, closed at S63: corrected 14.2; `val` and `ham_val` selection sets). They add 5,709 BCN images, nearly doubling BCN training data, and about 1,600 under-40 images. They share no lesion group with the development rows or `ham_test`; pixel links are removed by the gate; their labels are checked equal to the manifest at load (`research/v7/train_v7.py::load_pool_v7`). V1-V4 results on them stay as historical results; no V7 system is ever scored on them |
 | `ham_test` (1,502, V1's published test set) | **Never trained on, never read again** | Kept out: a second touch would break Hard Rule 2, and training on a published test set invites the obvious objection for little gain (HAM is already the strongest archive) |
 | Development rows | Training (other folds) and in-domain evaluation (fold 0 selects, folds 1-4 read once) | unchanged: V7's own validation sets, never pooled with the retired splits |
 | Added pool, young extras | Training | unchanged |
@@ -756,16 +756,20 @@ This section controls sections 1-12 where they differ. It does three things: lis
 the owner's Gate 0 signature (13.1), records what a five-question literature round added (13.2-13.4), and puts every open
 owner decision in one table (13.5), so the signed document has one place where the rules in force are stated.
 
-### 13.1 Freeze blockers (state on 11 Nov 2026)
+### 13.1 Freeze blockers (state on 11 Nov 2026, afternoon)
+
+**The status column below is history. The live register is 14.1**, which also lists blockers F9-F14 found later the same day.
 
 | # | Blocker | Evidence | What clears it | Status |
 |:-:|---|---|---|:-:|
-| F1 | `research/v7/promotion.py::classes_counted` (S1's counted-class rule) is unwritten; it raises `NotImplementedError`, so `tests/test_v7_decisions.py::test_p3_is_non_inferiority_with_a_0_02_margin` fails and `scripts/audit_v7_final_verification.py` stops at its test step (47 earlier checks pass) | verifier run 11 Nov | Owner writes the rule (or sets `P3_MIN_CLASS_GROUPS = 0` if S1 is declined); tests and verifier pass | `OPEN` |
-| F2 | **P3 cannot be read as planned.** `verdict()` needs a LOAO *candidate* and a LOAO baseline, but the run order (10.8) schedules and costs only L0. The unit of P3 is also unstated: an anchor-only L0 against a multi-member V7 vote is not like-for-like | `promotion.py::verdict`, 10.8 step 5 | Owner decision 16 (13.5): P3 compares like with like (recommended: the frozen V7 vote against the V6-recipe 4-member vote, both trained on each of the 3 holdouts), and the candidate's LOAO runs are added to the run order with their cost | `OPEN` |
+| F1 | `research/v7/promotion.py::classes_counted` (S1's counted-class rule) is unwritten; it raises `NotImplementedError`, so `tests/test_v7_decisions.py::test_p3_is_non_inferiority_with_a_0_02_margin` fails and `scripts/audit_v7_final_verification.py` stops at its test step (47 earlier checks pass) | verifier run 11 Nov | Owner writes the rule (or sets `P3_MIN_CLASS_GROUPS = 0` if S1 is declined); tests and verifier pass | **`CLOSED` 11 Nov**: a class counts when it has at least 50 lesion groups (`>=`, as S1 says); `min_groups=0` counts every present class; new test `test_s1_counts_only_classes_with_enough_lesion_groups` |
+| F2 | **P3 cannot be read as planned.** `verdict()` needs a LOAO *candidate* and a LOAO baseline, but the run order (10.8) schedules and costs only L0. The unit of P3 is also unstated: an anchor-only L0 against a multi-member V7 vote is not like-for-like | `promotion.py::verdict`, 10.8 step 5 | Owner decision 16 (13.5): P3 compares like with like (recommended: the frozen V7 vote against the V6-recipe 4-member vote, both trained on each of the 3 holdouts), and the candidate's LOAO runs are added to the run order with their cost | **`COSTED` 11 Nov** (13.8); unit is decision 16 |
 | F3 | The plan's builds that are `NEEDS_CODE` (T-CF, B7, B7b, B8, B9, R1-referral, D1, D2, X3, M1, A1) would change hashed files after signing | `plan_freeze.FROZEN` | Rule 13.6: each is a declared amendment with its own re-signature before its first run of record; none may change P1-P3, the row sets or the endpoints | `RULE PROPOSED` |
-| F4 | Interval coverage at the under-40 sample size is assumed, not measured. P2 decides on the upper bound of a lesion-group bootstrap interval on 65 groups; a literature source (13.2, row 6) finds Wald-type AUC intervals at 76-78% median coverage at 1:9 imbalance, and our imbalance is more extreme | `scripts/simulate_pauc_power.py` reports power, not coverage | Before signing: extend the simulation to report coverage of the 95% interval for the under-40 pAUC delta at 65 groups. Declared rule: if coverage is below 0.93, P2 uses a wider interval fixed before signing (BCa, or the percentile interval at the level that restores 0.95 coverage in the simulation). `research/v7/stats.py` has the percentile interval only, so the fallback needs code before signing | `OPEN` (CPU, unmeasured; minutes) |
-| F5 | Leak disclosure not published; public README still says "Leak-free" and +0.0351 | memory `leak-audit-local-handling` | Owner decision 5 (13.5); disclosure before any push or submission | `OPEN` (owner) |
+| F4 | Interval coverage at the under-40 sample size is assumed, not measured. P2 decides on the upper bound of a lesion-group bootstrap interval on 65 groups; a literature source (13.2, row 6) finds Wald-type AUC intervals at 76-78% median coverage at 1:9 imbalance, and our imbalance is more extreme | `scripts/simulate_pauc_power.py` reports power, not coverage | Before signing: extend the simulation to report coverage of the 95% interval for the under-40 pAUC delta at 65 groups. Declared rule: if coverage is below 0.93, P2 uses a wider interval fixed before signing (BCa, or the percentile interval at the level that restores 0.95 coverage in the simulation). `research/v7/stats.py` has the percentile interval only, so the fallback needs code before signing | **`CLOSED` 11 Nov** (`scripts/v7_interval_coverage.py` -> `results/v7/interval_coverage.json`; synthetic population calibrated to the banked V6 under-40 rows, 300 trials x 400 replicates x 4 scenarios). The 95% interval **fails** the rule: coverage 0.913, 0.957, 0.930, 0.913 (MC SE 0.013). The 97.5% percentile interval (1.25, 98.75) passes: 0.953, 0.973, 0.943, 0.933. Rule adopted in code (`promotion.py::UNDER40_GAIN_PERCENTILES`, test `test_under40_gain_claims_use_the_wider_interval_and_p2_keeps_95`): under-40 **gain** claims (Gate A2, xAUC, E-histo under 40) use the 97.5% interval; **P2 keeps 95%**, because a narrow interval makes the no-harm test stricter, the safe direction. Residual on record: with a truly worse candidate the 97.5% lower bound still sits above the truth in 4.0-4.7% of trials (nominal 1.25%); with no true difference 1.3-2.0%. P2's power against a real under-40 harm was not simulated |
+| F5 | Leak disclosure not published; public README still says "Leak-free" and +0.0351 | memory `leak-audit-local-handling` | Owner decision 5 (13.5); disclosure before any push or submission | **`DRAFTED` 11 Nov**: `docs/LEAK_DISCLOSURE.md` (owner review); README title and Gate A row corrected; dated note added to `docs/V6_RUNSHEET.md` outside Part 0 (V6 freeze verified intact). Publishing is the owner's push (13.9) |
 | F6 | Owner decisions 1-19 (13.5) | - | Owner chooses; the chosen form is written into 13.5 before signing | `OPEN` (owner) |
+| F8 | R4 (single-fold LR range check) was marked `READY` in `builds.py` but has no code anywhere in the repository | code search 11 Nov | Status corrected to `NEEDS_CODE`. R4 gates multi-fold runs (step 6) and the C1-C3 screens, whose LRs are starting values; it does not gate the first session's fold-0 screens of R1-R3, R3b, B3, B5, whose members' LRs are V6's or the official recipe's. Written as an amendment before step 6 | `OPEN` (amendment) |
+| F7 | The promotion read has no entry point: `research/v7/promotion.py` is a library (P1-P3, E-histo, xAUC, verdict) and 10.8 step 7's command does not exist yet | module read 11 Nov | A runner that loads the frozen candidate's and the banked V6 predictions, builds the four row sets and calls only these functions, written and signed as an amendment (13.6) **before any V7 fold 1-4 prediction exists**. Does not block fold-0 screens | `OPEN` (amendment) |
 
 Checked and not blocking: the data gate receipt binds the master and link tables (10.6); the V6 reference reproduces Macro-F1
 0.743258 from banked predictions (verifier section 5a); E-histo and the ImageNet-only reported row are already coded
@@ -847,6 +851,35 @@ that act on the positives (B1 resolution, B8 structure recovery, B9 ordinal head
 shortcut) come before builds that act on hard negatives (B7, B7b). B7 and B7b stay for their all-age E-histo aim; nothing is
 dropped. (3) T-CF stays the first under-40 step: it is the direct test of the same mechanism.
 
+**Archive control (11 Nov, same file, `melanoma_only_archive_stratified`).** Melanoma-only positive-side deficit within each
+archive: BCN -0.143 [-0.329, +0.017] (16 young melanoma groups), HAM -0.097 [-0.190, -0.004] (22), MSKCC -0.100 [-0.260, +0.067]
+(10). Same sign and similar size in all three; pooled by inverse variance (normal approximation) **-0.106 [-0.179, -0.032]**.
+The deficit is not young melanomas' archive mix.
+
+**L2 was run on 11 Nov** (`scripts/v7_miss_strata.py` -> `results/v7/miss_strata.json`; banked V6 vote, folds 1-4, test lock
+armed; pixel features only, crude Otsu lesion mask). Young melanoma lesion groups missed at the all-age FPR 0.20 threshold: 12
+of 48. Missed vs caught, group means: lesion area fraction 0.173 vs 0.248 (d -0.49, Mann-Whitney p 0.089; missed by area
+tercile 5/16, 5/16, 2/16); lesion-skin contrast 0.513 vs 0.484 (d +0.21, p 0.359: misses are not lighter, if anything darker);
+sharpness no difference (p 0.858). With 12 misses the read detects only differences of about 0.93 SD at 80% power, so none of
+this is established. It does not support a light-pigment or blur mechanism for these misses, and it leans toward small
+lesions, which is B1's premise (L3 tests it directly on B1's own read). Reorders nothing.
+
+**L3a, B1's premise on banked members (11 Nov; `scripts/v7_resolution_by_size.py` -> `results/v7/resolution_by_size.json`).**
+V6 banked two ConvNeXt-T members that differ in input size (`anchor384_h7` vs `anchor_h7`). Escalation pAUC at FPR 0.20, 384 px
+minus 224 px, by lesion-area tercile (cut on lesion groups), folds 1-4, paired lesion-group bootstrap, 1,000 replicates:
+
+| Area tercile | All ages (positive groups) | 384 minus 224 | Under 40 (positive groups) | 384 minus 224 |
+|---|:-:|:-:|:-:|:-:|
+| Small | 393 | **+0.0133 [+0.0039, +0.0236]** | 12 | -0.0090 [-0.0621, +0.0449] |
+| Mid | 541 | +0.0119 [+0.0011, +0.0229] | 26 | +0.0068 [-0.0384, +0.0541] |
+| Large | 749 | +0.0014 [-0.0114, +0.0146] | 27 | +0.0085 [-0.0245, +0.0452] |
+| Small minus large | | +0.0120 [-0.0047, +0.0298] | | -0.0176 [-0.0809, +0.0448] |
+
+The 384 px gain sits in small and mid-sized lesions and is absent in large ones, which is what B1's premise predicts; the
+small-minus-large contrast is not established. Under 40 the read cannot speak (12 small positive groups). Not controlled: the
+384 member also starts from different pretrained weights (384-fine-tuned), so this is resolution plus checkpoint. It keeps B1
+first among the positive-side builds and makes L3 (the same read on B1's own members) the build's mechanism check.
+
 Small changes to existing text:
 * 11.5, colour constancy: "literature gives no cross-site number" is replaced by: one multi-source, non-deep-learning number
   (13.2 row 4); no deep-learning cross-site number was found. X2 stays as written.
@@ -866,35 +899,46 @@ on the positive side and showed the reported endpoint understates the deployed g
 lower blocks toward the learning rate. It made one arithmetic error (the 24-block figure, which does not apply to our member),
 and 28 bot-walled sources were never fetched.
 
-### 13.5 Owner decisions before Gate 0 (consolidated; replaces the lists in 9.7, 10.9, 11.7 and 12.5)
+### 13.5 Owner decisions before Gate 0 (consolidated; replaces the lists in 9.7, 10.9, 11.7 and 12.5; revised 11 Nov, evening)
 
-| # | Decision | Options | Recommended | Owner's choice |
+Every choice is the owner's. `AWAITING_OWNER` means no choice has been written. The Recommended column is advice; it is
+never adopted by silence: `plan_freeze --sign` refuses while any row below is blank or `AWAITING_OWNER`. To accept a
+recommendation the owner writes "as recommended" (or the option) and the date. Rows marked **(G0)** change code or a
+constant, so they are settled and tested before signing; the rest have a safe recommended form already in the code.
+
+| # | Decision | Options | Recommended, and what it costs or permits | Owner's choice |
 |:-:|---|---|---|---|
-| 1 | Primary promotion rule | 10.4 (P1-P3) / Gate A2 primary | 10.4 | |
-| 2 | L0 scope | anchor only (143 min, EXTRAPOLATED) / full 4-member vote (739 min) | follows from 16 | |
-| 3 | B1 384/392 px ViTs | approve fold-0 screens / defer | approve fold 0 (about 10 h and 7.5 h per fold, EXTRAPOLATED) | |
-| 4 | B3 loss | in-repo pAUC surrogate / install LibAUC | in-repo surrogate (no new dependency after signing) | |
-| 5 | Leak disclosure date | - | before any push or submission | |
-| 6 | PAD-UFES-20 | separate modality track / out of scope | out of scope for V7 promotion; reported track only if time allows | |
-| 7 | Step budget | hold V6's budget per fold / gate-reduced pool | hold V6's budget | |
-| 8 | E-histo secondary and MIDAS comparator 0.865 / 0.814 | yes / no | yes (coded) | |
-| 9 | ImageNet-only reported row | yes / no | yes (coded) | |
-| 10 | B7 and the metadata-only fetch of confirmation types | approve as amendment (13.6) / drop | amendment | |
-| 11 | M1 learned matcher | before runs of record / after first screens | after fold-0 screens, before folds 1-4 (fold 0 selects only; the read is what a missed copy would inflate) | |
-| 12 | T-CF | run before signing / run as amendment | before signing (inference, development rows, about 15 min unmeasured); it only reorders B5 and B8 | |
-| 13 | D2 cross-fit `reserved` | adopt / keep 10 Nov decision | adopt, disclosed as internal validation on a set read once at S63 | |
-| 14 | S1 and S2 | adopt / decline | adopt; S1 needs F1 | |
-| 15 | Metadata-only downloads for B9 and N1 | approve / decline | approve | |
-| 16 | **P3 unit (F2)** | frozen V7 vote vs V6-recipe vote, each on 3 holdouts / a declared single member pair | like-for-like votes; cost measured with `scripts/gpu_benchmark.py` first | |
-| 17 | L1-L5 reported reads (13.3) | adopt / decline | adopt (L1 already run) | |
-| 18 | PanDerm learning-rate arm beside R3 | add R3b (decay 0.65, unscaled base LR 5e-4, fold 0) / R3 only | add R3b: 13.2 shows 0.65 is standard for 12 blocks, so the LR is the untested half (64.5 min, MEASURED for the member) | |
-| 19 | xAUC young-positive vs older-negative as declared secondary; positive-side builds first for the under-40 aim (13.3) | adopt / decline | adopt | |
+| 1 | Primary promotion rule **(G0)** | 10.4 (P1-P3) / Gate A2 primary | 10.4. Gate A2 as primary would pass 10-16% of the time at a true +0.035 (14.2) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 2 | L0 scope | anchor only (143 min) / four-member V6 vote (739 min); EXTRAPOLATED | follows from 16. Either runs today (`builds.py` L0) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 3 | B1 384/392 px ViTs | approve fold-0 screens / defer | approve fold 0 (about 603 and 448 min, EXTRAPOLATED from synthetic-batch benchmarks; each needs its R4 receipt first). The 384-vs-224 read is resolution plus checkpoint: no causal claim | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 4 | B3 loss | in-repo pAUC surrogate / install LibAUC | in-repo surrogate (a per-batch top-k hinge; no LibAUC or SOPA-s equivalence is claimed) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 5 | Leak disclosure: date, and whether `results/leak_audit/` publishes with it | publish with / without the row lists | before any push or submission; with the report, `PREVENTION.md` and the row lists (archive image ids only) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 6 | PAD-UFES-20 | separate modality track / out of scope | out of scope for promotion; a reported other-modality track only if time allows, with patient-grouped splits rebuilt | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 7 | Step budget **(G0 if "hold")** | hold V6's budget per fold / gate-reduced pool | hold V6's budget, so a V7-vs-V6 difference is not partly training length. It needs a new seam and a test (F11); today's code gives the gate-reduced pool (13,110 vs 13,410 steps on fold 0; 2.7-2.9% fewer on holdouts) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 8 | E-histo secondary | yes / no | yes (coded, never decides) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 9 | ImageNet-only reported row | yes / no | yes (coded, never decides) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 10 | B7 and the metadata-only fetch of confirmation types | amendment (13.6) / drop | amendment. The fetch needs the source's terms checked; the confirmation type is a training target, never an input at inference | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 11 | M1 learned matcher | before runs of record / after fold-0 screens | after fold-0 screens, before folds 1-4. Until then the gate's re-photograph recall stays about half, and that limit is stated with every read | **Before runs of record** (owner, 12 Nov 2026, explicit answer in session; overrides the recommendation): M1 is built and benchmarked first, the gate rebuilt on its findings, then the fold-0 screens |
+| 12 | T-CF | before signing / first amendment | first amendment (code unwritten; inference on development rows). An image intervention, not a biological counterfactual | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 13 | D2 cross-fit `reserved` **(G0)** | keep 10.11 (training only) / adopt D2 now / D2 later by amendment | keep 10.11 at Gate 0; D2 only as a later signed amendment, secondary, never a row set, with a split manifest (14.5). Changed from the afternoon's "adopt": D2 contradicts 10.11, has no code, and `reserved` was read 8 times, not once | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 14 | S1 and S2 | adopt / decline | adopt (S1 coded: `P3_MIN_CLASS_GROUPS = 50`; declining sets it to 0 before signing) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 15 | Metadata-only downloads for B9 and N1 | approve / decline | approve, each source's licence and terms recorded first; B9's ordinal order must come from fields the archives actually share | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 16 | **P3 unit (F2)** **(G0)** | (a) vote vs vote, 3 holdouts / (b) anchor vs anchor / (c) vote vs vote, BCN only | (a): 24.6 h with a V6-like candidate, 63.6-69.7 h with both B1 members (14.6, EXTRAPOLATED). (b) 4.8 h tests the recipe, not the system. (c) 7.1 h gives up the claim on HAM and MSKCC and sets `P3_HOLDOUTS = ("bcn20000",)` | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 17 | L1-L5 reported reads | adopt / decline | adopt (L1, L2, L3a run; all exploratory, none drops a build) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 18 | PanDerm learning-rate arm R3b | add / R3 only | add. Its rate has no source file here (`UNVERIFIED`) and it changes the head rate too; it runs only after its R4 receipt | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 19 | xAUC as declared secondary; positive-side builds first | adopt / decline | adopt (coded; archive, subtype, thickness and images per lesion are not controlled) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 20 | **P2's form (F4)** **(G0)** | (a) veto only, worded "no statistically detected harm" / (b) veto plus non-inferiority margins the owner justifies clinically | (a). It is what the code does and the wording is now exact. (b) only with margins fixed on clinical grounds before any read; an equal candidate fails more often than it passes below about 0.04 (correlation 0.85) or 0.02 (0.95) on under-40 pAUC (14.3) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 21 | Per-image label tables in the repository (`results/v7/added_pool_v7/added_train_v7.csv` 6.9 MB, `concept_teacher/fold0_targets.csv` 5.9 MB, `hiba_train/*.csv`) | publish / keep local | publish only what a reader needs to reproduce a number; these carry public-archive labels, no MIDAS row (checked for the pool and the concept targets) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 22 | Older documents that still say "leak-free" (manuscripts, roadmap, research log, V6 runsheet, a README credit line; listed in `docs/LEAK_DISCLOSURE.md`) | correct each / leave as history under the disclosure | leave the frozen V6 runsheet and the manuscripts as dated history, correct the README line, and let the disclosure name every file | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 23 | Ten CHANGELOG headings in unpushed commits name another assistant's shift | leave / reword in a new commit | reword in a new commit; history is never rewritten | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
+| 24 | **MIDAS read form (F10)** **(G0)** | (a) one frozen system, descriptive, with intervals / (b) paired V7 against V6, both frozen before the read | (b) if any "V7 against V6 externally" sentence is wanted; it needs code in a protected file before signing. Either way: all ages only, retrospective, biopsied negatives (14.5) | As recommended (owner, 12 Nov 2026, written instruction in session: every blank row takes its Recommended option) |
 
 ### 13.6 Rule for work that needs code after signing
 
 A build or read marked `NEEDS_CODE` may join after Gate 0 only as a declared amendment: its code and its endpoint are written,
-tests pass, and the owner signs again (`plan_freeze --sign --owner-approved`, which keeps the previous signature in
-`history`) before its first run of record. An amendment may add a member, a reported read or a build; it may not change P1-P3,
+tests pass, and the owner signs an amendment (`plan_freeze --amend --owner-approved --owner NAME --reason ... --affects ...`,
+which appends a record and keeps every earlier one) before its first run of record. The code refuses an amendment that
+changes a protected file (the rule, the data roles, the gate, the sealed-read code). An amendment may add a member, a reported read or a build; it may not change P1-P3,
 the row sets, the margins, the bar or the multiplicity rule. Amendments are listed in the final report with their signing
 dates, so a reader can see which arrived after which reads.
 
@@ -924,18 +968,330 @@ Plan quality, same nine axes as the 10 Nov score (judgement):
 | External confirmation | 7.5 | 7.5 | MIDAS sealed; 69 records under 40, so under-40 stays unconfirmable |
 | **Mean** | 8.0 | **7.7** | |
 
-The fall is the review finding gaps that already existed, not the plan getting worse. If F1, F2 (decision and costing) and F4
+**Rescored after part 3 (11 Nov, afternoon; judgement). The current score is in 14.7:**
+
+| Axis | Morning | Now | What moved it |
+|---|:-:|:-:|---|
+| Inheritance | 8.5 | 8.5 | unchanged |
+| Standing problems | 9 | 9 | L1 (archive-controlled), L2 and L3a sharpen the under-40 problem; nothing removed |
+| Leak prevention | 8 | 8 | unchanged: M1 unbuilt, re-photograph recall about half. The disclosure is transparency, not prevention |
+| In-domain vs out-of-domain | 6.5 | 7.5 | P3 costed with three options and a run-order step; not 8, because its unit is still the owner's choice and the B1 LOAO cost is extrapolated, not benchmarked |
+| Statistics | 7.5 | 8.5 | F4 measured, failed, and fixed by a declared rule with a residual stated; xAUC secondary coded; minimum detectable effects stated on every new read |
+| Factual correctness | 7.5 | 8 | disclosure numbers traced to files; all new reads write `results/`; the 13 registry numbers stay `UNVERIFIED` and labelled |
+| Ready to run | 6.5 | 7.5 | verifier passes end to end; R3b built; the first session's steps exist and are costed. Not 8: R4 was labelled `READY` with no code (F8); F7 (promotion runner), R4 and T-CF are amendments the first session does not need |
+| Safety | 8 | 8 | unchanged |
+| External confirmation | 7.5 | 7.5 | unchanged: 69 MIDAS images under 40 (corrected 14.2) |
+| **Mean** | 7.7 | **8.06** | |
+
+Pass probabilities are unchanged (P1 15-30%, P2 80-90%, P3 not estimable, promotion 10-25%, Gate A2 5-10%, an under-40 build
+giving a real gain 40-45%). L3a is the first in-repo evidence for B1's premise, at all ages only, with resolution and checkpoint
+confounded; it does not justify moving a probability. **8.1 is a score of the plan's readiness and honesty, not of V7's chance
+of beating V6.**
+
+The morning's fall was the review finding gaps that already existed, not the plan getting worse. If F1, F2 (decision and costing) and F4
 close, in-domain vs out-of-domain, statistics and ready-to-run would each reach about 8, a mean of about 8.2 (judgement). A
 plan ready to freeze is still a plan whose most likely honest outcome is "V6 stays, with a better-understood under-40 problem".
 
-### 13.8 Signing order
+### 13.8 P3 costed (F2)
+
+P3 needs two sets of leave-one-archive-out runs, each trained once per held-out archive on development rows only: the
+baseline L0 and the frozen V7 candidate. All times below are EXTRAPOLATED from the measured per-fold times in
+`research/v7/builds.py` (`MEASURED`) by pool rows: the three holdout pools (BCN 10,668, HAM 10,391, MSKCC 15,763 rows) add up to
+2.57 fold-equivalents of the 14,313-row fold pool. That rule reproduces the plan's own 143 and 739 min figures.
+
+| Arm | Members | Time for 3 holdouts |
+|---|---|---|
+| L0, anchor only | anchor 224 | 143 min |
+| L0, V6-recipe vote | anchor, anchor 384, DINOv2-B, PanDerm-B | 739 min, 12.3 h |
+| Candidate, V6-like roster with R1-R3 changes | same four | about 739 min, 12.3 h |
+| Candidate, plus each B1 member that survives fold 0 | DINOv2-B 392: about 1,551 min; PanDerm-B 384: about 1,153 min | up to about 57 h with both, for this arm alone (14.6 gives every sum) |
+
+Options for decision 16:
+* **(a) Vote against vote on all three holdouts** (recommended): like for like, and P3 tests the system that would be
+  deployed. About 25 h of GPU without B1 members, up to about 70 h with both. L0 can run at any time; the candidate's runs
+  wait until the candidate is frozen after folds 1-4.
+* (b) Anchor against anchor on all three holdouts: about 4.8 h in all, but it tests the recipe's transfer, not the system.
+* (c) Vote against vote with BCN decisive (the holdout 9.3 calls decisive) and HAM and MSKCC reported: about 3.6 h per arm, 7.1 h for both
+  without B1 members. It gives up the per-archive guarantee for two of the three archives.
+
+Run order 10.8 gains step 5b: the candidate's LOAO runs, after step 6, before step 7.
+
+### 13.9 Publishing the work with the duplicate-image disclosure (owner's 5 Nov decision)
+
+The owner's rule: no push of this branch until V7 starts; then disclose each leak, the deviations, the issues and the solution
+in the repository, so it cannot recur. The solution exists (the V7 data gate, 10.6), and Gate 0 is the start of V7. Order:
+
+1. Owner reviews `docs/LEAK_DISCLOSURE.md` and decides whether `results/leak_audit/` is published with it (recommended: the
+   report, `PREVENTION.md` and the row lists, so every number in the disclosure resolves to a file; it holds archive image IDs
+   only, no labels from sealed sets).
+2. Merge `origin/v5-confirmation-review2` (one commit, `91ce96e`, the clean public V6 commit) into the local branch, keeping
+   the local README and CHANGELOG. Never force-push, never rebase it away.
+3. Commit the uncommitted work in reviewable groups: V7 code and tests; V7 plan documents and research notes; V7 results;
+   disclosure and corrections. Never committed: `results/v7/external/midas_v7/cohort.csv` (MIDAS per-patient metadata under the
+   Stanford research use agreement, now in `.gitignore`), MIDAS labels, image files, checkpoints. The MIDAS seal record (hashes
+   only) is published, which pre-registers the sealed cohort.
+4. Scan the outgoing diff for AI attribution, secrets and restricted data (11 Nov scan of all 219 untracked files: clean).
+5. Owner says yes in that request; then a plain push. After it, the working tree holds no uncommitted V7 work.
+
+Remaining honest limits go public with it: re-photograph recall about half, patient overlap unmeasurable in HAM and BCN,
+"audited, with stated lower bounds", never "leak-free".
+
+### 13.10 First training session after signing (owner runs every GPU step in PowerShell)
+
+**Replaced by 14.8**: R2, R3 and R3b now take a range check first, and every smoke is re-run.
+
+| # | Step | Time | Basis | Before the next step |
+|:-:|---|---|---|---|
+| 1 | Machine preflight (`scripts/preflight_overnight.ps1 -StopHogs`), C: at least 5 GB free | minutes | - | passes |
+| 2 | Smokes: B3, B5, R1, R2, R3, R3b (`--smoke`, two batches each) | about 3 min each, 18 min | EXTRAPOLATED from V6 smokes | all pass |
+| 3 | R3b's guard: the fold-0 screen's loss curve and weight movement are read at its first epoch; divergence or NaN stops it (R4 has no code yet, F8) | inside step 4 | - | R3b's 5e-4 is the one LR at risk |
+| 4 | Fold-0 screens: R1 55.6, R2 78.4, R3 64.5, R3b 64.5, B3 88.8, B5 55.6 min | 407 min, about 6.8 h | MEASURED per member (same configuration per fold) | read fold 0, apply each drop rule |
+| 5 | CPU while the GPU runs: T-CF code (amendment, 13.6), L2 strata read | - | - | - |
+
+Step 4 is an overnight run, so the full overnight routine applies before it starts: one chain script with decision rules and
+safe stops, dry-run; every input and weight loaded in the run environment; a GPU smoke of each run's exact form; a rehearsal of
+what a smoke cannot reach; preflight; launch and confirmation. L0 (12.3 h) is a separate night: two GPU runs never overlap.
+
+### 13.11 Signing order
+
+**Replaced by 14.9.**
 
 1. Owner settles 13.5 and writes the choices into its last column; F1 and the F4 simulation are done.
 2. `python scripts/audit_v7_final_verification.py` passes end to end (it runs the V7 tests).
 3. `python -m research.v7.plan_freeze --sign --owner-approved`.
 4. `python -m research.v7.plan_freeze --status` prints "signed and unchanged".
 
+## 14. Freeze audit of 11 November 2026 (evening)
+
+This section controls sections 1-13 where they differ. It is the result of an audit of the plan against the repository:
+six independent review workstreams (reports in `results/v7/freeze_audit/workstreams/`), the lead's own checks, and new
+code with tests. It holds the one live blocker register (14.1), corrections of fact (14.2), the promotion rule exactly as
+the code computes it (14.3), the data denominators (14.4), cohort roles (14.5), builds and costs (14.6), the score (14.7),
+the first session (14.8) and the signing order (14.9). The owner-decision register stays in 13.5, rewritten in place.
+
+Nothing in this audit trained a model, produced a V7 prediction, read `ham_test`, HIBA outcomes or MIDAS labels, signed
+Gate 0, committed or pushed. Evidence: `results/v7/freeze_audit/AUDIT_REPORT.md` and its raw outputs.
+
+### 14.1 Blocker register (the only live copy; replaces the status column of 13.1)
+
+| # | Blocker | State on 11 Nov, evening | Evidence | What is still open |
+|:-:|---|---|---|---|
+| F1 | P3 counted-class rule | `CLOSED` | `promotion.py::classes_counted`; `test_s1_counts_only_classes_with_enough_lesion_groups` | - |
+| F2 | P3 could not be read as planned | `CLOSED IN CODE`, unit `AWAITING_OWNER` | `verdict()` now needs every archive in `P3_HOLDOUTS` and fails closed on an empty or partial read (it promoted on `{}` and on one archive before); `p3_holdout` fails when a decisive read is not estimable; L0 runs as the four-member V6 vote; a candidate member's LOAO run waits for a frozen candidate; costs decomposed in 14.6 | Decision 16 |
+| F3 | Amendments after signing | `CLOSED IN CODE` | `plan_freeze.py`: append-only hash-chained records; the protected and frozen lists are stored in the Gate 0 record and every later check uses them (the red team showed that editing the list in the code let a rule change through: fixed); a second Gate 0 is refused once any V7 output exists; the runner and every file it trusts are protected; tests are hashed; placeholders such as `TBD` are not choices. `tests/test_v7_freeze.py` (27 tests) | Takes effect at the first signature. The record is anchored outside the file only once it is committed |
+| F4 | Interval coverage | `MEASURED`; P2's wording `AWAITING_OWNER` | `results/v7/p2_coverage.json` (1,000 trials per scenario), 14.3 | Decision 20 |
+| F5 | Leak disclosure | `DRAFTED` | `docs/LEAK_DISCLOSURE.md`; numbers match the receipt | Owner review; older documents that still say "leak-free" are listed in the disclosure (decision 22) |
+| F6 | Owner decisions | `OPEN` (owner) | 13.5, 24 rows, every choice `AWAITING_OWNER` | The owner writes each choice; `plan_freeze --sign` refuses while any is blank |
+| F7 | Promotion runner | `CLOSED IN CODE` | `research/v7/promotion_run.py` (protected); predictions bound to their run by `run_id`; P3's baseline must be the declared V6-recipe vote member for member and the candidate's LOAO arm its frozen roster; a member listed twice is refused; a second candidate's read needs a stated reason and lists every earlier one. `tests/test_v7_promotion_run.py` (37 tests, synthetic) | Its first read needs Gate 0, a frozen candidate and F9. A run summary is still not bound to checkpoint bytes |
+| F8 | R4 learning-rate range check | `CODED, NOT MEASURED`; rehearsal mode added 11 Nov, night | `research/v7/lr_range.py`; `--rehearsal` measures before Gate 0 into `results/v7/lr_range_rehearsal/` (outside the output globs, unsigned; `require` refuses any record not marked `rehearsal: false`); `tests/test_v7_lr_range.py` (28 tests); `scripts/v7_presign_gpu_check.ps1` runs it | The check of record still runs after Gate 0 (14.8 step 3). A rehearsal result reads fold-0 training rows only; acting on it before signing is the owner's call |
+| F9 | **New.** No V7 step wrote the 24-view TTA predictions the candidate vote is defined on | `CLOSED IN CODE` (11 Nov, night) | `research/v7/predict_tta_v7.py` (protected, with the V6/V5 view and pooling files it reuses): found through the run summary; a write needs Gate 0 and `promotion_run.check_run`; strict rebuild (B2's concept head dropped by name only); mandatory identity-view self-check against the banked predictions; sidecar binds the file to checkpoint and summary SHA-256. Self-check passed on all 12 smoke forms, CPU, max abs dp 6.4e-4 against the 0.03 tolerance; `tests/test_v7_tta.py` (6 tests) | Never run on a run of record (none exists) |
+| F10 | **New.** The MIDAS read froze one prediction set; no cohort re-check; no intervals on sensitivity or Macro-F1; no pixel-audit receipt | `CLOSED IN CODE` for both forms of decision 24 (11 Nov, night) | `research/v7/external_read.py`: `predict --baseline` freezes V6 beside V7 in one step (paired form), `read` re-checks the cohort copy, baseline and pixel-audit hashes, adds lesion-group bootstrap intervals for Macro-F1, sensitivity and pAUC, Clopper-Pearson for sensitivity, and V7 minus V6 per endpoint; `predict` refuses without `pixel_audit.json` naming the cohort hash; listed copies are dropped at read. Three new tests in `tests/test_v7_decisions.py` | Decision 24 still selects the form. The pixel-audit producer for MIDAS (V7 training features, GPU) is not written; it is needed before `predict`, not before signing |
+| F11 | **New.** "Hold V6's step budget" (decision 7's recommended option) has no code; today a V7 fold-0 run gets 13,110 steps against V6's 13,410 | `OPEN`, `NEEDS_CODE` if chosen | smoke summaries (`step_budget`) | Decision 7 |
+| F12 | **New.** The gate builder adds HIBA and MIDAS only if their file is present, so an absent file would drop a source without an error | `MITIGATED` | `data_roles.py::check_sources` now fails the bindings on an absent, empty or resized source; two new tests | Fixed inside the gate code at its next rebuild (that changes the code hash: the gate reruns and the B5 bases are refitted) |
+| F13 | **New.** Every smoke is one or two steps and predates the current receipt and code; R3b has none | `OPEN` | `results/v7/smoke/`, WS5 | Re-run in the first session (14.8 step 2) |
+| F14 | **New.** Companion documents still state rules this plan replaced (Tier C2 as prospective, Gate A2 as primary, HIBA as a V7 benchmark, "Certified") | `BANNERED` | banner added to each on 11 Nov | A rewrite is not done; the banner says section 14 controls |
+| F15 | **New (12 Nov).** M1, the same-lesion matcher (decision 11: before runs of record) | `DECIDED`: SSCD, untrained, with SIFT; gate rebuilt | `results/v7/m1/` (protocol written before scoring; baselines; candidates; verify); CHANGELOG 12 Nov parts 1-2. Femto 0.296 and MobileNetV4 0.287 beat SSCD 0.263 pooled but were lower on HAM, so the pre-registered rule kept SSCD; LightGlue lost to SIFT | Re-photograph recall about 0.28. Declared follow-up: SSCD with Femto, by the same rule. B5 bases refitted on the new receipt |
+
+### 14.2 Corrections of fact
+
+| Where | Was | Is (source) |
+|---|---|---|
+| 10.6, links and removals | 15,228 confirmed, 96,668 at risk, 656 removals; HAM 1,476, MSKCC 1,255 | The receipt on disk (12 Nov 05:00, after M1): 57,488 rows compared; 20,370 confirmed and 123,471 at-risk links; 3,424 training-side removals; 306, 330, 341, 349, 305 more for folds 0-4; holdouts BCN 8,951, HAM 1,323, MSKCC 1,195. Before M1 (10 Nov 20:20): 15,233 confirmed, 106,839 at risk, 681 removals (`ml/data/v7/_pre_m1_2026-11-12/`) |
+| 10.10 | "the data gate run on all 52,880 rows" | 52,880 was the run before the HIBA fix (54,079 minus 1,199). The current run compared 57,488 |
+| 10.11, 12.3, 13.5 | `reserved` "read once at S63" | `reserved` was read 8 times in V1-V4 (`docs/V6_RUNSHEET.md`, exhausted-cohorts row). It is previously read development data |
+| 10.11, 13.7 | MIDAS "69 under 40" records | 69 **images** under 40 (`data_roles_v7.json`: 529 + 167 + 69 = 765 images). The number of under-40 records and of under-40 escalating cases is unknown while the cohort is sealed |
+| 13.1 F4 | 95% interval coverage 0.913-0.957 "fails"; 97.5% interval "passes" (300 trials) | At 1,000 trials: 95% interval 0.914-0.942 (mean 0.931); 97.5% interval 0.945-0.965. The 95% interval under-covers mildly. The rule written before the run was "restore 0.95"; a 0.93 floor was applied. The gain rule (97.5% interval) is kept: it reaches 0.945-0.965 |
+| 10.7 | Gate A2 "passes about 5% at a true +0.020" (`pauc_power_simulation.json`) | That figure is not in the file. Measured now: Gate A2 passes 10-16% at a true +0.035 and 0.0-0.4% at no difference (`p2_coverage_trials.npz`) |
+| 13.8 | "up to about 57 h with both" | 57.4 h is the candidate arm alone with both B1 members added; with L0 it is 69.7 h (14.6) |
+| 10.9 item 6 | fold-0 run 12,840 steps | 13,110 under the current receipt (smoke summaries) |
+| 10.5, B5 | 55.6 min per fold, MEASURED | 55.6 min is the member without the transform; with it about 66 min, EXTRAPOLATED |
+| 10.5 | R4, X1 `READY`; X2 `OWNER_DECISION` | R4 `NEEDS_BENCHMARK`; X1 and X2 `NEEDS_CODE` (no code exists for either) |
+| 10.10, 13.7 | "13 registry numbers untraced" | `results/v7/lineage_trace.json` (11 Nov) traces 35 of 35; the earlier `registry_audit.json` found 17 of 32. The model registry still has 13 of 17 checkpoint hashes `NOT_HASHED` and every licence cell unverified |
+| header | "no V7 code or run exists" | V7 code and tests exist; no V7 run of record exists |
+
+### 14.3 The promotion rule as the code computes it
+
+All deltas are candidate minus comparator, paired, on the same rows. Escalation score: p(akiec) + p(bcc) + p(mel). pAUC is
+the McClish-standardised partial AUC at FPR up to 0.20 (the same value from `frontier.partial_auc` and scikit-learn's
+`max_fpr`). Intervals are percentile intervals from 2,000 paired resamples of lesion groups (`group_id`); patient identity
+is unavailable for HAM and BCN, so dependence between lesions of one patient is unmeasured. Rows are images.
+
+* **P1** (folds 1-4, against the banked V6 vote): all-age pAUC delta **above 0.008237**, AND Macro-F1 delta (seven classes,
+  argmax) above 0 with its lower 95% bound above 0. The bar is 0.8416 x 0.009787, the pair SD of six anchor seeds. It is a
+  point estimate against a noise bar: under pure seed noise it is exceeded 20% of the time, so P1 rests on the Macro-F1
+  interval as much as on the bar.
+* **P2** (a veto): the upper 95% bound of the under-40 pAUC delta is at least 0, AND the upper 95% bound of the **all-age**
+  argmax escalation-sensitivity delta is at least 0. Under-40 sensitivity is not part of P2.
+* **P3** (each archive in `P3_HOLDOUTS`: BCN, HAM, MSKCC): candidate vote against the V6-recipe baseline vote on the held-out
+  archive's development rows; lower 95% bound above -0.02 for Macro-F1 over the classes with at least 50 lesion groups
+  there, and for escalation pAUC. Both reads must be estimable. Classes below the floor are reported with their counts.
+* **Row sets** (P1 and P2 on each): `all_rows`; excluding the rows of the 380 declared groups; excluding the extended 426;
+  excluding every development row the V7 gate links outside its own group or removed. Each leaves out **evaluation** rows
+  only; the training side is the same in all four. P3 is read once per archive.
+* **Promotion** needs every part on every row set and every archive. Anything missing, empty or not estimable keeps V6.
+
+**What P2 does and does not show** (`scripts/v7_p2_coverage.py`, `results/v7/p2_coverage.json`; synthetic populations
+calibrated to the banked V6 vote; 1,000 trials per scenario; two between-system correlations, 0.85 and 0.95; Monte Carlo
+standard error at most 0.016):
+
+| True difference | P2 component passes (rho 0.85 / 0.95) |
+|---|:-:|
+| Under-40 pAUC: none | 0.97 / 0.97 |
+| Under-40 pAUC: -0.02 | 0.83 / 0.56 |
+| Under-40 pAUC: -0.04 | 0.43 / 0.07 |
+| Under-40 pAUC: -0.08 | 0.02 / 0.00 |
+| All-age sensitivity: none | 0.98 / 0.97 |
+| All-age sensitivity: -0.01 | 0.79 / 0.61 |
+| All-age sensitivity: -0.02 | 0.35 / 0.10 |
+| All-age sensitivity: -0.03 | 0.09 / 0.00 |
+
+P2 is therefore **"no statistically detected harm", not a demonstration of no harm and not non-inferiority**. It has 80%
+power only against an under-40 pAUC loss of roughly 0.04 to 0.06, or an all-age sensitivity loss of 0.02 to 0.025. The
+code and its output now say so (`promotion.p2_verdict`, `form`). A formal non-inferiority condition would need margins the
+owner justifies clinically; none is set (`P2_NONINFERIORITY_MARGINS = None`, decision 20). For information only, an
+**equal** candidate would pass "lower 95% bound above -m" this often: under-40 pAUC, m = 0.02: 24% / 49%; 0.03: 39% / 74%;
+0.05: 75% / 96%; 0.08: 96% / 100%. All-age sensitivity, m = 0.01: 22% / 42%; 0.02: 63% / 93%; 0.03: 93% / 100%. At 65
+positive groups an equal candidate fails more often than it passes for an under-40 pAUC margin below about 0.04 if the two
+systems correlate at 0.85, or below about 0.02 at 0.95; 80% for an equal candidate needs about 0.06 or 0.035. Limits of the simulation: the two components
+are simulated separately; the correlation between systems is assumed, not measured; the positive group-size table of the
+F4 script covers 64 of the 65 groups (141 of 158 images: one large group is missing), which understates clustering.
+
+**Secondary family** (reported with Holm-adjusted bootstrap p-values, never deciding; `promotion_run.SECONDARY_FAMILY`,
+ten members): Gate A2 (under-40 pAUC, +0.050, 97.5% interval); E-histo pAUC, all ages and under 40; xAUC young positives
+against older negatives, all negatives and confirmed negatives; Macro-F1 delta per archive (three); pAUC delta at 40-59 and
+60+. The dark-lesion read is descriptive and outside the family. This replaces the family written in 7.1, 7.2 and the
+statistical plan's 5.1 (H1A at +0.050 as primary, Macro-F1 non-inferiority -0.015, 40+ sensitivity -0.010), which the code
+never implemented.
+
+### 14.4 Data: what the gate compared (`ml/data/v7/master_v7.csv`, receipt of 12 Nov 05:00, after M1)
+
+| Source (`frozen_split`) | Images | Role in V7 |
+|---|--:|---|
+| Development (`train`) | 15,294 | training on other folds; fold 0 selects (3,059); folds 1-4 read once (12,235 images, 6,989 lesion groups) |
+| `reserved`, `val`, `ham_val` | 4,733 + 2,270 + 1,532 | training only |
+| `ham_test` | 1,502 | never trained on, never read |
+| Added pool | 25,471 | training |
+| Young extras | 2,078 | training |
+| HIBA | 1,199 | training only (its sealed read was spent on V6) |
+| **Rows V7 can train or evaluate on** | **54,079** | |
+| MIDAS | 3,409 files | compared for overlap only; 765 sealed for the one external read |
+| **Rows the gate compared** | **57,488** | |
+
+Removed from every training run: 3,424 rows (linked to a development row, `ham_test` or MIDAS). The gate is
+**audited, with stated lower bounds**, never "leak-free": only identical bytes confirm on pixels alone; a hash match is a candidate; the
+planted-copy result (384 of 384) is a software check on eight synthetic transforms, not real-world recall; re-photograph
+recall is about 0.28 (SSCD with SIFT, M1, 12 Nov: 0.277 [0.241, 0.315] on unseen val/reserved/ham_val pairs; 0.263 [0.225, 0.308] on the held-out benchmark), so most re-photographs are still missed, while known copies are caught about 90% of the time; the trained matchers were not adopted (lower on HAM); patient overlap cannot
+be measured in HAM or BCN; and the group-size limit of 31 equals the largest group observed (one BCN lesion), so it has no
+headroom and is a description of the data, not an independent bound.
+
+### 14.5 Cohort roles
+
+* **MIDAS is a sealed, retrospective, external biopsy-cohort benchmark.** It can support one all-age external read. It is
+  not a prospective or consecutive series and cannot establish workflow performance. It cannot confirm an under-40 claim:
+  69 under-40 images, with the number of under-40 escalating cases unknown. Every negative in it was biopsied, so its
+  specificity is not that of an unselected clinic (verification bias). Wherever sections 4, 7, 8, 9.4 or a companion
+  document describe Tier C2 as prospective, consecutive, new-hospital or sized at 71 events, that text describes a study
+  that does not exist; MIDAS does not fill it. External confirmation of the under-40 result remains unavailable.
+* **HIBA** is training-only. No V7 system is scored on it. Text that lists HIBA as a V7 benchmark or comparator is superseded.
+* **`reserved`, `val`, `ham_val`** are training-only at Gate 0 (10.11). D2 (cross-fitting `reserved` for 104 more under-40
+  groups: 80 BCN, 24 MSKCC, 56 melanoma; 169 with folds 1-4) contradicts 10.11 and has no code or split manifest. The two
+  cannot both be in force. Recommended (decision 13): 10.11 stands at Gate 0; D2 may follow only as a signed amendment
+  that is secondary, never a row set or a promotion endpoint, with a bound split manifest in which no model scores a row
+  it trained on, and reported as previously read development data, never as independent confirmation.
+* **PAD-UFES-20** is another modality. It is not a dermoscopy result and is out of the promotion rule (decision 6).
+
+### 14.6 Builds, the range check, and P3's cost
+
+Statuses in `research/v7/builds.py` are the record. `READY` means code, tests, inputs and a smoke exist; it does not mean
+the build works. The trainer refuses a run of record for any other status. Not in the registry and `NEEDS_CODE`: T-CF,
+B7, B7b, B8, B9, D1, D2, X3, M1, A1, the counterfactual-referral read, the V7 TTA step (F9). Each joins by amendment (13.6).
+
+**R4 rule** (`lr_range.py`). A fold-0 screen may run without a range-check receipt only when the build's learning-rate
+configuration is V6's own (R1, B2, B3, B5, L0). Every changed or new rate needs a passing receipt first: R2, R3, R3b,
+B1, C1-C3; and so does every run on folds 1-4 or with an archive held out. This is stricter than 13.1's F8 text, which
+exempted R2, R3 and R3b: their rates are the ones under test. A rate from a paper or a model card is a starting value.
+Confounds on record: R2 changes layer decay and the top rate together; R3b changes the head rate with the backbone's; the
+"official PanDerm rate, unscaled" has no source file in this repository (`UNVERIFIED`).
+
+**P3's cost.** Everything below is EXTRAPOLATED: measured minutes per fold for V6's members (`builds.MEASURED`) times the
+holdout pools' 2.57 fold-equivalents (36,822 / 14,313 rows). B1's per-fold times are themselves extrapolated from
+synthetic-batch benchmarks. No LOAO run has been timed.
+
+| Arm, three holdouts | Members | Minutes | Hours |
+|---|---|--:|--:|
+| L0, anchor only | anchor 224 (41.4 + 40.4 + 61.2) | 143 | 2.4 |
+| L0, V6 vote | 143 + anchor 384 228 + DINOv2-B 202 + PanDerm-B 166 | 739 | 12.3 |
+| Candidate, V6-like roster | the same four | 739 | 12.3 |
+| Candidate, both B1 members added | 739 + 1,551 + 1,153 | 3,443 | 57.4 |
+| Candidate, both B1 members replacing the 224 px ViTs | 143 + 228 + 1,551 + 1,153 | 3,075 | 51.3 |
+
+Decision 16: (a) vote against vote, three holdouts: 24.6 h with a V6-like candidate; 69.7 h if both B1 members are added;
+63.6 h if they replace the 224 px ViTs. (b) Anchor against anchor: 4.8 h. (c) Vote against vote, BCN only: 3.6 h per arm,
+7.1 h. The candidate's LOAO roster is the frozen candidate's own members. Under the current receipt the holdout pools give
+2.7-2.9% fewer steps than these figures assume unless decision 7 holds V6's budget (F11).
+
+### 14.7 Score (judgement; the same nine axes, equal weights; pass probabilities unchanged)
+
+Pass probabilities are unchanged, because nothing here is a measured lever: P1 15-30%, P2 80-90% (with P2 now known to be a
+weak veto), P3 not estimable, promotion 10-25%, Gate A2 5-10%, an under-40 build giving a real gain 40-45%.
+
+The lead scored 8.11 before the red team. The red team (WS9, scored blind, without reading this section) gave **7.39**
+and broke the new code in five places: an amendment could change a protected rule file by also editing the protected list;
+deleting the record allowed a fresh Gate 0; the runner, which decides promotion, was amendable; the P3 baseline was not
+forced to be like for like; and any number of candidates could be read on folds 1-4. All five are fixed with regression
+tests (14.1, F3 and F7), as are a weak divergence rule in R4 and four smaller gaps. The score below is the lead's after
+those fixes, adjudicated against the red team's axis by axis.
+
+| Axis | 11 Nov, afternoon | Red team (blind, before fixes) | Now | Why |
+|---|:-:|:-:|:-:|---|
+| Inheritance | 8.5 | 8.0 | 8.5 | the runner re-checks the banked V6 bytes and the recorded 0.743258 before any read; the V6 read code is now protected |
+| Standing problems | 9 | 7.5 | 8.0 | companion documents still cite replaced rules (bannered, not rewritten); the register's numbers corrected |
+| Leak prevention | 8 | 8.0 | 8.0 | agreed. M1 unbuilt, recall about half, the group limit has no headroom, F12 |
+| In-domain vs out-of-domain | 7.5 | 7.5 | 7.5 | agreed. P3 is like for like in code, but decision 16 is open and no LOAO run exists or has been timed |
+| Statistics | 8.5 | 7.5 | 8.0 | the rule is stated exactly as computed and fails closed, P2 is measured and the Holm family coded; but P2 is a weak veto with its form undecided, and P1's bar is passed 20% of the time by noise alone |
+| Factual correctness | 8 | 8.0 | 8.0 | agreed. Twelve statements corrected; older documents still say "leak-free"; 13 of 17 checkpoint hashes unhashed |
+| Ready to run | 7.5 | 6.5 | 7.5 | the first session (fold-0 screens) is executable once signed: refusals, range-check gate and runner exist and are tested. Not 8: R4 never ran on the GPU, every smoke is stale, and F9 means folds 1-4 cannot yet be predicted |
+| Safety | 8 | 7.0 | 7.5 | the red team's two Gate 0 attacks are fixed; F10 (MIDAS read) and the weak P2 remain |
+| External confirmation | 7.5 | 6.5 | 7.0 | one sealed retrospective biopsy cohort, all ages only, 69 under-40 images, and its read cannot yet be paired with V6 |
+| **Mean** | 8.06 | **7.39** | **7.78** | |
+
+The score went down, not up, and that is the finding: the afternoon's 8.06 was given before three fail-open paths in the
+promotion rule, a P2 that passes real harm about half the time, stale gate numbers and five breakable guards were known.
+The package is more ready than it was this morning; the number was too generous then. What 9 would need: decisions 16, 20,
+24 and 7 written and coded; R4 measured; F9 and F10 coded; fresh smokes; M1 built; and an external cohort that can speak
+to patients under 40, which does not exist. **7.8 is a score of the plan's readiness and honesty, not of V7's chance of
+beating V6.**
+
+### 14.8 First session after signing (replaces 13.10; the owner runs every GPU step in PowerShell)
+
+Not started. It begins only after Gate 0 and the owner's instruction. Because step 4 runs overnight, the full overnight
+routine comes first: one chain script with safe stops, dry-run; every input loaded in the run environment; a GPU smoke of
+each run's exact form; a rehearsal of what a smoke cannot reach; preflight. Exact commands: `AUDIT_REPORT.md`, section J.
+
+| # | Step | Time | Basis | Before the next step |
+|:-:|---|---|---|---|
+| 0 | `plan_freeze --status`; `audit_v7_final_verification.py` | 2 min | MEASURED (verifier, 11 Nov) | "signed and unchanged"; verifier exit 0 |
+| 1 | Machine preflight; C: at least 5 GB free; no other GPU job | minutes | - | passes |
+| 2 | Smokes of the exact forms: R1, R2, R3, R3b, B3, B5 (`--smoke`) | about 1 min each, 6 min | EXTRAPOLATED from the 10 Nov smokes (45-50 s) | all exit 0; R3b's is its first |
+| 3 | R4 range checks: R2 (DINOv2-B), R3 and R3b (PanDerm-B), 500 steps each | about 4-5 min each, 13 min | UNMEASURED (from per-step times; the check has never run on the GPU) | each prints `PASS` or `PASS_AT_EDGE`; a `FAIL` drops that screen |
+| 4 | Fold-0 screens, one at a time: R1 55.6, B3 88.8, B5 about 66, R2 78.4, R3 64.5, R3b 64.5 min | about 418 min, 7.0 h | MEASURED per member on V6 folds 1-4, except B5 (EXTRAPOLATED); fold 0 runs 2% fewer steps | read fold 0; apply each drop rule |
+
+Stops: a non-finite loss voids the run (the trainer raises); free disk below the trainer's floor; a changed receipt or
+Gate 0 hash; error 1455 (commit limit) means fewer workers, never a retry in a loop. Nothing is overwritten: a finished
+run's summary refuses a second write. L0 and every later GPU block is a separate night.
+
+### 14.9 Signing order (replaces 13.11)
+
+1. The owner writes a choice in every row of 13.5 (or "as recommended"). Decisions 16, 20, 24, 13 and 7 change code or
+   constants: those edits are made and tested before signing, not after.
+2. The owner reviews `docs/LEAK_DISCLOSURE.md` and this section.
+3. `python scripts/audit_v7_final_verification.py` exits 0.
+4. Commit, on the owner's yes.
+5. The owner runs `python -m research.v7.plan_freeze --sign --owner-approved --owner "NAME"`, then `--status`.
+6. Any later change to a hashed file is `--amend` (13.6). A change to a protected file is refused, or is a named protocol
+   change that is impossible once any V7 read exists.
+
 ---
 
-*Rebuilt 10 November 2026; freeze review 11 November 2026 (sections 9-13 control; 13 controls where they differ). Not
-approved for execution until the owner signs Gate 0.*
+*Rebuilt 10 November 2026; freeze review and freeze audit 11 November 2026 (sections 9-14 control; 14 controls where they
+differ). Not approved for execution until the owner signs Gate 0.*
